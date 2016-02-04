@@ -99,6 +99,7 @@
      */
     function redirect($destination)
     {
+
         // handle URL
         if (preg_match("/^https?:\/\//", $destination))
         {

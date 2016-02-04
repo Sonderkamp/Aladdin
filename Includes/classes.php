@@ -1,9 +1,12 @@
 <?php
 
 // Models
-include_once("Model/User.php");
+$root = $_SERVER['DOCUMENT_ROOT'];
+
+include_once($root . "/Model/User.php");
+include_once($root . "/Model/Database.php");
 
 // Controller
-include_once("Controller/ErrorController.class.php");
-include_once("Controller/HomeController.class.php");
+include_once($root . "/Controller/ErrorController.class.php");
+include_once($root . "/Controller/HomeController.class.php");
 
