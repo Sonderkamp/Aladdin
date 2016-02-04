@@ -4,7 +4,7 @@
 // URL in APACHE -> localhost/search
 
 
-_once("Includes/config.php");
+require_once("Includes/config.php");
 
 if(Empty($_GET["path"]) )
 {
