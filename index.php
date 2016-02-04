@@ -1,8 +1,7 @@
 <?php
 
-// URL Tijdens de test -> http://localhost:63342/Aladdin/?path=search
-// URL in APACHE -> localhost/search
-
+// URL during testing -> http://localhost:63342/Aladdin/?path=search
+// URL during APACHE launch -> localhost/search
 
 require_once("Includes/config.php");
 
