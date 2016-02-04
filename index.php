@@ -1,9 +1,26 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: MevlutOzdemir
- * Date: 04-02-16
- * Time: 10:01
- */
 
-echo "hello world";
+// URL Tijdens de test -> http://localhost:63342/Aladdin/?path=search
+// URL in APACHE -> localhost/search
+
+
+_once("Includes/config.php");
+
+if(Empty($_GET["path"]) )
+{
+    (new HomeController())->Run();
+    exit();
+}
+
+
+$page = strtolower(htmlspecialchars($_GET["path"]));
+switch ($page)
+{
+    // no parameters
+    case "search":
+        (new HomeController())->Run();
+        break;
+    default:
+        apologize("Sorry. Pagina bestaat niet");
+        break;
+}

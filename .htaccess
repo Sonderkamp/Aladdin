@@ -1,0 +1,5 @@
+RewriteEngine On
+RewriteBase /
+RewriteRule ^(CSS|JS|phpmyadmin)($|/) - [L]
+RewriteRule ^(.*)/(.*)$ /$1&$2 [NC,QSA,L]
+RewriteRule ^(.+)/?$ index.php?path=$1 [NC,QSA,L]
