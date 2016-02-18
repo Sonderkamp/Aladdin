@@ -8,32 +8,32 @@
  */
 class Database
 {
-    private $conn, $result, $rows;
 
-    public function __construct()
+    private static function open()
     {
         // connect to database
-        $this->conn = new PDO("mysql:dbname=" . DATABASE . ";host=" . SERVER, USERNAME, PASSWORD);
+        $var = new PDO("mysql:dbname=" . DATABASE . ";host=" . SERVER, USERNAME, PASSWORD);
 
         // ensure that PDO::prepare returns false when passed invalid SQL
-        $this->conn->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+        $var->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+        $var->query("SET NAMES 'utf8'");
+
+        return $var;
     }
 
-    public function __destruct()
-    {
-        // close connection as referenced by: http://php.net/manual/en/pdo.connections.php
-        $this->conn = null;
-    }
 
-    public function query($sql)
+    public static function query($sql)
     {
         try {
-            $this->result = $this->conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+            $conn = Database::open();
+            $result = $conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 
-            $this->rows = new ArrayObject($this->result);
-            $this->result = $this->rows->getIterator();
+            if ($result === false) {
+                return false;
+            }
 
-            return true;
+            $rows = new ArrayObject($result);
+            return $rows;
 
         } catch (PDOException $e) {
             printError($e);
@@ -41,21 +41,23 @@ class Database
         return false;
     }
 
-    public function query_safe($sql, $parameters)
+    public static function query_safe($sql, $parameters)
     {
         try {
-            $statement = $this->conn->prepare($sql);
+            $conn = Database::open();
 
+            $statement = $conn->prepare($sql);
+
+            if ($statement === false)
+                return false;
             // execute SQL statement
             $result = $statement->execute($parameters);
 
             if ($result !== false) {
-                $this->result = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-                $obj = new ArrayObject($this->result);
-                $this->result = $obj->getIterator();
-
-                return true;
+                $rows = new ArrayObject($result);
+                return $rows;
             } else {
                 return false;
             }
@@ -65,7 +67,7 @@ class Database
         }
     }
 
-    public function printError($e)
+    public static function printError($e)
     {
         echo '<pre>';
         echo 'Regel: ' . $e->getLine() . '<br>';
@@ -75,19 +77,4 @@ class Database
         exit(1);
     }
 
-    public function getRow()
-    {
-        if ($this->result->valid()) {
-            $tmp = $this->result->current();
-            $this->result->next();
-            return $tmp;
-
-        }
-        return null;
-    }
-
-    public function getRows()
-    {
-        return $this->rows;
-    }
 }

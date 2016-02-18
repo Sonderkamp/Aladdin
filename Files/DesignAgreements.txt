@@ -1,0 +1,12 @@
+De volgende design principes hebben wij afgesproken om toe te passen:
+
+
+*---Security---*
+- Data validation word toegepast zowel server-side als client-side (gebruikende PHP en JavaScript)
+
+*---Style---*
+- Functies met een kleine letters
+
+
+
+Patrick Nobbe & Marius de Vogel
