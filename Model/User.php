@@ -59,9 +59,12 @@ class User
     {
         $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
         $res = Database::query_safe("SELECT * FROM `users` WHERE `Email` = ?", array($username));
-        if ($res == null) {
+        if ($res == null || $res === false) {
             return false;
         }
+        if(count($res) == 0)
+            return false;
+
         $res = $res[0];
         return $res;
     }
