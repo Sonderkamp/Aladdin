@@ -150,15 +150,6 @@ class User
             VALUES (" . $array["username"] . ", " . $hashed . ", " . $array["name"] . ", " . $array["surname"] . ", NULL, NULL, '$this->token')\"";
             exit();
         }
-
-        if (!Database::query_safe("INSERT INTO `address` (`Id`, `Zipcode`, `Address`, `City`, `Province`, `Country`, `Users_Email`) VALUES (NULL, ?, ?, ?,?, ?, ?)",
-            array($array["postalcode"], $array["address"], $array["city"], $array["province"], $array["country"], $array["username"]))
-        ) {
-            echo "Query error: ADDRESS ADD";
-            exit();
-        }
-
-
         return true;
     }
 
