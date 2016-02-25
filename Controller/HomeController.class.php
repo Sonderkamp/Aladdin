@@ -6,7 +6,8 @@ class HomeController
 
     public function Run()
     {
-        echo "Home";
+        render("home.php", ["title" => "Homepagina"]);
+        exit(1);
     }
 
 }
