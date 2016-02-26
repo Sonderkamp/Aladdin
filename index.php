@@ -15,6 +15,9 @@ switch ($page) {
     case "admin":
         (new AdminController())->run();
         break;
+    case "wishes":
+        (new WishController())->run();
+        break;
     case "index.php":
         (new HomeController())->run();
         break;
