@@ -13,21 +13,21 @@ class User
     public function validate($username, $password)
     {
         if ($this->validateUsername($username)) {
-            $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
-            $res = $this->getUser($username);
+        $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
+        $res = $this->getUser($username);
 
-            if ($res === false) {
-                return false;
-            } else if (password_verify($password, $res["Password"])) {
-                $this->email = strtolower($username);
-                $this->isAdmin = $res["IsAdmin"];
-                $this->name = $res["Name"];
-                $this->surname = $res["Surname"];
-                $this->adresses = $this->getAdresses($username);
-                $_SESSION["user"] = $this;
-                return true;
-            }
+        if ($res === false) {
+            return false;
+        } else if (password_verify($password, $res["Password"])) {
+            $this->email = strtolower($username);
+            $this->isAdmin = $res["IsAdmin"];
+            $this->name = $res["Name"];
+            $this->surname = $res["Surname"];
+            $this->adresses = $this->getAdresses($username);
+            $_SESSION["user"] = $this;
+            return true;
         }
+    }
         return false;
     }
 
@@ -150,15 +150,6 @@ class User
             VALUES (" . $array["username"] . ", " . $hashed . ", " . $array["name"] . ", " . $array["surname"] . ", NULL, NULL, '$this->token')\"";
             exit();
         }
-
-        if (!Database::query_safe("INSERT INTO `address` (`Id`, `Zipcode`, `Address`, `City`, `Province`, `Country`, `Users_Email`) VALUES (NULL, ?, ?, ?,?, ?, ?)",
-            array($array["postalcode"], $array["address"], $array["city"], $array["province"], $array["country"], $array["username"]))
-        ) {
-            echo "Query error: ADDRESS ADD";
-            exit();
-        }
-
-
         return true;
     }
 
