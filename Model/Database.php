@@ -26,17 +26,17 @@ class Database
     {
         try {
             $conn = Database::open();
-            $result = $conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+            $result = $conn->query($sql);
 
             if ($result === false) {
                 return false;
             }
 
-            $rows = new ArrayObject($result);
+            $rows = new ArrayObject($result->fetchAll(PDO::FETCH_ASSOC));
             return $rows;
 
         } catch (PDOException $e) {
-            printError($e);
+            Database::printError($e);
         }
         return false;
     }
@@ -63,7 +63,7 @@ class Database
             }
 
         } catch (PDOException $e) {
-            printError($e);
+            Database::printError($e);
         }
     }
 

@@ -1,16 +1,16 @@
 <?php
 
 // your database's name
-define("DATABASE", "pokebase");
+define("DATABASE", "maxbets2_Aladdin");
 
 // your database's password
-define("PASSWORD", "");
+define("PASSWORD", "projectbaas");
 
 // your database's server
-define("SERVER", "localhost");
+define("SERVER", "46.21.172.145");
 
 // your database's username
-define("USERNAME", "root");
+define("USERNAME", "maxbets2_root");
 
 // your database's username
 define("DEVELOPMENT", true);
