@@ -8,7 +8,7 @@
  */
 class WishController
 {
-    function run()
+    public function run()
     {
         //hier
         $result = Database::query("select * from wish");

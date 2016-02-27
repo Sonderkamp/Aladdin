@@ -4,6 +4,7 @@ include_once("Model/User.php");
 include_once("Model/Database.php");
 include_once("Model/Email.php");
 include_once("Model/Wish.php");
+include_once("Model/Talent.php");
 
 include_once("Controller/WishController.class.php");
 include_once("Controller/TalentController.class.php");
