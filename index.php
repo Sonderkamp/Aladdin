@@ -18,6 +18,9 @@ switch ($page) {
     case "wishes":
         (new WishController())->run();
         break;
+    case "talents":
+        (new TalentController())->run();
+        break;
     case "index.php":
         (new HomeController())->run();
         break;
