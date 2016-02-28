@@ -2,6 +2,8 @@
 
     {if isset($error)}
     <p id="error">Error: {htmlspecialchars($error)}</p>
+    {else}
+    <p id="error"></p>
     {/if}
 
     <form name="registerForm" action="/Account/action=register" method="post" onsubmit="return validateEmail()">
