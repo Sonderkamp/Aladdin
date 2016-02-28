@@ -13,30 +13,23 @@ class User
     public function validate($username, $password)
     {
         if ($this->validateUsername($username)) {
-        $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
-        $res = $this->getUser($username);
+            $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
+            $res = $this->getUser($username);
 
-        if ($res === false) {
-            return false;
-        } else if (password_verify($password, $res["Password"])) {
-            $this->email = strtolower($username);
-            $this->isAdmin = $res["IsAdmin"];
-            $this->name = $res["Name"];
-            $this->surname = $res["Surname"];
-            $this->adresses = $this->getAdresses($username);
-            $_SESSION["user"] = $this;
-            return true;
+            if ($res === false) {
+                return false;
+            } else if (password_verify($password, $res["Password"])) {
+                $this->email = strtolower($username);
+                $this->isAdmin = $res["IsAdmin"];
+                $this->name = $res["Name"];
+                $this->surname = $res["Surname"];
+                $_SESSION["user"] = $this;
+                return true;
+            }
         }
-    }
         return false;
     }
 
-    public function getAdresses($username)
-    {
-        $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
-        $res = Database::query_safe("SELECT * FROM `users` WHERE `Email` = ?", array($username));
-        return $res;
-    }
 
     public function validateUsername($username)
     {
@@ -62,7 +55,7 @@ class User
         if ($res == null || $res === false) {
             return false;
         }
-        if(count($res) == 0)
+        if (count($res) == 0)
             return false;
 
         $res = $res[0];
@@ -97,7 +90,6 @@ class User
             || !preg_match('/[0-9]/', $password)
             || !preg_match('/[A-Z]/', $password)
             || !preg_match('/[a-z]/', $password)
-            || !preg_match('/[\'^£$!%&*()}{@#~?><>,|=_+¬-]/', $password)
         )
             return false;
         return true;
@@ -112,8 +104,9 @@ class User
             || Empty($array["address"])
             || Empty($array["postalcode"])
             || Empty($array["country"])
-            || Empty($array["province"])
             || Empty($array["city"])
+            || Empty($array["dob"])
+            || Empty($array["gender"])
         ) {
             return "Niet alles is ingevuld.";
         }
@@ -121,30 +114,43 @@ class User
         $array["username"] = strtolower(filter_var($array["username"], FILTER_SANITIZE_EMAIL));
 
         if (!$this->validPass($array["password"])) {
-            return "het wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter,
-            een nummer en een speciaal teken bevatten.";
+            return "het wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter en
+            een nummer bevatten.";
         }
-        if (!preg_match("/^[A-Za-z ]+$/", $array["name"]) || !preg_match("/^[A-Za-z ]+$/", $array["surname"])) {
-            return "Naam mag alleen aphabetische characters bevatten.";
+        if (!preg_match("/^[A-Za-z\\- ]+$/", $array["name"]) || !preg_match("/^[A-Za-z\\- ]+$/", $array["surname"])) {
+            return "Naam mag alleen alphabetische characters, spaties en streepjes(-) bevatten.";
         }
 
         if ($this->getUser($array["username"]) !== false) {
             return "Dit emailadress heeft al een account.";
         }
 
-        // NO checks for:
-//        $array["address"]
-//        $array["postalcode"]
-//        $array["country"]
-//        $array["province"]
-//        $array["city"]
+        $d = DateTime::createFromFormat('d-m-Y', $array["dob"]);
+        if (($d && $d->format('d-m-Y') == $array["dob"]) === false)
+            return "invalide geboortedatum";
+
+        if ($array["gender"] != "male" && $array["gender"] != "female" && $array["gender"] != "other")
+            return "gender is verkeerd gekozen?";
+
+
+//    || Empty($array["address"])
+//    || Empty($array["postalcode"])
+//    || Empty($array["country"])
+//    || Empty($array["city"])
 
         // SQL
         $hashed = password_hash($array["password"], PASSWORD_DEFAULT);
         $this->token = bin2hex(openssl_random_pseudo_bytes(16));
 
-        if (!Database::query_safe("INSERT INTO `users` (`Email`, `Password`, `Name`, `Surname`, `RecoveryHash`, `RecoveryDate`, `ValidationHash`) VALUES (?, ?, ?,?, NULL, NULL, ?)"
-            , array($array["username"], $hashed, $array["name"], $array["surname"], $this->token))
+        if (!Database::query_safe("INSERT INTO `users` (`Email`, `Password`, `Name`,
+            `Surname`, `RecoveryHash`, `RecoveryDate`,
+            `ValidationHash`, `address`, `postalcode`,
+            `country`, `city`, `dob`,
+            `gender`, `handicap`) VALUES (?, ?, ?,?, NULL, NULL, ?, ?,?,?, ?,?,?,?)"
+            , array(strtolower($array["username"]), $hashed, strtolower($array["name"]),
+                $array["surname"], $this->token, $array["address"],
+                $array["postalcode"], $array["country"], $array["city"],
+                $array["dob"], $array["gender"], $array["handicap"]))
         ) {
             echo "Query error:\"INSERT INTO `users` (`Email`, `Password`, `Name`, `Surname`, `RecoveryHash`, `RecoveryDate`, `ValidationHash`)
             VALUES (" . $array["username"] . ", " . $hashed . ", " . $array["name"] . ", " . $array["surname"] . ", NULL, NULL, '$this->token')\"";
@@ -189,7 +195,7 @@ class User
     public function CanRecover()
     {
         $dayAgo = date('Y-m-d H:i:s', (strtotime('-1 day', strtotime(date('Y-m-d H:i:s')))));
-        $res = Database::query_safe("SELECT count(*) AS Counter FROM `recoveryLog` WHERE IP = ? AND `Date` BETWEEN ? AND ?", array($_SERVER['REMOTE_ADDR'], $dayAgo, date('Y-m-d H:i:s')));
+        $res = Database::query_safe("SELECT count(*) AS Counter FROM `recoverylog` WHERE IP = ? AND `Date` BETWEEN ? AND ?", array($_SERVER['REMOTE_ADDR'], $dayAgo, date('Y-m-d H:i:s')));
         $res = $res[0];
         if ($res["Counter"] > 4)
             return false;
@@ -198,7 +204,7 @@ class User
 
     public function logRecovery()
     {
-        Database::query_safe("INSERT INTO `recoveryLog` (`IP`, `Date`) VALUES (?, ?)", array($_SERVER['REMOTE_ADDR'], date('Y-m-d H:i:s')));
+        Database::query_safe("INSERT INTO `recoverylog` (`IP`, `Date`) VALUES (?, ?)", array($_SERVER['REMOTE_ADDR'], date('Y-m-d H:i:s')));
     }
 
     public function validateToken($token)
@@ -216,8 +222,7 @@ class User
     public function validateActivateToken($token)
     {
         $res = Database::query_safe("SELECT * FROM `users` WHERE `ValidationHash` = ?", array($token));
-        $res= $res[0];
-        if ($res == null)
+        if ($res == null || $res === false)
             return false;
 
         // Clear

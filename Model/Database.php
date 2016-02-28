@@ -32,8 +32,7 @@ class Database
                 return false;
             }
 
-            $rows = new ArrayObject($result->fetchAll(PDO::FETCH_ASSOC));
-            return $rows;
+            return $result->fetchAll(PDO::FETCH_ASSOC);
 
         } catch (PDOException $e) {
             Database::printError($e);
@@ -56,8 +55,7 @@ class Database
             if ($result !== false) {
                 $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-                $rows = new ArrayObject($result);
-                return $rows;
+                return $result;
             } else {
                 return false;
             }
