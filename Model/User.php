@@ -48,7 +48,7 @@ class User
 
     }
 
-    private function getUser($username)
+    public function getUser($username)
     {
         $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
         $res = Database::query_safe("SELECT * FROM `users` WHERE `Email` = ?", array($username));
@@ -142,15 +142,15 @@ class User
         $hashed = password_hash($array["password"], PASSWORD_DEFAULT);
         $this->token = bin2hex(openssl_random_pseudo_bytes(16));
 
-        if (!Database::query_safe("INSERT INTO `users` (`Email`, `Password`, `Name`,
+        if (Database::query_safe("INSERT INTO `users` (`Email`, `Password`, `Name`,
             `Surname`, `RecoveryHash`, `RecoveryDate`,
             `ValidationHash`, `address`, `postalcode`,
             `country`, `city`, `dob`,
             `gender`, `handicap`) VALUES (?, ?, ?,?, NULL, NULL, ?, ?,?,?, ?,?,?,?)"
-            , array(strtolower($array["username"]), $hashed, strtolower($array["name"]),
-                $array["surname"], $this->token, $array["address"],
-                $array["postalcode"], $array["country"], $array["city"],
-                $array["dob"], $array["gender"], $array["handicap"]))
+                , array(strtolower($array["username"]), $hashed, strtolower($array["name"]),
+                    $array["surname"], $this->token, $array["address"],
+                    $array["postalcode"], $array["country"], $array["city"],
+                    $d->format('Y-m-d'), $array["gender"], $array["handicap"])) === false
         ) {
             echo "Query error:\"INSERT INTO `users` (`Email`, `Password`, `Name`, `Surname`, `RecoveryHash`, `RecoveryDate`, `ValidationHash`)
             VALUES (" . $array["username"] . ", " . $hashed . ", " . $array["name"] . ", " . $array["surname"] . ", NULL, NULL, '$this->token')\"";
@@ -224,9 +224,10 @@ class User
         $res = Database::query_safe("SELECT * FROM `users` WHERE `ValidationHash` = ?", array($token));
         if ($res == null || $res === false)
             return false;
+        $res = $res[0];
 
         // Clear
-        if (!Database::query_safe("UPDATE `users` SET `ValidationHash` = NULL WHERE `Email` = ?", array($res["Email"]))) {
+        if (Database::query_safe("UPDATE `users` SET `ValidationHash` = NULL WHERE `Email` = ?", array($res["Email"])) === false) {
             echo "Query error: UPDATE `users` SET `ValidationHash` = NULL WHERE `Email` = " . $res["Email"];
             exit();
         }
