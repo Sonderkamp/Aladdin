@@ -1,8 +1,9 @@
+<!---->
 <!--/**-->
 <!-- * Created by PhpStorm.-->
 <!-- * User: Max-->
-<!-- * Date: 25-Feb-16-->
-<!-- * Time: 15:12-->
+<!-- * Date: 28/02/2016-->
+<!-- * Time: 19:41-->
 <!-- */-->
 
 <div class="container">
@@ -10,8 +11,8 @@
         <div class="col-lg-2">
             <h5>Wensen overzicht</h5>
             <hr>
-            <h7><a type="button" class="btn btn-primary btn-default side-button" href="/#">Mijn wensen</a></h7><br>
-            <h7><a type="button" class="btn btn-default side-button" href="/#">Onvervulde wensen</a></h7><br>
+            <h7><a type="button" class="btn btn-default side-button" href="/#">Mijn wensen</a></h7><br>
+            <h7><a type="button" class="btn btn-primary btn-default side-button" href="/#">Onvervulde wensen</a></h7><br>
             <h7><a type="button" class="btn btn-default side-button" href="/#">Vervulde wensen</a></h7><br>
         </div>
         <div class="col-lg-10">

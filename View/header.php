@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://bootswatch.com/paper/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/CSS/shop-homepage.css">
     <link rel="stylesheet" type="text/css" href="/CSS/Style.css">
+    <link rel="stylesheet" type="text/css" href="/CSS/Wish.css">
 
     {if isset($title)}
     <title>Aladdin: {htmlspecialchars($title)}</title>

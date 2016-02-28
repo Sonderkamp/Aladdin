@@ -8,7 +8,21 @@
  */
 class WishController
 {
-    function run()
+
+    public $wishes;
+//
+//    public function __construct($wishes) {
+//        $this -> wishes = $wishes;
+//    }
+
+    public function __construct() {
+        $this -> wishes = array();
+        $this -> wishes[0] = new Wish("Max" , "Dave Grohl Ontmoeten" , "Verenigde Staten" , "Los Angeles", true);
+        $this -> wishes[1] = new Wish("Marius" , "Werkende code schrijven" , "Nederland", "Den Bosch", false);
+        $this -> wishes[2] = new Wish("Mevlüt" , "Iets opschrijven" , "Turkije", "Heusden" , true);
+    }
+
+    public function run()
     {
         //hier
         $result = Database::query("select * from wish");
@@ -16,11 +30,24 @@ class WishController
         if($result === false || $result == null){
             $var =  "fuck jou";
         }
-        $wishes = array();
-        $wishes[0] = new Wish("Max" , "Dave Grohl Ontmoeten" , "Verenigde Staten" , "Los Angeles");
-        $wishes[1] = new Wish("Marius" , "Werkende code schrijven" , "Nederland", "Den Bosch");
-        $wishes[2] = new Wish("Mevlüt" , "Iets opschrijven" , "Turkije", "Heusden");
+//        $wishes = array();
+//        $wishes[0] = new Wish("Max" , "Dave Grohl Ontmoeten" , "Verenigde Staten" , "Los Angeles", true);
+//        $wishes[1] = new Wish("Marius" , "Werkende code schrijven" , "Nederland", "Den Bosch", false);
+//        $wishes[2] = new Wish("Mevlüt" , "Iets opschrijven" , "Turkije", "Heusden" , true);
 
-        render("wishOverview.php", ["title" => "Wensen overzicht", "wishes" => $wishes]);
+        render("wishOverview.php", ["title" => "Wensen overzicht", "wishes" => $this -> wishes]);
+    }
+
+    public function getIncompleteWishes(){
+        $newWishes = array();
+
+        for($i = 0; $i < count($this->wishes); $i++){
+            if(!$this->wishes[i] -> completed){
+                $newWishes[i] = $this -> wishes[i];
+            }
+        }
+
+        render("wishOverview.php", ["title" => "Onvervulde wensen overzicht", "wishes" => $newWishes]);
+
     }
 }
