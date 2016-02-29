@@ -8,6 +8,8 @@
  */
 class TalentController
 {
+    private $talents;
+
     public function run()
     {
         /*$result = Database::query("select * from talent where gebruiker = 'gebruiker'");
@@ -16,12 +18,22 @@ class TalentController
             $var =  "fuck jou";
         }*/
 
-        $talents = array();
-        $talents[0] = new Talent("Joost" , "PHP");
-        $talents[1] = new Talent("Joost" , "Slagwerk");
-        $talents[2] = new Talent("Joost" , "Guinness");
+        $this->talents = array();
+        $this->talents[0] = new Talent("Joost" , "PHP");
+        $this->talents[1] = new Talent("Joost" , "Slagwerk");
+        $this->talents[2] = new Talent("Joost" , "Guinness");
 
-        render("talentOverview.php", ["title" => "Talenten", "talents" => $talents]);
+        render("talentOverview.php", ["title" => "Talenten", "talents" => $this->talents]);
+        exit(1);
+    }
+
+    public function deleteValue(Talent $talent)
+    {
+        if (($key = array_search($talent, $this->talents)) !== false)
+        {
+            unset($this->talents[$key]);
+        }
+        render("talentOverview.php", ["title" => "Talenten", "talents" => $this->talents]);
         exit(1);
     }
 }

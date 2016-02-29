@@ -8,26 +8,20 @@
 ?>
 
 <div class="container">
-    <div class="col-sm-8">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Talent</th>
-                </tr>
-            </thead>
-            <tbody>
-            {foreach from=$talents item=talent}
-                <tr>
-                    <td>{$talent -> talent}</td>
-                </tr>
-            {/foreach}
-            </tbody>
-        </table>
-    </div>
-
-    <div class="col-sm-1">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Talent</th>
+                <th>Verwijderen</th>
+            </tr>
+        </thead>
+        <tbody>
         {foreach from=$talents item=talent}
-            <button>Verwijderen</button>
+            <tr>
+                <td class="col-sm-8">{$talent -> talent}</td>
+                <td class="col-sm-1"><button type="button" class="btn btn-danger btn-sm">Verwijderen</button></td>
+            </tr>
         {/foreach}
-    </div>
+        </tbody>
+    </table>
 </div>
