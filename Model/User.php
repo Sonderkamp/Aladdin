@@ -8,7 +8,8 @@
  */
 class User
 {
-    public $email, $isAdmin, $name, $surname, $token, $adresses;
+    public $email, $isAdmin, $name, $surname, $token, $address,
+        $handicap, $postalcode, $country, $city, $dob, $gender;
 
     public function validate($username, $password)
     {
@@ -23,6 +24,14 @@ class User
                 $this->isAdmin = $res["IsAdmin"];
                 $this->name = $res["Name"];
                 $this->surname = $res["Surname"];
+                $this->handicap = $res["handicap"];
+                $this->address = $res["address"];
+                $this->postalcode = $res["postalcode"];
+                $this->country = $res["country"];
+                $this->city = $res["city"];
+                $this->dob = $res["dob"];
+                $this->gender = $res["gender"];
+
                 $_SESSION["user"] = $this;
                 return true;
             }
