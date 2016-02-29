@@ -1,5 +1,4 @@
 <?php
-// test development?
 include_once("Includes/config.php");
 
 
