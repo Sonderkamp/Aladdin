@@ -10,9 +10,11 @@ class AccountController
 {
     public function run()
     {
+
         if (Empty($_GET["action"])) {
             $this->pagepicker();
         } else {
+            $_SESSION["Redirect"] = null;
             switch (strtolower($_GET["action"])) {
                 case "register":
                     $this->register();
@@ -34,6 +36,19 @@ class AccountController
                     break;
             }
         }
+    }
+
+    public function guaranteeLogin($s)
+    {
+        if (!Empty($_SESSION["user"])) {
+
+            return true;
+        } else {
+            $_SESSION["Redirect"] = $s;
+            $this->pagepicker();
+            exit(1);
+        }
+
     }
 
     private function check()
@@ -126,7 +141,10 @@ class AccountController
                     $mailer = new Email();
                     if ($userModel->setRecoveryMail($mailer, $_POST["username"])) {
                         $mailer->sendMail();
-                        $this->recoverError("Email send.");
+                        render("messageScreen.php", ["title" => "Email verzonden.", "message" => "Er is een email verstuurd naar " . $_POST["username"] . " met een link om uw wachtwoord te resetten.
+                    Deze link verschijnt binnen drie minuten.
+                    als u niks binnenkrijgt, kijk alstublieft in uw spam folder."]);
+                        exit(1);
 
                     } else {
                         $this->recoverError("Email send error.");
@@ -190,6 +208,11 @@ class AccountController
                 $userModel = new User();
                 if ($userModel->validate(htmlspecialchars($_POST["username"]), htmlspecialchars($_POST["password"]))) {
                     // TODO: return to page before the loginbutton was pressed.
+                    if (!empty($_SESSION["Redirect"])) {
+                        redirect($_SESSION["Redirect"]);
+                        $_SESSION["Redirect"] = null;
+                        exit(0);
+                    }
                     redirect("/");
                     exit();
                 }
@@ -263,7 +286,7 @@ class AccountController
                 $mailer = new Email();
                 if ($userModel->setActivateMail($mailer, $arr["username"])) {
                     $mailer->sendMail();
-                    render("messageScreen.php", ["title" => "Email verzonden.", "message" => "Er is een email verstuurd naar " .$arr["username"]." met een activatielink.
+                    render("messageScreen.php", ["title" => "Email verzonden.", "message" => "Er is een email verstuurd naar " . $arr["username"] . " met een activatielink.
                     Deze link verschijnt binnen drie minuten.
                     als u niks binnenkrijgt, kijk alstublieft in uw spam folder."]);
                     exit(1);

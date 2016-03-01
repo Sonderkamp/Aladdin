@@ -52,6 +52,13 @@
         exit;
     }
 
+    function guaranteeLogin($page)
+    {
+        $controller = new AccountController();
+        $controller->guaranteeLogin($page);
+    }
+
+
     /**
      * Renders template, passing in values.
      */
