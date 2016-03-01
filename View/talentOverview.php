@@ -18,8 +18,8 @@
         <tbody>
         {foreach from=$talents item=talent}
             <tr>
-                <td class="col-sm-8">{$talent -> talent}</td>
-                <td class="col-sm-1"><button type="button" class="btn btn-danger btn-sm">Verwijderen</button></td>
+                <td class="col-sm-12">{$talent -> talent}</td>
+                <td class="col-sm-1"><a href="/talents/remove={$talent -> talent}" class=" btn-danger btn-sm">Verwijderen</a></td>
             </tr>
         {/foreach}
         </tbody>
