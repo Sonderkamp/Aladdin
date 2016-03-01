@@ -9,6 +9,14 @@
 #35978f
 #01665e
 */
+.barBadge{
+    margin-top: -3px;
+    background-color: #8c510a;
+}
+
+.navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>li>a:focus {
+    color: white;
+}
 
 input[type="radio"]:before, .radio input[type="radio"]:before, .radio-inline input[type="radio"]:before {
     position: absolute;

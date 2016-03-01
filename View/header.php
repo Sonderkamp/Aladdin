@@ -48,20 +48,38 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
 
-            <form class="navbar-form navbar-left" role="search" action="/Catalogue" method="get">
-                <div class="form-group">
-                    <input name="search" id="search" type="text" class="form-control" placeholder="Search">
-                </div>
-                <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search search"></button>
-            </form>
 
+            <ul class="nav navbar-nav navbar-left">
+
+                {if isset($user) && $user->isAdmin}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        <span class="glyphicon glyphicon-eye-open"></span> Administrator<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/admin">Statistieken</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/">Wens Aanvragen</a></li>
+                        <li><a href="/">Talent aanvragen</a></li>
+                        <li><a href="/">Meldingen</a></li>
+                        <li><a href="/">Berichten Centrum</a></li>
+                        <li role="separator" class="divider">
+                        <li><a href="/">Gebruikers</a></li>
+                    </ul>
+                </li>
+                {/if}
+
+                <li><a href="#"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
+                <li><a href="#"> <span class="glyphicon glyphicon glyphicon-envelope"></span> Notificaties<span class="badge barBadge">42</span></a></li>
+            </ul>
             <ul class="nav navbar-nav navbar-right">
 
 
                 {if isset($user)}
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false"><span class="glyphicon glyphicon glyphicon-user"></span>  {$user->email}<span class="caret"></span></a>
+                       aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
+                        {$user->email}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="/account">Mijn profiel</a></li>
                         <li role="separator" class="divider"></li>

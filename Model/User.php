@@ -21,7 +21,7 @@ class User
                 return false;
             } else if (password_verify($password, $res["Password"])) {
                 $this->email = strtolower($username);
-                $this->isAdmin = $res["IsAdmin"];
+                $this->isAdmin = $res["admin"];
                 $this->name = $res["Name"];
                 $this->surname = $res["Surname"];
                 $this->handicap = $res["handicap"];
