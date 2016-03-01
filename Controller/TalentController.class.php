@@ -23,9 +23,9 @@ class TalentController
         $this->talents[1] = new Talent("Joost" , "Slagwerk");
         $this->talents[2] = new Talent("Joost" , "Een hele lange tekst na een vraag van Max over resizing hoe dat eruit gaat zien waar we ook erg benieuwd naar zijn");
 
-        if(!Empty($_GET["remove"]))
+        if(!Empty($_POST["talent"]))
         {
-            $this->deleteValue($_GET["remove"]);
+            $this->deleteValue($_POST["talent"]);
         }
 
         render("talentOverview.php", ["title" => "Talenten", "talents" => $this->talents]);

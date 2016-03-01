@@ -18,8 +18,11 @@
         <tbody>
         {foreach from=$talents item=talent}
             <tr>
-                <td class="col-sm-12">{$talent -> talent}</td>
-                <td class="col-sm-1"><a href="/talents/remove={$talent -> talent}" class="btn-danger btn-sm">Verwijderen</a></td>
+                <form action="/talents" method="post">
+                    <td class="col-sm-12">{$talent -> talent}</td>
+                    <input type="hidden" name="talent" value="{$talent -> talent}"/>
+                    <td class="col-sm-1"><input type="submit" name="submit" value="Verwijderen" class="btn btn-danger btn-sm" /></td>
+                </form>
             </tr>
         {/foreach}
         </tbody>
