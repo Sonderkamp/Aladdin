@@ -12,7 +12,7 @@
         {literal}
         <p>Wachtwoord: <input type="password" name="password1" required
                               required data-validation="custom"
-                              data-validation-regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d!$%@#£€*?&]{8,}$"
+                              data-validation-regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\W]{8,}$"
                               data-validation-error-msg="het wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter en een nummer bevatten.">
         </p>
         {/literal}
