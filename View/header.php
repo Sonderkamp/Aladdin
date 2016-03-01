@@ -7,13 +7,11 @@
     <!-- Color on mobile devices. Example: mariusdv.nl -->
     <meta name="theme-color" content="#2196F3">
 
-    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="//code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
-
     <link rel="stylesheet" href="https://bootswatch.com/paper/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/CSS/shop-homepage.css">
     <link rel="stylesheet" type="text/css" href="/CSS/Style.css">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/theme-default.min.css"
+          rel="stylesheet" type="text/css" />
 
     {if isset($title)}
     <title>Aladdin: {htmlspecialchars($title)}</title>
@@ -25,6 +23,12 @@
 </head>
 
 <body>
+
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/jquery.form-validator.min.js"></script>
+
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
