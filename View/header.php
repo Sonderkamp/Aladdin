@@ -8,10 +8,10 @@
     <meta name="theme-color" content="#2196F3">
 
     <link rel="stylesheet" href="https://bootswatch.com/paper/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/CSS/shop-homepage.css">
-    <link rel="stylesheet" type="text/css" href="/CSS/Style.css">
     <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/theme-default.min.css"
-          rel="stylesheet" type="text/css" />
+          rel="stylesheet" type="text/css"/>
+    <link href='https://fonts.googleapis.com/css?family=PT+Sans|Indie+Flower' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/CSS/Style.css">
 
     {if isset($title)}
     <title>Aladdin: {htmlspecialchars($title)}</title>
@@ -48,7 +48,6 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
 
-
             <form class="navbar-form navbar-left" role="search" action="/Catalogue" method="get">
                 <div class="form-group">
                     <input name="search" id="search" type="text" class="form-control" placeholder="Search">
@@ -62,7 +61,7 @@
                 {if isset($user)}
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">{$user->email}<span class="caret"></span></a>
+                       aria-expanded="false"><span class="glyphicon glyphicon glyphicon-user"></span>  {$user->email}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="/account">Mijn profiel</a></li>
                         <li role="separator" class="divider"></li>
