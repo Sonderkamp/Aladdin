@@ -83,7 +83,7 @@ class User
 
             // save password
             $hashed = password_hash($password, PASSWORD_DEFAULT);
-            if (!Database::query_safe("UPDATE `users` SET `Password` = ?  WHERE `Email` = ?", array($hashed, $username))) {
+            if (Database::query_safe("UPDATE `users` SET `Password` = ?  WHERE `Email` = ?", array($hashed, $username)) === false) {
                 echo "Query error: \"UPDATE `users` SET `Password` = '$hashed'  WHERE `Email` = '$username'\"";
                 exit();
             }
@@ -179,7 +179,7 @@ class User
                 return false;
 
             if ($res["RecoveryHash"] == null || $this->hoursPassed($res["RecoveryDate"]) >= 24) {
-                if (!Database::query_safe("UPDATE `users` SET `RecoveryHash` = ?, `RecoveryDate` = ? WHERE `Email` = ?", array($this->token, date('Y-m-d H:i:s'), $username))) {
+                if (Database::query_safe("UPDATE `users` SET `RecoveryHash` = ?, `RecoveryDate` = ? WHERE `Email` = ?", array($this->token, date('Y-m-d H:i:s'), $username)) === false) {
                     echo "Query error: \"UPDATE `users` SET `RecoveryHash` = '$this->token', `RecoveryDate` = '" . date('Y-m-d H:i:s') . "' WHERE `Email` = '$username'\"";
                     exit();
                 }
@@ -194,7 +194,7 @@ class User
     {
         if ($this->validateUsername($username)) {
             $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
-            if (!Database::query_safe("UPDATE `users` SET `RecoveryHash` = NULL, `RecoveryDate` = NULL WHERE `Email` = ?", array($username))) {
+            if (Database::query_safe("UPDATE `users` SET `RecoveryHash` = NULL, `RecoveryDate` = NULL WHERE `Email` = ?", array($username)) === false) {
                 echo "Query error: \"UPDATE `users` SET `RecoveryHash` = NULL, `RecoveryDate` = NULL WHERE `Email` = '$username'";
                 exit();
             }
