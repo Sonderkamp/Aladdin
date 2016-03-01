@@ -17,6 +17,7 @@ class TalentController
         if($result === false || $result == null){
             $var =  "fuck jou";
         }*/
+
         $this->talents = array();
         $this->talents[0] = new Talent("Joost" , "PHP");
         $this->talents[1] = new Talent("Joost" , "Slagwerk");
@@ -24,10 +25,8 @@ class TalentController
 
         if(!Empty($_GET["remove"]))
         {
-            // remove functie
             $this->deleteValue($_GET["remove"]);
         }
-
 
         render("talentOverview.php", ["title" => "Talenten", "talents" => $this->talents]);
         exit(1);
@@ -36,10 +35,12 @@ class TalentController
     public function deleteValue($talent)
     {
         $talent2 = new Talent("Joost",$talent);
+
         if (($key = array_search($talent2, $this->talents)) !== false)
         {
             unset($this->talents[$key]);
         }
+
         render("talentOverview.php", ["title" => "Talenten", "talents" => $this->talents]);
         exit(1);
     }
