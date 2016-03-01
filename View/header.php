@@ -51,7 +51,8 @@
 
             <ul class="nav navbar-nav navbar-left">
 
-                {if isset($user) && $user->isAdmin}
+                {if isset($user)}
+                {if $user->isAdmin}
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">
@@ -68,9 +69,9 @@
                     </ul>
                 </li>
                 {/if}
-
                 <li><a href="#"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
                 <li><a href="#"> <span class="glyphicon glyphicon glyphicon-envelope"></span> Notificaties<span class="badge barBadge">42</span></a></li>
+                {/if}
             </ul>
             <ul class="nav navbar-nav navbar-right">
 
