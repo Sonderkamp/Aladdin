@@ -1,23 +1,33 @@
 <?php
+include_once("Includes/config.php");
 
-// URL during testing -> http://localhost:63342/Aladdin/?path=search
-// URL during APACHE launch -> localhost/search
 
-require_once("Includes/config.php");
-
-if(Empty($_GET["path"]) )
-{
-    (new HomeController())->Run();
-    exit();
+if (Empty($_GET["page"])) {
+    (new HomeController())->run();
 }
 
-
-$page = strtolower(htmlspecialchars($_GET["path"]));
-switch ($page)
-{
-    // no parameters
-    case "search":
-        (new HomeController())->Run();
+$page = strtolower(htmlspecialchars($_GET["page"]));
+switch ($page) {
+    case "account":
+        (new AccountController())->run();
+        break;
+    case "admin":
+        (new AdminController())->run();
+        break;
+    case "wishes":
+        (new WishController())->run();
+        break;
+    case "inbox":
+        (new MailController())->run();
+        break;
+    case "talents":
+        (new TalentController())->run();
+        break;
+    case "index.php":
+        (new HomeController())->run();
+        break;
+    case "about":
+        (new HomeController())->run();
         break;
     default:
         apologize("Sorry. Pagina bestaat niet");

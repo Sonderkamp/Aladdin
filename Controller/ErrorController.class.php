@@ -7,6 +7,7 @@ class ErrorController
     public function render() {
         render("error_view.php" , ["title" => "ErrorMessage",
             "message" => $this->message ]);
+        exit(2);
     }
 
 }
