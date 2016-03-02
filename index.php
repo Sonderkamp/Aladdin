@@ -1,6 +1,6 @@
 <?php
 include_once("Includes/config.php");
-
+// CHANGE
 
 if (Empty($_GET["page"])) {
     (new HomeController())->run();
