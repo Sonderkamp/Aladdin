@@ -40,13 +40,22 @@ class WishController
     }
 
     private function getMyWishes(){
-        //to do filter array
-        render("wishOverview.php", ["title" => "Wensen overzicht", "wishes" => $this -> wishes]);
+        guaranteeLogin("/Wishes");
+        $mywishes = array();
+
+        for($i = 0; $i < count($this->wishes); $i++){
+            if($this -> wishes[$i] -> user == $_SESSION["user"]) {
+                $mywishes[$i] = $this->wishes[$i];
+            }
+        }
+
+        render("wishOverview.php", ["title" => "Wensen overzicht", "wishes" => $mywishes]);
     }
 
     private function getWishes($completed){
-         $this -> incompletedWishes = array();
-         $this -> completedWishes = array();
+        guaranteeLogin("/Wishes");
+        $this -> incompletedWishes = array();
+        $this -> completedWishes = array();
 
          for($i = 0; $i < count($this->wishes); $i++){
              if(!$this->wishes[$i] -> completed){
