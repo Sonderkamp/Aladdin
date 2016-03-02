@@ -23,3 +23,6 @@ deprecated/
 # Mongo Explorer plugin:
 .idea/mongoSettings.xml
 .idea/workspace.xml
+
+# Templates folder
+templates_c/
