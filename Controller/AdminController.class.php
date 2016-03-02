@@ -10,6 +10,19 @@ class AdminController
 {
     public function run()
     {
-        echo "Admin";
+
+        guaranteeLogin("/admin");
+
+        if($_SESSION["user"]->isAdmin == true)
+        {
+            render("adminHome.php", ["title" => "Statistiek"]);
+            exit();
+        }
+        else
+        {
+            // log IP van gebruiker die admin pagina probeert te openen
+        }
+
     }
+
 }
