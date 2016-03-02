@@ -13,7 +13,7 @@ class AdminController
 
         guaranteeLogin("/admin");
 
-        if($_SESSION["user"]->isAdmin == true)
+        if(!Empty($_SESSION["admin"]))
         {
             render("adminHome.php", ["title" => "Statistiek"]);
             exit();
@@ -21,6 +21,7 @@ class AdminController
         else
         {
             // log IP van gebruiker die admin pagina probeert te openen
+            apologize("Niet als admin ingelogd.");
         }
 
     }

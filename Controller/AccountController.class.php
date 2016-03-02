@@ -249,7 +249,7 @@ class AccountController
                 || Empty($_POST["postalcode"])
                 || Empty($_POST["country"])
                 || Empty($_POST["city"])
-
+                || Empty($_POST["initial"])
                 || Empty($_POST["dob"])
                 || Empty($_POST["gender"])
             ) {
@@ -273,6 +273,7 @@ class AccountController
             $arr["country"] = $_POST["country"];
             $arr["city"] = $_POST["city"];
             $arr["dob"] = $_POST["dob"];
+            $arr["initial"] = $_POST["initial"];
             $arr["gender"] = $_POST["gender"];
             if (!Empty($_POST["handicap"]))
                 $arr["handicap"] = true;
