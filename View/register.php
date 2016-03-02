@@ -1,5 +1,5 @@
 <div class="container">
-
+<br>
     {if isset($error)}
     <div id="error">Error: {htmlspecialchars($error)}</div>
     {else}
@@ -56,11 +56,11 @@
         </p>
         <p><input type="checkbox" name="handicap" value="Yes"> Handicap</p>
 
-        TODO: 3 wensen, 3 talenten<br>
+        TODO: 3 wensen, 3 talenten<br><br>
 
         <input class="btn btn-default" value="Registreren" type="submit">
     </form>
-    <br>
+    <br><br>
     <a type="button" class="btn btn-default" href="/Account">Log in</a>
     <a type="button" class="btn btn-default" href="/Account/action=Recover">Vergeten</a>
 
