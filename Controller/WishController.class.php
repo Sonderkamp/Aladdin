@@ -9,42 +9,58 @@
 class WishController
 {
 
-    public $wishes;
+    public $wishes, $completedWishes, $incompletedWishes , $wishRepository;
 
     public function __construct() {
-        $this -> wishes = array();
-        $this -> wishes[0] = new Wish("Max" , "Dave Grohl Ontmoeten" , "Verenigde Staten" , "Los Angeles", true);
-        $this -> wishes[1] = new Wish("Marius" , "Werkende code schrijven" , "Nederland", "Den Bosch", false);
-        $this -> wishes[2] = new Wish("Mevlüt" , "Iets opschrijven" , "Turkije", "Heusden" , true);
+        $this -> wishRepository = new WishRepository();
+        $this -> wishes = $this -> wishRepository -> getWishes();
     }
 
     public function run()
     {
-        //hier
-        $result = Database::query("select * from wish");
-        $var = "success";
-        if($result === false || $result == null){
-            $var =  "fuck jou";
+        if (isset($_GET["action"])) {
+            $_SESSION["Redirect"] = null;
+            switch (strtolower($_GET["action"])) {
+                case "mywishes":
+                    $this->getMyWishes();
+                    break;
+                case "incompletedwishes":
+                    $this->getWishes(false);
+                    break;
+                case "completedwishes":
+                    $this->getWishes(true);
+                    break;
+                default:
+                    apologize("404 not found, Go back to my wishes");
+                    break;
+            }
+        } else {
+            $this -> getMyWishes();
         }
+    }
 
-        $wishes = array();
-        $wishes[0] = new Wish("Max" , "Dave Grohl Ontmoeten" , "Verenigde Staten" , "Los Angeles", true);
-        $wishes[1] = new Wish("Marius" , "Werkende code schrijven" , "Nederland", "Den Bosch", false);
-        $wishes[2] = new Wish("Mevlüt" , "Iets opschrijven" , "Turkije", "Heusden" , true);
-
+    private function getMyWishes(){
+        //to do filter array
         render("wishOverview.php", ["title" => "Wensen overzicht", "wishes" => $this -> wishes]);
     }
 
-    public function getIncompleteWishes(){
-        $newWishes = array();
+    private function getWishes($completed){
+         $this -> incompletedWishes = array();
+         $this -> completedWishes = array();
 
-        for($i = 0; $i < count($this->wishes); $i++){
-            if(!$this->wishes[i] -> completed){
-                $newWishes[i] = $this -> wishes[i];
-            }
+         for($i = 0; $i < count($this->wishes); $i++){
+             if(!$this->wishes[$i] -> completed){
+                $this ->completedWishes[$i] = $this -> wishes[$i];
+             } else {
+                 $this -> incompletedWishes[$i] = $this -> wishes[$i];
+             }
+         }
+
+        if($completed){
+            render("completedWishOverview.php", ["title" => "Vervulde wensen overzicht", "wishes" => $this->completedWishes]);
+        } else {
+            render("incompletedWishOverview.php", ["title" => "Onvervulde wensen overzicht", "wishes" => $this->incompletedWishes]);
         }
-
-        render("wishOverview.php", ["title" => "Onvervulde wensen overzicht", "wishes" => $newWishes]);
-
     }
+
 }
