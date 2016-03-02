@@ -31,7 +31,7 @@
 <script type="text/javascript" src="//code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/jquery.form-validator.min.js"></script>
 
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-default">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -53,8 +53,7 @@
 
             <ul class="nav navbar-nav navbar-left">
 
-                {if isset($user)}
-                {if $user->isAdmin}
+                {if isset($admin)}
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">
@@ -71,8 +70,9 @@
                     </ul>
                 </li>
                 {/if}
+                {if isset($user)}
                 <li><a href="/wishes"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
-                <li><a href="/Inbox"> <span class="glyphicon glyphicon glyphicon-envelope"></span> Notificaties<span class="badge barBadge">42</span></a></li>
+                <li><a href="/Inbox"> <span class="glyphicon glyphicon glyphicon-envelope"></span> Berichten</a></li>
                 {/if}
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -82,7 +82,7 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
-                        {$user->email}<span class="caret"></span></a>
+                        {$user->displayName}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="/account">Mijn profiel</a></li>
                         <li role="separator" class="divider"></li>

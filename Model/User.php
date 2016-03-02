@@ -9,7 +9,7 @@
 class User
 {
     public $email, $isAdmin, $name, $surname, $token, $address,
-        $handicap, $postalcode, $country, $city, $dob, $gender;
+        $handicap, $postalcode, $country, $city, $dob, $gender, $displayName, $initials;
 
     public function validate($username, $password)
     {
@@ -31,7 +31,8 @@ class User
                 $this->city = $res["City"];
                 $this->dob = $res["Dob"];
                 $this->gender = $res["Gender"];
-
+                $this->displayName = $res["DisplayName"];
+                $this->initials = $res["Initials"];
                 $_SESSION["user"] = $this;
                 return true;
             }
@@ -39,7 +40,15 @@ class User
         return false;
     }
 
+    public function getUsername($display)
+    {
+        $res = Database::query_safe("SELECT `Email` FROM `user` WHERE `DisplayName` = ? AND `ValidationHash` IS NULL", array($display));
+        if ($res == null)
+            return false;
 
+        $res = $res[0];
+        return $res["Email"];
+    }
     public function validateUsername($username)
     {
         $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
@@ -55,6 +64,18 @@ class User
         }
         return false;
 
+    }
+
+    public function getAllDislaynames()
+    {
+        $res = Database::query("SELECT `DisplayName` FROM `user`  WHERE `ValidationHash` IS NULL;");
+
+        $ret = [];
+        foreach($res as $val)
+        {
+            $ret[] = $val["DisplayName"];
+        }
+        return $ret;
     }
 
     public function getUser($username)
@@ -115,10 +136,22 @@ class User
             || Empty($array["country"])
             || Empty($array["city"])
             || Empty($array["dob"])
+            || Empty($array["initial"])
             || Empty($array["gender"])
         ) {
             return "Niet alles is ingevuld.";
         }
+
+        $array["username"] = trim($array["username"]);
+        $array["name"] = trim($array["name"]);
+        $array["surname"] = trim($array["surname"]);
+        $array["address"] = trim($array["address"]);
+        $array["postalcode"] = trim($array["postalcode"]);
+        $array["country"] = trim($array["country"]);
+        $array["city"] = trim($array["city"]);
+        $array["dob"] = trim($array["dob"]);
+        $array["initial"] = trim($array["initial"]);
+        $array["gender"] = trim($array["gender"]);
 
         $array["username"] = strtolower(filter_var($array["username"], FILTER_SANITIZE_EMAIL));
 
@@ -141,9 +174,11 @@ class User
         if ($array["gender"] != "male" && $array["gender"] != "female" && $array["gender"] != "other")
             return "gender is verkeerd gekozen?";
 
+        $array["initial"] = trim($array["initial"], '.');
 
+        $displayname = $this->createDislay($array);
 //    || Empty($array["address"])
-//    || Empty($array["postalcode"])
+        $array["postalcode"] = preg_replace('/\s+/', '', $array["postalcode"]);
 //    || Empty($array["country"])
 //    || Empty($array["city"])
 
@@ -155,17 +190,29 @@ class User
             `Surname`, `RecoveryHash`, `RecoveryDate`,
             `ValidationHash`, `Address`, `Postalcode`,
             `Country`, `City`, `Dob`,
-            `Gender`, `Handicap`) VALUES (?, ?, ?,?, NULL, NULL, ?, ?,?,?, ?,?,?,?)"
+            `Gender`, `Handicap`, `DisplayName`, `Initials`) VALUES (?, ?, ?,?, NULL, NULL, ?, ?,?,?, ?,?,?,?,?,?)"
                 , array(strtolower($array["username"]), $hashed, strtolower($array["name"]),
                     $array["surname"], $this->token, $array["address"],
                     $array["postalcode"], $array["country"], $array["city"],
-                    $d->format('Y-m-d'), $array["gender"], $array["handicap"])) === false
+                    $d->format('Y-m-d'), $array["gender"], $array["handicap"], $displayname, $array["initial"])) === false
         ) {
-            echo "Query error:\"INSERT INTO `user` (`Email`, `Password`, `Name`, `Surname`, `RecoveryHash`, `RecoveryDate`, `ValidationHash`)
-            VALUES (" . $array["username"] . ", " . $hashed . ", " . $array["name"] . ", " . $array["surname"] . ", NULL, NULL, '$this->token')\"";
+            apologize("Er was een error bij het toevoegen van uw gegevens aan onze database. Probeer dit alstublieft opnieuw. Is dit de tweede keer dat u dit ziet, contacteer de webmaster op: Mariusdv@outlook.com");
             exit();
         }
         return true;
+    }
+
+    public function createDislay($arr)
+    {
+        $arr["initial"] = trim($arr["initial"], '.');
+        $name = $arr["initial"] . ". " . $arr["surname"];
+
+        // first try
+        $res = Database::query_safe("SELECT count(*) AS Counter FROM `user` WHERE DisplayName LIKE ? ", array($name));
+        $res = $res[0];
+        if ($res["Counter"] == 0)
+            return $name;
+        return $name . $res["Counter"];
     }
 
     public function newHash($username)
@@ -294,7 +341,7 @@ class User
 
         // Get
         $mail->to = $username;
-        $mail->toName = $val["Name"] . " " . $val["Surname"];;
+        $mail->toName = $val["Name"] . " " . $val["Surname"];
         $mail->subject = "Activeer Account Webshop";
         $mail->message =
             "Beste " . $val["Name"] . ",\n

@@ -9,12 +9,29 @@
 #35978f
 #01665e
 */
+
+a {
+    color: #01665e;
+    text-decoration: none;
+}
+a:hover {
+    color: #E63946;
+    text-decoration: none;
+}
+
+.white{
+    background-color: white;
+}
 .title{
     font-size: 25px;
 }
 
 .info{
     float: right;
+}
+
+.infoLeft{
+    float: left;
 }
 .barBadge{
     margin-top: -3px;
@@ -59,7 +76,6 @@ body {
     background-color: #E9EAED;
     font-family: 'PT Sans', sans-serif;
     margin-bottom: 60px;
-    margin-top: 60px;
 }
 
 .quote, .source {
@@ -136,7 +152,20 @@ body {
     -moz-border-radius: 6px 0 6px 6px;
     border-radius: 6px 0 6px 6px;
 }
+.btn-inbox{
+    background-color: #E63946;
+    color: white;
+}
+.dropdown{
+    padding-right: 50px;
+}
 
+.navbar-nav>li>.dropdown-menu {
+    margin-top: 0;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    margin-right: 50px;
+}
 .addbutton {
     display: block;
     width: 100%;
@@ -169,4 +198,20 @@ a:hover {
 
 .small {
     margin: 0px !important;
+}
+
+.form-control::-webkit-input-placeholder { color: #35978f; }
+.form-control:-moz-placeholder { color: #35978f; }
+.form-control::-moz-placeholder { color: #35978f; }
+.form-control:-ms-input-placeholder { color: #35978f; }
+
+.adminMessage{
+    background-color: #dfc27d;
+}
+.message{
+    min-height: 300px;
+}
+.noPadding
+{
+    display: inline;
 }
