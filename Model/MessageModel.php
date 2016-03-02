@@ -44,13 +44,11 @@ class messageModel
             $pieces = explode("\n", $mesmodel->content);
 
             $mesmodel->content = $pieces[0];
-            if(count($pieces) > 1)
-            {
-                $mesmodel->content .=  $pieces[1];
+            if (count($pieces) > 1) {
+                $mesmodel->content .= $pieces[1];
             }
-            if(count($pieces) > 2)
-            {
-                $mesmodel->content .=  $pieces[2];
+            if (count($pieces) > 2) {
+                $mesmodel->content .= $pieces[2];
             }
 
             $mesmodel->receiver = $User->getUser($mess["user_Receiver"])["DisplayName"];
@@ -111,6 +109,45 @@ class messageModel
 
         return $mesmodel;
 
+    }
+
+    public function connectMessage($me, $message)
+    {
+        $val = DATABASE::query_safe("SELECT count(*) as counter FROM `inbox` WHERE `Id` = ? AND `user_Email` = ?", array($message, $me));
+        $val = $val[0];
+        if($val["counter"] == 1)
+            return true;
+        return false;
+    }
+
+    public function moveTrash($message)
+    {
+        DATABASE::query_safe("UPDATE `inbox` SET `folder_Name` = 'trash' WHERE `inbox`.`Id` = ?", array($message));
+    }
+
+    public function deleteMessage($message)
+    {
+        DATABASE::query_safe("DELETE FROM `inbox` WHERE `inbox`.`Id` = ?", array($message));
+    }
+    public function resetMessage($me, $message)
+    {
+        // get message from message
+        $res = DATABASE::query_safe("SELECT * FROM `inbox` WHERE `Id` = ? ", array($message));
+        if ($res === false || $res === null || count($res) == 0)
+            return false;
+
+        $res = $res[0];
+        $mess = DATABASE::query_safe("SELECT * FROM `message` WHERE `Id` = ?", array($res["message_Id"]));
+        $mess = $mess[0];
+
+        if($mess["user_Receiver"] == $me)
+        {
+            DATABASE::query_safe("UPDATE `inbox` SET `folder_Name` = 'inbox' WHERE `inbox`.`Id` = ?", array($message));
+        }
+        else if($mess["user_Sender"] == $me)
+        {
+            DATABASE::query_safe("UPDATE `inbox` SET `folder_Name` = 'outbox' WHERE `inbox`.`Id` = ?", array($message));
+        }
     }
 
     public function checkblock($me, $recipient)

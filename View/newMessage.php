@@ -37,25 +37,37 @@
             <div class="form-group">
                 <label for="rec">Aan:</label>
                 <select name="recipient" class="form-control" id="rec" data-validation="required"
-                        data-validation-error-msg="Kies een ontvanger.">
+                        data-validation-error-msg="Kies een ontvanger." {if isset($message)} disabled {/if}>
                     <option></option>
                     {foreach from=$names item=name}
+                    {if isset($message) && ($message->receiver == $name || $message->sender == $name )}
+                    <option selected>{$name}</option>
+                    {else}
                     <option>{$name}</option>
+                    {/if}
                     {/foreach}
                 </select>
             </div>
             <br>
             <div id="subjectGroup" class="form-group">
                 <label class="control-label">Onderwerp:</label>
+                {if isset($message)}
+                <input name="title" class="form-control" value="RE: {$message->title}" id="subject"
+                       placeholder="Onderwerp" data-validation="required"
+                       data-validation-error-msg="vul een onderwerp in.">
+                {else}
                 <input name="title" class="form-control" id="subject" placeholder="Onderwerp" data-validation="required"
                        data-validation-error-msg="vul een onderwerp in.">
+                {/if}
             </div>
             <br>
             <div id="message" class="form-group ">
                 <label class="control-label">Bericht:</label>
-                <textarea data-validation="required" data-validation-error-msg="vul een bericht in." name="message"
-                          id="messageField" style="max-height:300px; max-width: 100%;"
-                          class="form-control" placeholder="Bericht.."></textarea>
+
+                 <textarea rows="6"  data-validation="required" data-validation-error-msg="vul een bericht in." name="message"
+                           id="messageField" style="max-height:300px; max-width: 100%;"
+                           class="form-control"
+                           placeholder="Bericht..">{if isset($message)}{$message->content}{/if}</textarea>
             </div>
             <button id="button" class="btn btn-default">Verzenden</button>
         </form>
