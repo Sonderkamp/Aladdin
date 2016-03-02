@@ -7,6 +7,7 @@ include_once("Model/Wish.php");
 include_once("Model/Talent.php");
 include_once("Model/MessageModel.php");
 include_once("Model/Message.php");
+include_once("Model/WishRepository.php");
 
 include_once("Controller/WishController.class.php");
 include_once("Controller/TalentController.class.php");

@@ -11,6 +11,8 @@
     <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/theme-default.min.css" rel="stylesheet" type="text/css"/>
     <link href='https://fonts.googleapis.com/css?family=PT+Sans|Indie+Flower' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="/CSS/Style.css">
+    <link rel="stylesheet" type="text/css" href="/CSS/Wish.css">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/theme-default.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="/CSS/charts.css">
 
     {if isset($title)}
