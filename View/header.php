@@ -8,10 +8,10 @@
     <meta name="theme-color" content="#2196F3">
 
     <link rel="stylesheet" href="https://bootswatch.com/paper/bootstrap.min.css">
-    <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/theme-default.min.css"
-          rel="stylesheet" type="text/css"/>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/theme-default.min.css" rel="stylesheet" type="text/css"/>
     <link href='https://fonts.googleapis.com/css?family=PT+Sans|Indie+Flower' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="/CSS/Style.css">
+    <link rel="stylesheet" type="text/css" href="/CSS/charts.css">
 
     {if isset($title)}
     <title>Aladdin: {htmlspecialchars($title)}</title>
@@ -29,7 +29,7 @@
 <script type="text/javascript" src="//code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/jquery.form-validator.min.js"></script>
 
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -69,8 +69,8 @@
                     </ul>
                 </li>
                 {/if}
-                <li><a href="#"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
-                <li><a href="#"> <span class="glyphicon glyphicon glyphicon-envelope"></span> Notificaties<span class="badge barBadge">42</span></a></li>
+                <li><a href="/wishes"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
+                <li><a href="/Inbox"> <span class="glyphicon glyphicon glyphicon-envelope"></span> Notificaties<span class="badge barBadge">42</span></a></li>
                 {/if}
             </ul>
             <ul class="nav navbar-nav navbar-right">

@@ -9,6 +9,13 @@
 #35978f
 #01665e
 */
+.title{
+    font-size: 25px;
+}
+
+.info{
+    float: right;
+}
 .barBadge{
     margin-top: -3px;
     background-color: #8c510a;
@@ -47,13 +54,12 @@ input[type="checkbox"]:checked:after, .checkbox input[type="checkbox"]:checked:a
     heigth: 10px;
 }
 
-html, body {
-    height: 100%;
-}
 
 body {
     background-color: #E9EAED;
     font-family: 'PT Sans', sans-serif;
+    margin-bottom: 60px;
+    margin-top: 60px;
 }
 
 .quote, .source {
@@ -75,10 +81,6 @@ body {
 }
 
 .footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 80px;
     background-color: #01665e;
     text-align: center;
 }
