@@ -20,6 +20,8 @@
     </div>
 
     <div class="col-sm-9">
+       <span class="info"> <input type="text"><button >Zoek</button></span>
+        <br><br>
         <div class="panel panel-default">
             <div class="panel-body">
                 <span class="title">Titel</span> <span class="info">Zender, Datum</span>
@@ -50,5 +52,6 @@
 
             </div>
         </div>
+            <span><button>Volgende Pagina</button></span><span class="info">Pagina 1</span>
     </div>
 </div>
