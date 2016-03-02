@@ -44,7 +44,7 @@ class WishController
         $mywishes = array();
 
         for($i = 0; $i < count($this->wishes); $i++){
-            if($this -> wishes[$i] -> user == $_SESSION["user"]) {
+            if($this -> wishes[$i] -> user == $_SESSION["user"] -> email) {
                 $mywishes[$i] = $this->wishes[$i];
             }
         }
