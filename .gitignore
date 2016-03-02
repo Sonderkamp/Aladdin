@@ -22,3 +22,4 @@ deprecated/
 
 # Mongo Explorer plugin:
 .idea/mongoSettings.xml
+.idea/workspace.xml
