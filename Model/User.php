@@ -21,16 +21,16 @@ class User
                 return false;
             } else if (password_verify($password, $res["Password"])) {
                 $this->email = strtolower($username);
-                $this->isAdmin = $res["admin"];
+                $this->isAdmin = $res["Admin"];
                 $this->name = $res["Name"];
                 $this->surname = $res["Surname"];
-                $this->handicap = $res["handicap"];
-                $this->address = $res["address"];
-                $this->postalcode = $res["postalcode"];
-                $this->country = $res["country"];
-                $this->city = $res["city"];
-                $this->dob = $res["dob"];
-                $this->gender = $res["gender"];
+                $this->handicap = $res["Handicap"];
+                $this->address = $res["Address"];
+                $this->postalcode = $res["Postalcode"];
+                $this->country = $res["Country"];
+                $this->city = $res["City"];
+                $this->dob = $res["Dob"];
+                $this->gender = $res["Gender"];
 
                 $_SESSION["user"] = $this;
                 return true;
@@ -153,9 +153,9 @@ class User
 
         if (Database::query_safe("INSERT INTO `users` (`Email`, `Password`, `Name`,
             `Surname`, `RecoveryHash`, `RecoveryDate`,
-            `ValidationHash`, `address`, `postalcode`,
-            `country`, `city`, `dob`,
-            `gender`, `handicap`) VALUES (?, ?, ?,?, NULL, NULL, ?, ?,?,?, ?,?,?,?)"
+            `ValidationHash`, `Address`, `Postalcode`,
+            `Country`, `City`, `Dob`,
+            `Gender`, `Handicap`) VALUES (?, ?, ?,?, NULL, NULL, ?, ?,?,?, ?,?,?,?)"
                 , array(strtolower($array["username"]), $hashed, strtolower($array["name"]),
                     $array["surname"], $this->token, $array["address"],
                     $array["postalcode"], $array["country"], $array["city"],
@@ -204,7 +204,7 @@ class User
     public function CanRecover()
     {
         $dayAgo = date('Y-m-d H:i:s', (strtotime('-1 day', strtotime(date('Y-m-d H:i:s')))));
-        $res = Database::query_safe("SELECT count(*) AS Counter FROM `recoverylog` WHERE IP = ? AND `Date` BETWEEN ? AND ?", array($_SERVER['REMOTE_ADDR'], $dayAgo, date('Y-m-d H:i:s')));
+        $res = Database::query_safe("SELECT count(*) AS Counter FROM `recoveryLog` WHERE IP = ? AND `Date` BETWEEN ? AND ?", array($_SERVER['REMOTE_ADDR'], $dayAgo, date('Y-m-d H:i:s')));
         $res = $res[0];
         if ($res["Counter"] > 4)
             return false;
@@ -213,7 +213,7 @@ class User
 
     public function logRecovery()
     {
-        Database::query_safe("INSERT INTO `recoverylog` (`IP`, `Date`) VALUES (?, ?)", array($_SERVER['REMOTE_ADDR'], date('Y-m-d H:i:s')));
+        Database::query_safe("INSERT INTO `recoveryLog` (`IP`, `Date`) VALUES (?, ?)", array($_SERVER['REMOTE_ADDR'], date('Y-m-d H:i:s')));
     }
 
     public function validateToken($token)
