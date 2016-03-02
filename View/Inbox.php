@@ -45,7 +45,7 @@
         <span class="info"><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal"> <span class="glyphicon glyphicon-info-sign"></span>
             </button></span>
         <div class="hidden-sm hidden-md hidden-lg"><br><br></div>
-        <form class="user-control form-inline" action="/Inbox/folder={$folderShortcut}" method="get">
+        <form class="user-control form-inline" action="\Inbox\folder={$folderShortcut}" method="get">
             <input class="form-control white" value="{$search}" placeholder="Zoek Criteria" name="search" type="text">
             <button class="form-control btn-inbox" type="submit">Zoek</button>
         </form>
@@ -65,7 +65,7 @@
             <div class="panel panel-default">
                 {/if}
                 <div class="panel-body">
-                    <a href="/Inbox/folder={$folderShortcut}/message={$message->id}" class="title">{$message->title}</a> <span
+                    <a href="\Inbox\folder={$folderShortcut}\message={$message->id}" class="title">{$message->title}</a> <span
                         class="info">
                     {if isset($out)}
                     {$message->receiver}
@@ -81,21 +81,21 @@
                 </div>
                 <div class="panel-footer">
                     {if isset($trash)}
-                    <form class=noPadding action="/Inbox/folder={$folderShortcut}" method="post">
+                    <form class=noPadding action="\Inbox\folder={$folderShortcut}" method="post">
                         <input type="hidden" name="delete" value="{$message->id}"/>
                         <button type="submit" class="btn btn-inbox">Permanent Verwijderen</button>
                     </form>
-                    <form class=noPadding action="/Inbox/folder={$folderShortcut}" method="post">
+                    <form class=noPadding action="\Inbox\folder={$folderShortcut}" method="post">
                         <input type="hidden" name="reset" value="{$message->id}"/>
                         <button type="submit" class="btn btn-inbox">Terugzetten</button>
                     </form>
                     {else}
-                    <form class=noPadding action="/Inbox/folder={$folderShortcut}" method="post">
+                    <form class=noPadding action="\Inbox\folder={$folderShortcut}" method="post">
                         <input type="hidden" name="trash" value="{$message->id}"/>
                         <button type="submit" class="btn btn-inbox">Verwijderen</button>
                     </form>
                     {/if}
-                    <form class=noPadding action="/Inbox/folder={$folderShortcut}" method="post">
+                    <form class=noPadding action="\Inbox\folder={$folderShortcut}" method="post">
                         <input type="hidden" name="reply" value="{$message->id}"/>
                         <button type="submit" class="btn btn-inbox">Beantwoorden</button>
                     </form>

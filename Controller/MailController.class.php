@@ -91,7 +91,7 @@ class MailController
 
             $this->renderInbox();
         }
-        render("inbox.php", ["title" => "Inbox", "folder" => "Postvak in", "in" => true, "folderShortcut" => "inbox", "messages" => $this->messageModel->getInbox("")]);
+        $this->renderInbox();
         exit(2);
     }
 

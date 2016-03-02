@@ -75,21 +75,21 @@
             </div>
             <div class="panel-footer">
                 {if isset($trash)}
-                <form class=noPadding action="/Inbox/folder={$folderShortcut}" method="post">
+                <form class=noPadding action="\Inbox\folder={$folderShortcut}" method="post">
                     <input type="hidden" name="delete" value="{$message->id}"/>
                     <button type="submit" class="btn btn-inbox">Permanent Verwijderen</button>
                 </form>
-                <form class=noPadding action="/Inbox/folder={$folderShortcut}" method="post">
+                <form class=noPadding action="\Inbox\folder={$folderShortcut}" method="post">
                     <input type="hidden" name="reset" value="{$message->id}"/>
                     <button type="submit" class="btn btn-inbox">Terugzetten</button>
                 </form>
                 {else}
-                <form class=noPadding action="/Inbox/folder={$folderShortcut}" method="post">
+                <form class=noPadding action="\Inbox\folder={$folderShortcut}" method="post">
                     <input type="hidden" name="trash" value="{$message->id}"/>
                     <button type="submit" class="btn btn-inbox">Verwijderen</button>
                 </form>
                 {/if}
-                <form class=noPadding action="/Inbox/folder={$folderShortcut}" method="post">
+                <form class=noPadding action="\Inbox\folder={$folderShortcut}" method="post">
                     <input type="hidden" name="reply" value="{$message->id}"/>
                     <button type="submit" class="btn btn-inbox">Beantwoorden</button>
                 </form>
