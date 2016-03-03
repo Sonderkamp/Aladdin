@@ -25,6 +25,81 @@ class MailController
                 }
                 exit();
             }
+            else
+            {
+                // reply
+                if(isset($_POST["reply"]))
+                {
+                    if (filter_var($_POST["reply"], FILTER_VALIDATE_INT) === false) {
+                        $this->error = "Invalide parameter meegegeven.";
+                        $this->renderInbox();
+                    }
+
+                    $message = $this->messageModel->getMessage($_POST["reply"]);
+                    if ($message === false) {
+                        $this->error = "Bericht bestaat niet.";
+                        $this->renderInbox();
+                    }
+
+                    $user = new User();
+                    $names = $user->getAllDislaynames();
+                    if (($key = array_search($_SESSION["user"]->displayName, $names)) !== false) {
+                        unset($names[$key]);
+                    }
+
+                    $message->content = "\n\n\n-------------------------------\n Origineel: \n-------------------------------\n" .$message->content;
+                    $message->content = str_replace("<br />", "\n", $message->content);
+                    render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "message" => $message, "names" => $names ]);
+
+                    exit();
+
+                }
+                else if(isset($_POST["delete"]))
+                {
+                    if (filter_var($_POST["delete"], FILTER_VALIDATE_INT) === false) {
+                        $this->error = "Invalide parameter meegegeven.";
+                        $this->renderInbox();
+                    }
+                    if($this->messageModel->connectMessage($_SESSION["user"]->email, $_POST["delete"]) === false)
+                    {
+                        $this->error = "Het is niet mogelijk om andermans berichten te verwijderen.";
+                        $this->renderInbox();
+                    }
+                    $this->messageModel->deleteMessage($_POST["delete"]);
+                    $this->renderInbox();
+                }
+                else if(isset($_POST["trash"]))
+                {
+                    if (filter_var($_POST["trash"], FILTER_VALIDATE_INT) === false) {
+                        $this->error = "Invalide parameter meegegeven.";
+                        $this->renderInbox();
+                    }
+                    if($this->messageModel->connectMessage($_SESSION["user"]->email, $_POST["trash"]) === false)
+                    {
+                        $this->error = "Het is niet mogelijk om andermans berichten te verwijderen.";
+                        $this->renderInbox();
+                    }
+                    $this->messageModel->moveTrash($_POST["trash"]);
+                    $this->renderInbox();
+
+                }
+                else if(isset($_POST["reset"]))
+                {
+                    if (filter_var($_POST["reset"], FILTER_VALIDATE_INT) === false) {
+                        $this->error = "Invalide parameter meegegeven.";
+                        $this->renderInbox();
+                    }
+                    if($this->messageModel->connectMessage($_SESSION["user"]->email, $_POST["reset"]) === false)
+                    {
+                        $this->error = "Het is niet mogelijk om andermans berichten te verwijderen.";
+                        $this->renderInbox();
+                    }
+                    $this->messageModel->resetMessage($_SESSION["user"]->email, $_POST["reset"]);
+                    $this->renderInbox();
+                }
+
+
+            }
         } else {
 
 
@@ -114,15 +189,23 @@ class MailController
             }
             exit();
         }
+        render("inbox.php", ["title" => "Inbox", "folder" => "Postvak in" . $this->title, "folderShortcut" => "inbox", "messages" => $this->messageModel->getInbox($this->search), "error" => $this->error, "search" => $this->search]);
+        exit();
     }
 
     public function sendNewMessage()
     {
+        $user = new User();
+        $names = $user->getAllDislaynames();
+        if (($key = array_search($_SESSION["user"]->displayName, $names)) !== false) {
+            unset($names[$key]);
+        }
+
         if (empty($_POST["recipient"]) ||
             empty($_POST["title"]) ||
             empty($_POST["message"])
         ) {
-            render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Niet alles is ingevuld."]);
+            render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Niet alles is ingevuld." , "names" => $names]);
             exit();
         }
         $_POST["recipient"] = trim($_POST["recipient"]);
@@ -133,7 +216,7 @@ class MailController
             empty($_POST["title"]) ||
             empty($_POST["message"])
         ) {
-            render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Niet alles is ingevuld."]);
+            render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Niet alles is ingevuld." , "names" => $names]);
             exit();
         }
 
@@ -141,7 +224,7 @@ class MailController
         $username = $user->getUsername($_POST["recipient"]);
 
         if ($username === false) {
-            render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Gebruiker bestaat niet"]);
+            render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Gebruiker bestaat niet" , "names" => $names]);
             exit();
         }
 
@@ -150,7 +233,7 @@ class MailController
         $res = $mes->checkblock($_SESSION["user"]->email, $username);
 
         if ($res !== false) {
-            render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => $res]);
+            render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => $res , "names" => $names]);
             exit();
         }
 
