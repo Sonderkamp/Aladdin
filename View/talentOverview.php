@@ -1,11 +1,8 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Joost
- * Date: 27-2-2016
- * Time: 21:48
- */
-?>
+
+<!--Created by PhpStorm.-->
+<!--User: Joost-->
+<!--Date: 27-2-2016-->
+<!--Time: 21:48-->
 
 <div class="container">
     <div class="col-sm-12 col-md-6">
@@ -13,7 +10,7 @@
             <thead>
                 <tr>
                     <th>Toegevoegde talenten</th>
-                    <th>Verwijderen</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>

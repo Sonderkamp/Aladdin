@@ -18,8 +18,8 @@ class WishController
 
     public function run()
     {
+        guaranteeLogin("/Wishes");
         if (isset($_GET["action"])) {
-            $_SESSION["Redirect"] = null;
             switch (strtolower($_GET["action"])) {
                 case "mywishes":
                     $this->getMyWishes();
@@ -40,7 +40,6 @@ class WishController
     }
 
     private function getMyWishes(){
-        guaranteeLogin("/Wishes");
         $mywishes = array();
 
         for($i = 0; $i < count($this->wishes); $i++){
@@ -53,7 +52,6 @@ class WishController
     }
 
     private function getWishes($completed){
-        guaranteeLogin("/Wishes");
         $this -> incompletedWishes = array();
         $this -> completedWishes = array();
 

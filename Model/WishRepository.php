@@ -14,7 +14,8 @@ class WishRepository
         ("SELECT
           wish.Status,
           wish.Id,
-          wish.User, wish.Date,
+          wish.User,
+          wish.Date,
           wish.CompletionDate,
           wishContent.Content,
           wishContent.Title,
@@ -45,9 +46,5 @@ class WishRepository
         }
 
         return $returnArray;
-    }
-
-    public function getYourWishes(){
-
     }
 }
