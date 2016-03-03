@@ -17,19 +17,36 @@
                 </tr>
             </thead>
             <tbody>
-            {foreach from=$talents item=talent}
-                <tr>
-                    <td class="col-sm-12">{$talent -> talent}</td>
-                    <td class="col-sm-1">
-                        <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', $talent->talent)}">Verwijderen</button>
-                    </td>
-                </tr>
-            {/foreach}
+                {foreach from=$talents item=talent}
+                    <tr>
+                        <td class="col-sm-12">{$talent -> talent}</td>
+                        <td class="col-sm-1">
+                            <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', $talent->talent)}">Verwijderen</button>
+                        </td>
+                    </tr>
+                {/foreach}
             </tbody>
         </table>
     </div>
     <div class="col-sm-12 col-md-6">
-        <!-- deernaast -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Alle talenten</th>
+                    <th>Verwijderen</th>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach from=$talents item=talent}
+                    <tr>
+                        <td class="col-sm-12">{$talent -> talent}</td>
+                        <td class="col-sm-1">
+                            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', $talent->talent)}">Verwijderen</button>
+                        </td>
+                    </tr>
+                {/foreach}
+            </tbody>
+        </table>
     </div>
 </div>
 
