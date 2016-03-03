@@ -8,10 +8,12 @@
     <meta name="theme-color" content="#2196F3">
 
     <link rel="stylesheet" href="https://bootswatch.com/paper/bootstrap.min.css">
-    <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/theme-default.min.css"
-          rel="stylesheet" type="text/css"/>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/theme-default.min.css" rel="stylesheet" type="text/css"/>
     <link href='https://fonts.googleapis.com/css?family=PT+Sans|Indie+Flower' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="/CSS/Style.css">
+    <link rel="stylesheet" type="text/css" href="/CSS/Wish.css">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/theme-default.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="/CSS/charts.css">
 
     {if isset($title)}
     <title>Aladdin: {htmlspecialchars($title)}</title>
@@ -51,8 +53,7 @@
 
             <ul class="nav navbar-nav navbar-left">
 
-                {if isset($user)}
-                {if $user->isAdmin}
+                {if isset($admin)}
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">
@@ -69,8 +70,9 @@
                     </ul>
                 </li>
                 {/if}
-                <li><a href="#"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
-                <li><a href="#"> <span class="glyphicon glyphicon glyphicon-envelope"></span> Notificaties<span class="badge barBadge">42</span></a></li>
+                {if isset($user)}
+                <li><a href="/wishes"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
+                <li><a href="/Inbox"> <span class="glyphicon glyphicon glyphicon-envelope"></span> Berichten</a></li>
                 {/if}
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -80,7 +82,7 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
-                        {$user->email}<span class="caret"></span></a>
+                        {$user->displayName}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="/account">Mijn profiel</a></li>
                         <li role="separator" class="divider"></li>

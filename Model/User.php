@@ -9,7 +9,7 @@
 class User
 {
     public $email, $isAdmin, $name, $surname, $token, $address,
-        $handicap, $postalcode, $country, $city, $dob, $gender;
+        $handicap, $postalcode, $country, $city, $dob, $gender, $displayName, $initials;
 
     public function validate($username, $password)
     {
@@ -21,17 +21,18 @@ class User
                 return false;
             } else if (password_verify($password, $res["Password"])) {
                 $this->email = strtolower($username);
-                $this->isAdmin = $res["admin"];
+                $this->isAdmin = $res["Admin"];
                 $this->name = $res["Name"];
                 $this->surname = $res["Surname"];
-                $this->handicap = $res["handicap"];
-                $this->address = $res["address"];
-                $this->postalcode = $res["postalcode"];
-                $this->country = $res["country"];
-                $this->city = $res["city"];
-                $this->dob = $res["dob"];
-                $this->gender = $res["gender"];
-
+                $this->handicap = $res["Handicap"];
+                $this->address = $res["Address"];
+                $this->postalcode = $res["Postalcode"];
+                $this->country = $res["Country"];
+                $this->city = $res["City"];
+                $this->dob = $res["Dob"];
+                $this->gender = $res["Gender"];
+                $this->displayName = $res["DisplayName"];
+                $this->initials = $res["Initials"];
                 $_SESSION["user"] = $this;
                 return true;
             }
@@ -39,7 +40,15 @@ class User
         return false;
     }
 
+    public function getUsername($display)
+    {
+        $res = Database::query_safe("SELECT `Email` FROM `user` WHERE `DisplayName` = ? AND `ValidationHash` IS NULL", array($display));
+        if ($res == null)
+            return false;
 
+        $res = $res[0];
+        return $res["Email"];
+    }
     public function validateUsername($username)
     {
         $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
@@ -48,7 +57,7 @@ class User
         if (!filter_var($username, FILTER_VALIDATE_EMAIL) === false) {
 
 
-            $res = Database::query_safe("SELECT * FROM `users` WHERE `Email` = ? AND `ValidationHash` IS NULL", array($username));
+            $res = Database::query_safe("SELECT * FROM `user` WHERE `Email` = ? AND `ValidationHash` IS NULL", array($username));
             if ($res == null)
                 return false;
             return true;
@@ -57,10 +66,22 @@ class User
 
     }
 
+    public function getAllDislaynames()
+    {
+        $res = Database::query("SELECT `DisplayName` FROM `user`  WHERE `ValidationHash` IS NULL;");
+
+        $ret = [];
+        foreach($res as $val)
+        {
+            $ret[] = $val["DisplayName"];
+        }
+        return $ret;
+    }
+
     public function getUser($username)
     {
         $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
-        $res = Database::query_safe("SELECT * FROM `users` WHERE `Email` = ?", array($username));
+        $res = Database::query_safe("SELECT * FROM `user` WHERE `Email` = ?", array($username));
         if ($res == null || $res === false) {
             return false;
         }
@@ -83,8 +104,8 @@ class User
 
             // save password
             $hashed = password_hash($password, PASSWORD_DEFAULT);
-            if (Database::query_safe("UPDATE `users` SET `Password` = ?  WHERE `Email` = ?", array($hashed, $username)) === false) {
-                echo "Query error: \"UPDATE `users` SET `Password` = '$hashed'  WHERE `Email` = '$username'\"";
+            if (Database::query_safe("UPDATE `user` SET `Password` = ?  WHERE `Email` = ?", array($hashed, $username)) === false) {
+                echo "Query error: \"UPDATE `user` SET `Password` = '$hashed'  WHERE `Email` = '$username'\"";
                 exit();
             }
             return true;
@@ -115,10 +136,22 @@ class User
             || Empty($array["country"])
             || Empty($array["city"])
             || Empty($array["dob"])
+            || Empty($array["initial"])
             || Empty($array["gender"])
         ) {
             return "Niet alles is ingevuld.";
         }
+
+        $array["username"] = strtolower(trim($array["username"]));
+        $array["name"] = strtolower(trim($array["name"]));
+        $array["surname"] = trim($array["surname"]);
+        $array["address"] =  strtolower(trim($array["address"]));
+        $array["postalcode"] = strtoupper(trim($array["postalcode"]));
+        $array["country"] = strtolower(trim($array["country"]));
+        $array["city"] = strtolower(trim($array["city"]));
+        $array["dob"] = trim($array["dob"]);
+        $array["initial"] = strtoupper(trim($array["initial"]));
+        $array["gender"] = strtolower(trim($array["gender"]));
 
         $array["username"] = strtolower(filter_var($array["username"], FILTER_SANITIZE_EMAIL));
 
@@ -141,9 +174,11 @@ class User
         if ($array["gender"] != "male" && $array["gender"] != "female" && $array["gender"] != "other")
             return "gender is verkeerd gekozen?";
 
+        $array["initial"] = trim($array["initial"], '.');
 
+        $displayname = $this->createDislay($array);
 //    || Empty($array["address"])
-//    || Empty($array["postalcode"])
+        $array["postalcode"] = preg_replace('/\s+/', '', $array["postalcode"]);
 //    || Empty($array["country"])
 //    || Empty($array["city"])
 
@@ -151,21 +186,33 @@ class User
         $hashed = password_hash($array["password"], PASSWORD_DEFAULT);
         $this->token = bin2hex(openssl_random_pseudo_bytes(16));
 
-        if (Database::query_safe("INSERT INTO `users` (`Email`, `Password`, `Name`,
+        if (Database::query_safe("INSERT INTO `user` (`Email`, `Password`, `Name`,
             `Surname`, `RecoveryHash`, `RecoveryDate`,
-            `ValidationHash`, `address`, `postalcode`,
-            `country`, `city`, `dob`,
-            `gender`, `handicap`) VALUES (?, ?, ?,?, NULL, NULL, ?, ?,?,?, ?,?,?,?)"
+            `ValidationHash`, `Address`, `Postalcode`,
+            `Country`, `City`, `Dob`,
+            `Gender`, `Handicap`, `DisplayName`, `Initials`) VALUES (?, ?, ?,?, NULL, NULL, ?, ?,?,?, ?,?,?,?,?,?)"
                 , array(strtolower($array["username"]), $hashed, strtolower($array["name"]),
                     $array["surname"], $this->token, $array["address"],
                     $array["postalcode"], $array["country"], $array["city"],
-                    $d->format('Y-m-d'), $array["gender"], $array["handicap"])) === false
+                    $d->format('Y-m-d'), $array["gender"], $array["handicap"], $displayname, $array["initial"])) === false
         ) {
-            echo "Query error:\"INSERT INTO `users` (`Email`, `Password`, `Name`, `Surname`, `RecoveryHash`, `RecoveryDate`, `ValidationHash`)
-            VALUES (" . $array["username"] . ", " . $hashed . ", " . $array["name"] . ", " . $array["surname"] . ", NULL, NULL, '$this->token')\"";
+            apologize("Er was een error bij het toevoegen van uw gegevens aan onze database. Probeer dit alstublieft opnieuw. Is dit de tweede keer dat u dit ziet, contacteer de webmaster op: Mariusdv@outlook.com");
             exit();
         }
         return true;
+    }
+
+    public function createDislay($arr)
+    {
+        $arr["initial"] = trim($arr["initial"], '.');
+        $name = $arr["initial"] . ". " . $arr["surname"];
+
+        // first try
+        $res = Database::query_safe("SELECT count(*) AS Counter FROM `user` WHERE DisplayName LIKE ? ", array($name));
+        $res = $res[0];
+        if ($res["Counter"] == 0)
+            return $name;
+        return $name . $res["Counter"];
     }
 
     public function newHash($username)
@@ -179,8 +226,8 @@ class User
                 return false;
 
             if ($res["RecoveryHash"] == null || $this->hoursPassed($res["RecoveryDate"]) >= 24) {
-                if (Database::query_safe("UPDATE `users` SET `RecoveryHash` = ?, `RecoveryDate` = ? WHERE `Email` = ?", array($this->token, date('Y-m-d H:i:s'), $username)) === false) {
-                    echo "Query error: \"UPDATE `users` SET `RecoveryHash` = '$this->token', `RecoveryDate` = '" . date('Y-m-d H:i:s') . "' WHERE `Email` = '$username'\"";
+                if (Database::query_safe("UPDATE `user` SET `RecoveryHash` = ?, `RecoveryDate` = ? WHERE `Email` = ?", array($this->token, date('Y-m-d H:i:s'), $username)) === false) {
+                    echo "Query error: \"UPDATE `user` SET `RecoveryHash` = '$this->token', `RecoveryDate` = '" . date('Y-m-d H:i:s') . "' WHERE `Email` = '$username'\"";
                     exit();
                 }
                 return true;
@@ -194,8 +241,8 @@ class User
     {
         if ($this->validateUsername($username)) {
             $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
-            if (Database::query_safe("UPDATE `users` SET `RecoveryHash` = NULL, `RecoveryDate` = NULL WHERE `Email` = ?", array($username)) === false) {
-                echo "Query error: \"UPDATE `users` SET `RecoveryHash` = NULL, `RecoveryDate` = NULL WHERE `Email` = '$username'";
+            if (Database::query_safe("UPDATE `user` SET `RecoveryHash` = NULL, `RecoveryDate` = NULL WHERE `Email` = ?", array($username)) === false) {
+                echo "Query error: \"UPDATE `user` SET `RecoveryHash` = NULL, `RecoveryDate` = NULL WHERE `Email` = '$username'";
                 exit();
             }
         }
@@ -204,7 +251,7 @@ class User
     public function CanRecover()
     {
         $dayAgo = date('Y-m-d H:i:s', (strtotime('-1 day', strtotime(date('Y-m-d H:i:s')))));
-        $res = Database::query_safe("SELECT count(*) AS Counter FROM `recoverylog` WHERE IP = ? AND `Date` BETWEEN ? AND ?", array($_SERVER['REMOTE_ADDR'], $dayAgo, date('Y-m-d H:i:s')));
+        $res = Database::query_safe("SELECT count(*) AS Counter FROM `recoveryLog` WHERE IP = ? AND `Date` BETWEEN ? AND ?", array($_SERVER['REMOTE_ADDR'], $dayAgo, date('Y-m-d H:i:s')));
         $res = $res[0];
         if ($res["Counter"] > 4)
             return false;
@@ -213,12 +260,12 @@ class User
 
     public function logRecovery()
     {
-        Database::query_safe("INSERT INTO `recoverylog` (`IP`, `Date`) VALUES (?, ?)", array($_SERVER['REMOTE_ADDR'], date('Y-m-d H:i:s')));
+        Database::query_safe("INSERT INTO `recoveryLog` (`IP`, `Date`) VALUES (?, ?)", array($_SERVER['REMOTE_ADDR'], date('Y-m-d H:i:s')));
     }
 
     public function validateToken($token)
     {
-        $res = Database::query_safe("SELECT * FROM `users` WHERE `RecoveryHash` = ?", array($token));
+        $res = Database::query_safe("SELECT * FROM `user` WHERE `RecoveryHash` = ?", array($token));
 
         if ($res == null)
             return false;
@@ -230,14 +277,14 @@ class User
 
     public function validateActivateToken($token)
     {
-        $res = Database::query_safe("SELECT * FROM `users` WHERE `ValidationHash` = ?", array($token));
+        $res = Database::query_safe("SELECT * FROM `user` WHERE `ValidationHash` = ?", array($token));
         if ($res == null || $res === false)
             return false;
         $res = $res[0];
 
         // Clear
-        if (Database::query_safe("UPDATE `users` SET `ValidationHash` = NULL WHERE `Email` = ?", array($res["Email"])) === false) {
-            echo "Query error: UPDATE `users` SET `ValidationHash` = NULL WHERE `Email` = " . $res["Email"];
+        if (Database::query_safe("UPDATE `user` SET `ValidationHash` = NULL WHERE `Email` = ?", array($res["Email"])) === false) {
+            echo "Query error: UPDATE `user` SET `ValidationHash` = NULL WHERE `Email` = " . $res["Email"];
             exit();
         }
 
@@ -294,7 +341,7 @@ class User
 
         // Get
         $mail->to = $username;
-        $mail->toName = $val["Name"] . " " . $val["Surname"];;
+        $mail->toName = $val["Name"] . " " . $val["Surname"];
         $mail->subject = "Activeer Account Webshop";
         $mail->message =
             "Beste " . $val["Name"] . ",\n
