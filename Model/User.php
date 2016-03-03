@@ -142,16 +142,16 @@ class User
             return "Niet alles is ingevuld.";
         }
 
-        $array["username"] = trim($array["username"]);
-        $array["name"] = trim($array["name"]);
+        $array["username"] = strtolower(trim($array["username"]));
+        $array["name"] = strtolower(trim($array["name"]));
         $array["surname"] = trim($array["surname"]);
-        $array["address"] = trim($array["address"]);
-        $array["postalcode"] = trim($array["postalcode"]);
-        $array["country"] = trim($array["country"]);
-        $array["city"] = trim($array["city"]);
+        $array["address"] =  strtolower(trim($array["address"]));
+        $array["postalcode"] = strtoupper(trim($array["postalcode"]));
+        $array["country"] = strtolower(trim($array["country"]));
+        $array["city"] = strtolower(trim($array["city"]));
         $array["dob"] = trim($array["dob"]);
-        $array["initial"] = trim($array["initial"]);
-        $array["gender"] = trim($array["gender"]);
+        $array["initial"] = strtoupper(trim($array["initial"]));
+        $array["gender"] = strtolower(trim($array["gender"]));
 
         $array["username"] = strtolower(filter_var($array["username"], FILTER_SANITIZE_EMAIL));
 
