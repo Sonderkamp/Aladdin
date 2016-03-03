@@ -9,7 +9,11 @@
 #35978f
 #01665e
 */
-
+.logo{
+    margin-top: -27px;
+    margin-left: -10px;
+    height: 75px;
+}
 a {
     color: #01665e;
     text-decoration: none;
