@@ -12,7 +12,7 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Talent</th>
+                    <th>Toegevoegde talenten</th>
                     <th>Verwijderen</th>
                 </tr>
             </thead>
@@ -31,7 +31,6 @@
     <div class="col-sm-12 col-md-6">
         <!-- deernaast -->
     </div>
-
 </div>
 
 <!-- Modal -->
