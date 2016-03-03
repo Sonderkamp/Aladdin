@@ -24,7 +24,7 @@
         <a href="\Inbox\action=new" class="btn btn-default" style="width:100%">Nieuw Bericht</a><br>
         <br>
         {if isset($in)}
-        <a href="\Inbox" class="btn btn-default active" style="width:100%">Postvak in</a><br>
+        <a href="\Inbox" class="btn btn-default active"  style="width:100%">Postvak in</a><br>
         {else}
         <a href="\Inbox" class="btn btn-default" style="width:100%">Postvak in</a><br>
         {/if}
