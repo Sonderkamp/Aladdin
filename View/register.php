@@ -22,12 +22,12 @@
                                       data-validation-confirm="password1"
                                       data-validation-error-msg="wachtwoorden komen niet overeen."></p>
 
-        <p>Voornaam: <input type="text" name="name" required data-validation="alphanumeric"
-                            data-validation-error-msg="Wachtwoorden komen niet overeen."
-                            data-validation-allowing="- " data-validation-error-msg="Geen valide voornaam ingevuld.">
+        <p>Voornaam: <input type="text" name="name"  data-validation="custom" data-validation-regexp="^([a-zA-Z\- ]+)$" data-validation-error-msg="Geen valide voornaam ingevuld.">
         </p>
-        <p>Achternaam: <input type="text" name="surname" required data-validation="alphanumeric"
-                              data-validation-allowing="- "
+        <p>Initialen: <input type="text" name="initial" required data-validation="custom" data-validation-regexp="^([a-zA-Z\.]+)$"
+                            data-validation-error-msg="Initialen mogen alleen letters en punten bevatten.">
+        </p>
+        <p>Achternaam: <input type="text" name="surname"  data-validation="custom" data-validation-regexp="^([a-zA-Z\- ]+)$"
                               data-validation-error-msg="Geen valide achternaam ingevuld."></p>
         <p>Straat en huisnummer: <input type="text" name="address" required data-validation="alphanumeric"
                                         data-validation-allowing="-_ "

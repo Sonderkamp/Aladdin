@@ -1,15 +1,15 @@
 <div class="container">
-
+<br>
     {if isset($error)}
     <div class="form-error" id="err">Error: {htmlspecialchars($error)}</div>
     {else}
     <p id="err"></p>
     {/if}
-
+<br>
     <form action="/Account" method="post">
-        <p> <span><input type="text" placeholder="Email" name="username" value="{$username}"  data-validation="email"
+        <p> <span><input type="text" class="form-control white" placeholder="Email" name="username" value="{$username}"  data-validation="email"
                          data-validation-error-msg="vul een valide gebruikersnaam in."></span>
-             <span><input type="password" placeholder="Wachtwoord" name="password" data-validation="required" data-validation-error-msg="vul een wachtwoord in."></span>
+             <span><input type="password" class="form-control white" placeholder="Wachtwoord" name="password" data-validation="required" data-validation-error-msg="vul een wachtwoord in."></span>
         <input class="btn btn-default" value="Inloggen" type="submit">
     </form>
     <br>
