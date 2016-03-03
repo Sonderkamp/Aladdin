@@ -10,6 +10,9 @@
 #01665e
 */
 
+.btn-inbox:focus,.btn-inbox:active,.btn-inbox:visited {
+    color: white;
+}
 a {
     color: #01665e;
     text-decoration: none;
