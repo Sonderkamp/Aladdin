@@ -19,16 +19,21 @@ class TalentController
         }*/
 
         // comment dit uit als je wil dat de pagina een inlog-restrictie heeft
-        //guaranteeLogin("/Talents");
+        guaranteeLogin("/Talents");
 
         $this->talents = array();
-        $this->talents[0] = new Talent("Joost", "PHP");
-        $this->talents[1] = new Talent("Joost", "Slagwerk");
-        $this->talents[2] = new Talent("Joost", "Een hele lange tekst na een vraag van Max over resizing hoe dat eruit gaat zien waar we ook erg benieuwd naar zijn");
+        $this->talents[0] = new Talent($_SESSION["user"]->email, "PHP");
+        $this->talents[1] = new Talent($_SESSION["user"]->email, "Slagwerk");
+        $this->talents[2] = new Talent($_SESSION["user"]->email, "Een hele lange tekst na een vraag van Max over resizing hoe dat eruit gaat zien waar we ook erg benieuwd naar zijn");
 
         if (!Empty($_POST["talent"])) {
             $this->deleteValue($_POST["talent"]);
+
+            header("HTTP/1.1 303 See Other");
+            header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+            exit(0);
         }
+
 
         render("talentOverview.php", ["title" => "Talenten", "talents" => $this->talents]);
         exit(1);
@@ -36,13 +41,10 @@ class TalentController
 
     public function deleteValue($talent)
     {
-        $talent2 = new Talent("Joost", $talent);
+        $talent2 = new Talent($_SESSION["user"]->email, $talent);
 
         if (($key = array_search($talent2, $this->talents)) !== false) {
             unset($this->talents[$key]);
         }
-
-        render("talentOverview.php", ["title" => "Talenten", "talents" => $this->talents]);
-        exit(1);
     }
 }
