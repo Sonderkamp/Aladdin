@@ -42,11 +42,15 @@
                     {foreach from=$names item=name}
                     {if isset($message) && ($message->receiver == $name || $message->sender == $name )}
                     <option selected>{$name}</option>
+                        {assign "to" $name}
                     {else}
                     <option>{$name}</option>
                     {/if}
                     {/foreach}
                 </select>
+                {if isset($to)}
+                <input type="hidden" name="recipient" value="{$to}">
+                {/if}
             </div>
             <br>
             <div id="subjectGroup" class="form-group">
