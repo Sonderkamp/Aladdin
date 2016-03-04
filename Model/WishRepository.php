@@ -15,7 +15,8 @@ class WishRepository
         ("SELECT
           wish.Status,
           wish.Id,
-          wish.User, wish.Date,
+          wish.User,
+          wish.Date,
           wish.CompletionDate,
           wishContent.Content,
           wishContent.Title,
@@ -58,30 +59,20 @@ class WishRepository
 
         // TODO: query to add wish to database
 
-        
     }
 
     // check if user has less then 3 wishes
     public function canAddWish($email)
     {
-        // TODO: get current user by method -> getUserID
 
         $currentUser = $this->getUserID($email);
 
-        $amountWishes = 0;
-
-        // TODO: count total wishes of current user
+        $result = Database::query_safe
+        ("select count(*) as counter from `wish` where `user` = ? and `status` != ? and 'status' != ?",
+            array($email, "Vervuld", "Geweigerd"));
+        $amountWishes = $result[0]["counter"];
 
         if ($amountWishes >= 3) return false;
         return true;
     }
-
-    // get ID of current user
-    public function getUserID($email)
-    {
-        // TODO: querry to get userid by email
-        // return USER ID;
-    }
-
-
 }
