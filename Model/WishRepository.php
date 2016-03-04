@@ -9,7 +9,8 @@
 class WishRepository
 {
 
-    public function getWishes(){
+    public function getWishes()
+    {
         $result = Database::query
         ("SELECT
           wish.Status,
@@ -27,10 +28,10 @@ class WishRepository
 
         $returnArray = array();
 
-        for($i = 0; $i < count($result); $i++){
+        for ($i = 0; $i < count($result); $i++) {
             $completed = false;
 
-            if($result[$i]["Status"] == "Vervuld"){
+            if ($result[$i]["Status"] == "Vervuld") {
                 $completed = true;
             }
 
@@ -58,7 +59,6 @@ class WishRepository
 
         // TODO: query to add wish to database
 
-
     }
 
     // check if user has less then 3 wishes
@@ -75,6 +75,4 @@ class WishRepository
         if ($amountWishes >= 3) return false;
         return true;
     }
-
-
 }

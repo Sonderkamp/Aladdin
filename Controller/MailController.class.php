@@ -189,7 +189,7 @@ class MailController
             }
             exit();
         }
-        render("inbox.php", ["title" => "Inbox", "folder" => "Postvak in" . $this->title, "folderShortcut" => "inbox", "messages" => $this->messageModel->getInbox($this->search), "error" => $this->error, "search" => $this->search]);
+        render("inbox.php", ["title" => "Inbox", "folder" => "Postvak in" . $this->title, "in" => true, "folderShortcut" => "inbox", "messages" => $this->messageModel->getInbox($this->search), "error" => $this->error, "search" => $this->search]);
         exit();
     }
 
