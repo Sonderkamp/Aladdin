@@ -12,12 +12,6 @@ class TalentController
 
     public function run()
     {
-        /*$result = Database::query("select * from talent where gebruiker = 'gebruiker'");
-        $var = "success";
-        if($result === false || $result == null){
-            $var =  "fuck jou";
-        }*/
-
         // comment dit uit als je wil dat de pagina een inlog-restrictie heeft
         guaranteeLogin("/Talents");
 
@@ -34,9 +28,8 @@ class TalentController
             exit(0);
         }
 
-
         render("talentOverview.php", ["title" => "Talenten", "talents" => $this->talents]);
-        exit(1);
+        exit(0);
     }
 
     public function deleteValue($talent)
