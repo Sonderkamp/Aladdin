@@ -47,4 +47,34 @@ class WishRepository
 
         return $returnArray;
     }
+
+    // add wish to database
+    public function addWish($newWish)
+    {
+
+        $wish = $newWish["title"];
+        $description = $newWish["description"];
+        $tag = $newWish["tag"];
+
+        // TODO: query to add wish to database
+
+
+    }
+
+    // check if user has less then 3 wishes
+    public function canAddWish($email)
+    {
+
+        $currentUser = $this->getUserID($email);
+
+        $result = Database::query_safe
+        ("select count(*) as counter from `wish` where `user` = ? and `status` != ? and 'status' != ?",
+            array($email, "Vervuld", "Geweigerd"));
+        $amountWishes = $result[0]["counter"];
+
+        if ($amountWishes >= 3) return false;
+        return true;
+    }
+
+
 }
