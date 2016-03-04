@@ -207,7 +207,6 @@ class AccountController
                 // htmlspecialchar
                 $userModel = new User();
                 if ($userModel->validate(htmlspecialchars($_POST["username"]), htmlspecialchars($_POST["password"]))) {
-                    // TODO: return to page before the loginbutton was pressed.
                     if (!empty($_SESSION["Redirect"])) {
                         redirect($_SESSION["Redirect"]);
                         $_SESSION["Redirect"] = null;
