@@ -1,17 +1,17 @@
 <?php
-/* Smarty version 3.1.29, created on 2016-03-04 12:58:46
+/* Smarty version 3.1.29, created on 2016-03-06 19:09:41
   from "C:\xampp\htdocs\View\talentOverview.php" */
 
 if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl, array (
   'has_nocache_code' => false,
   'version' => '3.1.29',
-  'unifunc' => 'content_56d9787685d878_62268485',
+  'unifunc' => 'content_56dc7265581589_20030932',
   'file_dependency' => 
   array (
     '0e0383d900db65d30b16054145943052efaf7cc0' => 
     array (
       0 => 'C:\\xampp\\htdocs\\View\\talentOverview.php',
-      1 => 1457092724,
+      1 => 1457287757,
       2 => 'file',
     ),
   ),
@@ -19,7 +19,7 @@ if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl,
   array (
   ),
 ),false)) {
-function content_56d9787685d878_62268485 ($_smarty_tpl) {
+function content_56dc7265581589_20030932 ($_smarty_tpl) {
 ?>
 
 <!--Created by PhpStorm.-->
@@ -38,7 +38,7 @@ function content_56d9787685d878_62268485 ($_smarty_tpl) {
             </thead>
             <tbody>
                 <?php
-$_from = $_smarty_tpl->tpl_vars['talents']->value;
+$_from = $_smarty_tpl->tpl_vars['user_talents']->value;
 if (!is_array($_from) && !is_object($_from)) {
 settype($_from, 'array');
 }
@@ -50,10 +50,10 @@ $_smarty_tpl->tpl_vars['talent']->_loop = true;
 $__foreach_talent_0_saved_local_item = $_smarty_tpl->tpl_vars['talent'];
 ?>
                     <tr>
-                        <td class="col-sm-12"><?php echo $_smarty_tpl->tpl_vars['talent']->value->talent;?>
+                        <td class="col-sm-12"><?php echo $_smarty_tpl->tpl_vars['talent']->value->name;?>
 </td>
                         <td class="col-sm-1">
-                            <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal" data-target="#myModal<?php echo preg_replace('/\s+/','',$_smarty_tpl->tpl_vars['talent']->value->talent);?>
+                            <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal" data-target="#myModal<?php echo preg_replace('/\s+/','',$_smarty_tpl->tpl_vars['talent']->value->name);?>
 ">
                                 <span class="glyphicon glyphicon-remove"></span>
                             </button>
@@ -91,13 +91,16 @@ $_smarty_tpl->tpl_vars['talent']->_loop = true;
 $__foreach_talent_1_saved_local_item = $_smarty_tpl->tpl_vars['talent'];
 ?>
                     <tr>
-                        <td class="col-sm-12"><?php echo $_smarty_tpl->tpl_vars['talent']->value->talent;?>
+                        <td class="col-sm-12"><?php echo $_smarty_tpl->tpl_vars['talent']->value->name;?>
 </td>
                         <td class="col-sm-1">
-                            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal<?php echo preg_replace('/\s+/','',$_smarty_tpl->tpl_vars['talent']->value->talent);?>
-">
+                            <form action="/talents" method="post">
+                                <input type="hidden" name="add_id" value="<?php echo $_smarty_tpl->tpl_vars['talent']->value->id;?>
+"/>
+                            <button type="submit" name="submit" class="btn btn-default btn-sm">
                                 <span class="glyphicon glyphicon-ok"></span>
                             </button>
+                                </form>
                         </td>
                     </tr>
                 <?php
@@ -114,7 +117,7 @@ $_smarty_tpl->tpl_vars['talent'] = $__foreach_talent_1_saved_item;
 
 <!-- Modal -->
 <?php
-$_from = $_smarty_tpl->tpl_vars['talents']->value;
+$_from = $_smarty_tpl->tpl_vars['user_talents']->value;
 if (!is_array($_from) && !is_object($_from)) {
 settype($_from, 'array');
 }
@@ -125,7 +128,7 @@ foreach ($_from as $_smarty_tpl->tpl_vars['talent']->value) {
 $_smarty_tpl->tpl_vars['talent']->_loop = true;
 $__foreach_talent_2_saved_local_item = $_smarty_tpl->tpl_vars['talent'];
 ?>
-<div id="myModal<?php echo preg_replace('/\s+/','',$_smarty_tpl->tpl_vars['talent']->value->talent);?>
+<div id="myModal<?php echo preg_replace('/\s+/','',$_smarty_tpl->tpl_vars['talent']->value->name);?>
 " class="modal fade" role="dialog">
   <div class="modal-dialog">
 
@@ -137,14 +140,14 @@ $__foreach_talent_2_saved_local_item = $_smarty_tpl->tpl_vars['talent'];
             </div>
             <div class="modal-body">
                 <p>
-                    Weet u zeker dat u het talent "<?php echo $_smarty_tpl->tpl_vars['talent']->value->talent;?>
+                    Weet u zeker dat u het talent "<?php echo $_smarty_tpl->tpl_vars['talent']->value->name;?>
 " wilt verwijderen?
                 </p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default infoLeft" data-dismiss="modal">Sluiten</button>
                 <form action="/talents" method="post">
-                    <input type="hidden" name="talent" value="<?php echo $_smarty_tpl->tpl_vars['talent']->value->talent;?>
+                    <input type="hidden" name="remove_id" value="<?php echo $_smarty_tpl->tpl_vars['talent']->value->id;?>
 "/>
                     <button type="submit" name="submit" class="btn btn-inbox info"><span class="glyphicon glyphicon-remove"></span> Verwijderen</button>
                 </form>

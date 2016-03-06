@@ -8,38 +8,43 @@
  */
 class TalentController
 {
-    private $talents;
+    private $talents, $talents_user, $talent_repository;
+
+    public function __construct()
+    {
+        $this->talent_repository = new TalentRepository();
+        $this->talents = $this->talent_repository->getTalentsWithoutAdded();
+        $this->talents_user = $this->talent_repository->getUserTalents();
+    }
 
     public function run()
     {
         // comment dit uit als je wil dat de pagina een inlog-restrictie heeft
         guaranteeLogin("/Talents");
 
-        $this->talents = array();
-        $this->talents[] = new Talent($_SESSION["user"]->email, "PHP");
-        $this->talents[] = new Talent($_SESSION["user"]->email, "Slagwerk");
-        $this->talents[] = new Talent($_SESSION["user"]->email, "Een hele lange tekst na een vraag van Max over resizing hoe dat eruit gaat zien waar we ook erg benieuwd naar zijn");
+        $this->checkPosts();
 
+        render("talentOverview.php", ["title" => "Talenten", "talents" => $this->talents, "user_talents" => $this->talents_user]);
+        exit(0);
+    }
+
+    private function checkPosts()
+    {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (!Empty($_POST["talent"])) {
-                $this->deleteValue($_POST["talent"]);
+            if (!Empty($_POST["remove_id"])) {
+                $this->talent_repository->deleteTalentFromUser($_POST["remove_id"]);
 
                 header("HTTP/1.1 303 See Other");
                 header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
                 exit(0);
             }
-        }
+            else if (!Empty($_POST["add_id"])) {
+                $this->talent_repository->addTalentToUser($_POST["add_id"]);
 
-        render("talentOverview.php", ["title" => "Talenten", "talents" => $this->talents]);
-        exit(0);
-    }
-
-    public function deleteValue($talent)
-    {
-        $talent2 = new Talent($_SESSION["user"]->email, $talent);
-
-        if (($key = array_search($talent2, $this->talents)) !== false) {
-            unset($this->talents[$key]);
+                header("HTTP/1.1 303 See Other");
+                header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+                exit(0);
+            }
         }
     }
 }
