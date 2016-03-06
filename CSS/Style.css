@@ -13,6 +13,9 @@
 .btn-inbox:focus,.btn-inbox:active,.btn-inbox:visited {
     color: white;
 }
+.btn-add:focus,.btn-add:active,.btn-add:visited {
+    color: white;
+}
 .logo{
     margin-top: -27px;
     margin-left: -10px;
@@ -162,6 +165,10 @@ body {
 }
 .btn-inbox{
     background-color: #E63946;
+    color: white;
+}
+.btn-add{
+    background-color: #35978f;
     color: white;
 }
 .dropdown{
