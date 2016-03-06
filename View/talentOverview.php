@@ -6,6 +6,14 @@
 
 <div class="container">
     <div class="col-sm-12 col-md-6">
+
+        {if $number_of_talents le 3}
+        <div class="alert alert-warning">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Waarschuwing!</strong> U moet minimaal 3 talenten hebben.
+        </div>
+        {/if}
+
         <table class="table">
             <thead>
                 <tr>
@@ -15,14 +23,20 @@
             </thead>
             <tbody>
                 {foreach from=$user_talents item=talent}
-                    <tr>
-                        <td class="col-sm-12">{$talent -> name}</td>
-                        <td class="col-sm-1">
-                            <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', $talent->name)}">
-                                <span class="glyphicon glyphicon-remove"></span>
-                            </button>
-                        </td>
-                    </tr>
+                <tr>
+                    <td class="col-sm-12">{$talent -> name}</td>
+                    <td class="col-sm-1">
+                        {if $number_of_talents le 3}
+                        <button type="button" class="btn btn-inbox disabled btn-sm">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                        {else}
+                        <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', $talent->name)}">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                        {/if}
+                    </td>
+                </tr>
                 {/foreach}
             </tbody>
         </table>
@@ -37,17 +51,17 @@
             </thead>
             <tbody>
                 {foreach from=$talents item=talent}
-                    <tr>
-                        <td class="col-sm-12">{$talent -> name}</td>
-                        <td class="col-sm-1">
-                            <form action="/talents" method="post">
-                                <input type="hidden" name="add_id" value="{$talent->id}"/>
-                                <button type="submit" name="submit" class="btn btn-add btn-sm">
-                                    <span class="glyphicon glyphicon-ok"></span>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
+                <tr>
+                    <td class="col-sm-12">{$talent -> name}</td>
+                    <td class="col-sm-1">
+                        <form action="/talents" method="post">
+                            <input type="hidden" name="add_id" value="{$talent->id}"/>
+                            <button type="submit" name="submit" class="btn btn-add btn-sm">
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
                 {/foreach}
             </tbody>
         </table>

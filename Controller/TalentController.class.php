@@ -24,7 +24,12 @@ class TalentController
 
         $this->checkPosts();
 
-        render("talentOverview.php", ["title" => "Talenten", "talents" => $this->talents, "user_talents" => $this->talents_user]);
+        render("talentOverview.php",
+            ["title" => "Talenten",
+                "talents" => $this->talents,
+                "user_talents" => $this->talents_user,
+                "number_of_talents" => $this->talent_repository->checkNumberOfTalents(),
+                "talent_error"  => "set"]);
         exit(0);
     }
 
