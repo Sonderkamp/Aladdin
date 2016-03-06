@@ -16,7 +16,8 @@ class TalentRepository
           WHERE `AcceptanceDate` IS NOT NULL
           AND `IsRejected` IS NOT FALSE
           AND `IsRejected` IS NOT NULL
-          AND `moderator_Username` IS NOT NULL");
+          AND `moderator_Username` IS NOT NULL
+          ORDER BY `talent`.`Name` ASC");
 
         $returnArray = array();
 
@@ -55,7 +56,8 @@ class TalentRepository
           AND `talent`.`AcceptanceDate` IS NOT NULL
           AND `talent`.`IsRejected` IS NOT FALSE
           AND `talent`.`IsRejected` IS NOT NULL
-          AND `talent`.`moderator_Username` IS NOT NULL",
+          AND `talent`.`moderator_Username` IS NOT NULL
+          ORDER BY `talent`.`Name` ASC",
             array($_SESSION["user"]->email));
 
         $returnArray = array();
@@ -90,7 +92,8 @@ class TalentRepository
           FROM `talent`
           JOIN `talent_has_user` ON `talent`.`Id` = `talent_has_user`.`talent_Id`
           JOIN `user` ON `talent_has_user`.`user_Email` = `user`.`Email`
-          WHERE `user`.`Email` = ?",
+          WHERE `user`.`Email` = ?
+          ORDER BY `talent`.`Name` ASC",
         array($_SESSION["user"]->email));
 
         $returnArray = array();
