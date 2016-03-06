@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fdff3ebf-a012-4b8f-b011-ea94c721b9b6" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSS/Style.css" afterPath="$PROJECT_DIR$/CSS/Style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Model/TalentRepository.php" afterPath="$PROJECT_DIR$/Model/TalentRepository.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/talentOverview.php" afterPath="$PROJECT_DIR$/View/talentOverview.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates_c/0e0383d900db65d30b16054145943052efaf7cc0_0.file.talentOverview.php.php" afterPath="$PROJECT_DIR$/templates_c/0e0383d900db65d30b16054145943052efaf7cc0_0.file.talentOverview.php.php" />
     </list>
@@ -29,25 +29,26 @@
       <file leaf-file-name="TalentRepository.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Model/TalentRepository.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-14.96">
-              <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+            <state vertical-scroll-proportion="-44.96">
+              <caret line="139" column="18" selection-start-line="139" selection-start-column="18" selection-end-line="139" selection-end-column="18" />
               <folding>
-                <marker date="1457288106771" expanded="true" signature="202:444" placeholder="SELECT * FRO... talent" />
-                <marker date="1457288106771" expanded="true" signature="1038:1783" placeholder="SELECT `tale... talent" />
-                <marker date="1457288106771" expanded="true" signature="1428:1538" placeholder="SELECT `tale... talent_has_user" />
-                <marker date="1457288106771" expanded="true" signature="2734:3213" placeholder="SELECT `tale... talent" />
-                <marker date="1457288106771" expanded="true" signature="3839:3967" placeholder="DELETE FROM " />
-                <marker date="1457288106771" expanded="true" signature="4113:4194" placeholder="INSERT INTO `talent_has_user`... " />
+                <marker date="1457289087974" expanded="true" signature="202:444" placeholder="SELECT * FRO... talent" />
+                <marker date="1457289087974" expanded="true" signature="1038:1783" placeholder="SELECT `tale... talent" />
+                <marker date="1457289087974" expanded="true" signature="1428:1538" placeholder="SELECT `tale... talent_has_user" />
+                <marker date="1457289087974" expanded="true" signature="2734:3213" placeholder="SELECT `tale... talent" />
+                <marker date="1457289087974" expanded="true" signature="3839:3967" placeholder="DELETE FROM " />
+                <marker date="1457289087974" expanded="true" signature="4113:4194" placeholder="INSERT INTO `talent_has_user`... " />
+                <marker date="1457289087974" expanded="true" signature="4352:4467" placeholder="SELECT COUNT... talent_has_user" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="talentOverview.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="talentOverview.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/View/talentOverview.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-46.24">
-              <caret line="104" column="74" selection-start-line="104" selection-start-column="74" selection-end-line="104" selection-end-column="74" />
+            <state vertical-scroll-proportion="1.6002215">
+              <caret line="85" column="10" selection-start-line="85" selection-start-column="10" selection-end-line="85" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -63,11 +64,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Style.css" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Style.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CSS/Style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.09725401">
+            <state vertical-scroll-proportion="-1.574074">
               <caret line="23" column="3" selection-start-line="23" selection-start-column="3" selection-end-line="23" selection-end-column="3" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TalentController.class.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Controller/TalentController.class.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-21.16">
+              <caret line="33" column="46" selection-start-line="33" selection-start-column="46" selection-end-line="33" selection-end-column="46" />
               <folding />
             </state>
           </provider>
@@ -105,9 +116,9 @@
         <option value="$PROJECT_DIR$/Controller/WishController.class.php" />
         <option value="$PROJECT_DIR$/Model/WishRepository.php" />
         <option value="$PROJECT_DIR$/View/wishOverview.php" />
+        <option value="$PROJECT_DIR$/CSS/Style.css" />
         <option value="$PROJECT_DIR$/Model/TalentRepository.php" />
         <option value="$PROJECT_DIR$/View/talentOverview.php" />
-        <option value="$PROJECT_DIR$/CSS/Style.css" />
       </list>
     </option>
   </component>
@@ -398,29 +409,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Model/TalentRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.96">
-          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding>
-            <marker date="1457288106771" expanded="true" signature="202:444" placeholder="SELECT * FRO... talent" />
-            <marker date="1457288106771" expanded="true" signature="1038:1783" placeholder="SELECT `tale... talent" />
-            <marker date="1457288106771" expanded="true" signature="1428:1538" placeholder="SELECT `tale... talent_has_user" />
-            <marker date="1457288106771" expanded="true" signature="2734:3213" placeholder="SELECT `tale... talent" />
-            <marker date="1457288106771" expanded="true" signature="3839:3967" placeholder="DELETE FROM " />
-            <marker date="1457288106771" expanded="true" signature="4113:4194" placeholder="INSERT INTO `talent_has_user`... " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/View/talentOverview.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-46.24">
-          <caret line="104" column="74" selection-start-line="104" selection-start-column="74" selection-end-line="104" selection-end-column="74" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/View/header.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-57.8">
@@ -431,8 +419,40 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/CSS/Style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.09725401">
+        <state vertical-scroll-proportion="-1.574074">
           <caret line="23" column="3" selection-start-line="23" selection-start-column="3" selection-end-line="23" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Controller/TalentController.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-21.16">
+          <caret line="33" column="46" selection-start-line="33" selection-start-column="46" selection-end-line="33" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Model/TalentRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-44.96">
+          <caret line="139" column="18" selection-start-line="139" selection-start-column="18" selection-end-line="139" selection-end-column="18" />
+          <folding>
+            <marker date="1457289087974" expanded="true" signature="202:444" placeholder="SELECT * FRO... talent" />
+            <marker date="1457289087974" expanded="true" signature="1038:1783" placeholder="SELECT `tale... talent" />
+            <marker date="1457289087974" expanded="true" signature="1428:1538" placeholder="SELECT `tale... talent_has_user" />
+            <marker date="1457289087974" expanded="true" signature="2734:3213" placeholder="SELECT `tale... talent" />
+            <marker date="1457289087974" expanded="true" signature="3839:3967" placeholder="DELETE FROM " />
+            <marker date="1457289087974" expanded="true" signature="4113:4194" placeholder="INSERT INTO `talent_has_user`... " />
+            <marker date="1457289087974" expanded="true" signature="4352:4467" placeholder="SELECT COUNT... talent_has_user" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/View/talentOverview.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.6002215">
+          <caret line="85" column="10" selection-start-line="85" selection-start-column="10" selection-end-line="85" selection-end-column="10" />
           <folding />
         </state>
       </provider>

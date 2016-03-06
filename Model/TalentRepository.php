@@ -130,4 +130,14 @@ class TalentRepository
           VALUES (?, ?)",
             array($id,$_SESSION["user"]->email));
     }
+
+    public function checkNumberOfTalents()
+    {
+        $result = Database::query_safe
+        ("SELECT COUNT(`user_Email`) AS `Number_of_talents`
+          FROM `talent_has_user`
+          WHERE `user_Email` = ?",
+            array($_SESSION["user"]->email));
+        return $result[0]["Number_of_talents"];
+    }
 }
