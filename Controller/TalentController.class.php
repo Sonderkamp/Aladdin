@@ -12,6 +12,7 @@ class TalentController
 
     public function __construct()
     {
+        guaranteeLogin("/Talents");
         $this->talent_repository = new TalentRepository();
         $this->talents = $this->talent_repository->getTalentsWithoutAdded();
         $this->talents_user = $this->talent_repository->getUserTalents();
@@ -20,7 +21,6 @@ class TalentController
     public function run()
     {
         // comment dit uit als je wil dat de pagina een inlog-restrictie heeft
-        guaranteeLogin("/Talents");
 
         $this->checkPosts();
 
