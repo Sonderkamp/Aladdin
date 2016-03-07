@@ -60,9 +60,13 @@ class TalentController
     {
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
             if (!Empty($_GET["show_added_talents"])) {
-                if($_GET["show_added_talents"] > 0 && $_GET["show_added_talents"] <= $this->user_talents_number) {
+                if($_GET["show_added_talents"] > 0 & $_GET["show_added_talents"] <= $this->user_talents_number) {
                     $this->talents_user = $this->talent_repository->getSelectionTalents($_GET["show_added_talents"]);
                     $this->current_user_talent_number = $_GET["show_added_talents"];
+                }
+                else{
+                    $this->talents_user = $this->talent_repository->getSelectionTalents(1);
+                    $this->current_user_talent_number = 1;
                 }
             }
             else {
