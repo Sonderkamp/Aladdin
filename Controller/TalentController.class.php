@@ -8,7 +8,7 @@
  */
 class TalentController
 {
-    private $talents, $talents_user, $talent_repository, $user_talents_number, $current_user_talent_number;
+    private $talents, $talents_user, $talent_repository, $talent_numbers, $current_talent_number, $user_talents_number, $current_user_talent_number;
 
     public function __construct()
     {
@@ -17,7 +17,8 @@ class TalentController
         $this->talent_repository = new TalentRepository();
         $this->talents = $this->talent_repository->getTalentsWithoutAdded();
         $this->talents_user = $this->talent_repository->getUserTalents();
-        $this->user_talents_number = ceil($this->talent_repository->checkNumberOfTalents()/10);
+        $this->user_talents_number = ceil($this->talent_repository->checkNumberOfTalentsFromUser()/10);
+        $this->talent_numbers = ceil($this->talent_repository->checkNumberOfTalents()/10);
     }
 
     public function run()
@@ -29,10 +30,12 @@ class TalentController
             ["title" => "Talenten",
                 "talents" => $this->talents,
                 "user_talents" => $this->talents_user,
-                "number_of_talents" => $this->talent_repository->checkNumberOfTalents(),
-                "talent_error"  => "set",
+                "number_of_talents" => $this->talent_repository->checkNumberOfTalentsFromUser(),
+                "talent_error" => "set",
                 "user_talents_number" => $this->user_talents_number,
-                "current_user_talent_number" => $this->current_user_talent_number]);
+                "current_user_talent_number" => $this->current_user_talent_number,
+                "talent_number" => $this->talent_numbers,
+                "current_talent_number" => $this->current_talent_number]);
         exit(0);
     }
 
@@ -61,17 +64,32 @@ class TalentController
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
             if (!Empty($_GET["show_added_talents"])) {
                 if($_GET["show_added_talents"] > 0 & $_GET["show_added_talents"] <= $this->user_talents_number) {
-                    $this->talents_user = $this->talent_repository->getSelectionTalents($_GET["show_added_talents"]);
+                    $this->talents_user = $this->talent_repository->getSelectionUserTalents($_GET["show_added_talents"]);
                     $this->current_user_talent_number = $_GET["show_added_talents"];
                 }
                 else{
-                    $this->talents_user = $this->talent_repository->getSelectionTalents(1);
+                    $this->talents_user = $this->talent_repository->getSelectionUserTalents(1);
                     $this->current_user_talent_number = 1;
                 }
             }
             else {
-                $this->talents_user = $this->talent_repository->getSelectionTalents(1);
+                $this->talents_user = $this->talent_repository->getSelectionUserTalents(1);
                 $this->current_user_talent_number = 1;
+            }
+
+            if (!Empty($_GET["show_talents"])) {
+                if($_GET["show_talents"] > 0 & $_GET["show_talents"] <= $this->talent_numbers) {
+                    $this->talents = $this->talent_repository->getSelectionTalents($_GET["show_talents"]);
+                    $this->current_talent_number = $_GET["show_talents"];
+                }
+                else{
+                    $this->talents = $this->talent_repository->getSelectionTalents(1);
+                    $this->current_talent_number = 1;
+                }
+            }
+            else {
+                $this->talents = $this->talent_repository->getSelectionTalents(1);
+                $this->current_talent_number = 1;
             }
         }
     }

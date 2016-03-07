@@ -112,11 +112,11 @@
                 {/foreach}
             </tbody>
         </table>
-        {if $user_talents_number gt 1}
+        {if $talent_number gt 1}
         <div class="center">
             <nav>
                 <ul class="pagination">
-                    {if $current_user_talent_number le 1}
+                    {if $current_talent_number le 1}
                     <li class="disabled">
                         <a href="#" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
@@ -124,25 +124,25 @@
                     </li>
                     {else}
                     <li>
-                        <a href="/talents/show_added_talents={$current_user_talent_number - 1}" aria-label="Previous">
+                        <a href="/talents/show_talents={$current_talent_number - 1}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     {/if}
 
-                    {for $number=1 to $user_talents_number}
-                    {if $number eq $current_user_talent_number}
+                    {for $number=1 to $talent_number}
+                    {if $number eq $current_talent_number}
                     <li class="active">
                         <a href="#">{$number}</a>
                     </li>
                     {else}
                     <li>
-                        <a href="/talents/show_added_talents={$number}">{$number}</a>
+                        <a href="/talents/show_talents={$number}">{$number}</a>
                     </li>
                     {/if}
                     {/for}
 
-                    {if $current_user_talent_number ge $user_talents_number}
+                    {if $current_talent_number ge $talent_number}
                     <li class="disabled">
                         <a href="#" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
@@ -150,7 +150,7 @@
                     </li>
                     {else}
                     <li>
-                        <a href="/talents/show_added_talents={$current_user_talent_number + 1}" aria-label="Next">
+                        <a href="/talents/show_talents={$current_talent_number + 1}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
