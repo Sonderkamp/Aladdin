@@ -23,6 +23,22 @@ class TalentController
 
     public function run()
     {
+        if (isset($_GET["action"])) {
+            switch (strtolower($_GET["action"])) {
+                case "add_talent":
+                    $this->addTalent();
+                    break;
+                default:
+                    apologize("404 not found, Go back to my wishes");
+                    break;
+            }
+        }
+        else {
+            $this->defaultTalent();
+        }
+    }
+
+    private function defaultTalent() {
         $this->checkPost();
         $this->checkGet();
 
@@ -42,6 +58,14 @@ class TalentController
     private function checkPost()
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (!Empty($_POST["talent_name"])) {
+                $this->talent_repository->addTalent($_POST["talent_name"]);
+
+                header("HTTP/1.1 303 See Other");
+                header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+                exit(0);
+            }
+
             if (!Empty($_POST["remove_id"])) {
                 $this->talent_repository->deleteTalentFromUser($_POST["remove_id"]);
 
@@ -92,5 +116,12 @@ class TalentController
                 $this->current_talent_number = 1;
             }
         }
+    }
+
+    private function addTalent()
+    {
+
+        render("addTalent.php",
+            ["title" => "Talent toevoegen"]);
     }
 }

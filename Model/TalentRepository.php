@@ -214,6 +214,14 @@ class TalentRepository
             array($id,$_SESSION["user"]->email));
     }
 
+    public function addTalent($name)
+    {
+        Database::query_safe
+        ("INSERT INTO `talent` (`Name`, `CreationDate`, `AcceptanceDate`, `IsRejected`, `moderator_Username`, `user_Email`)
+          VALUES (?, CURRENT_TIMESTAMP, NULL, NULL, NULL, ?)",
+            array($name,$_SESSION["user"]->email));
+    }
+
     public function checkNumberOfTalentsFromUser()
     {
         $result = Database::query_safe
