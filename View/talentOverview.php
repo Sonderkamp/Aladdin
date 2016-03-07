@@ -59,7 +59,15 @@
                     {/if}
 
                     {for $number=1 to $user_talents_number}
-                    <li><a href="/talents/show_added_talents={$number}">{$number}</a></li>
+                    {if $number eq $current_user_talent_number}
+                    <li class="active">
+                        <a href="#">{$number}</a>
+                    </li>
+                    {else}
+                    <li>
+                        <a href="/talents/show_added_talents={$number}">{$number}</a>
+                    </li>
+                    {/if}
                     {/for}
 
                     {if $current_user_talent_number ge $user_talents_number}
@@ -123,7 +131,15 @@
                     {/if}
 
                     {for $number=1 to $user_talents_number}
-                    <li><a href="/talents/show_added_talents={$number}">{$number}</a></li>
+                    {if $number eq $current_user_talent_number}
+                    <li class="active">
+                        <a href="#">{$number}</a>
+                    </li>
+                    {else}
+                    <li>
+                        <a href="/talents/show_added_talents={$number}">{$number}</a>
+                    </li>
+                    {/if}
                     {/for}
 
                     {if $current_user_talent_number ge $user_talents_number}
