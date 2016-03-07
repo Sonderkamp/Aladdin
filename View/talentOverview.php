@@ -40,6 +40,45 @@
                 {/foreach}
             </tbody>
         </table>
+        {if $user_talents_number gt 1}
+        <div class="center">
+            <nav>
+                <ul class="pagination">
+                    {if $current_user_talent_number le 1}
+                    <li class="disabled">
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {else}
+                    <li>
+                        <a href="/talents/show_added_talents={$current_user_talent_number - 1}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {/if}
+
+                    {for $number=1 to $user_talents_number}
+                    <li><a href="/talents/show_added_talents={$number}">{$number}</a></li>
+                    {/for}
+
+                    {if $current_user_talent_number ge $user_talents_number}
+                    <li class="disabled">
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    {else}
+                    <li>
+                        <a href="/talents/show_added_talents={$current_user_talent_number + 1}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    {/if}
+                </ul>
+            </nav>
+        </div>
+        {/if}
     </div>
     <div class="col-sm-12 col-md-6">
         <table class="table">

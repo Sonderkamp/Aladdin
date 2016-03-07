@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fdff3ebf-a012-4b8f-b011-ea94c721b9b6" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSS/Style.css" afterPath="$PROJECT_DIR$/CSS/Style.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Controller/TalentController.class.php" afterPath="$PROJECT_DIR$/Controller/TalentController.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Model/TalentRepository.php" afterPath="$PROJECT_DIR$/Model/TalentRepository.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/talentOverview.php" afterPath="$PROJECT_DIR$/View/talentOverview.php" />
     </list>
     <ignored path="Aladdin.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -24,12 +26,92 @@
     <favorites_list name="Aladdin" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="TalentController.class.php" pinned="false" current-in-tab="true">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="TalentController.class.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Controller/TalentController.class.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2635659">
-              <caret line="14" column="35" selection-start-line="14" selection-start-column="35" selection-end-line="14" selection-end-column="35" />
+            <state vertical-scroll-proportion="-23.88">
+              <caret line="61" column="54" selection-start-line="61" selection-start-column="54" selection-end-line="61" selection-end-column="54" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="talentOverview.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/View/talentOverview.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.81693363">
+              <caret line="105" column="16" selection-start-line="105" selection-start-column="16" selection-end-line="105" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TalentRepository.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Model/TalentRepository.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-40.88">
+              <caret line="160" column="35" selection-start-line="160" selection-start-column="35" selection-end-line="160" selection-end-column="35" />
+              <folding>
+                <marker date="1457365197557" expanded="true" signature="203:445" placeholder="SELECT * FRO... talent" />
+                <marker date="1457365197557" expanded="true" signature="1039:1784" placeholder="SELECT `tale... talent" />
+                <marker date="1457365197557" expanded="true" signature="1429:1539" placeholder="SELECT `tale... talent_has_user" />
+                <marker date="1457365197557" expanded="true" signature="2511:3014" placeholder="SELECT `tale... talent" />
+                <marker date="1457365197557" expanded="true" signature="2511:3016" placeholder="SELECT `tale... talent" />
+                <marker date="1457365197557" expanded="true" signature="3647:4126" placeholder="SELECT `tale... talent" />
+                <marker date="1457365197557" expanded="true" signature="4752:4880" placeholder="DELETE FROM " />
+                <marker date="1457365197557" expanded="true" signature="5026:5107" placeholder="INSERT INTO `talent_has_user`... " />
+                <marker date="1457365197557" expanded="true" signature="5265:5380" placeholder="SELECT COUNT... talent_has_user" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WishController.class.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Controller/WishController.class.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-18.36">
+              <caret line="27" column="41" selection-start-line="27" selection-start-column="41" selection-end-line="27" selection-end-column="41" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="login.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/View/login.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Inbox.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/View/Inbox.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="20.4">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/index.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Style.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/CSS/Style.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-32.72">
+              <caret line="241" column="17" selection-start-line="241" selection-start-column="1" selection-end-line="241" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -49,8 +131,8 @@
         <option value="$PROJECT_DIR$/View/wishOverview.php" />
         <option value="$PROJECT_DIR$/CSS/Style.css" />
         <option value="$PROJECT_DIR$/Model/TalentRepository.php" />
-        <option value="$PROJECT_DIR$/View/talentOverview.php" />
         <option value="$PROJECT_DIR$/Controller/TalentController.class.php" />
+        <option value="$PROJECT_DIR$/View/talentOverview.php" />
       </list>
     </option>
   </component>
@@ -94,8 +176,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -172,6 +252,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -228,6 +310,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3294979" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -239,7 +322,6 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
@@ -264,6 +346,14 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Controller/TalentController.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/View/wishOverview.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -334,27 +424,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CSS/Style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.09725401">
-          <caret line="23" column="3" selection-start-line="23" selection-start-column="3" selection-end-line="23" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Model/TalentRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-91.8">
-          <caret line="135" column="38" selection-start-line="135" selection-start-column="38" selection-end-line="135" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Controller/WishController.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.50830567">
-          <caret line="27" column="41" selection-start-line="27" selection-start-column="41" selection-end-line="27" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/View/wishOverview.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-11.64">
@@ -362,17 +431,76 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/View/talentOverview.php">
+    <entry file="file://$PROJECT_DIR$/CSS/Style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2635659">
-          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+        <state vertical-scroll-proportion="-32.72">
+          <caret line="241" column="17" selection-start-line="241" selection-start-column="1" selection-end-line="241" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/View/login.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/View/Inbox.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="20.4">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Controller/WishController.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-18.36">
+          <caret line="27" column="41" selection-start-line="27" selection-start-column="41" selection-end-line="27" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Model/TalentRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-40.88">
+          <caret line="160" column="35" selection-start-line="160" selection-start-column="35" selection-end-line="160" selection-end-column="35" />
+          <folding>
+            <marker date="1457365197557" expanded="true" signature="203:445" placeholder="SELECT * FRO... talent" />
+            <marker date="1457365197557" expanded="true" signature="1039:1784" placeholder="SELECT `tale... talent" />
+            <marker date="1457365197557" expanded="true" signature="1429:1539" placeholder="SELECT `tale... talent_has_user" />
+            <marker date="1457365197557" expanded="true" signature="2511:3014" placeholder="SELECT `tale... talent" />
+            <marker date="1457365197557" expanded="true" signature="2511:3016" placeholder="SELECT `tale... talent" />
+            <marker date="1457365197557" expanded="true" signature="3647:4126" placeholder="SELECT `tale... talent" />
+            <marker date="1457365197557" expanded="true" signature="4752:4880" placeholder="DELETE FROM " />
+            <marker date="1457365197557" expanded="true" signature="5026:5107" placeholder="INSERT INTO `talent_has_user`... " />
+            <marker date="1457365197557" expanded="true" signature="5265:5380" placeholder="SELECT COUNT... talent_has_user" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Controller/TalentController.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2635659">
-          <caret line="14" column="35" selection-start-line="14" selection-start-column="35" selection-end-line="14" selection-end-column="35" />
+        <state vertical-scroll-proportion="-23.88">
+          <caret line="61" column="54" selection-start-line="61" selection-start-column="54" selection-end-line="61" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/View/talentOverview.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.81693363">
+          <caret line="105" column="16" selection-start-line="105" selection-start-column="16" selection-end-line="105" selection-end-column="16" />
           <folding />
         </state>
       </provider>

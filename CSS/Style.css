@@ -234,3 +234,11 @@ a:hover {
 {
     display: inline;
 }
+
+.center>nav{
+    margin: auto;
+    color: #35978f;
+}
+.text-color-green{
+    color: #35978f;
+}

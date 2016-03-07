@@ -8,7 +8,7 @@
  */
 class TalentRepository
 {
-    public function getAcceptedWishes()
+    public function getAcceptedTalents()
     {
         $result = Database::query
         ("SELECT *
@@ -78,9 +78,47 @@ class TalentRepository
         return $returnArray;
     }
 
+    public function getSelectionTalents($value)
+    {
+        // TODO: check if value is number
+        $value -= 1;
+        $value *= 10;
+        $result = Database::query_safe
+        ("SELECT `talent`.`Id`,
+          `talent`.`Name`,
+          `talent`.`CreationDate`,
+          `talent`.`AcceptanceDate`,
+          `talent`.`IsRejected`,
+          `talent`.`moderator_Username`,
+          `talent`.`user_Email`
+          FROM `talent`
+          JOIN `talent_has_user` ON `talent`.`Id` = `talent_has_user`.`talent_Id`
+          JOIN `user` ON `talent_has_user`.`user_Email` = `user`.`Email`
+          WHERE `user`.`Email` = ?
+          ORDER BY `talent`.`Name` ASC
+          LIMIT $value,10",
+            array($_SESSION["user"]->email));
+
+        $returnArray = array();
+
+        for ($i = 0; $i < count($result); $i++) {
+
+            $returnArray[$i] = new Talent(
+                $result[$i]["Id"],
+                $result[$i]["Name"],
+                $result[$i]["CreationDate"],
+                $result[$i]["AcceptanceDate"],
+                $result[$i]["IsRejected"],
+                $result[$i]["moderator_Username"],
+                $result[$i]["user_Email"]
+            );
+        }
+
+        return $returnArray;
+    }
+
     public function getUserTalents()
     {
-        //SELECT talent.Id, talent.Name, talent.CreationDate, talent.AcceptanceDate, talent.IsRejected, talent.moderator_Username, talent.user_Email FROM talent JOIN talent_has_user ON talent.Id = talent_has_user.talent_Id JOIN user ON talent_has_user.user_Email = user.Email WHERE user.Email = "joost@kolkhuistanke.nl"
         $result = Database::query_safe
         ("SELECT `talent`.`Id`,
           `talent`.`Name`,

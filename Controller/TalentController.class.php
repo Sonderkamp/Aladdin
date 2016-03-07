@@ -8,32 +8,35 @@
  */
 class TalentController
 {
-    private $talents, $talents_user, $talent_repository;
+    private $talents, $talents_user, $talent_repository, $user_talents_number, $current_user_talent_number;
 
     public function __construct()
     {
         guaranteeLogin("/Talents");
+
         $this->talent_repository = new TalentRepository();
         $this->talents = $this->talent_repository->getTalentsWithoutAdded();
         $this->talents_user = $this->talent_repository->getUserTalents();
+        $this->user_talents_number = ceil($this->talent_repository->checkNumberOfTalents()/10);
     }
 
     public function run()
     {
-        // comment dit uit als je wil dat de pagina een inlog-restrictie heeft
-
-        $this->checkPosts();
+        $this->checkPost();
+        $this->checkGet();
 
         render("talentOverview.php",
             ["title" => "Talenten",
                 "talents" => $this->talents,
                 "user_talents" => $this->talents_user,
                 "number_of_talents" => $this->talent_repository->checkNumberOfTalents(),
-                "talent_error"  => "set"]);
+                "talent_error"  => "set",
+                "user_talents_number" => $this->user_talents_number,
+                "current_user_talent_number" => $this->current_user_talent_number]);
         exit(0);
     }
 
-    private function checkPosts()
+    private function checkPost()
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!Empty($_POST["remove_id"])) {
@@ -49,6 +52,22 @@ class TalentController
                 header("HTTP/1.1 303 See Other");
                 header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
                 exit(0);
+            }
+        }
+    }
+
+    private function checkGet()
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "GET") {
+            if (!Empty($_GET["show_added_talents"])) {
+                if($_GET["show_added_talents"] > 0 && $_GET["show_added_talents"] <= $this->user_talents_number) {
+                    $this->talents_user = $this->talent_repository->getSelectionTalents($_GET["show_added_talents"]);
+                    $this->current_user_talent_number = $_GET["show_added_talents"];
+                }
+            }
+            else {
+                $this->talents_user = $this->talent_repository->getSelectionTalents(1);
+                $this->current_user_talent_number = 1;
             }
         }
     }
