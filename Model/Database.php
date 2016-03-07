@@ -32,8 +32,7 @@ class Database
                 return false;
             }
 
-            $rows = new ArrayObject($result->fetchAll(PDO::FETCH_ASSOC));
-            return $rows;
+            return $result->fetchAll(PDO::FETCH_ASSOC);
 
         } catch (PDOException $e) {
             Database::printError($e);
@@ -56,8 +55,7 @@ class Database
             if ($result !== false) {
                 $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-                $rows = new ArrayObject($result);
-                return $rows;
+                return $result;
             } else {
                 return false;
             }
@@ -77,4 +75,31 @@ class Database
         exit(1);
     }
 
+    public static function getPDO()
+    {
+        return Database::open();
+    }
+    public static function transaction_action_safe($pdo, $sql, $parameters)
+    {
+        try {
+
+            $statement = $pdo->prepare($sql);
+
+            if ($statement === false)
+                return false;
+            // execute SQL statement
+            $result = $statement->execute($parameters);
+
+            if ($result !== false) {
+                $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+                return $result;
+            } else {
+                return false;
+            }
+
+        } catch (PDOException $e) {
+            Database::printError($e);
+        }
+    }
 }

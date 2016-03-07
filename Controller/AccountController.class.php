@@ -10,9 +10,11 @@ class AccountController
 {
     public function run()
     {
+
         if (Empty($_GET["action"])) {
             $this->pagepicker();
         } else {
+            $_SESSION["Redirect"] = null;
             switch (strtolower($_GET["action"])) {
                 case "register":
                     $this->register();
@@ -23,6 +25,9 @@ class AccountController
                 case "recover":
                     $this->recover();
                     break;
+                case "check":
+                    $this->check();
+                    break;
                 case "activate":
                     $this->activate();
                     break;
@@ -30,6 +35,44 @@ class AccountController
                     $this->pagepicker();
                     break;
             }
+        }
+    }
+
+    public function guaranteeLogin($s)
+    {
+        if (!Empty($_SESSION["user"])) {
+
+            return true;
+        } else {
+            $_SESSION["Redirect"] = $s;
+            $this->pagepicker();
+            exit(1);
+        }
+
+    }
+
+    private function check()
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+            if (!Empty($_POST["username"])) {
+                // htmlspecialchar
+                $userModel = new User();
+                if ($userModel->getUser($_POST["username"]) !== false) {
+                    header('Content-Type: application/json');
+                    echo json_encode(array('result' => true));
+                    exit();
+                }
+
+                header('Content-Type: application/json');
+                echo json_encode(array('result' => false));
+                exit();
+            }
+            header('Content-Type: application/json');
+            echo json_encode(array('result' => false));
+            exit();
+        } else {
+            $this->pagepicker();
         }
     }
 
@@ -98,7 +141,10 @@ class AccountController
                     $mailer = new Email();
                     if ($userModel->setRecoveryMail($mailer, $_POST["username"])) {
                         $mailer->sendMail();
-                        $this->recoverError("Email send.");
+                        render("messageScreen.php", ["title" => "Email verzonden.", "message" => "Er is een email verstuurd naar " . $_POST["username"] . " met een link om uw wachtwoord te resetten.
+                    Deze link verschijnt binnen drie minuten.
+                    als u niks binnenkrijgt, kijk alstublieft in uw spam folder."]);
+                        exit(1);
 
                     } else {
                         $this->recoverError("Email send error.");
@@ -139,6 +185,7 @@ class AccountController
         // validate email-link
         $username = $userModel->validateActivateToken($token);
         if ($username === false) {
+            $userModel->logRecovery();
             apologize("niet geldige token.");
 
         }
@@ -148,7 +195,7 @@ class AccountController
     private function canRecover($userModel)
     {
         if (!$userModel->CanRecover()) {
-            apologize("Er is afgelopen 24 uur te veel (verkeerde) activiteit van dit IP adress gekomen. Wacht 24 uur voordat u opnieuw een recovery probeert.");
+            apologize("Er is afgelopen 24 uur te veel (verkeerde) activiteit van dit IP adress gekomen. Wacht 24 uur voordat u opnieuw een activatielink of recoverylink probeert.");
         }
     }
 
@@ -160,7 +207,11 @@ class AccountController
                 // htmlspecialchar
                 $userModel = new User();
                 if ($userModel->validate(htmlspecialchars($_POST["username"]), htmlspecialchars($_POST["password"]))) {
-                    // TODO: return to page before the loginbutton was pressed.
+                    if (!empty($_SESSION["Redirect"])) {
+                        redirect($_SESSION["Redirect"]);
+                        $_SESSION["Redirect"] = null;
+                        exit(0);
+                    }
                     redirect("/");
                     exit();
                 }
@@ -196,8 +247,10 @@ class AccountController
                 || Empty($_POST["address"])
                 || Empty($_POST["postalcode"])
                 || Empty($_POST["country"])
-                || Empty($_POST["province"])
                 || Empty($_POST["city"])
+                || Empty($_POST["initial"])
+                || Empty($_POST["dob"])
+                || Empty($_POST["gender"])
             ) {
                 render("register.php", ["title" => "register", "error" => "Vul AUB alles in"]);
                 exit(1);
@@ -217,8 +270,15 @@ class AccountController
             $arr["address"] = $_POST["address"];
             $arr["postalcode"] = $_POST["postalcode"];
             $arr["country"] = $_POST["country"];
-            $arr["province"] = $_POST["province"];
             $arr["city"] = $_POST["city"];
+            $arr["dob"] = $_POST["dob"];
+            $arr["initial"] = $_POST["initial"];
+            $arr["gender"] = $_POST["gender"];
+            if (!Empty($_POST["handicap"]))
+                $arr["handicap"] = true;
+            else
+                $arr["handicap"] = false;
+
 
             $userModel = new User();
             $res = $userModel->tryRegister($arr);
@@ -226,7 +286,9 @@ class AccountController
                 $mailer = new Email();
                 if ($userModel->setActivateMail($mailer, $arr["username"])) {
                     $mailer->sendMail();
-                    render("register.php", ["title" => "register", "error" => "Mail send."]);
+                    render("messageScreen.php", ["title" => "Email verzonden.", "message" => "Er is een email verstuurd naar " . $arr["username"] . " met een activatielink.
+                    Deze link verschijnt binnen drie minuten.
+                    als u niks binnenkrijgt, kijk alstublieft in uw spam folder."]);
                     exit(1);
 
                 } else {

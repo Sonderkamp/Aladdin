@@ -1,3 +1,26 @@
+<?php
+/* Smarty version 3.1.29, created on 2016-03-04 12:52:04
+  from "C:\xampp\htdocs\View\header.php" */
+
+if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl, array (
+  'has_nocache_code' => false,
+  'version' => '3.1.29',
+  'unifunc' => 'content_56d976e43145a0_83795151',
+  'file_dependency' => 
+  array (
+    '016991fde7ba0011fd04a1dc56efe40e6c5eb258' => 
+    array (
+      0 => 'C:\\xampp\\htdocs\\View\\header.php',
+      1 => 1457090544,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_56d976e43145a0_83795151 ($_smarty_tpl) {
+?>
 <!DOCTYPE html >
 <html lang="en">
 <head>
@@ -15,21 +38,30 @@
     <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/theme-default.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="/CSS/charts.css">
 
-    {if isset($title)}
-    <title>Aladdin: {htmlspecialchars($title)}</title>
-    {else}
+    <?php if (isset($_smarty_tpl->tpl_vars['title']->value)) {?>
+    <title>Aladdin: <?php echo htmlspecialchars($_smarty_tpl->tpl_vars['title']->value);?>
+</title>
+    <?php } else { ?>
     <title>Aladdin</title>
-    {/if}
+    <?php }?>
 
 
 </head>
 
 <body>
 
-<script src="https://code.jquery.com/jquery-latest.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="//code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/jquery.form-validator.min.js"></script>
+<?php echo '<script'; ?>
+ src="https://code.jquery.com/jquery-latest.min.js"><?php echo '</script'; ?>
+>
+<?php echo '<script'; ?>
+ src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"><?php echo '</script'; ?>
+>
+<?php echo '<script'; ?>
+ type="text/javascript" src="//code.jquery.com/ui/1.10.1/jquery-ui.js"><?php echo '</script'; ?>
+>
+<?php echo '<script'; ?>
+ src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/jquery.form-validator.min.js"><?php echo '</script'; ?>
+>
 
 <nav class="navbar navbar-default">
     <div class="container-fluid">
@@ -43,7 +75,7 @@
                 <span class="icon-bar"></span>
             </button>
 
-            <a class="navbar-brand pull-left" href="/"><img alt="logo" class="logo" src="/Resources/Images/logo.png"/> </a>
+            <a class="navbar-brand pull-left" href="/"><img class="logo" src="/Resources/Images/logo.png"/> </a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -53,7 +85,7 @@
 
             <ul class="nav navbar-nav navbar-left">
 
-                {if isset($admin)}
+                <?php if (isset($_smarty_tpl->tpl_vars['admin']->value)) {?>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">
@@ -69,20 +101,21 @@
                         <li><a href="/">Gebruikers</a></li>
                     </ul>
                 </li>
-                {/if}
-                {if isset($user)}
+                <?php }?>
+                <?php if (isset($_smarty_tpl->tpl_vars['user']->value)) {?>
                 <li><a href="/wishes"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
                 <li><a href="/Inbox"> <span class="glyphicon glyphicon glyphicon-envelope"></span> Berichten</a></li>
-                {/if}
+                <?php }?>
             </ul>
             <ul class="nav navbar-nav navbar-right">
 
 
-                {if isset($user)}
+                <?php if (isset($_smarty_tpl->tpl_vars['user']->value)) {?>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
-                        {$user->displayName}<span class="caret"></span></a>
+                        <?php echo $_smarty_tpl->tpl_vars['user']->value->displayName;?>
+<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="/account">Mijn profiel</a></li>
                         <li role="separator" class="divider"></li>
@@ -91,9 +124,9 @@
                         <li><a href="/account/action=logout">Log uit</a></li>
                     </ul>
                 </li>
-                {else}
+                <?php } else { ?>
                 <li><a href="/account/action=login">Log in</a></li>
-                {/if}
+                <?php }?>
 
             </ul>
         </div><!-- /.navbar-collapse -->
@@ -104,3 +137,5 @@ Menu
 Breadcrumbs
 -->
 
+<?php }
+}
