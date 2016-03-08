@@ -84,10 +84,17 @@
                        aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
                         {$user->displayName}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/account">Mijn profiel</a></li>
+                        <li><a href="/profile">Mijn profiel</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="/account">Wensen</a></li>
                         <li role="separator" class="divider"></li>
+<!--                        -->
+<!--                        TIJDELIJK OM ADMIN WENS BEHEER MAKELIJKER TE BERIJKEN-->
+
+                        <li><a href="/AdminWish">Wens Beheer</a></li>
+                        <li role="separator" class="divider"></li>
+<!--                        -->
+<!--                        -->
                         <li><a href="/account/action=logout">Log uit</a></li>
                     </ul>
                 </li>

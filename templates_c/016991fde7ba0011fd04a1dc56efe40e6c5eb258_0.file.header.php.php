@@ -1,17 +1,17 @@
 <?php
-/* Smarty version 3.1.29, created on 2016-03-04 12:52:04
+/* Smarty version 3.1.29, created on 2016-03-08 17:52:54
   from "C:\xampp\htdocs\View\header.php" */
 
 if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl, array (
   'has_nocache_code' => false,
   'version' => '3.1.29',
-  'unifunc' => 'content_56d976e43145a0_83795151',
+  'unifunc' => 'content_56df0366b4c481_10019156',
   'file_dependency' => 
   array (
     '016991fde7ba0011fd04a1dc56efe40e6c5eb258' => 
     array (
       0 => 'C:\\xampp\\htdocs\\View\\header.php',
-      1 => 1457090544,
+      1 => 1457455971,
       2 => 'file',
     ),
   ),
@@ -19,7 +19,7 @@ if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl,
   array (
   ),
 ),false)) {
-function content_56d976e43145a0_83795151 ($_smarty_tpl) {
+function content_56df0366b4c481_10019156 ($_smarty_tpl) {
 ?>
 <!DOCTYPE html >
 <html lang="en">
@@ -75,7 +75,7 @@ function content_56d976e43145a0_83795151 ($_smarty_tpl) {
                 <span class="icon-bar"></span>
             </button>
 
-            <a class="navbar-brand pull-left" href="/"><img class="logo" src="/Resources/Images/logo.png"/> </a>
+            <a class="navbar-brand pull-left" href="/"><img alt="logo" class="logo" src="/Resources/Images/logo.png"/> </a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -117,10 +117,17 @@ function content_56d976e43145a0_83795151 ($_smarty_tpl) {
                         <?php echo $_smarty_tpl->tpl_vars['user']->value->displayName;?>
 <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/account">Mijn profiel</a></li>
+                        <li><a href="/profile">Mijn profiel</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="/account">Wensen</a></li>
                         <li role="separator" class="divider"></li>
+<!--                        -->
+<!--                        TIJDELIJK OM ADMIN WENS BEHEER MAKELIJKER TE BERIJKEN-->
+
+                        <li><a href="/AdminWish">Wens Beheer</a></li>
+                        <li role="separator" class="divider"></li>
+<!--                        -->
+<!--                        -->
                         <li><a href="/account/action=logout">Log uit</a></li>
                     </ul>
                 </li>

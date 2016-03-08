@@ -355,4 +355,23 @@ class User
 
     }
 
+    public function updateUser($arr)
+    {
+
+        Database::query_safe("UPDATE user SET `name`=?, `Surname`=?, `Address`=?,`postalcode`=?,`country`=?,`city`=?,`dob`=?,`initials`=?,`gender`=?,`handicap`=? WHERE Email=?", Array($arr["name"],$arr["surname"],$arr["address"] ,$arr["postalcode"],$arr["country"],$arr["city"],$arr["dob"],$arr["initials"],$arr["gender"],$arr["handicap"],$arr["email"]));
+//        Database::query_safe("UPDATE user SET `name`=?, `Surname`=? WHERE Email=?", Array($arr["name"],$arr["surname"],$arr["email"]));
+
+
+
+        $this->name = $arr["name"];
+        $this->surname = $arr["surname"];
+        $this->address = $arr["address"];
+        $this->handicap = $arr["handicap"];
+        $this->postalcode = $arr["postalcode"];
+        $this->dob = $arr["dob"];
+        $this->country = $arr["country"];
+        $this->city = $arr["city"];
+        $this->gender = $arr["gender"];
+        $this->initials = $arr["initials"];
+    }
 }
