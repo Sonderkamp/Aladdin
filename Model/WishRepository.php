@@ -24,7 +24,7 @@ class WishRepository
           wishContent.City,
           wishContent.IsAccepted,
           wishContent.moderator_Username
-          FROM `wish` JOIN wishContent on wish.Id = wishContent.wish_Id");
+          FROM `wish` JOIN wishContent ON wish.Id = wishContent.wish_Id");
 
         $returnArray = array();
 
@@ -42,7 +42,8 @@ class WishRepository
                 $result[$i]["City"],
                 $completed,
                 $result[$i]["Content"],
-                $result[$i]["IsAccepted"]
+                $result[$i]["IsAccepted"],
+                $result[$i]["Status"]
             );
         }
 
@@ -74,5 +75,42 @@ class WishRepository
 
         if ($amountWishes >= 3) return false;
         return true;
+    }
+
+    public function getWish($id){
+
+        $result = Database::query_safe
+        ("SELECT
+          wish.Status,
+          wish.User,
+          wish.Date,
+          wishContent.Content,
+          wishContent.Title,
+          wishContent.IsAccepted
+          FROM `wish` JOIN wishContent ON wish.Id = wishContent.wish_Id WHERE wish.Id = ?", array($id));
+
+
+        if($result != null){
+
+            $completed = false;
+            if($result[0]["Status"] == "Vervuld"){
+                $completed = true;
+            }
+
+            $selectedWish = new Wish(
+                $result[0]["User"],
+                $result[0]["Title"],
+                $completed,
+                $result[0]["Content"],
+                $result[0]["IsAccepted"],
+                $result[0]["Date"],
+                $result[0]["Status"]
+            );
+
+            return $selectedWish;
+        } else {
+            apologize("404 wens kan niet worden gevonden");
+        }
+
     }
 }

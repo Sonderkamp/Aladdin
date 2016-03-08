@@ -41,7 +41,11 @@ class WishController
                     apologize("404 not found, Go back to my wishes");
                     break;
             }
-        } else {
+        }
+        else if(isset($_GET["wish_id"])) {
+            $this->getSpecificWish($_GET["wish_id"]);
+        }
+        else {
             $this->getMyWishes();
         }
     }
@@ -129,6 +133,17 @@ class WishController
             $this->wishRepository->addWish($newWish);
 
             $this->getMyWishes();
+        }
+    }
+
+    private function getSpecificwish($id){
+
+        $selectedWish = $this->wishRepository->getWish($id);
+
+        if($selectedWish->user != null) {
+            render("wishSpecificView.tpl", ["title" => "Wens: " . $id, "selectedWish" => $selectedWish]);
+        } else {
+            apologize("404 wish not found. Please wish for a better website!");
         }
     }
 
