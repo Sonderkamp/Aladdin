@@ -65,8 +65,6 @@ class WishRepository
     public function canAddWish($email)
     {
 
-        $currentUser = $this->getUserID($email);
-
         $result = Database::query_safe
         ("select count(*) as counter from `wish` where `user` = ? and `status` != ? and 'status' != ?",
             array($email, "Vervuld", "Geweigerd"));

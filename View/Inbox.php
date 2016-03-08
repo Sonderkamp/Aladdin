@@ -71,7 +71,7 @@
                     {$message->receiver}
                     {else}
                         {if $message->adminSender}
-                             <span class="glyphicon glyphicon-eye-open"></span>{$message->sender}
+                             <span class="glyphicon glyphicon-eye-open"></span> {$message->sender}
                         {else}
                            {$message->sender}
                         {/if}
@@ -80,6 +80,7 @@
                     <span>{$message->content}</span><br><br>
                 </div>
                 <div class="panel-footer">
+                    <a href="\Inbox\folder={$folderShortcut}\message={$message->id}" class="btn btn-inbox">Openen</a> <span
                     {if isset($trash)}
                     <form class=noPadding action="\Inbox\folder={$folderShortcut}" method="post">
                         <input type="hidden" name="delete" value="{$message->id}"/>
@@ -99,6 +100,19 @@
                         <input type="hidden" name="reply" value="{$message->id}"/>
                         <button type="submit" class="btn btn-inbox">Beantwoorden</button>
                     </form>
+                    {if isset($message->links)}
+                    {foreach from=$message->links item=link}
+                    {if $link->action == "Talent"}
+                    <a href="/Talents" class="btn btn-inbox">Mijn Talenten</a>
+                    {else if $link->action == "Wens"}
+                    <a href="/WishLINKTODO" class="btn btn-inbox">Bekijk wens</a>
+                    {else if $link->action == "PaginaLink"}
+                    <a href="{$link->content}" class="btn btn-inbox">Naar Pagina</a>
+                    {else if $link->action == "Bericht"}
+                    <a href="/Inbox/message={$link->content}" class="btn btn-inbox">Naar Pagina</a>
+                    {/if}
+                    {/foreach}
+                    {/if}
                 </div>
             </div>
             {/foreach}
@@ -127,7 +141,7 @@
                         <div class="panel-body">
                             <a href="#" class="title">Titel</a> <span
                                 class="info">
-                             <span class="glyphicon glyphicon-eye-open"></span>Moderator
+                             <span class="glyphicon glyphicon-eye-open"></span> Moderator
                    <br>2 maart 2016</span>
                             <br>
                             <span>Uw talentaanvraag voor "Docent" is geaccepteerd.</span><br><br>

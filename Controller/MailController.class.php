@@ -136,7 +136,7 @@ class MailController
                 }
 
                 // get message
-                $message = $this->messageModel->getMessage($message);
+                $message = $this->messageModel->getMessage($message, $_SESSION["user"]->email);
 
                 if ($message === false) {
                     $this->error = "Bericht bestaat niet.";
