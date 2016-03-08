@@ -8,6 +8,7 @@
  */
 class TalentController
 {
+    // TODO: TABELLEN GROUPEREN (bootstrap pills)
     private $talents, $talents_user, $talent_repository, $talent_numbers, $current_talent_number, $user_talents_number, $current_user_talent_number;
 
     public function __construct()

@@ -13,8 +13,8 @@
 
     <h5>Talenten overzicht</h5>
 
-    <div class="col-sm-12 col-md-6">
-
+    <div class="col-sm-12 col-md-6 ">
+    <div class="talent-table">
         {if $number_of_talents le 3}
         <div class="alert alert-warning">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -47,7 +47,7 @@
                 </tr>
                 {/foreach}
             </tbody>
-        </table>
+        </table></div>
         {if $user_talents_number gt 1}
         <div class="center">
             <nav>
@@ -60,7 +60,7 @@
                     </li>
                     {else}
                     <li>
-                        <a href="/talents/show_added_talents={$current_user_talent_number - 1}" aria-label="Previous">
+                        <a href="/talents/show_talents={$current_talent_number}/show_added_talents={$current_user_talent_number - 1}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
@@ -73,7 +73,7 @@
                     </li>
                     {else}
                     <li>
-                        <a href="/talents/show_added_talents={$number}">{$number}</a>
+                        <a href="/talents/show_talents={$current_talent_number}/show_added_talents={$number}">{$number}</a>
                     </li>
                     {/if}
                     {/for}
@@ -86,7 +86,7 @@
                     </li>
                     {else}
                     <li>
-                        <a href="/talents/show_added_talents={$current_user_talent_number + 1}" aria-label="Next">
+                        <a href="/talents/show_talents={$current_talent_number}/show_added_talents={$current_user_talent_number + 1}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
@@ -96,7 +96,8 @@
         </div>
         {/if}
     </div>
-    <div class="col-sm-12 col-md-6">
+    <div class="col-sm-12 col-md-6 talent-table">
+        <div class="talent-table">
         <table class="table">
             <thead>
                 <tr>
@@ -120,6 +121,7 @@
                 {/foreach}
             </tbody>
         </table>
+            </div>
         {if $talent_number gt 1}
         <div class="center">
             <nav>
@@ -132,7 +134,7 @@
                     </li>
                     {else}
                     <li>
-                        <a href="/talents/show_talents={$current_talent_number - 1}" aria-label="Previous">
+                        <a href="/talents/show_talents={$current_talent_number - 1}/show_added_talents={$current_user_talent_number}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
@@ -145,7 +147,7 @@
                     </li>
                     {else}
                     <li>
-                        <a href="/talents/show_talents={$number}">{$number}</a>
+                        <a href="/talents/show_talents={$number}/show_added_talents={$current_user_talent_number}">{$number}</a>
                     </li>
                     {/if}
                     {/for}
@@ -158,7 +160,7 @@
                     </li>
                     {else}
                     <li>
-                        <a href="/talents/show_talents={$current_talent_number + 1}" aria-label="Next">
+                        <a href="/talents/show_talents={$current_talent_number + 1}/show_added_talents={$current_user_talent_number}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>

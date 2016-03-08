@@ -173,7 +173,7 @@ class messageModel
         $pdo = DATABASE::getPDO();
         $pdo->beginTransaction();
         $itemNR = null;
-
+        // TODO: Check if me equals admin
         if ($user->getUser($me) !== false) {
             DATABASE::transaction_action_safe($pdo, "INSERT INTO `message` (`Subject`, `Message`, `user_Sender`, `user_Receiver`) VALUES ( ?, ?, ?, ?)", array($title, nl2br($message), $me, $recipient));
             $itemNR = $pdo->lastInsertId();

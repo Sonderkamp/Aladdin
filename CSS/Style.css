@@ -235,9 +235,11 @@ a:hover {
     display: inline;
 }
 
-.center>nav{
-    margin: auto;
-    color: #35978f;
+.talent-table{
+    height: 500px;
+}
+.center{
+
 }
 .text-color-green{
     color: #35978f;
