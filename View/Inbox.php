@@ -100,6 +100,19 @@
                         <input type="hidden" name="reply" value="{$message->id}"/>
                         <button type="submit" class="btn btn-inbox">Beantwoorden</button>
                     </form>
+                    {if isset($message->links)}
+                    {foreach from=$message->links item=link}
+                    {if $link->action == "Talent"}
+                    <a href="/Talents" class="btn btn-inbox">Mijn Talenten</a>
+                    {else if $link->action == "Wens"}
+                    <a href="/WishLINKTODO" class="btn btn-inbox">Bekijk wens</a>
+                    {else if $link->action == "PaginaLink"}
+                    <a href="{$link->content}" class="btn btn-inbox">Naar Pagina</a>
+                    {else if $link->action == "Bericht"}
+                    <a href="/Inbox/message={$link->content}" class="btn btn-inbox">Naar Pagina</a>
+                    {/if}
+                    {/foreach}
+                    {/if}
                 </div>
             </div>
             {/foreach}

@@ -101,6 +101,19 @@
                     <button type="submit" class="btn btn-inbox">Beantwoorden</button>
                 </form>
                 <span class="info"><a class="btn btn-inbox">Rapporteren</a></span>
+            {if isset($message->links)}
+                {foreach from=$message->links item=link}
+                    {if $link->action == "Talent"}
+                        <a href="/Talents" class="btn btn-inbox">Mijn Talenten</a>
+                    {else if $link->action == "Wens"}
+                        <a href="/WishLINKTODO" class="btn btn-inbox">Bekijk wens</a>
+                    {else if $link->action == "PaginaLink"}
+                        <a href="{$link->content}" class="btn btn-inbox">Naar Pagina</a>
+                    {else if $link->action == "Bericht"}
+                        <a href="/Inbox/message={$link->content}" class="btn btn-inbox">Naar Bericht</a>
+                    {/if}
+                {/foreach}
+            {/if}
             </div>
         </div>
         <!--<span><button>Volgende Pagina</button></span><span class="info">Pagina 1</span> -->
