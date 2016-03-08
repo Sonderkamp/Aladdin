@@ -79,9 +79,9 @@ class messageModel
         return $ret;
     }
 
-    public function getMessage($messageID)
+    public function getMessage($messageID, $me)
     {
-        $res = DATABASE::query_safe("SELECT * FROM `inbox` WHERE `Id` = ? ", array($messageID));
+        $res = DATABASE::query_safe("SELECT * FROM `inbox` WHERE `Id` = ? and `user_Email` = ? ", array($messageID, $me));
         if ($res === false || $res === null || count($res) == 0)
             return false;
 
@@ -95,6 +95,7 @@ class messageModel
         $mesmodel->isopened = $res["IsOpend"];
         $mesmodel->title = $mess["Subject"];
         $mesmodel->content = $mess["Message"];
+        $mesmodel->folder = $res["folder_Name"];
         $mesmodel->receiver = $User->getUser($mess["user_Receiver"])["DisplayName"];
 
         $mesmodel->id = $res["Id"];

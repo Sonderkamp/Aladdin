@@ -81,7 +81,7 @@
                 <span>{$message->content}</span><br><br>
             </div>
             <div class="panel-footer">
-                {if isset($trash)}
+                {if $message->folder == "trash"}
                 <form class=noPadding action="\Inbox\folder={$folderShortcut}" method="post">
                     <input type="hidden" name="delete" value="{$message->id}"/>
                     <button type="submit" class="btn btn-inbox">Permanent Verwijderen</button>

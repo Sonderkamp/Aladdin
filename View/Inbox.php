@@ -80,6 +80,7 @@
                     <span>{$message->content}</span><br><br>
                 </div>
                 <div class="panel-footer">
+                    <a href="\Inbox\folder={$folderShortcut}\message={$message->id}" class="btn btn-inbox">Openen</a> <span
                     {if isset($trash)}
                     <form class=noPadding action="\Inbox\folder={$folderShortcut}" method="post">
                         <input type="hidden" name="delete" value="{$message->id}"/>
