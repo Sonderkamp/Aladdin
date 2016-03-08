@@ -9,7 +9,7 @@
 class TalentController
 {
     // TODO: TABELLEN GROUPEREN (bootstrap pills)
-    private $talents, $talents_user, $talent_repository, $talent_numbers, $current_talent_number, $user_talents_number, $current_user_talent_number;
+    private $page, $talents, $talents_user, $talent_repository, $talent_numbers, $current_talent_number, $user_talents_number, $current_user_talent_number;
 
     public function __construct()
     {
@@ -26,8 +26,14 @@ class TalentController
     {
         if (isset($_GET["action"])) {
             switch (strtolower($_GET["action"])) {
+                case "added_talents":
+                    $this->defaultTalent();
+                    break;
                 case "add_talent":
                     $this->addTalent();
+                    break;
+                case "all_talents":
+                    $this->allTalents();
                     break;
                 default:
                     apologize("404 not found, Go back to my wishes");
@@ -45,7 +51,6 @@ class TalentController
 
         render("talentOverview.php",
             ["title" => "Talenten",
-                "talents" => $this->talents,
                 "user_talents" => $this->talents_user,
                 "number_of_talents" => $this->talent_repository->checkNumberOfTalentsFromUser(),
                 "talent_error" => "set",
@@ -117,6 +122,20 @@ class TalentController
                 $this->current_talent_number = 1;
             }
         }
+    }
+
+    private function allTalents()
+    {
+        $this->checkPost();
+        $this->checkGet();
+
+        render("allTalentsOverview.php",
+            ["title" => "Talent toevoegen",
+                "talents" => $this->talents,
+                "user_talents_number" => $this->user_talents_number,
+                "current_user_talent_number" => $this->current_user_talent_number,
+                "talent_number" => $this->talent_numbers,
+                "current_talent_number" => $this->current_talent_number]);
     }
 
     private function addTalent()

@@ -5,16 +5,23 @@
 <!--Time: 21:48-->
 
 <div class="container">
-    <span class="info">
-        <a href="/talents/action=add_talent" class="btn btn-add side-button">
-            <span class="glyphicon glyphicon-plus"></span>
-        </a>
-    </span>
+    <h5>Toegevoegde talenten overzicht</h5>
 
-    <h5>Talenten overzicht</h5>
+    <div class="col-md-2">
+        <ul class="nav nav-pills nav-stacked">
+            <li class="active"><a href="/talents/action=added_talents">Toegevoegde talenten</a></li>
+            <li><a href="/talents/action=all_talents">Alle talenten</a></li>
+            <li><a href="/talents/action=add_talent">Talent aanvragen</a></li>
+        </ul>
+    </div>
+<!--    <span class="info">-->
+<!--        <a href="/talents/action=add_talent" class="btn btn-add side-button">-->
+<!--            <span class="glyphicon glyphicon-plus"></span>-->
+<!--        </a>-->
+<!--    </span>-->
 
-    <div class="col-sm-12 col-md-6 ">
-    <div class="talent-table">
+
+    <div class="col-md-10">
         {if $number_of_talents le 3}
         <div class="alert alert-warning">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -47,7 +54,7 @@
                 </tr>
                 {/foreach}
             </tbody>
-        </table></div>
+        </table>
         {if $user_talents_number gt 1}
         <div class="center">
             <nav>
@@ -60,7 +67,7 @@
                     </li>
                     {else}
                     <li>
-                        <a href="/talents/show_talents={$current_talent_number}/show_added_talents={$current_user_talent_number - 1}" aria-label="Previous">
+                        <a href="/talents/action=added_talents/show_added_talents={$current_user_talent_number - 1}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
@@ -73,7 +80,7 @@
                     </li>
                     {else}
                     <li>
-                        <a href="/talents/show_talents={$current_talent_number}/show_added_talents={$number}">{$number}</a>
+                        <a href="/talents/action=added_talents/show_added_talents={$number}">{$number}</a>
                     </li>
                     {/if}
                     {/for}
@@ -86,81 +93,7 @@
                     </li>
                     {else}
                     <li>
-                        <a href="/talents/show_talents={$current_talent_number}/show_added_talents={$current_user_talent_number + 1}" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                    {/if}
-                </ul>
-            </nav>
-        </div>
-        {/if}
-    </div>
-    <div class="col-sm-12 col-md-6 talent-table">
-        <div class="talent-table">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Alle talenten</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {foreach from=$talents item=talent}
-                <tr>
-                    <td class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{$talent -> name}</td>
-                    <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                        <form action="/talents" method="post">
-                            <input type="hidden" name="add_id" value="{$talent->id}"/>
-                            <button type="submit" name="submit" class="btn btn-add btn-sm">
-                                <span class="glyphicon glyphicon-ok"></span>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                {/foreach}
-            </tbody>
-        </table>
-            </div>
-        {if $talent_number gt 1}
-        <div class="center">
-            <nav>
-                <ul class="pagination">
-                    {if $current_talent_number le 1}
-                    <li class="disabled">
-                        <a href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    {else}
-                    <li>
-                        <a href="/talents/show_talents={$current_talent_number - 1}/show_added_talents={$current_user_talent_number}" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    {/if}
-
-                    {for $number=1 to $talent_number}
-                    {if $number eq $current_talent_number}
-                    <li class="active">
-                        <a href="#">{$number}</a>
-                    </li>
-                    {else}
-                    <li>
-                        <a href="/talents/show_talents={$number}/show_added_talents={$current_user_talent_number}">{$number}</a>
-                    </li>
-                    {/if}
-                    {/for}
-
-                    {if $current_talent_number ge $talent_number}
-                    <li class="disabled">
-                        <a href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                    {else}
-                    <li>
-                        <a href="/talents/show_talents={$current_talent_number + 1}/show_added_talents={$current_user_talent_number}" aria-label="Next">
+                        <a href="/talents/action=added_talents/show_added_talents={$current_user_talent_number + 1}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
