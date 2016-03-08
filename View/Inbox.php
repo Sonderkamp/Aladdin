@@ -71,7 +71,7 @@
                     {$message->receiver}
                     {else}
                         {if $message->adminSender}
-                             <span class="glyphicon glyphicon-eye-open"></span>{$message->sender}
+                             <span class="glyphicon glyphicon-eye-open"></span> {$message->sender}
                         {else}
                            {$message->sender}
                         {/if}
@@ -127,7 +127,7 @@
                         <div class="panel-body">
                             <a href="#" class="title">Titel</a> <span
                                 class="info">
-                             <span class="glyphicon glyphicon-eye-open"></span>Moderator
+                             <span class="glyphicon glyphicon-eye-open"></span> Moderator
                    <br>2 maart 2016</span>
                             <br>
                             <span>Uw talentaanvraag voor "Docent" is geaccepteerd.</span><br><br>

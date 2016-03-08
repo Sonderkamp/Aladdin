@@ -60,13 +60,20 @@
         {else}
         <p id="err"></p>
         {/if}
-
-        <div class="panel panel-default">
+        {if $message->adminSender}
+            <div class="panel panel-default adminMessage">
+        {else}
+            <div class="panel panel-default">
+        {/if}
             <div class="panel-body message">
                 <p>
                     <span class="h3 title">{$message->title}</span>
-                    <span class="info">Naar: {$message->sender} </span>
-                    <br><span class="info">Van: {$message->receiver} </span>
+                    {if $message->adminSender}
+                     <span class="info">Van: <span class="glyphicon glyphicon-eye-open"></span> {$message->sender}</span>
+                    {else}
+                    <span class="info">Van: {$message->sender} </span>
+                    {/if}
+                    <br><span class="info">Naar: {$message->receiver} </span>
                     <br><span class="info">{$message->date} </span>
                 </p>
 
@@ -142,7 +149,7 @@
                     <div class="panel-body">
                         <a href="#" class="title">Titel</a> <span
                             class="info">
-                             <span class="glyphicon glyphicon-eye-open"></span>Moderator
+                             <span class="glyphicon glyphicon-eye-open"></span> Moderator
                    <br>2 maart 2016</span>
                         <br>
                         <span>Uw talentaanvraag voor "Docent" is geaccepteerd.</span><br><br>

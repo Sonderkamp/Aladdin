@@ -180,7 +180,7 @@ class messageModel
             DATABASE::transaction_action_safe($pdo, "INSERT INTO `inbox` ( `folder_Name`, `message_Id`, `user_Email`) VALUES ('outbox', ?, ?)", array($itemNR, $me));
             // insert into outbox
         } else {
-            DATABASE::transaction_action_safe($pdo, "INSERT INTO `message` (`Subject`, `Message`, `moderator_Sender`, `user_Receiver`) VALUES ( ?, ?, 'mariodv@hotmail.nl', 'mbeekman1@avans.nl')", array($title, $message, $me, $recipient));
+            DATABASE::transaction_action_safe($pdo, "INSERT INTO `message` (`Subject`, `Message`, `moderator_Sender`, `user_Receiver`) VALUES ( ?, ?, ?, ?)", array($title, $message, $me, $recipient));
             $itemNR = $pdo->lastInsertId();
         }
         // insert into recipient mailbox
