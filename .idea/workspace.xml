@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fdff3ebf-a012-4b8f-b011-ea94c721b9b6" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/View/addTalent.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/View/allTalentsOverview.php" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Controller/TalentController.class.php" afterPath="$PROJECT_DIR$/Controller/TalentController.class.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/talentOverview.php" afterPath="$PROJECT_DIR$/View/talentOverview.php" />
     </list>
     <ignored path="Aladdin.iws" />
@@ -31,7 +28,7 @@
       <file leaf-file-name="TalentController.class.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Controller/TalentController.class.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.48">
+            <state vertical-scroll-proportion="0.0">
               <caret line="11" column="12" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
               <folding />
             </state>
@@ -41,8 +38,8 @@
       <file leaf-file-name="talentOverview.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/View/talentOverview.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.22591361">
-              <caret line="12" column="29" selection-start-line="12" selection-start-column="29" selection-end-line="12" selection-end-column="29" />
+            <state vertical-scroll-proportion="1.6378738">
+              <caret line="165" column="139" selection-start-line="165" selection-start-column="139" selection-end-line="165" selection-end-column="139" />
               <folding />
             </state>
           </provider>
@@ -51,8 +48,8 @@
       <file leaf-file-name="Style.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CSS/Style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-26.6">
-              <caret line="241" column="0" selection-start-line="241" selection-start-column="0" selection-end-line="241" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="248" column="0" selection-start-line="248" selection-start-column="0" selection-end-line="248" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -120,8 +117,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -198,6 +193,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -254,7 +251,6 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3294979" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -266,6 +262,7 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3294979" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
@@ -290,6 +287,30 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Controller/TalentController.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="12" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/View/talentOverview.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CSS/Style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="241" column="0" selection-start-line="241" selection-start-column="0" selection-end-line="241" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/CSS/Style.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -318,23 +339,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="221" column="12" selection-start-line="221" selection-start-column="12" selection-end-line="221" selection-end-column="12" />
-          <folding>
-            <marker date="1457384871980" expanded="true" signature="203:445" placeholder="SELECT * FRO... talent" />
-            <marker date="1457384871980" expanded="true" signature="1039:1784" placeholder="SELECT `tale... talent" />
-            <marker date="1457384871980" expanded="true" signature="1429:1539" placeholder="SELECT `tale... talent_has_user" />
-            <marker date="1457384871980" expanded="true" signature="2511:3256" placeholder="SELECT `tale... talent" />
-            <marker date="1457384871980" expanded="true" signature="2511:3282" placeholder="SELECT `tale... talent" />
-            <marker date="1457384871980" expanded="true" signature="2901:3011" placeholder="SELECT `tale... talent_has_user" />
-            <marker date="1457384871980" expanded="true" signature="4013:4516" placeholder="SELECT `tale... talent" />
-            <marker date="1457384871980" expanded="true" signature="4013:4518" placeholder="SELECT `tale... talent" />
-            <marker date="1457384871980" expanded="true" signature="5149:5628" placeholder="SELECT `tale... talent" />
-            <marker date="1457384871980" expanded="true" signature="6254:6382" placeholder="DELETE FROM " />
-            <marker date="1457384871980" expanded="true" signature="6528:6609" placeholder="INSERT INTO `talent_has_user`... " />
-            <marker date="1457384871980" expanded="true" signature="6751:6925" placeholder="INSERT INTO `talent`... " />
-            <marker date="1457384871980" expanded="true" signature="7093:7208" placeholder="SELECT COUNT... talent_has_user" />
-            <marker date="1457384871980" expanded="true" signature="7410:7979" placeholder="SELECT COUNT... talent" />
-            <marker date="1457384871980" expanded="true" signature="7624:7734" placeholder="SELECT `tale... talent_has_user" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -342,7 +346,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="15" column="41" selection-start-line="15" selection-start-column="41" selection-end-line="15" selection-end-column="41" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -350,7 +353,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="17" column="19" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -365,7 +367,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -373,7 +374,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -405,23 +405,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="143" column="27" selection-start-line="143" selection-start-column="27" selection-end-line="143" selection-end-column="27" />
-          <folding>
-            <marker date="1457384871980" expanded="true" signature="203:445" placeholder="SELECT * FRO... talent" />
-            <marker date="1457384871980" expanded="true" signature="1039:1784" placeholder="SELECT `tale... talent" />
-            <marker date="1457384871980" expanded="true" signature="1429:1539" placeholder="SELECT `tale... talent_has_user" />
-            <marker date="1457384871980" expanded="true" signature="2511:3256" placeholder="SELECT `tale... talent" />
-            <marker date="1457384871980" expanded="true" signature="2511:3282" placeholder="SELECT `tale... talent" />
-            <marker date="1457384871980" expanded="true" signature="2901:3011" placeholder="SELECT `tale... talent_has_user" />
-            <marker date="1457384871980" expanded="true" signature="4013:4516" placeholder="SELECT `tale... talent" />
-            <marker date="1457384871980" expanded="true" signature="4013:4518" placeholder="SELECT `tale... talent" />
-            <marker date="1457384871980" expanded="true" signature="5149:5628" placeholder="SELECT `tale... talent" />
-            <marker date="1457384871980" expanded="true" signature="6254:6382" placeholder="DELETE FROM " />
-            <marker date="1457384871980" expanded="true" signature="6528:6609" placeholder="INSERT INTO `talent_has_user`... " />
-            <marker date="1457384871980" expanded="true" signature="6751:6925" placeholder="INSERT INTO `talent`... " />
-            <marker date="1457384871980" expanded="true" signature="7093:7208" placeholder="SELECT COUNT... talent_has_user" />
-            <marker date="1457384871980" expanded="true" signature="7410:7979" placeholder="SELECT COUNT... talent" />
-            <marker date="1457384871980" expanded="true" signature="7624:7734" placeholder="SELECT `tale... talent_has_user" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -429,7 +412,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="27" column="41" selection-start-line="27" selection-start-column="41" selection-end-line="27" selection-end-column="41" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -444,7 +426,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -452,7 +433,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -484,23 +464,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="143" column="27" selection-start-line="143" selection-start-column="27" selection-end-line="143" selection-end-column="27" />
-          <folding>
-            <marker date="1457384871980" expanded="true" signature="203:445" placeholder="SELECT * FRO... talent" />
-            <marker date="1457384871980" expanded="true" signature="1039:1784" placeholder="SELECT `tale... talent" />
-            <marker date="1457384871980" expanded="true" signature="1429:1539" placeholder="SELECT `tale... talent_has_user" />
-            <marker date="1457384871980" expanded="true" signature="2511:3256" placeholder="SELECT `tale... talent" />
-            <marker date="1457384871980" expanded="true" signature="2511:3282" placeholder="SELECT `tale... talent" />
-            <marker date="1457384871980" expanded="true" signature="2901:3011" placeholder="SELECT `tale... talent_has_user" />
-            <marker date="1457384871980" expanded="true" signature="4013:4516" placeholder="SELECT `tale... talent" />
-            <marker date="1457384871980" expanded="true" signature="4013:4518" placeholder="SELECT `tale... talent" />
-            <marker date="1457384871980" expanded="true" signature="5149:5628" placeholder="SELECT `tale... talent" />
-            <marker date="1457384871980" expanded="true" signature="6254:6382" placeholder="DELETE FROM " />
-            <marker date="1457384871980" expanded="true" signature="6528:6609" placeholder="INSERT INTO `talent_has_user`... " />
-            <marker date="1457384871980" expanded="true" signature="6751:6925" placeholder="INSERT INTO `talent`... " />
-            <marker date="1457384871980" expanded="true" signature="7093:7208" placeholder="SELECT COUNT... talent_has_user" />
-            <marker date="1457384871980" expanded="true" signature="7410:7979" placeholder="SELECT COUNT... talent" />
-            <marker date="1457384871980" expanded="true" signature="7624:7734" placeholder="SELECT `tale... talent_has_user" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -508,7 +471,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="27" column="41" selection-start-line="27" selection-start-column="41" selection-end-line="27" selection-end-column="41" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -523,7 +485,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -531,7 +492,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -632,7 +592,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -640,7 +599,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="17" column="19" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -648,7 +606,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="15" column="41" selection-start-line="15" selection-start-column="41" selection-end-line="15" selection-end-column="41" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -656,23 +613,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="221" column="12" selection-start-line="221" selection-start-column="12" selection-end-line="221" selection-end-column="12" />
-          <folding>
-            <marker date="1457384871980" expanded="true" signature="203:445" placeholder="SELECT * FRO... talent" />
-            <marker date="1457384871980" expanded="true" signature="1039:1784" placeholder="SELECT `tale... talent" />
-            <marker date="1457384871980" expanded="true" signature="1429:1539" placeholder="SELECT `tale... talent_has_user" />
-            <marker date="1457384871980" expanded="true" signature="2511:3256" placeholder="SELECT `tale... talent" />
-            <marker date="1457384871980" expanded="true" signature="2511:3282" placeholder="SELECT `tale... talent" />
-            <marker date="1457384871980" expanded="true" signature="2901:3011" placeholder="SELECT `tale... talent_has_user" />
-            <marker date="1457384871980" expanded="true" signature="4013:4516" placeholder="SELECT `tale... talent" />
-            <marker date="1457384871980" expanded="true" signature="4013:4518" placeholder="SELECT `tale... talent" />
-            <marker date="1457384871980" expanded="true" signature="5149:5628" placeholder="SELECT `tale... talent" />
-            <marker date="1457384871980" expanded="true" signature="6254:6382" placeholder="DELETE FROM " />
-            <marker date="1457384871980" expanded="true" signature="6528:6609" placeholder="INSERT INTO `talent_has_user`... " />
-            <marker date="1457384871980" expanded="true" signature="6751:6925" placeholder="INSERT INTO `talent`... " />
-            <marker date="1457384871980" expanded="true" signature="7093:7208" placeholder="SELECT COUNT... talent_has_user" />
-            <marker date="1457384871980" expanded="true" signature="7410:7979" placeholder="SELECT COUNT... talent" />
-            <marker date="1457384871980" expanded="true" signature="7624:7734" placeholder="SELECT `tale... talent_has_user" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -680,7 +620,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -688,27 +627,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="175" column="33" selection-start-line="175" selection-start-column="33" selection-end-line="175" selection-end-column="33" />
-          <folding>
-            <marker date="1457442504562" expanded="true" signature="190:282" placeholder="SELECT * FRO... inbox" />
-            <marker date="1457442504562" expanded="true" signature="459:552" placeholder="SELECT * FRO... inbox" />
-            <marker date="1457442504562" expanded="true" signature="728:820" placeholder="SELECT * FRO... inbox" />
-            <marker date="1457442504562" expanded="true" signature="1132:1170" placeholder="SELECT * FRO... message" />
-            <marker date="1457442504562" expanded="true" signature="3028:3064" placeholder="SELECT * FRO... inbox" />
-            <marker date="1457442504562" expanded="true" signature="3270:3308" placeholder="SELECT * FRO... message" />
-            <marker date="1457442504562" expanded="true" signature="4174:4249" placeholder="SELECT count... inbox" />
-            <marker date="1457442504562" expanded="true" signature="4462:4527" placeholder="UPDATE `inbo... " />
-            <marker date="1457442504562" expanded="true" signature="4635:4677" placeholder="DELETE FROM " />
-            <marker date="1457442504562" expanded="true" signature="4831:4867" placeholder="SELECT * FRO... inbox" />
-            <marker date="1457442504562" expanded="true" signature="5043:5081" placeholder="SELECT * FRO... message" />
-            <marker date="1457442504562" expanded="true" signature="5225:5290" placeholder="UPDATE `inbo... " />
-            <marker date="1457442504562" expanded="true" signature="5410:5476" placeholder="UPDATE `inbo... " />
-            <marker date="1457442504562" expanded="true" signature="5605:5699" placeholder="SELECT count... blockedUsers" />
-            <marker date="1457442504562" expanded="true" signature="5881:5975" placeholder="SELECT count... blockedUsers" />
-            <marker date="1457442504562" expanded="true" signature="6504:6601" placeholder="INSERT INTO `message`... " />
-            <marker date="1457442504562" expanded="true" signature="6751:6839" placeholder="INSERT INTO `inbox`... " />
-            <marker date="1457442504562" expanded="true" signature="6968:7108" placeholder="INSERT INTO `message`... " />
-            <marker date="1457442504562" expanded="true" signature="7298:7385" placeholder="INSERT INTO `inbox`... " />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -716,21 +634,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-7.48">
           <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="41" selection-end-column="10" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/CSS/Style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-26.6">
-          <caret line="241" column="0" selection-start-line="241" selection-start-column="0" selection-end-line="241" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="248" column="0" selection-start-line="248" selection-start-column="0" selection-end-line="248" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Controller/TalentController.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.48">
+        <state vertical-scroll-proportion="0.0">
           <caret line="11" column="12" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
           <folding />
         </state>
@@ -738,8 +655,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/View/talentOverview.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22591361">
-          <caret line="12" column="29" selection-start-line="12" selection-start-column="29" selection-end-line="12" selection-end-column="29" />
+        <state vertical-scroll-proportion="1.6378738">
+          <caret line="165" column="139" selection-start-line="165" selection-start-column="139" selection-end-line="165" selection-end-column="139" />
           <folding />
         </state>
       </provider>
