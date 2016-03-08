@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="fdff3ebf-a012-4b8f-b011-ea94c721b9b6" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Controller/TalentController.class.php" afterPath="$PROJECT_DIR$/Controller/TalentController.class.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/talentOverview.php" afterPath="$PROJECT_DIR$/View/talentOverview.php" />
     </list>
     <ignored path="Aladdin.iws" />
@@ -25,21 +26,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="TalentController.class.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="TalentController.class.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Controller/TalentController.class.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="11" column="12" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
+            <state vertical-scroll-proportion="2.936877">
+              <caret line="156" column="61" selection-start-line="156" selection-start-column="61" selection-end-line="156" selection-end-column="61" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="talentOverview.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="talentOverview.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/View/talentOverview.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.6378738">
-              <caret line="165" column="139" selection-start-line="165" selection-start-column="139" selection-end-line="165" selection-end-column="139" />
+            <state vertical-scroll-proportion="-20.4">
+              <caret line="75" column="44" selection-start-line="75" selection-start-column="41" selection-end-line="75" selection-end-column="44" />
               <folding />
             </state>
           </provider>
@@ -48,7 +49,7 @@
       <file leaf-file-name="Style.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CSS/Style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="-45.64">
               <caret line="248" column="0" selection-start-line="248" selection-start-column="0" selection-end-line="248" selection-end-column="0" />
               <folding />
             </state>
@@ -72,8 +73,8 @@
         <option value="$PROJECT_DIR$/View/addTalent.php" />
         <option value="$PROJECT_DIR$/View/allTalentsOverview.php" />
         <option value="$PROJECT_DIR$/CSS/Style.css" />
-        <option value="$PROJECT_DIR$/Controller/TalentController.class.php" />
         <option value="$PROJECT_DIR$/View/talentOverview.php" />
+        <option value="$PROJECT_DIR$/Controller/TalentController.class.php" />
       </list>
     </option>
   </component>
@@ -339,6 +340,23 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="221" column="12" selection-start-line="221" selection-start-column="12" selection-end-line="221" selection-end-column="12" />
+          <folding>
+            <marker date="1457384871980" expanded="true" signature="203:445" placeholder="SELECT * FRO... talent" />
+            <marker date="1457384871980" expanded="true" signature="1039:1784" placeholder="SELECT `tale... talent" />
+            <marker date="1457384871980" expanded="true" signature="1429:1539" placeholder="SELECT `tale... talent_has_user" />
+            <marker date="1457384871980" expanded="true" signature="2511:3256" placeholder="SELECT `tale... talent" />
+            <marker date="1457384871980" expanded="true" signature="2511:3282" placeholder="SELECT `tale... talent" />
+            <marker date="1457384871980" expanded="true" signature="2901:3011" placeholder="SELECT `tale... talent_has_user" />
+            <marker date="1457384871980" expanded="true" signature="4013:4516" placeholder="SELECT `tale... talent" />
+            <marker date="1457384871980" expanded="true" signature="4013:4518" placeholder="SELECT `tale... talent" />
+            <marker date="1457384871980" expanded="true" signature="5149:5628" placeholder="SELECT `tale... talent" />
+            <marker date="1457384871980" expanded="true" signature="6254:6382" placeholder="DELETE FROM " />
+            <marker date="1457384871980" expanded="true" signature="6528:6609" placeholder="INSERT INTO `talent_has_user`... " />
+            <marker date="1457384871980" expanded="true" signature="6751:6925" placeholder="INSERT INTO `talent`... " />
+            <marker date="1457384871980" expanded="true" signature="7093:7208" placeholder="SELECT COUNT... talent_has_user" />
+            <marker date="1457384871980" expanded="true" signature="7410:7979" placeholder="SELECT COUNT... talent" />
+            <marker date="1457384871980" expanded="true" signature="7624:7734" placeholder="SELECT `tale... talent_has_user" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -346,6 +364,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="15" column="41" selection-start-line="15" selection-start-column="41" selection-end-line="15" selection-end-column="41" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -374,6 +393,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -405,6 +425,23 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="143" column="27" selection-start-line="143" selection-start-column="27" selection-end-line="143" selection-end-column="27" />
+          <folding>
+            <marker date="1457384871980" expanded="true" signature="203:445" placeholder="SELECT * FRO... talent" />
+            <marker date="1457384871980" expanded="true" signature="1039:1784" placeholder="SELECT `tale... talent" />
+            <marker date="1457384871980" expanded="true" signature="1429:1539" placeholder="SELECT `tale... talent_has_user" />
+            <marker date="1457384871980" expanded="true" signature="2511:3256" placeholder="SELECT `tale... talent" />
+            <marker date="1457384871980" expanded="true" signature="2511:3282" placeholder="SELECT `tale... talent" />
+            <marker date="1457384871980" expanded="true" signature="2901:3011" placeholder="SELECT `tale... talent_has_user" />
+            <marker date="1457384871980" expanded="true" signature="4013:4516" placeholder="SELECT `tale... talent" />
+            <marker date="1457384871980" expanded="true" signature="4013:4518" placeholder="SELECT `tale... talent" />
+            <marker date="1457384871980" expanded="true" signature="5149:5628" placeholder="SELECT `tale... talent" />
+            <marker date="1457384871980" expanded="true" signature="6254:6382" placeholder="DELETE FROM " />
+            <marker date="1457384871980" expanded="true" signature="6528:6609" placeholder="INSERT INTO `talent_has_user`... " />
+            <marker date="1457384871980" expanded="true" signature="6751:6925" placeholder="INSERT INTO `talent`... " />
+            <marker date="1457384871980" expanded="true" signature="7093:7208" placeholder="SELECT COUNT... talent_has_user" />
+            <marker date="1457384871980" expanded="true" signature="7410:7979" placeholder="SELECT COUNT... talent" />
+            <marker date="1457384871980" expanded="true" signature="7624:7734" placeholder="SELECT `tale... talent_has_user" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -412,6 +449,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="27" column="41" selection-start-line="27" selection-start-column="41" selection-end-line="27" selection-end-column="41" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -433,6 +471,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -464,6 +503,23 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="143" column="27" selection-start-line="143" selection-start-column="27" selection-end-line="143" selection-end-column="27" />
+          <folding>
+            <marker date="1457384871980" expanded="true" signature="203:445" placeholder="SELECT * FRO... talent" />
+            <marker date="1457384871980" expanded="true" signature="1039:1784" placeholder="SELECT `tale... talent" />
+            <marker date="1457384871980" expanded="true" signature="1429:1539" placeholder="SELECT `tale... talent_has_user" />
+            <marker date="1457384871980" expanded="true" signature="2511:3256" placeholder="SELECT `tale... talent" />
+            <marker date="1457384871980" expanded="true" signature="2511:3282" placeholder="SELECT `tale... talent" />
+            <marker date="1457384871980" expanded="true" signature="2901:3011" placeholder="SELECT `tale... talent_has_user" />
+            <marker date="1457384871980" expanded="true" signature="4013:4516" placeholder="SELECT `tale... talent" />
+            <marker date="1457384871980" expanded="true" signature="4013:4518" placeholder="SELECT `tale... talent" />
+            <marker date="1457384871980" expanded="true" signature="5149:5628" placeholder="SELECT `tale... talent" />
+            <marker date="1457384871980" expanded="true" signature="6254:6382" placeholder="DELETE FROM " />
+            <marker date="1457384871980" expanded="true" signature="6528:6609" placeholder="INSERT INTO `talent_has_user`... " />
+            <marker date="1457384871980" expanded="true" signature="6751:6925" placeholder="INSERT INTO `talent`... " />
+            <marker date="1457384871980" expanded="true" signature="7093:7208" placeholder="SELECT COUNT... talent_has_user" />
+            <marker date="1457384871980" expanded="true" signature="7410:7979" placeholder="SELECT COUNT... talent" />
+            <marker date="1457384871980" expanded="true" signature="7624:7734" placeholder="SELECT `tale... talent_has_user" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -471,6 +527,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="27" column="41" selection-start-line="27" selection-start-column="41" selection-end-line="27" selection-end-column="41" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -492,6 +549,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -592,6 +650,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -606,6 +665,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="15" column="41" selection-start-line="15" selection-start-column="41" selection-end-line="15" selection-end-column="41" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -613,6 +673,23 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="221" column="12" selection-start-line="221" selection-start-column="12" selection-end-line="221" selection-end-column="12" />
+          <folding>
+            <marker date="1457384871980" expanded="true" signature="203:445" placeholder="SELECT * FRO... talent" />
+            <marker date="1457384871980" expanded="true" signature="1039:1784" placeholder="SELECT `tale... talent" />
+            <marker date="1457384871980" expanded="true" signature="1429:1539" placeholder="SELECT `tale... talent_has_user" />
+            <marker date="1457384871980" expanded="true" signature="2511:3256" placeholder="SELECT `tale... talent" />
+            <marker date="1457384871980" expanded="true" signature="2511:3282" placeholder="SELECT `tale... talent" />
+            <marker date="1457384871980" expanded="true" signature="2901:3011" placeholder="SELECT `tale... talent_has_user" />
+            <marker date="1457384871980" expanded="true" signature="4013:4516" placeholder="SELECT `tale... talent" />
+            <marker date="1457384871980" expanded="true" signature="4013:4518" placeholder="SELECT `tale... talent" />
+            <marker date="1457384871980" expanded="true" signature="5149:5628" placeholder="SELECT `tale... talent" />
+            <marker date="1457384871980" expanded="true" signature="6254:6382" placeholder="DELETE FROM " />
+            <marker date="1457384871980" expanded="true" signature="6528:6609" placeholder="INSERT INTO `talent_has_user`... " />
+            <marker date="1457384871980" expanded="true" signature="6751:6925" placeholder="INSERT INTO `talent`... " />
+            <marker date="1457384871980" expanded="true" signature="7093:7208" placeholder="SELECT COUNT... talent_has_user" />
+            <marker date="1457384871980" expanded="true" signature="7410:7979" placeholder="SELECT COUNT... talent" />
+            <marker date="1457384871980" expanded="true" signature="7624:7734" placeholder="SELECT `tale... talent_has_user" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -627,6 +704,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="175" column="33" selection-start-line="175" selection-start-column="33" selection-end-line="175" selection-end-column="33" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -639,24 +717,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/CSS/Style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="-45.64">
           <caret line="248" column="0" selection-start-line="248" selection-start-column="0" selection-end-line="248" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Controller/TalentController.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="12" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/View/talentOverview.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.6378738">
-          <caret line="165" column="139" selection-start-line="165" selection-start-column="139" selection-end-line="165" selection-end-column="139" />
+        <state vertical-scroll-proportion="-20.4">
+          <caret line="75" column="44" selection-start-line="75" selection-start-column="41" selection-end-line="75" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Controller/TalentController.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="2.936877">
+          <caret line="156" column="61" selection-start-line="156" selection-start-column="61" selection-end-line="156" selection-end-column="61" />
           <folding />
         </state>
       </provider>

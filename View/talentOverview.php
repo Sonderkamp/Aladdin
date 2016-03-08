@@ -10,14 +10,36 @@
 
     <div class="col-md-2">
         <ul class="nav nav-pills nav-stacked">
+            {if $current_page == "m"}
             <li class="active"><a href="#tab1" data-toggle="tab">Toegevoegde talenten</a></li>
             <li><a href="#tab2" data-toggle="tab">Alle talenten</a></li>
             <li><a href="#tab3" data-toggle="tab">Talent toevoegen</a></li>
+            {elseif $current_page == "a"}
+            <li><a href="#tab1" data-toggle="tab">Toegevoegde talenten</a></li>
+            <li class="active"><a href="#tab2" data-toggle="tab">Alle talenten</a></li>
+            <li><a href="#tab3" data-toggle="tab">Talent toevoegen</a></li>
+            {elseif $current_page == "t"}
+            <li><a href="#tab1" data-toggle="tab">Toegevoegde talenten</a></li>
+            <li><a href="#tab2" data-toggle="tab">Alle talenten</a></li>
+            <li class="active"><a href="#tab3" data-toggle="tab">Talent toevoegen</a></li>
+            {else}
+            <li class="active"><a href="#tab1" data-toggle="tab">Toegevoegde talenten</a></li>
+            <li><a href="#tab2" data-toggle="tab">Alle talenten</a></li>
+            <li><a href="#tab3" data-toggle="tab">Talent toevoegen</a></li>
+            {/if}
         </ul>
     </div>
     <div class="col-md-10">
         <div class="tab-content">
+            {if $current_page == "m"}
             <div class="tab-pane fade in active" id="tab1">
+            {elseif $current_page == "a"}
+            <div class="tab-pane" id="tab1">
+            {elseif $current_page == "t"}
+            <div class="tab-pane" id="tab1">
+            {else}
+            <div class="tab-pane fade in active" id="tab1">
+            {/if}
                 {if $number_of_talents <= 3}
                 <div class="alert alert-warning">
                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -63,7 +85,7 @@
                             </li>
                             {else}
                             <li>
-                                <a href="/talents/show_talents={$current_talent_number}/show_added_talents={$current_user_talent_number - 1}" aria-label="Previous">
+                                <a href="/talents/p=m/a={$current_talent_number}/m={$current_user_talent_number - 1}" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
@@ -76,7 +98,7 @@
                             </li>
                             {else}
                             <li>
-                                <a href="/talents/show_talents={$current_talent_number}/show_added_talents={$number}">{$number}</a>
+                                <a href="/talents/p=m/a={$current_talent_number}/m={$number}">{$number}</a>
                             </li>
                             {/if}
                             {/for}
@@ -89,7 +111,7 @@
                             </li>
                             {else}
                             <li>
-                                <a href="/talents/show_talents={$current_talent_number}/show_added_talents={$current_user_talent_number + 1}" aria-label="Next">
+                                <a href="/talents/p=m/a={$current_talent_number}/m={$current_user_talent_number + 1}" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
@@ -99,7 +121,15 @@
                 </div>
                 {/if}
             </div>
+            {if $current_page == "m"}
             <div class="tab-pane" id="tab2">
+            {elseif $current_page == "a"}
+            <div class="tab-pane fade in active" id="tab2">
+            {elseif $current_page == "t"}
+            <div class="tab-pane" id="tab2">
+            {else}
+            <div class="tab-pane" id="tab2">
+            {/if}
                 <div>
                     <table class="table">
                         <thead>
@@ -137,7 +167,7 @@
                             </li>
                             {else}
                             <li>
-                                <a href="/talents/show_talents={$current_talent_number - 1}/show_added_talents={$current_user_talent_number}" aria-label="Previous">
+                                <a href="/talents/p=a/a={$current_talent_number - 1}/m={$current_user_talent_number}" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
@@ -150,7 +180,7 @@
                             </li>
                             {else}
                             <li>
-                                <a href="/talents/show_talents={$number}/show_added_talents={$current_user_talent_number}">{$number}</a>
+                                <a href="/talents/p=a/a={$number}/m={$current_user_talent_number}">{$number}</a>
                             </li>
                             {/if}
                             {/for}
@@ -163,7 +193,7 @@
                             </li>
                             {else}
                             <li>
-                                <a href="/talents/show_talents={$current_talent_number + 1}/show_added_talents={$current_user_talent_number}" aria-label="Next">
+                                <a href="/talents/p=a/a={$current_talent_number + 1}/m={$current_user_talent_number}" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
@@ -173,7 +203,15 @@
                 </div>
                 {/if}
             </div>
+            {if $current_page == "m"}
             <div class="tab-pane" id="tab3">
+            {elseif $current_page == "a"}
+            <div class="tab-pane" id="tab3">
+            {elseif $current_page == "t"}
+            <div class="tab-pane fade in active" id="tab3">
+            {else}
+            <div class="tab-pane" id="tab3">
+            {/if}
                 <div class="col-md-10">
                     <form class="col-xs-12 col-sm-12 col-md-12 col-lg-12" action="/talents" method="post">
                         <div class="form-group row">
