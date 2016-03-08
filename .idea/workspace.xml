@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fdff3ebf-a012-4b8f-b011-ea94c721b9b6" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/View/allTalentsOverview.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSS/Style.css" afterPath="$PROJECT_DIR$/CSS/Style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Controller/TalentController.class.php" afterPath="$PROJECT_DIR$/Controller/TalentController.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/addTalent.php" afterPath="$PROJECT_DIR$/View/addTalent.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/talentOverview.php" afterPath="$PROJECT_DIR$/View/talentOverview.php" />
     </list>
     <ignored path="Aladdin.iws" />
@@ -29,11 +26,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="TalentController.class.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TalentController.class.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Controller/TalentController.class.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.0542636">
-              <caret line="130" column="0" selection-start-line="130" selection-start-column="0" selection-end-line="130" selection-end-column="0" />
+            <state vertical-scroll-proportion="46.16">
+              <caret line="31" column="34" selection-start-line="31" selection-start-column="34" selection-end-line="31" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -52,8 +49,8 @@
       <file leaf-file-name="talentOverview.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/View/talentOverview.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.8">
-              <caret line="69" column="33" selection-start-line="69" selection-start-column="33" selection-end-line="69" selection-end-column="33" />
+            <state vertical-scroll-proportion="-10.2">
+              <caret line="15" column="10" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -62,8 +59,18 @@
       <file leaf-file-name="allTalentsOverview.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/View/allTalentsOverview.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-17.76">
-              <caret line="28" column="62" selection-start-line="28" selection-start-column="62" selection-end-line="28" selection-end-column="62" />
+            <state vertical-scroll-proportion="-3.48">
+              <caret line="7" column="22" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="22" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Style.css" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/CSS/Style.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.8493909">
+              <caret line="247" column="10" selection-start-line="247" selection-start-column="10" selection-end-line="247" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -83,11 +90,11 @@
         <option value="$PROJECT_DIR$/View/wishOverview.php" />
         <option value="$PROJECT_DIR$/Model/TalentRepository.php" />
         <option value="$PROJECT_DIR$/Model/MessageModel.php" />
-        <option value="$PROJECT_DIR$/CSS/Style.css" />
-        <option value="$PROJECT_DIR$/View/allTalentsOverview.php" />
-        <option value="$PROJECT_DIR$/View/talentOverview.php" />
         <option value="$PROJECT_DIR$/View/addTalent.php" />
+        <option value="$PROJECT_DIR$/View/allTalentsOverview.php" />
         <option value="$PROJECT_DIR$/Controller/TalentController.class.php" />
+        <option value="$PROJECT_DIR$/View/talentOverview.php" />
+        <option value="$PROJECT_DIR$/CSS/Style.css" />
       </list>
     </option>
   </component>
@@ -731,14 +738,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CSS/Style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-34.08">
-          <caret line="248" column="19" selection-start-line="248" selection-start-column="19" selection-end-line="248" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/View/Inbox.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-7.48">
@@ -755,26 +754,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/View/talentOverview.php">
+    <entry file="file://$PROJECT_DIR$/View/allTalentsOverview.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.8">
-          <caret line="69" column="33" selection-start-line="69" selection-start-column="33" selection-end-line="69" selection-end-column="33" />
+        <state vertical-scroll-proportion="-3.48">
+          <caret line="7" column="22" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="22" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/View/allTalentsOverview.php">
+    <entry file="file://$PROJECT_DIR$/View/talentOverview.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-17.76">
-          <caret line="28" column="62" selection-start-line="28" selection-start-column="62" selection-end-line="28" selection-end-column="62" />
+        <state vertical-scroll-proportion="-10.2">
+          <caret line="15" column="10" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Controller/TalentController.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.0542636">
-          <caret line="130" column="0" selection-start-line="130" selection-start-column="0" selection-end-line="130" selection-end-column="0" />
+        <state vertical-scroll-proportion="46.16">
+          <caret line="31" column="34" selection-start-line="31" selection-start-column="34" selection-end-line="31" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CSS/Style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8493909">
+          <caret line="247" column="10" selection-start-line="247" selection-start-column="10" selection-end-line="247" selection-end-column="10" />
           <folding />
         </state>
       </provider>

@@ -245,6 +245,6 @@ a:hover {
     color: #35978f;
 }
 
-.active{
-    color: #35978f;
+.active>li{
+    background-color: #35978f;
 }

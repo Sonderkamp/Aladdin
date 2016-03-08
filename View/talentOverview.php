@@ -14,12 +14,6 @@
             <li><a href="/talents/action=add_talent">Talent aanvragen</a></li>
         </ul>
     </div>
-<!--    <span class="info">-->
-<!--        <a href="/talents/action=add_talent" class="btn btn-add side-button">-->
-<!--            <span class="glyphicon glyphicon-plus"></span>-->
-<!--        </a>-->
-<!--    </span>-->
-
 
     <div class="col-md-10">
         {if $number_of_talents le 3}
