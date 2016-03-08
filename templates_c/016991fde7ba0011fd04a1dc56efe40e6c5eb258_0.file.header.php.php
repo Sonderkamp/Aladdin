@@ -1,17 +1,17 @@
 <?php
-/* Smarty version 3.1.29, created on 2016-02-27 21:05:09
+/* Smarty version 3.1.29, created on 2016-03-04 12:52:04
   from "C:\xampp\htdocs\View\header.php" */
 
 if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl, array (
   'has_nocache_code' => false,
   'version' => '3.1.29',
-  'unifunc' => 'content_56d20175eb5cb3_54871095',
+  'unifunc' => 'content_56d976e43145a0_83795151',
   'file_dependency' => 
   array (
     '016991fde7ba0011fd04a1dc56efe40e6c5eb258' => 
     array (
       0 => 'C:\\xampp\\htdocs\\View\\header.php',
-      1 => 1456603077,
+      1 => 1457090544,
       2 => 'file',
     ),
   ),
@@ -19,7 +19,7 @@ if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl,
   array (
   ),
 ),false)) {
-function content_56d20175eb5cb3_54871095 ($_smarty_tpl) {
+function content_56d976e43145a0_83795151 ($_smarty_tpl) {
 ?>
 <!DOCTYPE html >
 <html lang="en">
@@ -30,19 +30,13 @@ function content_56d20175eb5cb3_54871095 ($_smarty_tpl) {
     <!-- Color on mobile devices. Example: mariusdv.nl -->
     <meta name="theme-color" content="#2196F3">
 
-    <?php echo '<script'; ?>
- src="https://code.jquery.com/jquery-latest.min.js"><?php echo '</script'; ?>
->
-    <?php echo '<script'; ?>
- src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"><?php echo '</script'; ?>
->
-    <?php echo '<script'; ?>
- type="text/javascript" src="//code.jquery.com/ui/1.10.1/jquery-ui.js"><?php echo '</script'; ?>
->
-
     <link rel="stylesheet" href="https://bootswatch.com/paper/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/CSS/shop-homepage.css">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/theme-default.min.css" rel="stylesheet" type="text/css"/>
+    <link href='https://fonts.googleapis.com/css?family=PT+Sans|Indie+Flower' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="/CSS/Style.css">
+    <link rel="stylesheet" type="text/css" href="/CSS/Wish.css">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/theme-default.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="/CSS/charts.css">
 
     <?php if (isset($_smarty_tpl->tpl_vars['title']->value)) {?>
     <title>Aladdin: <?php echo htmlspecialchars($_smarty_tpl->tpl_vars['title']->value);?>
@@ -55,6 +49,20 @@ function content_56d20175eb5cb3_54871095 ($_smarty_tpl) {
 </head>
 
 <body>
+
+<?php echo '<script'; ?>
+ src="https://code.jquery.com/jquery-latest.min.js"><?php echo '</script'; ?>
+>
+<?php echo '<script'; ?>
+ src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"><?php echo '</script'; ?>
+>
+<?php echo '<script'; ?>
+ type="text/javascript" src="//code.jquery.com/ui/1.10.1/jquery-ui.js"><?php echo '</script'; ?>
+>
+<?php echo '<script'; ?>
+ src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/jquery.form-validator.min.js"><?php echo '</script'; ?>
+>
+
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -67,7 +75,7 @@ function content_56d20175eb5cb3_54871095 ($_smarty_tpl) {
                 <span class="icon-bar"></span>
             </button>
 
-            <a class="navbar-brand" href="/">Aladdin</a>
+            <a class="navbar-brand pull-left" href="/"><img class="logo" src="/Resources/Images/logo.png"/> </a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -75,20 +83,38 @@ function content_56d20175eb5cb3_54871095 ($_smarty_tpl) {
 
 
 
-            <form class="navbar-form navbar-left" role="search" action="/Catalogue" method="get">
-                <div class="form-group">
-                    <input name="search" id="search" type="text" class="form-control" placeholder="Search">
-                </div>
-                <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search search"></button>
-            </form>
+            <ul class="nav navbar-nav navbar-left">
 
+                <?php if (isset($_smarty_tpl->tpl_vars['admin']->value)) {?>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        <span class="glyphicon glyphicon-eye-open"></span> Administrator<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/admin">Statistieken</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/">Wens Aanvragen</a></li>
+                        <li><a href="/">Talent aanvragen</a></li>
+                        <li><a href="/">Meldingen</a></li>
+                        <li><a href="/">Berichten Centrum</a></li>
+                        <li role="separator" class="divider">
+                        <li><a href="/">Gebruikers</a></li>
+                    </ul>
+                </li>
+                <?php }?>
+                <?php if (isset($_smarty_tpl->tpl_vars['user']->value)) {?>
+                <li><a href="/wishes"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
+                <li><a href="/Inbox"> <span class="glyphicon glyphicon glyphicon-envelope"></span> Berichten</a></li>
+                <?php }?>
+            </ul>
             <ul class="nav navbar-nav navbar-right">
 
 
                 <?php if (isset($_smarty_tpl->tpl_vars['user']->value)) {?>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false"><?php echo $_smarty_tpl->tpl_vars['user']->value->email;?>
+                       aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
+                        <?php echo $_smarty_tpl->tpl_vars['user']->value->displayName;?>
 <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="/account">Mijn profiel</a></li>

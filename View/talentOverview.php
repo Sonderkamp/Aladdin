@@ -1,11 +1,8 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Joost
- * Date: 27-2-2016
- * Time: 21:48
- */
-?>
+
+<!--Created by PhpStorm.-->
+<!--User: Joost-->
+<!--Date: 27-2-2016-->
+<!--Time: 21:48-->
 
 <div class="container">
     <div class="col-sm-12 col-md-6">
@@ -13,7 +10,7 @@
             <thead>
                 <tr>
                     <th>Toegevoegde talenten</th>
-                    <th>Verwijderen</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -21,7 +18,9 @@
                     <tr>
                         <td class="col-sm-12">{$talent -> talent}</td>
                         <td class="col-sm-1">
-                            <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', $talent->talent)}">Verwijderen</button>
+                            <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', $talent->talent)}">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
                         </td>
                     </tr>
                 {/foreach}
@@ -33,7 +32,7 @@
             <thead>
                 <tr>
                     <th>Alle talenten</th>
-                    <th>Verwijderen</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -41,7 +40,9 @@
                     <tr>
                         <td class="col-sm-12">{$talent -> talent}</td>
                         <td class="col-sm-1">
-                            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', $talent->talent)}">Verwijderen</button>
+                            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', $talent->talent)}">
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </button>
                         </td>
                     </tr>
                 {/foreach}
@@ -70,7 +71,7 @@
                 <button type="button" class="btn btn-default infoLeft" data-dismiss="modal">Sluiten</button>
                 <form action="/talents" method="post">
                     <input type="hidden" name="talent" value="{$talent -> talent}"/>
-                    <td><input type="submit" name="submit" value="Verwijderen" class="btn btn-inbox info" /></td>
+                    <button type="submit" name="submit" class="btn btn-inbox info"><span class="glyphicon glyphicon-remove"></span> Verwijderen</button>
                 </form>
             </div>
         </div>

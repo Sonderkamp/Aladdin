@@ -5,7 +5,7 @@
 <!-- * Time: 15:12-->
 <!-- */-->
 <!-- TODO *************************** -->
-<!-- TODO * BALK HEFT EEN WIDTH KUT *-->
+<!-- TODO  BALK HEFT EEN WIDTH KUT -->
 <!-- TODO ***************************-->
 <div class="container">
     <div class="row">
@@ -60,17 +60,6 @@
                 </tr>
 
             </table>
-
-
-            <!--            <h7><a type="button" class="btn btn-primary btn-default side-button" href="/Wishes/action=mywishes">Mijn-->
-            <!--                    wensen</a></h7>-->
-            <!--            <br>-->
-            <!--            <h7><a type="button" class="btn btn-default side-button" href="/Wishes/action=incompletedWishes">Onvervulde-->
-            <!--                    wensen</a></h7>-->
-            <!--            <br>-->
-            <!--            <h7><a type="button" class="btn btn-default side-button" href="/Wishes/action=completedWishes">Vervulde-->
-            <!--                    wensen</a></h7>-->
-            <!--            <br>-->
         </div>
         <div class="col-lg-10">
 
