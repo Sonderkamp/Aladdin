@@ -99,9 +99,8 @@ class WishController {
 
             render("addWish.php", ["title" => "Wens toevoegen", "allTags" => $tags]);
         } else {
-            $wishId = $_GET["editwishbtn"];
-            $this->wishContentId = $wishId;
-            $wish = $this->wishRepository->getSelectedWish($wishId);
+            $this->wishContentId = $_GET["editwishbtn"];
+            $wish = $this->wishRepository->getSelectedWish($this->wishContentId);
 
             $this->title = $wish[0]["Title"];
             $this->description = $wish[0]["Content"];
@@ -156,11 +155,10 @@ class WishController {
             $newWish["country"] = $this->country;
             $newWish["isAccepted"] = $this->isAccepted;
 
-
             // send the array to the repository to add to the database
-            $this->wishRepository->addWish($newWish, false);
+            $this->wishRepository->addWish($newWish);
 
-            $this->getMyWishes();
+            $this->go_back();
         }
     }
 
@@ -192,8 +190,10 @@ class WishController {
             $editWish["city"] = $this->city;
             $editWish["country"] = $this->country;
 
-            $this->wishRepository->addWish($editWish, true);
-            $this->getMyWishes();
+            // TODO: set id to wishContentId
+            $id = 58;
+            $this->wishRepository->wishContentQuery($editWish,$id);
+            $this->go_back();
         }
     }
 
