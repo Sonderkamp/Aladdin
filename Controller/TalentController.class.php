@@ -8,7 +8,6 @@
  */
 class TalentController
 {
-    // TODO: TABELLEN GROUPEREN (bootstrap pills)
     private $page, $talents, $talents_user, $talent_repository, $talent_numbers, $current_talent_number, $user_talents_number, $current_user_talent_number;
 
     public function __construct()
@@ -28,6 +27,9 @@ class TalentController
         $this->checkPost();
         $this->checkGet();
         $this->checkSessions();
+
+//        $redirect = "/talents/p=".$this->page."/a=".$this->current_talent_number."/m=".$this->current_user_talent_number;
+//        redirect($redirect);
 
         render("talentOverview.php",
             ["title" => "Talenten",
