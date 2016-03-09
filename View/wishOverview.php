@@ -71,6 +71,16 @@
             <div id="err"></div>
             {/if}
 
+            <form action="/wishes/action=searchWish" method="get">
+
+            <input class="form-control" name="title" placeholder="Wat is uw wens" value="Zoek een wens">
+
+            <button type="submit" class="btn btn-primary">
+                Zoek
+            </button>
+
+            </form>
+
             <table class="table">
                 <thead>
                 <tr>

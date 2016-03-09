@@ -38,6 +38,13 @@
                             </button>
                         </a>
                     </td>
+                    <td>
+                        <a href="/Wishes/requestMatch={$wish->id}">
+                            <button class="btn btn-default">
+                                    Match aanvragen
+                            </button>
+                        </a>
+                    </td>
                 </tr>
                 {/foreach}
                 </tbody>

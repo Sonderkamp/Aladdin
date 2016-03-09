@@ -48,14 +48,14 @@
             <div class="form-group row authors-list">
                 <label class="col-sm-2 form-control-label">Tags:</label>
                 <div class="col-sm-10">
-                <select class="form-control">
+                    <select class="form-control">
 
-                    {foreach from=$allTags item=tag}
-                    <option>{$tag}</option>
-                    {/foreach}
+                        {foreach from=$allTags item=tag}
+                        <option>{$tag}</option>
+                        {/foreach}
 
-                </select>
-                    </div>
+                    </select>
+                </div>
             </div>
 
             <div class="form-group row authors-list">
