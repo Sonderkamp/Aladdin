@@ -30,5 +30,6 @@ class Quote
         $this->content = $result[$random]["Content"];
         $this->source = $result[$random]["Source"];
 
+        return $this->content . $this->source;
     }
 }

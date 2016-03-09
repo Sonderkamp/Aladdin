@@ -100,7 +100,7 @@ class WishRepository
             }
 
             $selectedWish = new Wish(
-                $result[0][Id],
+                $result[0]["Id"],
                 $result[0]["User"],
                 $result[0]["Title"],
                 $completed,
