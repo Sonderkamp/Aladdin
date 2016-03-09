@@ -85,7 +85,7 @@
                             </li>
                             {else}
                             <li>
-                                <a href="/talents/p=m/a={$current_talent_number}/m={$current_user_talent_number - 1}" aria-label="Previous">
+                                <a href="/talents/p=m/a={$current_talent_number}/m={$current_user_talent_number - 1}/t={$current_requested_talent_number}" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
@@ -98,7 +98,7 @@
                             </li>
                             {else}
                             <li>
-                                <a href="/talents/p=m/a={$current_talent_number}/m={$number}">{$number}</a>
+                                <a href="/talents/p=m/a={$current_talent_number}/m={$number}/t={$current_requested_talent_number}">{$number}</a>
                             </li>
                             {/if}
                             {/for}
@@ -111,7 +111,7 @@
                             </li>
                             {else}
                             <li>
-                                <a href="/talents/p=m/a={$current_talent_number}/m={$current_user_talent_number + 1}" aria-label="Next">
+                                <a href="/talents/p=m/a={$current_talent_number}/m={$current_user_talent_number + 1}/t={$current_requested_talent_number}" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
@@ -167,7 +167,7 @@
                             </li>
                             {else}
                             <li>
-                                <a href="/talents/p=a/a={$current_talent_number - 1}/m={$current_user_talent_number}" aria-label="Previous">
+                                <a href="/talents/p=a/a={$current_talent_number - 1}/m={$current_user_talent_number}/t={$current_requested_talent_number}" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
@@ -180,7 +180,7 @@
                             </li>
                             {else}
                             <li>
-                                <a href="/talents/p=a/a={$number}/m={$current_user_talent_number}">{$number}</a>
+                                <a href="/talents/p=a/a={$number}/m={$current_user_talent_number}/t={$current_requested_talent_number}">{$number}</a>
                             </li>
                             {/if}
                             {/for}
@@ -193,7 +193,7 @@
                             </li>
                             {else}
                             <li>
-                                <a href="/talents/p=a/a={$current_talent_number + 1}/m={$current_user_talent_number}" aria-label="Next">
+                                <a href="/talents/p=a/a={$current_talent_number + 1}/m={$current_user_talent_number}/t={$current_requested_talent_number}" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
@@ -213,10 +213,10 @@
             <div class="tab-pane" id="tab3">
             {/if}
                 <div class="col-md-10">
-                    {if !empty($talent_error)}
+                    {if !empty($added_talent_error)}
                     <div class="alert alert-danger fade in">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>Error!</strong> {$talent_error}
+                        <strong>Error!</strong> {$added_talent_error}
                     </div>
                     {/if}
                     {if !empty($talent_name)}
@@ -250,18 +250,80 @@
                         </div>
                     </form>
                     {/if}
+                    <div>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Aangevraagde talenten</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach from=$requested_talents item=talent}
+                            <tr>
+                                <td class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{$talent -> name}</td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
+                    {if $requested_talents_number > 1}
+                    <div>
+                        <nav>
+                            <ul class="pagination">
+                                {if $current_requested_talent_number <= 1}
+                                <li class="disabled">
+                                    <a href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                {else}
+                                <li>
+                                    <a href="/talents/p=t/a={$current_talent_number}/m={$current_user_talent_number}/t={$current_requested_talent_number - 1}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                {/if}
+
+                                {for $number=1 to $requested_talents_number}
+                                {if $number == $current_requested_talent_number}
+                                <li class="active">
+                                    <a href="#">{$number}</a>
+                                </li>
+                                {else}
+                                <li>
+                                    <a href="/talents/p=t/a={$current_talent_number}/m={$current_user_talent_number}/t={$number}">{$number}</a>
+                                </li>
+                                {/if}
+                                {/for}
+
+                                {if $current_requested_talent_number >= $requested_talents_number}
+                                <li class="disabled">
+                                    <a href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                                {else}
+                                <li>
+                                    <a href="/talents/p=t/a={$current_talent_number}/m={$current_user_talent_number}/t={$current_requested_talent_number + 1}" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                                {/if}
+                            </ul>
+                        </nav>
+                    </div>
+                    {/if}
                 </div>
             </div>
         </div>
     </div>
-        </div>
+    </div>
 </div>
 
 <!-- Modal Remove-->
 {foreach from=$user_talents item=talent}
 <div id="myModal{preg_replace('/\s+/', '', $talent->name)}" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
+  <div class="modal-dialog">\
       <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
@@ -282,8 +344,7 @@
                     </button>
                 </form>
             </div>
-        </div>
-
+        </div>\
     </div>
 </div>
 {/foreach}

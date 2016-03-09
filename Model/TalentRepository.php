@@ -212,6 +212,43 @@ class TalentRepository
         return $returnArray;
     }
 
+    public function getRequestedTalents($value)
+    {
+        $value -= 1;
+        $value *= 10;
+        $result = Database::query
+        ("SELECT  `talent`.`Id`,
+          `talent`.`Name`,
+          `talent`.`CreationDate`,
+          `talent`.`AcceptanceDate`,
+          `talent`.`IsRejected`,
+          `talent`.`moderator_Username`,
+          `talent`.`user_Email`
+          FROM `talent`
+          WHERE `talent`.`AcceptanceDate` IS NULL
+          AND `talent`.`IsRejected` IS NULL
+          AND `talent`.`moderator_Username` IS NULL
+          ORDER BY `talent`.`Name` ASC
+          LIMIT $value,10");
+
+        $returnArray = array();
+
+        for ($i = 0; $i < count($result); $i++) {
+
+            $returnArray[$i] = new Talent(
+                $result[$i]["Id"],
+                $result[$i]["Name"],
+                $result[$i]["CreationDate"],
+                $result[$i]["AcceptanceDate"],
+                $result[$i]["IsRejected"],
+                $result[$i]["moderator_Username"],
+                $result[$i]["user_Email"]
+            );
+        }
+
+        return $returnArray;
+    }
+
     public function deleteTalentFromUser($id)
     {
         Database::query_safe
@@ -263,6 +300,18 @@ class TalentRepository
           AND `talent`.`moderator_Username` IS NOT NULL
           ORDER BY `talent`.`Name` ASC",
             array($_SESSION["user"]->email));
+        return $result[0]["Number_of_talents"];
+    }
+
+    public function checkNumberOfRequestedTalents()
+    {
+        $result = Database::query
+        ("SELECT  COUNT(`talent`.`Id`) AS `Number_of_talents`
+          FROM `talent`
+          WHERE `talent`.`AcceptanceDate` IS NULL
+          AND `talent`.`IsRejected` IS NULL
+          AND `talent`.`moderator_Username` IS NULL
+          ORDER BY `talent`.`Name` ASC");
         return $result[0]["Number_of_talents"];
     }
 }

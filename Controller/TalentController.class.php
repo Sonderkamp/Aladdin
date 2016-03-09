@@ -8,7 +8,7 @@
  */
 class TalentController
 {
-    private $page, $talents, $talents_user, $talent_repository, $talent_numbers, $current_talent_number, $user_talents_number, $current_user_talent_number, $talent_name, $talent_error;
+    private $page, $talents, $talents_user, $talent_repository, $talent_numbers, $current_talent_number, $user_talents_number, $current_user_talent_number, $talent_name, $talent_error, $requested_talents, $requested_talents_number, $current_requested_talent_number;
 
     public function __construct()
     {
@@ -20,6 +20,7 @@ class TalentController
         $this->talents_user = $this->talent_repository->getUserTalents();
         $this->user_talents_number = ceil($this->talent_repository->checkNumberOfTalentsFromUser()/10);
         $this->talent_numbers = ceil($this->talent_repository->checkNumberOfTalents()/10);
+        $this->requested_talents_number = ceil($this->talent_repository->checkNumberOfRequestedTalents()/10);
     }
 
     public function run()
@@ -43,7 +44,10 @@ class TalentController
                 "current_talent_number" => $this->current_talent_number,
                 "current_page" => $this->page,
                 "talent_name" => $this->talent_name,
-                "talent_error" => $this->talent_error]);
+                "added_talent_error" => $this->talent_error,
+                "requested_talents" => $this->requested_talents,
+                "requested_talents_number" => $this->requested_talents_number,
+                "current_requested_talent_number" => $this->current_requested_talent_number]);
         exit(0);
     }
 
@@ -62,7 +66,7 @@ class TalentController
                         }
                     }
                     if($correct == true){
-                        $this->talent_repository->addTalent(ucfirst($_POST["talent_name"]));
+                        $this->talent_repository->addTalent(ucfirst(trim($_POST["talent_name"])));
                         $_SESSION["talent_name"] = "";
                         $_SESSION["err_talent"] = "";
                     }
@@ -155,6 +159,23 @@ class TalentController
                 $this->talents = $this->talent_repository->getSelectionTalents(1);
                 $this->current_talent_number = 1;
             }
+
+            if (!Empty($_GET["t"])) {
+                if($_GET["t"] > 0 & $_GET["t"] <= $this->requested_talents_number) {
+                    $this->requested_talents = $this->talent_repository->getRequestedTalents($_GET["t"]);
+                    $this->current_requested_talent_number = $_GET["t"];
+                    $_SESSION["talent_t"] = $this->current_requested_talent_number;
+                }
+                else{
+                    $this->requested_talents = $this->talent_repository->getRequestedTalents(1);
+                    $this->current_requested_talent_number = 1;
+                    $_SESSION["talent_t"] = $this->current_requested_talent_number;
+                }
+            }
+            else {
+                $this->requested_talents = $this->talent_repository->getRequestedTalents(1);
+                $this->current_requested_talent_number = 1;
+            }
         }
     }
 
@@ -178,6 +199,15 @@ class TalentController
             }
             else{
                 $_SESSION["talent_a"] = $this->talent_numbers;
+            }
+        }
+        if(!Empty($_SESSION["talent_t"])){
+            if($this->requested_talents_number > 1){
+                $this->current_requested_talent_number = $_SESSION["talent_t"];
+                $this->requested_talents = $this->talent_repository->getRequestedTalents($_SESSION["talent_t"]);
+            }
+            else{
+                $_SESSION["talent_t"] = $this->requested_talents_number;
             }
         }
         if(!Empty($_SESSION["talent_name"])){
