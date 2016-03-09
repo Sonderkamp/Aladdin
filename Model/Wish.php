@@ -8,9 +8,10 @@
 
 class Wish{
 
-    public $user, $title, $completed, $content, $accepted, $date, $status;
+    public $Id, $user, $title, $completed, $content, $accepted, $date, $status;
 
-    function __construct($user , $title, $completed, $content, $accepted, $date, $status) {
+    function __construct($Id, $user , $title, $completed, $content, $accepted, $date, $status) {
+        $this -> Id = $Id;
         $this -> user = $user;
         $this -> title = $title;
         $this -> completed = $completed;

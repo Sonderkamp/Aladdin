@@ -36,6 +36,7 @@ class WishRepository
             }
 
             $returnArray[$i] = new Wish(
+                $result[$i]["Id"],
                 $result[$i]["User"],
                 $result[$i]["Title"],
                 $result[$i]["Country"],
@@ -81,6 +82,7 @@ class WishRepository
 
         $result = Database::query_safe
         ("SELECT
+          wish.Id,
           wish.Status,
           wish.User,
           wish.Date,
@@ -98,6 +100,7 @@ class WishRepository
             }
 
             $selectedWish = new Wish(
+                $result[0][Id],
                 $result[0]["User"],
                 $result[0]["Title"],
                 $completed,

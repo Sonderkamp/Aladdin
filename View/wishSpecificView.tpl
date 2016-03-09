@@ -18,7 +18,7 @@
 
     <div class="row">
 
-        <div class="col-sm-4 form-group">
+        <div class="col-sm-3 form-group">
 
             <div class="row">
                 <label class="col-sm-4">Datum: </label>
@@ -40,6 +40,12 @@
                 <div class="col-sm-8">Misschien de stad van de user?</div>
             </div>
 
+
+        </div>
+
+        <div class="col-sm-6">
+
+            <p>{$selectedWish->content}</p>
 
         </div>
 
