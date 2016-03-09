@@ -85,7 +85,7 @@
                             </li>
                             {else}
                             <li>
-                                <a href="/talents/p=m/a={$current_talent_number}/m={$current_user_talent_number - 1}/t={$current_requested_talent_number}" aria-label="Previous">
+                                <a href="/talents/p=m/m={$current_user_talent_number - 1}/a={$current_talent_number}/t={$current_requested_talent_number}" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
@@ -98,7 +98,7 @@
                             </li>
                             {else}
                             <li>
-                                <a href="/talents/p=m/a={$current_talent_number}/m={$number}/t={$current_requested_talent_number}">{$number}</a>
+                                <a href="/talents/p=m/m={$number}/a={$current_talent_number}/t={$current_requested_talent_number}">{$number}</a>
                             </li>
                             {/if}
                             {/for}
@@ -111,7 +111,7 @@
                             </li>
                             {else}
                             <li>
-                                <a href="/talents/p=m/a={$current_talent_number}/m={$current_user_talent_number + 1}/t={$current_requested_talent_number}" aria-label="Next">
+                                <a href="/talents/p=m/m={$current_user_talent_number + 1}/a={$current_talent_number}/t={$current_requested_talent_number}" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
@@ -167,7 +167,7 @@
                             </li>
                             {else}
                             <li>
-                                <a href="/talents/p=a/a={$current_talent_number - 1}/m={$current_user_talent_number}/t={$current_requested_talent_number}" aria-label="Previous">
+                                <a href="/talents/p=a/m={$current_user_talent_number}/a={$current_talent_number - 1}/t={$current_requested_talent_number}" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
@@ -180,7 +180,7 @@
                             </li>
                             {else}
                             <li>
-                                <a href="/talents/p=a/a={$number}/m={$current_user_talent_number}/t={$current_requested_talent_number}">{$number}</a>
+                                <a href="/talents/p=a/m={$current_user_talent_number}/a={$number}/t={$current_requested_talent_number}">{$number}</a>
                             </li>
                             {/if}
                             {/for}
@@ -193,7 +193,7 @@
                             </li>
                             {else}
                             <li>
-                                <a href="/talents/p=a/a={$current_talent_number + 1}/m={$current_user_talent_number}/t={$current_requested_talent_number}" aria-label="Next">
+                                <a href="/talents/p=a/m={$current_user_talent_number}/a={$current_talent_number + 1}/t={$current_requested_talent_number}" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
@@ -278,7 +278,7 @@
                                 </li>
                                 {else}
                                 <li>
-                                    <a href="/talents/p=t/a={$current_talent_number}/m={$current_user_talent_number}/t={$current_requested_talent_number - 1}" aria-label="Previous">
+                                    <a href="/talents/p=t/m={$current_user_talent_number}/a={$current_talent_number}/t={$current_requested_talent_number - 1}" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
                                 </li>
@@ -291,7 +291,7 @@
                                 </li>
                                 {else}
                                 <li>
-                                    <a href="/talents/p=t/a={$current_talent_number}/m={$current_user_talent_number}/t={$number}">{$number}</a>
+                                    <a href="/talents/p=t/m={$current_user_talent_number}/a={$current_talent_number}/t={$number}">{$number}</a>
                                 </li>
                                 {/if}
                                 {/for}
@@ -304,7 +304,7 @@
                                 </li>
                                 {else}
                                 <li>
-                                    <a href="/talents/p=t/a={$current_talent_number}/m={$current_user_talent_number}/t={$current_requested_talent_number + 1}" aria-label="Next">
+                                    <a href="/talents/p=t/m={$current_user_talent_number}/a={$current_talent_number}/t={$current_requested_talent_number + 1}" aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
                                 </li>
