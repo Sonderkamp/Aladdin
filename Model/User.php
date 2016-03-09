@@ -374,4 +374,14 @@ class User
         $this->gender = $arr["gender"];
         $this->initials = $arr["initials"];
     }
+
+    public function deleteUser($username)
+    {
+        Database::query_safe("UPDATE user SET `IsActive`=0 WHERE Email=?",array($username));
+    }
+
+    public function undeletekUser($username)
+    {
+        Database::query_safe("UPDATE user SET `IsActive`=1 WHERE Email=?",array($username));
+    }
 }

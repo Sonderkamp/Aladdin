@@ -29,6 +29,9 @@ switch ($page) {
     case "talents":
         (new TalentController())->run();
         break;
+    case "profilecheck":
+        (new ProfileCheckController())->run();
+        break;
     case "index.php":
         (new HomeController())->run();
         break;

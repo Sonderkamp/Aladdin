@@ -156,7 +156,7 @@
                 {foreach from=$reqwishes item=wish item=i}
 
                 <tr>
-                    <form action="/AdminWish/action=accept" method="get">
+                    <form action="/AdminWish/action=accept" method="post">
                         <td>{$i.display}</td>
                         <td>{$i.content}</td>
                         <td>{$i.country}</td>
@@ -175,18 +175,18 @@
                             <button type="submit" formaction="/AdminWish/action=accept">Accepteren</button>
                         </td>
                         <td>
-                            <button type="submit" formaction="/AdminWish/action=deny" {$i.user}
+                            <button type="submit" formaction="/AdminWish/action=deny"
                             ">Afwijzen</button>
                         </td>
                         <td>
-                            <button type="submit" formaction="/AdminWish/action=profile">Profiel</button>
+                            <button type="submit"  formaction="/ProfileCheck/user={$i.user}">Profiel</button>
                         </td>
                         {/if}
 
                         {if {$smarty.get.action} eq 'open' || {$smarty.get.action} eq 'redraw' || {$smarty.get.action} eq 'delete'}
 
                         <td>
-                            <button type="submit" formaction="/AdminWish/action=redraw" {$i.user}
+                            <button type="submit" formaction="/AdminWish/action=redraw"
                             ">Aangevraagd</button>
                         </td>
                         {/if}
@@ -195,7 +195,7 @@
                         {$smarty.get.action} eq 'open' || {$smarty.get.action} eq 'redraw' || {$smarty.get.action} eq 'delete'}
 
                         <td>
-                            <button type="submit" formaction="/AdminWish/action=delete" {$i.user}
+                            <button type="submit" formaction="/AdminWish/action=delete"
                             ">Verwijder</button>
                         </td>
                         {/if}

@@ -44,19 +44,19 @@ class AdminWishController
 //                    $this->wishPageAction('accept');
                     break;
                 case "redraw":
-                    $this->wishAction('redraw', $_GET["wishid"],$_GET["mdate"],$_GET["user"]);
+                    $this->wishAction('redraw', $_POST["wishid"],$_POST["mdate"],$_POST["user"]);
                     $this->wishPageAction('open');
                     break;
                 case "delete":
-                    $this->wishAction('delete', $_GET["wishid"],$_GET["mdate"],$_GET["user"]);
+                    $this->wishAction('delete', $_POST["wishid"],$_POST["mdate"],$_POST["user"]);
                     $this->wishPageAction('open');
                     break;
                 case "accept":
-                    $this->wishAction('accept', $_GET["wishid"],$_GET["mdate"],$_GET["user"]);
+                    $this->wishAction('accept', $_POST["wishid"],$_POST["mdate"],$_POST["user"]);
                     $this->wishPageAction('requested');
                     break;
                 case "deny":
-                    $this->wishAction('deny', $_GET["wishid"],$_GET["mdate"],$_GET["user"]);
+                    $this->wishAction('deny', $_POST["wishid"],$_POST["mdate"],$_POST["user"]);
                     $this->wishPageAction('requested');
                     break;
                 default:
