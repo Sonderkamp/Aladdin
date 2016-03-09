@@ -313,10 +313,12 @@ class AccountController
 
     private function manage()
     {
+        //        // todo: render user-manage screen
+        //        echo $_SESSION["user"]->email;
 
         render("account.php", ["title" => "account"]);
-        exit();
-    }
+         exit();
+     }
 
 
 
