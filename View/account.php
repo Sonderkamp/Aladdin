@@ -48,16 +48,20 @@
                     <input type='radio' name='gender'  value ='other'> Anders
                     {/if} <p>
                     Gehandicapt?: {if $user->handicap}
-                    <input type='checkbox' name='handicap' checked>;
+                    <input type='checkbox' name='handicap' checked>
                     {elseif !$user->handicap}
-                    <input type='checkbox' name='handicap'>;
+                    <input type='checkbox' name='handicap'>
                     {/if} <p>
                 <p>
                     <br>
-                    <input type="submit" value="wijzig">
+                    <input type="submit" value="wijzig" class="btn btn-default">
+<br>
 
 
-
+            </form>
+            <form name="recover" action="/Account/action=recover" method="post" onsubmit="return validateEmail()">
+                <input  type="hidden" name="username" value="{$user->email}" readonly="true">
+                <input class="btn btn-default" value="Reset Wachtwoord" type="submit">
             </form>
 
 
