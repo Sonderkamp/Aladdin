@@ -39,11 +39,25 @@ class AdminWishController
                 case "deleted":
                     $this->wishPageAction('deleted');
                     break;
+                case "profile":
+//                    $this->wishAction('accept', $_GET["wishid"],$_GET["mdate"]);
+//                    $this->wishPageAction('accept');
+                    break;
+                case "redraw":
+                    $this->wishAction('redraw', $_GET["wishid"],$_GET["mdate"],$_GET["user"]);
+                    $this->wishPageAction('open');
+                    break;
+                case "delete":
+                    $this->wishAction('delete', $_GET["wishid"],$_GET["mdate"],$_GET["user"]);
+                    $this->wishPageAction('open');
+                    break;
                 case "accept":
-                    $this->wishAction('accept', $_GET["wishid"]);
+                    $this->wishAction('accept', $_GET["wishid"],$_GET["mdate"],$_GET["user"]);
+                    $this->wishPageAction('requested');
                     break;
                 case "deny":
-                    $this->wishAction('deny', $_GET["wishid"]);
+                    $this->wishAction('deny', $_GET["wishid"],$_GET["mdate"],$_GET["user"]);
+                    $this->wishPageAction('requested');
                     break;
                 default:
                     apologize("404 not found, Go back to my wishes");
@@ -53,7 +67,6 @@ class AdminWishController
             $this->renderPage();
             exit();
         }
-
         $this->renderPage();
         exit();
     }
@@ -69,10 +82,22 @@ class AdminWishController
                 case "requested":
                     render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested')]);
                     break;
+                case "accept":
+                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested')]);
+                    break;
+                case "deny":
+                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested')]);
+                    break;
                 case "changed":
                     render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('changed')]);
                     break;
                 case "open":
+                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('open')]);
+                    break;
+                case "redraw":
+                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('open')]);
+                    break;
+                case "delete":
                     render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('open')]);
                     break;
                 case "matched":
@@ -87,15 +112,20 @@ class AdminWishController
                 case "denied":
                     render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('denied')]);
                     break;
+                default:
+                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('reuqested')]);
+                    break;
+
 
             }
             exit();
         }
 
-
         render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested')]);
         exit();
     }
+
+
 
     private function wishPageAction($page)
     {
@@ -134,28 +164,40 @@ class AdminWishController
 
 
     private
-    function wishAction($action, $wishID)
+    function wishAction($action, $wishID, $mdate,$username)
     {
         $wishmodel = new WishRepository();
 
+        $newdate = str_replace('%20', ' ', $mdate);
         switch ($action) {
             case
             'accept':
-                 $wishmodel->AdminAcceptWish($wishID);
+                 $wishmodel->AdminAcceptWish($wishID,$newdate);
                 break;
             case 'deny':
-                $wishmodel->AdminRefuseWish($wishID);
+                $wishmodel->AdminRefuseWish($wishID,$newdate);
+
+//                $this->sendRefuseMessage($username,$wishID);
+                break;
+
+            case 'delete':
+                $wishmodel->AdminDeleteWish($wishID,$newdate);
+//                $this->sendRefuseMessage($username,$wishID);
+                break;
+
+            case 'redraw':
+                $wishmodel->AdminRedrawWish($wishID,$newdate);
+//                $this->sendRefuseMessage($username,$wishID);
                 break;
         }
-        $this->renderPage();
     }
 
-    private function sendRefuseMessage($wishid)
+    private function sendRefuseMessage($user,$wishid)
 {
     $messagemodel = new messageModel();
     $wishmodel = new WishRepository();
     $test = $wishmodel->getWishOwner($wishid);
-    return $test;
-//    $messagemodel->sendMessage('Admin',)
+        //"Geachte " + $_GET["wishdisplay"] +"<p> Je wens is afgewezen als u de reden hiervoor wilt weten kunt u contact opnemen via de website. <p> hieronder kunt u de inhoud van de wens nog inzien.<p><p><h4>" + $_GET["wishtitle"] +"</h4><p>" + $_GET["wishcontent"] +"</p>"
+        $messagemodel->sendMessage($_SESSION["user"]->email,$user,'je wens is afgewezen','je wens is afgewezen');
 }
 }

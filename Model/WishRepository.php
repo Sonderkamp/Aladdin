@@ -81,49 +81,87 @@ class WishRepository
 
         switch ($wishPage) {
             case 'requested':
-                $result = Database::query("select u.DisplayName as user, wc.wish_Id as wishid, w.Status as status,wc.Date as date,wc.Title as content ,wc.country as country ,wc.City as city from wishContent wc INNER JOIN wish w on w.id = wc.wish_Id INNER JOIN user u on w.user = u.email WHERE status = 'Aangemaakt' OR wc.moderator_username is null");
+                $result = Database::query("SELECT
+              wc.wish_Id as wishid,
+              u.DisplayName as display,
+              w.status as status,
+              w.User as user,
+              wc.Content as content,
+              wc.Title as title,
+              wc.Country as country,
+              wc.City as city,
+              wc.IsAccepted as accepted,
+              wc.moderator_Username as modname,
+              wcMax.max_date as mdate
+          FROM wish AS w
+          JOIN (SELECT wish_Id, MAX(wishContent.Date) AS max_date
+              FROM wishContent
+              GROUP BY wish_Id) AS wcMax
+              ON w.Id = wcMax.wish_Id
+          JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
+          join user as u on w.user = u.Email
+
+WHERE w.status = 'Aangemaakt'
+AND wc.moderator_username is null
+          ORDER BY max_date DESC");
                 break;
             case 'changed':
-                $result = Database::query("select u.DisplayName as user, wc.wish_Id as wishid, w.Status as status,wc.Date as date,wc.Title as content ,wc.country as country ,wc.City as city from wishContent wc INNER JOIN wish w on w.id = wc.wish_Id INNER JOIN user u on w.user = u.email WHERE status != 'Geweigerd' AND wc.moderator_username is null");
+                $result = Database::query("select u.DisplayName as display,w.User as user, wc.wish_Id as wishid, w.Status as status,wc.Date as mdate,wc.Title as content ,wc.country as country ,wc.City as city from wishContent wc INNER JOIN wish w on w.id = wc.wish_Id INNER JOIN user u on w.user = u.email WHERE status != 'Geweigerd' AND wc.moderator_username is null");
                 break;
             case 'open':
-                $result = Database::query("select u.DisplayName as user, wc.wish_Id as wishid, w.Status as status,w.Date as date,wc.Title as content ,wc.country as country ,wc.City as city from wishContent wc INNER JOIN wish w on w.id = wc.wish_Id INNER JOIN user u on w.user = u.email WHERE status = 'Gepubliseerd'");
+                $result = Database::query("select u.DisplayName as display,w.User as user, wc.wish_Id as wishid, w.Status as status,wc.Date as mdate,wc.Title as content ,wc.country as country ,wc.City as city from wishContent wc INNER JOIN wish w on w.id = wc.wish_Id INNER JOIN user u on w.user = u.email WHERE status = 'Gepubliseerd' AND wc.moderator_username is not null AND wc.isaccepted = 1");
                 break;
             case 'matched':
-                $result = Database::query("select u.DisplayName as user, wc.wish_Id as wishid, w.Status as status,w.Date as date,wc.Title as content ,wc.country as country ,wc.City as city from wishContent wc INNER JOIN wish w on w.id = wc.wish_Id INNER JOIN user u on w.user = u.email WHERE status = 'Match gevonden'");
+                $result = Database::query("select u.DisplayName as display,w.User as user, wc.wish_Id as wishid, w.Status as status,wc.Date as mdate,wc.Title as content ,wc.country as country ,wc.City as city from wishContent wc INNER JOIN wish w on w.id = wc.wish_Id INNER JOIN user u on w.user = u.email WHERE status = 'Match gevonden'  AND wc.moderator_username is not null AND wc.isaccepted = 1");
                 break;
             case 'current':
-                $result = Database::query("select u.DisplayName as user, wc.wish_Id as wishid, w.Status as status,w.Date as date,wc.Title as content ,wc.country as country ,wc.City as city from wishContent wc INNER JOIN wish w on w.id = wc.wish_Id INNER JOIN user u on w.user = u.email WHERE status = 'Wordt vervuld'");
+                $result = Database::query("select u.DisplayName as display,w.User as user, wc.wish_Id as wishid, w.Status as status,wc.Date as mdate,wc.Title as content ,wc.country as country ,wc.City as city from wishContent wc INNER JOIN wish w on w.id = wc.wish_Id INNER JOIN user u on w.user = u.email WHERE status = 'Wordt vervuld'  AND wc.moderator_username is not null AND wc.isaccepted = 1");
                 break;
             case 'done':
-                $result = Database::query("select u.DisplayName as user, wc.wish_Id as wishid, w.Status as status,w.Date as date,wc.Title as content ,wc.country as country ,wc.City as city from wishContent wc INNER JOIN wish w on w.id = wc.wish_Id INNER JOIN user u on w.user = u.email WHERE status = 'Vervuld'");
+                $result = Database::query("select u.DisplayName as display,w.User as user, wc.wish_Id as wishid, w.Status as status,wc.Date as mdate,wc.Title as content ,wc.country as country ,wc.City as city from wishContent wc INNER JOIN wish w on w.id = wc.wish_Id INNER JOIN user u on w.user = u.email WHERE status = 'Vervuld' AND wc.moderator_username is not null AND wc.isaccepted = 1");
                 break;
             case 'denied':
-                $result = Database::query("select u.DisplayName as user, wc.wish_Id as wishid, w.Status as status,w.Date as date,wc.Title as content ,wc.country as country ,wc.City as city from wishContent wc INNER JOIN wish w on w.id = wc.wish_Id INNER JOIN user u on w.user = u.email WHERE status = 'Geweigerd'");
+                $result = Database::query("select u.DisplayName as display,w.User as user, wc.wish_Id as wishid, w.Status as status,wc.Date as mdate,wc.Title as content ,wc.country as country ,wc.City as city from wishContent wc INNER JOIN wish w on w.id = wc.wish_Id INNER JOIN user u on w.user = u.email WHERE status = 'Geweigerd' AND wc.moderator_username is not null AND wc.isaccepted = 0");
                 break;
             case 'deleted':
-                $result = Database::query("select u.DisplayName as user, wc.wish_Id as wishid, w.Status as status,w.Date as date,wc.Title as content ,wc.country as country ,wc.City as city from wishContent wc INNER JOIN wish w on w.id = wc.wish_Id INNER JOIN user u on w.user = u.email WHERE status = 'Verwijderd'");
+                $result = Database::query("select u.DisplayName as display,w.User as user, wc.wish_Id as wishid, w.Status as status,wc.Date as mdate,wc.Title as content ,wc.country as country ,wc.City as city from wishContent wc INNER JOIN wish w on w.id = wc.wish_Id INNER JOIN user u on w.user = u.email WHERE status = 'Verwijderd'");
                 break;
         }
 
         return $result;
     }
 
-    public function AdminAcceptWish($id)
+    public function AdminAcceptWish($id,$mdate)
     {
-        Database::query_safe("UPDATE wishContent SET `IsAccepted`=1  WHERE Wish_id =?",array($id));
-        Database::query_safe("UPDATE wishContent SET `moderator_username`='Admin'  WHERE Wish_id =?",array($id));
+        Database::query_safe("UPDATE wishContent SET `IsAccepted`=1  WHERE Date =?",array($mdate));
+        Database::query_safe("UPDATE wishContent SET `moderator_username`='Admin'  WHERE Date =?",array($mdate));
         Database::query_safe("UPDATE wish SET `Status`='Gepubliseerd'  WHERE id=?",array($id));
 
 
     }
 
-    public function AdminRefuseWish($id)
+    public function AdminRefuseWish($id,$mdate)
     {
 
-        Database::query_safe("UPDATE wishContent SET `IsAccepted`=1  WHERE Wish_id=?",array($id));
-        Database::query_safe("UPDATE wishContent SET `moderator_username`='Admin'  WHERE Wish_id=?",array($id));
+        Database::query_safe("UPDATE wishContent SET `IsAccepted`=0  WHERE Date=?",array($mdate));
+        Database::query_safe("UPDATE wishContent SET `moderator_username`='Admin'  WHERE Date=?",array($mdate));
         Database::query_safe("UPDATE wish SET `Status`='Geweigerd'  WHERE id=?",array($id));
+    }
+
+    public function AdminDeleteWish($id,$mdate)
+    {
+
+        Database::query_safe("UPDATE wishContent SET `IsAccepted`=0  WHERE wish_id=?",array($id));
+        Database::query_safe("UPDATE wishContent SET `moderator_username`='Admin'  WHERE wish_id=?",array($id));
+        Database::query_safe("UPDATE wish SET `Status`='Vewijderd'  WHERE id=?",array($id));
+    }
+
+    public function AdminRedrawWish($id,$mdate)
+    {
+
+        Database::query_safe("UPDATE wishContent SET `IsAccepted`=0  WHERE Date =?",array($mdate));
+        Database::query_safe("UPDATE wishContent SET `moderator_username`= null  WHERE Date =?",array($mdate));
+        Database::query_safe("UPDATE wish SET `Status`='Aangemaakt'  WHERE id=?",array($id));
     }
 
     public function getWishOwner($id)
