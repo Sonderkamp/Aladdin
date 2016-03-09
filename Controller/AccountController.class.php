@@ -31,9 +31,6 @@ class AccountController
                 case "activate":
                     $this->activate();
                     break;
-                case "change":
-                    $this->changeDetails();
-                    break;
                 default:
                     $this->pagepicker();
                     break;
