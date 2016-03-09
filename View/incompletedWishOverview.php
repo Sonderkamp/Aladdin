@@ -12,7 +12,7 @@
             <h5>Wensen overzicht</h5>
             <hr>
             <h7><a type="button" class="btn btn-default side-button" href="/Wishes/action=mywishes">Mijn wensen</a></h7><br>
-            <h7><a type="button" class="btn btn-primary btn-default side-button" href="/Wishes/action=incompletedWishes">Onvervulde wensen</a></h7><br>
+            <h7><a type="button" class="btn btn-primary btn-default side-button " href="/Wishes/action=incompletedWishes">Onvervulde wensen</a></h7><br>
             <h7><a type="button" class="btn btn-default side-button" href="/Wishes/action=completedWishes">Vervulde wensen</a></h7><br>
         </div>
         <div class="col-lg-10">
@@ -21,8 +21,6 @@
                 <tr>
                     <th>Gebruiker</th>
                     <th>Title</th>
-                    <th>Country</th>
-                    <th>City</th>
                     <th>Content</th>
                 </tr>
                 </thead>
@@ -31,9 +29,15 @@
                 <tr>
                     <td>{$wish -> user}</td>
                     <td>{$wish -> title}</td>
-                    <td>{$wish -> country}</td>
-                    <td>{$wish -> city}</td>
                     <td>{$wish -> content}</td>
+                    <td>
+                        <a href="/Wishes/wish_id={$wish->id}">
+                            <button class="btn btn-default">
+                                    <span class="glyphicon glyphicon-eye-open">
+                                    </span>
+                            </button>
+                        </a>
+                    </td>
                 </tr>
                 {/foreach}
                 </tbody>

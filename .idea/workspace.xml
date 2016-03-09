@@ -2,24 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fdff3ebf-a012-4b8f-b011-ea94c721b9b6" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Resources/Images/logo.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Resources/Images/logo.tiff" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/View/addWish.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates_c/016991fde7ba0011fd04a1dc56efe40e6c5eb258_0.file.header.php.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates_c/0e0383d900db65d30b16054145943052efaf7cc0_0.file.talentOverview.php.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates_c/50615192ac5a3aa31ad6b9632d1f1192793bd88d_0.file.home.php.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates_c/6a4adaf0fed9fcf7ceb0e71ab946e96987ccac61_0.file.footer.php.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates_c/6d5aaf59146f593f2bfad54dce07ab2230c1f36d_0.file.error_view.php.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates_c/cb1f0c282cde203ea5c0950183e123336f26573a_0.file.wishOverview.php.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/templates_c/50615192ac5a3aa31ad6b9632d1f1192793bd88d_0.file.home.php.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/templates_c/cb1f0c282cde203ea5c0950183e123336f26573a_0.file.wishOverview.php.php" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSS/Style.css" afterPath="$PROJECT_DIR$/CSS/Style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Controller/AccountController.class.php" afterPath="$PROJECT_DIR$/Controller/AccountController.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Controller/MailController.class.php" afterPath="$PROJECT_DIR$/Controller/MailController.class.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Controller/WishController.class.php" afterPath="$PROJECT_DIR$/Controller/WishController.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Model/Wish.php" afterPath="$PROJECT_DIR$/Model/Wish.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Model/WishRepository.php" afterPath="$PROJECT_DIR$/Model/WishRepository.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/Inbox.php" afterPath="$PROJECT_DIR$/View/Inbox.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/addWish.php" afterPath="$PROJECT_DIR$/View/addWish.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/completedWishOverview.php" afterPath="$PROJECT_DIR$/View/completedWishOverview.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/header.php" afterPath="$PROJECT_DIR$/View/header.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/incompletedWishOverview.php" afterPath="$PROJECT_DIR$/View/incompletedWishOverview.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/talentOverview.php" afterPath="$PROJECT_DIR$/View/talentOverview.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/wishOverview.php" afterPath="$PROJECT_DIR$/View/wishOverview.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates_c/016991fde7ba0011fd04a1dc56efe40e6c5eb258_0.file.header.php.php" afterPath="$PROJECT_DIR$/templates_c/016991fde7ba0011fd04a1dc56efe40e6c5eb258_0.file.header.php.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates_c/0e0383d900db65d30b16054145943052efaf7cc0_0.file.talentOverview.php.php" afterPath="$PROJECT_DIR$/templates_c/0e0383d900db65d30b16054145943052efaf7cc0_0.file.talentOverview.php.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates_c/6a4adaf0fed9fcf7ceb0e71ab946e96987ccac61_0.file.footer.php.php" afterPath="$PROJECT_DIR$/templates_c/6a4adaf0fed9fcf7ceb0e71ab946e96987ccac61_0.file.footer.php.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates_c/6d5aaf59146f593f2bfad54dce07ab2230c1f36d_0.file.error_view.php.php" afterPath="$PROJECT_DIR$/templates_c/6d5aaf59146f593f2bfad54dce07ab2230c1f36d_0.file.error_view.php.php" />
     </list>
     <ignored path="Aladdin.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -41,11 +40,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="wishOverview.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="wishOverview.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/View/wishOverview.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-39.884617">
-              <caret line="61" column="20" selection-start-line="61" selection-start-column="20" selection-end-line="61" selection-end-column="20" />
+            <state vertical-scroll-proportion="1.3049327">
+              <caret line="109" column="12" selection-start-line="109" selection-start-column="12" selection-end-line="109" selection-end-column="12" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="incompletedWishOverview.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/View/incompletedWishOverview.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-25.5">
+              <caret line="39" column="25" selection-start-line="39" selection-start-column="25" selection-end-line="39" selection-end-column="25" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="completedWishOverview.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/View/completedWishOverview.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-25.5">
+              <caret line="39" column="25" selection-start-line="39" selection-start-column="25" selection-end-line="39" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -54,9 +73,17 @@
       <file leaf-file-name="WishRepository.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Model/WishRepository.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-49.692307">
-              <caret line="76" column="5" selection-start-line="76" selection-start-column="5" selection-end-line="76" selection-end-column="5" />
-              <folding />
+            <state vertical-scroll-proportion="-19.923077">
+              <caret line="42" column="36" selection-start-line="42" selection-start-column="36" selection-end-line="42" selection-end-column="36" />
+              <folding>
+                <marker date="1457564486123" expanded="true" signature="210:538" placeholder="SELECT wish.... wish" />
+                <marker date="1457564486123" expanded="true" signature="1581:1639" placeholder="INSERT INTO `wish`... " />
+                <marker date="1457564486123" expanded="true" signature="1793:1864" placeholder="SELECT `Id` wish" />
+                <marker date="1457564486123" expanded="true" signature="2003:2176" placeholder="INSERT INTO `wishContent`... " />
+                <marker date="1457564486123" expanded="true" signature="2485:2576" placeholder="select count... wish" />
+                <marker date="1457564486123" expanded="true" signature="2850:3123" placeholder="SELECT wish.... wish" />
+                <marker date="1457564486123" expanded="true" signature="3866:3913" placeholder="select * fro... wishContent" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -64,18 +91,60 @@
       <file leaf-file-name="header.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/View/header.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-21.0">
-              <caret line="85" column="3" selection-start-line="85" selection-start-column="3" selection-end-line="85" selection-end-column="3" />
+            <state vertical-scroll-proportion="-21.23077">
+              <caret line="93" column="21" selection-start-line="93" selection-start-column="21" selection-end-line="93" selection-end-column="21" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="WishController.class.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="WishController.class.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Controller/WishController.class.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.9338565">
-              <caret line="49" column="5" selection-start-line="49" selection-start-column="5" selection-end-line="49" selection-end-column="5" />
+            <state vertical-scroll-proportion="-35.96154">
+              <caret line="55" column="5" selection-start-line="55" selection-start-column="5" selection-end-line="55" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Quote.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Model/Quote.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-20.923077">
+              <caret line="32" column="46" selection-start-line="32" selection-start-column="46" selection-end-line="32" selection-end-column="46" />
+              <folding>
+                <marker date="1457563744848" expanded="true" signature="329:407" placeholder="SELECT * FRO... quote" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="functions.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Includes/functions.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-23.846153">
+              <caret line="84" column="0" selection-start-line="84" selection-start-column="2" selection-end-line="85" selection-end-column="51" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="footer.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/View/footer.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-2.6153846">
+              <caret line="4" column="4" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="4" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="classes.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Includes/classes.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-6.5384617">
+              <caret line="10" column="32" selection-start-line="10" selection-start-column="32" selection-end-line="10" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -91,8 +160,14 @@
       <list>
         <option value="$PROJECT_DIR$/View/header.php" />
         <option value="$PROJECT_DIR$/Controller/WishController.class.php" />
+        <option value="$PROJECT_DIR$/Model/Quote.php" />
+        <option value="$PROJECT_DIR$/Includes/classes.php" />
+        <option value="$PROJECT_DIR$/View/footer.php" />
+        <option value="$PROJECT_DIR$/Includes/functions.php" />
         <option value="$PROJECT_DIR$/Model/WishRepository.php" />
         <option value="$PROJECT_DIR$/View/wishOverview.php" />
+        <option value="$PROJECT_DIR$/View/incompletedWishOverview.php" />
+        <option value="$PROJECT_DIR$/View/completedWishOverview.php" />
       </list>
     </option>
   </component>
@@ -147,7 +222,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="www" />
+              <option name="myItemId" value="htdocs" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -157,7 +232,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="www" />
+              <option name="myItemId" value="htdocs" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -171,7 +246,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="www" />
+              <option name="myItemId" value="htdocs" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -185,7 +260,21 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="www" />
+              <option name="myItemId" value="htdocs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Includes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Aladdin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="htdocs" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -195,8 +284,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -246,25 +335,25 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17760417" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329653" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329653" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
@@ -284,6 +373,46 @@
     <entry file="file://$PROJECT_DIR$/View/wishOverview.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
+          <caret line="61" column="20" selection-start-line="61" selection-start-column="20" selection-end-line="61" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Model/WishRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="76" column="5" selection-start-line="76" selection-start-column="5" selection-end-line="76" selection-end-column="5" />
+          <folding>
+            <marker date="1457564486123" expanded="true" signature="210:538" placeholder="SELECT wish.... wish" />
+            <marker date="1457564486123" expanded="true" signature="1581:1639" placeholder="INSERT INTO `wish`... " />
+            <marker date="1457564486123" expanded="true" signature="1793:1864" placeholder="SELECT `Id` wish" />
+            <marker date="1457564486123" expanded="true" signature="2003:2176" placeholder="INSERT INTO `wishContent`... " />
+            <marker date="1457564486123" expanded="true" signature="2485:2576" placeholder="select count... wish" />
+            <marker date="1457564486123" expanded="true" signature="2850:3123" placeholder="SELECT wish.... wish" />
+            <marker date="1457564486123" expanded="true" signature="3866:3913" placeholder="select * fro... wishContent" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/View/header.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="85" column="3" selection-start-line="85" selection-start-column="3" selection-end-line="85" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Controller/WishController.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/View/wishOverview.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
           <caret line="14" column="19" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
           <folding />
         </state>
@@ -297,34 +426,92 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/View/header.php">
+    <entry file="file://$PROJECT_DIR$/Controller/WishController.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-21.0">
-          <caret line="85" column="3" selection-start-line="85" selection-start-column="3" selection-end-line="85" selection-end-column="3" />
+        <state vertical-scroll-proportion="-35.96154">
+          <caret line="55" column="5" selection-start-line="55" selection-start-column="5" selection-end-line="55" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/View/wishOverview.php">
+    <entry file="file://$PROJECT_DIR$/View/header.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-39.884617">
-          <caret line="61" column="20" selection-start-line="61" selection-start-column="20" selection-end-line="61" selection-end-column="20" />
+        <state vertical-scroll-proportion="-21.23077">
+          <caret line="93" column="21" selection-start-line="93" selection-start-column="21" selection-end-line="93" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Model/Quote.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-20.923077">
+          <caret line="32" column="46" selection-start-line="32" selection-start-column="46" selection-end-line="32" selection-end-column="46" />
+          <folding>
+            <marker date="1457563744848" expanded="true" signature="329:407" placeholder="SELECT * FRO... quote" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Includes/classes.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.5384617">
+          <caret line="10" column="32" selection-start-line="10" selection-start-column="32" selection-end-line="10" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Includes/functions.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-23.846153">
+          <caret line="84" column="0" selection-start-line="84" selection-start-column="2" selection-end-line="85" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/View/footer.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.6153846">
+          <caret line="4" column="4" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="4" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Model/WishRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-49.692307">
-          <caret line="76" column="5" selection-start-line="76" selection-start-column="5" selection-end-line="76" selection-end-column="5" />
+        <state vertical-scroll-proportion="-19.923077">
+          <caret line="42" column="36" selection-start-line="42" selection-start-column="36" selection-end-line="42" selection-end-column="36" />
+          <folding>
+            <marker date="1457564486123" expanded="true" signature="210:538" placeholder="SELECT wish.... wish" />
+            <marker date="1457564486123" expanded="true" signature="1581:1639" placeholder="INSERT INTO `wish`... " />
+            <marker date="1457564486123" expanded="true" signature="1793:1864" placeholder="SELECT `Id` wish" />
+            <marker date="1457564486123" expanded="true" signature="2003:2176" placeholder="INSERT INTO `wishContent`... " />
+            <marker date="1457564486123" expanded="true" signature="2485:2576" placeholder="select count... wish" />
+            <marker date="1457564486123" expanded="true" signature="2850:3123" placeholder="SELECT wish.... wish" />
+            <marker date="1457564486123" expanded="true" signature="3866:3913" placeholder="select * fro... wishContent" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/View/incompletedWishOverview.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-25.5">
+          <caret line="39" column="25" selection-start-line="39" selection-start-column="25" selection-end-line="39" selection-end-column="25" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Controller/WishController.class.php">
+    <entry file="file://$PROJECT_DIR$/View/completedWishOverview.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9338565">
-          <caret line="49" column="5" selection-start-line="49" selection-start-column="5" selection-end-line="49" selection-end-column="5" />
+        <state vertical-scroll-proportion="-25.5">
+          <caret line="39" column="25" selection-start-line="39" selection-start-column="25" selection-end-line="39" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/View/wishOverview.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.3049327">
+          <caret line="109" column="12" selection-start-line="109" selection-start-column="12" selection-end-line="109" selection-end-column="12" />
           <folding />
         </state>
       </provider>

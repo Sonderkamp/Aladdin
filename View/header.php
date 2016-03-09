@@ -43,7 +43,7 @@
                 <span class="icon-bar"></span>
             </button>
 
-            <a class="navbar-brand pull-left" href="/"><img class="logo" src="/Resources/Images/logo.png"/> </a>
+            <a class="navbar-brand pull-left" href="/"><img alt="logo" class="logo" src="/Resources/Images/logo.png"/> </a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->

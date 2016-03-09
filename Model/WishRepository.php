@@ -6,11 +6,11 @@
  * Date: 28/02/2016
  * Time: 18:20
  */
-class WishRepository
-{
+class WishRepository {
 
-    public function getWishes()
-    {
+    private $email;
+
+    public function getWishes() {
         $result = Database::query
         ("SELECT
           wish.Status,
@@ -20,8 +20,6 @@ class WishRepository
           wish.CompletionDate,
           wishContent.Content,
           wishContent.Title,
-          wishContent.Country,
-          wishContent.City,
           wishContent.IsAccepted,
           wishContent.moderator_Username
           FROM `wish` JOIN wishContent ON wish.Id = wishContent.wish_Id");
@@ -39,11 +37,10 @@ class WishRepository
                 $result[$i]["Id"],
                 $result[$i]["User"],
                 $result[$i]["Title"],
-                $result[$i]["Country"],
-                $result[$i]["City"],
                 $completed,
                 $result[$i]["Content"],
                 $result[$i]["IsAccepted"],
+                $result[$i]["Date"],
                 $result[$i]["Status"]
             );
         }
@@ -52,29 +49,50 @@ class WishRepository
     }
 
     // add wish to database
-    public function addWish($newWish)
-    {
-
+    public function addWish($newWish, $edit) {
         $wish = $newWish["title"];
         $description = $newWish["description"];
         $tag = $newWish["tag"];
 
-        // TODO: query to add wish to database
+        $date = date('Y-m-d H:i:s');
+        $email = $this->getEmail();
+
+        $status = "Aangemaakt";
+
+        // IF EDIT NIEUWE WISHCONTENT
+//        if ($edit) {
+//            $status = "";
+//        }
+
+        $query1 = "INSERT INTO `wish` (`Status`,`User`,`Date`) VALUES (?,?,?)";
+        $array1 = array($status, $email, $date);
+        Database::query_safe($query1, $array1);
+
+        $wishId = Database::query_safe("
+            SELECT `Id` as lastwish FROM `wish` WHERE `User`=? ORDER BY `Date` DESC ", array($email));
+        $id = $wishId[0]["lastwish"];
+
+        // TODO: Delete ISACCEPTED, Moderator.username, Date.
+        $query = "INSERT INTO `wishContent` (`Date`,`Content`, `Title`, `IsAccepted`,
+                  `moderator_Username`, `wish_Id`,`Country`, `City`)
+            VALUES (?,?,?,?,?,?,?,?)";
+
+        $array = array($date, $description, $wish, 2, "Admin", $id, $country, $city);
+        Database::query_safe($query, $array);
 
     }
 
     // check if user has less then 3 wishes
-    public function canAddWish($email)
-    {
-
-        $currentUser = $this->getUserID($email);
-
+    public function canAddWish($email) {
+        $this->email = $email;
         $result = Database::query_safe
         ("select count(*) as counter from `wish` where `user` = ? and `status` != ? and 'status' != ?",
             array($email, "Vervuld", "Geweigerd"));
         $amountWishes = $result[0]["counter"];
 
-        if ($amountWishes >= 3) return false;
+        if ($amountWishes >= 3)
+            return false;
+
         return true;
     }
 
@@ -116,4 +134,22 @@ class WishRepository
         }
 
     }
+
+    public function getSelectedWish($id) {
+        $wish = Database::query_safe
+        ("select * from `wishContent` where `wish_Id` = ?", array($id));
+
+        return $wish;
+    }
+
+    public function getEmail() {
+        return $_SESSION["user"]->email;
+    }
+
+    // public function getAllTalents() {
+    //     $query = Database::query("SELECT `Name` FROM `talent` ORDER BY `Name` ASC");
+
+    //     return $query;
+    // }
+
 }

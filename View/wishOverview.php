@@ -17,7 +17,8 @@
                 </a>
             </span>
 
-        <div class=" col-xs-12 col-lg-2">
+
+        <div class="col-xs-12 col-lg-2">
             <h5>Wensen overzicht</h5>
             <hr/>
              <span class="  hidden-lg info">
@@ -31,7 +32,7 @@
             <table>
                 <tr>
                     <td>
-                        <a>
+                        <a href="/Wishes/action=mywishes">
                             <button type="button" class="btn btn-primary side-button">
                                 <span class="glyphicon glyphicon-align-justify"></span> Mijn wensen
                             </button>
@@ -41,7 +42,17 @@
 
                 <tr>
                     <td>
-                        <a>
+                        <a href="/Wishes/action=incompletedwishes">
+                            <button type="button" class="btn btn-default side-button">
+                                <span class="glyphicon glyphicon-remove"></span> Onvervulde wensen
+                            </button>
+                        </a>
+                    </td>
+                </tr
+
+                <tr>
+                    <td>
+                        <a href="/Wishes/action=completedwishes">
                             <button type="button" class="btn btn-default side-button">
                                 <span class="glyphicon glyphicon-ok"></span> Vervulde wensen
                             </button>
@@ -49,15 +60,6 @@
                     </td>
                 </tr>
 
-                <tr>
-                    <td>
-                        <a>
-                            <button type="button" class="btn btn-default side-button">
-                                <span class="glyphicon glyphicon-remove"></span> Onvervulde wensen
-                            </button>
-                        </a>
-                    </td>
-                </tr>
 
             </table>
         </div>
@@ -85,12 +87,21 @@
                         <td>{$wish -> title}</td>
                         <td>{$wish -> content}</td>
                         <td>
-                            <a href="/Wishes/wish_id={$wish->Id}">
+                            <a href="/Wishes/wish_id={$wish->id}">
                                 <button class="btn btn-default">
                                     <span class="glyphicon glyphicon-eye-open">
                                     </span>
                                 </button>
                             </a>
+                        </td>
+                        <td>
+                            <form action="/Wishes/action=open_edit_wish" method="get">
+                                <a>
+                                    <button name="editwishbtn" value="{$wish -> id}" type="sumbit" class="btn btn-inbox btn-sm" data-toggle="modal">
+                                        <span class="glyphicon glyphicon-edit"></span>
+                                    </button>
+                                </a>
+                            </form>
                         </td>
                     </tr>
                 {/foreach}
