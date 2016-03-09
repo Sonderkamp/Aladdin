@@ -48,23 +48,42 @@
             <div class="form-group row authors-list">
                 <label class="col-sm-2 form-control-label">Tags:</label>
                 <div class="col-sm-10">
-                <select class="form-control">
+                    <select class="form-control" name="tag">
 
-                    {foreach from=$allTags item=tag}
-                    <option>{$tag}</option>
-                    {/foreach}
+                        {if isset($tag)}
+                        <option selected="selected">{($tag)}</option>
+                        {/if}
 
-                </select>
-                    </div>
-            </div>
+                        {foreach from=$allTags item=tag}
+                        <option>{$tag["Name"]}</option>
+                        {/foreach}
 
-            <div class="form-group row authors-list">
-                <label class="col-sm-2 form-control-label">Of typ zelf een tag in:</label>
-                <div class="col-sm-10">
-                    <input class="form-control" name="tag" placeholder="Tag">
-                    <small class="text-muted-primary">voorbeelden: #voetbal #boer.</small>
+                    </select>
                 </div>
             </div>
+
+<!---->
+<!--            <div class="form-group row authors-list">-->
+<!--                <div class="col-sm-10">-->
+<!--                    <select class="form-control" name="tag">-->
+<!--                        {if isset($tag)}-->
+<!--                        <option selected="selected">{($tag)}</option>-->
+<!--                        {/if}-->
+<!---->
+<!--                        {foreach from=$allTags item=tag}-->
+<!--                        <option>{$tag["Name"]}</option>-->
+<!--                        {/foreach}-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--            </div>-->
+
+            <!--            <div class="form-group row authors-list">-->
+            <!--                <label class="col-sm-2 form-control-label">Of typ zelf een tag in:</label>-->
+            <!--                <div class="col-sm-10">-->
+            <!--                    <input class="form-control" name="tag" placeholder="Tag">-->
+            <!--                    <small class="text-muted-primary">voorbeelden: #voetbal #boer.</small>-->
+            <!--                </div>-->
+            <!--            </div>-->
 
             <div class="form-group row">
                 <label class="col-sm-2 form-control-label">Plaats:</label>

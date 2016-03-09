@@ -30,10 +30,10 @@ class WishController {
                     $this->getWishes(true);
                     break;
                 case "open_wish":
-                    $this->open_wish(true);
+                    $this->open_wish_view(true);
                     break;
                 case "open_edit_wish":
-                    $this->open_wish(false);
+                    $this->open_wish_view(false);
                     break;
                 case "addwish":
                     $this->add_wish();
@@ -62,7 +62,13 @@ class WishController {
             }
         }
 
-        render("wishOverview.php", ["title" => "Wensen overzicht", "wishes" => $mywishes]);
+        $canAddWish = $this->wishRepository->canAddWish($_SESSION["user"]->email);
+        if (!$canAddWish) {
+            render("wishOverview.php", ["title" => "Wensen overzicht", "wishes" => $mywishes, "isset" => ""]);
+        } else {
+            render("wishOverview.php", ["title" => "Wensen overzicht", "wishes" => $mywishes]);
+        }
+
     }
 
     private function getWishes($completed) {
@@ -86,7 +92,7 @@ class WishController {
         }
     }
 
-    private function open_wish($open) {
+    private function open_wish_view($open) {
         if ($open) {
             // Check if users has 3 wishes, true if wishes are [<] 3
             $canAddWish = $this->wishRepository->canAddWish($_SESSION["user"]->email);
@@ -95,11 +101,13 @@ class WishController {
                 exit(1);
             }
 
-            $tags = $this->wishRepository->getAllTalents();
+            $tag = $this->wishRepository->getAllTalents();
 
-            render("addWish.php", ["title" => "Wens toevoegen", "allTags" => $tags]);
+            render("addWish.php", ["title" => "Wens toevoegen", "allTags" => $tag]);
         } else {
             $this->wishContentId = $_GET["editwishbtn"];
+            $_SESSION["wishcontentid"] = $_GET["editwishbtn"];
+
             $wish = $this->wishRepository->getSelectedWish($this->wishContentId);
 
             $this->title = $wish[0]["Title"];
@@ -107,9 +115,13 @@ class WishController {
             $this->city = $wish[0]["City"];
             $this->country = $wish[0]["Country"];
 
+            $this->tag = $this->wishRepository->getWishTalent($this->wishContentId);
+
+            $tags = $this->wishRepository->getAllTalents();
+
             render("addWish.php", ["wishtitle" => $this->title,
                 "description" => $this->description,
-                "city" => $this->city, "country" => $this->country, "edit" => "isset"]);
+                "city" => $this->city, "country" => $this->country, "edit" => "isset", "tag" => $this->tag, "allTags" => $tags]);
         }
     }
 
@@ -130,7 +142,6 @@ class WishController {
             $this->tag = $_GET["tag"];
             $this->city = $_GET["city"];
             $this->country = $_GET["country"];
-            $this->isAccepted = false;
 
             $tags = $this->wishRepository->getAllTalents();
 //            echo $this->gethashtags($this->tag);
@@ -164,7 +175,6 @@ class WishController {
 
     private function edit_wish() {
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
-
             $title = $_GET["title"];
             $description = $_GET["description"];
             $tag = $_GET["tag"];
@@ -176,7 +186,7 @@ class WishController {
             if (!Empty($description))
                 $this->description = $description;
             if (!Empty($tag))
-                $this->tag = $description;
+                $this->tag = $tag;
             if (!Empty($city))
                 $this->city = $city;
             if (!Empty($country))
@@ -190,9 +200,11 @@ class WishController {
             $editWish["city"] = $this->city;
             $editWish["country"] = $this->country;
 
-            // TODO: set id to wishContentId
-            $id = 58;
-            $this->wishRepository->wishContentQuery($editWish,$id);
+            if(isset($_SESSION["wishcontentid"])){
+                $id = $_SESSION["wishcontentid"];
+                $this->wishRepository->wishContentQuery($editWish, $id);
+            }
+
             $this->go_back();
         }
     }

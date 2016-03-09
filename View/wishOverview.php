@@ -10,11 +10,17 @@
 <div class="container">
     <div class="row">
          <span class="hidden-xs hidden-sm  hidden-md info">
-                <a href="/Wishes/action=open_wish">
-                    <button type="button" class="btn btn-primary side-button">
-                        <span class="glyphicon glyphicon-plus"></span>
-                    </button>
+                <a>
+                    {if isset($isset)}
+                    <button type="button" class="btn btn-primary side-button" disabled data-toggle="button">
                 </a>
+                        {else}
+                        <a href="/Wishes/action=open_wish">
+                            <button type="button" class="btn btn-primary side-button">
+                                {/if}
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                        </a>
             </span>
 
 
@@ -22,11 +28,17 @@
             <h5>Wensen overzicht</h5>
             <hr/>
              <span class="  hidden-lg info">
-                <a href="/Wishes/action=open_wish">
-                    <button type="button" class="btn btn-primary side-button">
-                        <span class="glyphicon glyphicon-plus"></span>
-                    </button>
+                <a>
+                    {if isset($isset)}
+                    <button type="button" class="btn btn-primary side-button" disabled="disabled">
                 </a>
+                    {else}
+                    <a href="/Wishes/action=open_wish">
+                        <button type="button" class="btn btn-primary side-button">
+                            {/if}
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                    </a>
             </span>
 
             <table>
@@ -92,7 +104,8 @@
                     <td>
                         <form action="/Wishes/action=open_edit_wish" method="get">
                             <a>
-                                <button name="editwishbtn" value="{$wish -> id}" type="sumbit" class="btn btn-inbox btn-sm" data-toggle="modal">
+                                <button name="editwishbtn" value="{$wish -> id}" type="sumbit"
+                                        class="btn btn-inbox btn-sm" data-toggle="modal">
                                     <span class="glyphicon glyphicon-edit"></span>
                                 </button>
                             </a>
