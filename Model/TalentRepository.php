@@ -8,6 +8,21 @@
  */
 class TalentRepository
 {
+    public function getAllTalentsName()
+    {
+        $result = Database::query
+        ("SELECT `talent`.`Name`
+          FROM `talent`");
+
+        $returnArray = array();
+
+        for ($i = 0; $i < count($result); $i++) {
+            $returnArray[$i] = $result[$i]["Name"];
+        }
+
+        return $returnArray;
+    }
+
     public function getAcceptedTalents()
     {
         $result = Database::query

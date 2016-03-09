@@ -11,19 +11,19 @@
     <div class="col-md-2">
         <ul class="nav nav-pills nav-stacked">
             {if $current_page == "m"}
-            <li class="active"><a href="#tab1" data-toggle="tab">Toegevoegde talenten</a></li>
+            <li class="active"><a href="#tab1" data-toggle="tab">Mijn talenten</a></li>
             <li><a href="#tab2" data-toggle="tab">Alle talenten</a></li>
             <li><a href="#tab3" data-toggle="tab">Talent toevoegen</a></li>
             {elseif $current_page == "a"}
-            <li><a href="#tab1" data-toggle="tab">Toegevoegde talenten</a></li>
+            <li><a href="#tab1" data-toggle="tab">Mijn talenten</a></li>
             <li class="active"><a href="#tab2" data-toggle="tab">Alle talenten</a></li>
             <li><a href="#tab3" data-toggle="tab">Talent toevoegen</a></li>
             {elseif $current_page == "t"}
-            <li><a href="#tab1" data-toggle="tab">Toegevoegde talenten</a></li>
+            <li><a href="#tab1" data-toggle="tab">Mijn talenten</a></li>
             <li><a href="#tab2" data-toggle="tab">Alle talenten</a></li>
             <li class="active"><a href="#tab3" data-toggle="tab">Talent toevoegen</a></li>
             {else}
-            <li class="active"><a href="#tab1" data-toggle="tab">Toegevoegde talenten</a></li>
+            <li class="active"><a href="#tab1" data-toggle="tab">Mijn talenten</a></li>
             <li><a href="#tab2" data-toggle="tab">Alle talenten</a></li>
             <li><a href="#tab3" data-toggle="tab">Talent toevoegen</a></li>
             {/if}
@@ -50,7 +50,7 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Toegevoegde talenten</th>
+                            <th>Mijn talenten</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -213,6 +213,28 @@
             <div class="tab-pane" id="tab3">
             {/if}
                 <div class="col-md-10">
+                    {if !empty($talent_error)}
+                    <div class="alert alert-danger fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Error!</strong> {$talent_error}
+                    </div>
+                    {/if}
+                    {if !empty($talent_name)}
+                    <form class="col-xs-12 col-sm-12 col-md-12 col-lg-12" action="/talents" method="post">
+                        <div class="form-group row">
+                            <label for="name" class="col-sm-2 form-control-label">Naam talent</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="talent_name" class="form-control" id="name" placeholder="Naam" value="{$talent_name}">
+                                <small class="text-muted">Dit is de naam van het talent. Deze naam moet voldoen aan de algemene voorwaarden.</small>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-add">Aanvragen</button>
+                            </div>
+                        </div>
+                    </form>
+                    {else}
                     <form class="col-xs-12 col-sm-12 col-md-12 col-lg-12" action="/talents" method="post">
                         <div class="form-group row">
                             <label for="name" class="col-sm-2 form-control-label">Naam talent</label>
@@ -227,6 +249,7 @@
                             </div>
                         </div>
                     </form>
+                    {/if}
                 </div>
             </div>
         </div>
