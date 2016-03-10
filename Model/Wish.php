@@ -1,23 +1,27 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Max
  * Date: 26-Feb-16
  * Time: 13:17
  */
+class Wish {
 
-class Wish{
 
-    public $user, $title, $country, $city, $completed, $content, $accepted;
+    public $id, $user, $title, $completed, $content, $accepted, $newestDate, $status, $contentDate;
 
-    function __construct($user , $title, $country, $city, $completed, $content, $accepted) {
-        $this -> user = $user;
-        $this -> title = $title;
-        $this -> country = $country;
-        $this -> city = $city;
-        $this -> completed = $completed;
-        $this -> content = $content;
-        $this -> accepted = $accepted;
+    public function __construct($id, $user, $title, $completed, $content, $accepted, $newestDate, $status, $contentDate) {
+        $this->id = $id;
+        $this->user = $user;
+        $this->title = $title;
+        $this->completed = $completed;
+        $this->content = $content;
+        $this->accepted = $accepted;
+        $this->newestDate = $newestDate;
+        $this->contentDate = $contentDate;
+        $this->status = $status;
+
     }
 
 }
