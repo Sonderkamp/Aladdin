@@ -215,6 +215,8 @@ class User
         return $name . $res["Counter"];
     }
 
+
+
     public function newHash($username)
     {
         $this->token = bin2hex(openssl_random_pseudo_bytes(16));
@@ -353,6 +355,14 @@ class User
             Webshop";
         return true;
 
+    }
+
+    public function getPassword()
+    {
+        // is dit safe?
+        $result = Database::query_safe("SELECT password from user where email = ?",array($this->email));
+        $result = $result[0];
+        return $result;
     }
 
     public function updateUser($arr)

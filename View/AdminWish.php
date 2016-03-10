@@ -90,6 +90,8 @@
 
 
     <div class="col-md-10">
+        <span class="info"><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal"> <span class="glyphicon glyphicon-info-sign"></span>
+            </button></span>
         <div class="tab-content">
 
             {if $current_page == "requested"}
@@ -116,9 +118,10 @@
                         <th>Wens</th>
                         <th>Land</th>
                         <th>Plaats</th>
-                        <th width="1%">Accepteren</th>
-                        <th width="1%">Afwijzen</th>
-                        <th width="1%">Profiel</th>
+                        <th width="1%"></th>
+                        <th width="1%"></th>
+                        <th width="1%"></th>
+                        <th width="1%"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -138,13 +141,18 @@
                             <input type="hidden" value={$i.content} name="wishcontent">
                             <input type="hidden" value={$current_page} name="page">
                             <td>
-                                <button type="submit" formaction="/AdminWish/action=accept">Accepteren</button>
+                                <button formaction="/Wishes/wish_id={$i.wishid}" name="page" class="btn btn-sm" value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}" type="sumbit">
+                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                </button>
                             </td>
                             <td>
-                                <button type="submit" formaction="/AdminWish/action=deny">Afwijzen</button>
+                                <button type="submit" class="btn btn-sm" formaction="/AdminWish/action=accept"><span class="glyphicon glyphicon glyphicon-ok"></span></button>
                             </td>
                             <td>
-                                <button type="submit" formaction="/ProfileCheck/user={$i.user}">Profiel</button>
+                                <button type="submit" class="btn btn-sm" formaction="/AdminWish/action=deny"><span class="glyphicon glyphicon glyphicon-remove"></span></button>
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-sm" formaction="/ProfileCheck/user={$i.user}"><span class="glyphicon glyphicon glyphicon-user"></span></button>
                             </td>
                     </tr>
 
@@ -178,9 +186,10 @@
                         <th>Wens</th>
                         <th>Land</th>
                         <th>Plaats</th>
-                        <th width="1%">Reset</th>
-                        <th width="1%">Verwijderen</th>
-                        <th width="1%">Profiel</th>
+                        <th width="1%"></th>
+                        <th width="1%"></th>
+                        <th width="1%"></th>
+                        <th width="1%"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -199,14 +208,20 @@
                             <input type="hidden" value={$i.display} name="wishdisplay">
                             <input type="hidden" value={$i.content} name="wishcontent">
                             <input type="hidden" value={$current_page} name="page">
+
                             <td>
-                                <button type="submit" formaction="/AdminWish/action=redraw">Reset</button>
+                                <button formaction="/Wishes/wish_id={$i.wishid}" name="page" class="btn btn-sm" value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}" type="sumbit">
+                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                </button>
                             </td>
                             <td>
-                                <button type="submit" formaction="/AdminWish/action=delete">Verwijder</button>
+                                <button type="submit" class="btn btn-sm" formaction="/AdminWish/action=redraw"><span class="glyphicon glyphicon glyphicon-refresh"></button>
                             </td>
                             <td>
-                                <button type="submit" formaction="/ProfileCheck/user={$i.user}">Profiel</button>
+                                <button type="submit" class="btn btn-sm" formaction="/AdminWish/action=delete"><span class="glyphicon glyphicon glyphicon glyphicon-trash"></button>
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-sm" formaction="/ProfileCheck/user={$i.user}"><span class="glyphicon glyphicon glyphicon-user"></span></button>
                             </td>
                     </tr>
 
@@ -241,7 +256,8 @@
                         <th>Wens</th>
                         <th>Land</th>
                         <th>Plaats</th>
-                        <th width="1%">Profiel</th>
+                        <th width="1%"></th>
+                        <th width="1%"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -261,9 +277,16 @@
                             <input type="hidden" value={$i.content} name="wishcontent">
                             <input type="hidden" value={$current_page} name="page">
                             <td>
-                                <button type="submit" formaction="/ProfileCheck/user={$i.user}">Profiel</button>
+                                <button formaction="/Wishes/wish_id={$i.wishid}" name="editwishbtn" class="btn btn-sm" value="{$i.wishid}" type="sumbit">
+                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                </button>
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-sm" formaction="/ProfileCheck/user={$i.user}"><span class="glyphicon glyphicon glyphicon-user"></span></button>
                             </td>
                     </tr>
+
+
 
                     </form>
                     {/foreach}
@@ -295,7 +318,8 @@
                         <th>Wens</th>
                         <th>Land</th>
                         <th>Plaats</th>
-                        <th width="1%">Profiel</th>
+                        <th width="1%"></th>
+                        <th width="1%"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -315,7 +339,12 @@
                             <input type="hidden" value={$i.content} name="wishcontent">
                             <input type="hidden" value={$current_page} name="page">
                             <td>
-                                <button type="submit" formaction="/ProfileCheck/user={$i.user}">Profiel</button>
+                                <button formaction="/Wishes/wish_id={$i.wishid}" name="page" class="btn btn-sm" value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}" type="sumbit">
+                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                </button>
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-sm" formaction="/ProfileCheck/user={$i.user}"><span class="glyphicon glyphicon glyphicon-user"></span></button>
                             </td>
                     </tr>
 
@@ -349,7 +378,8 @@
                         <th>Wens</th>
                         <th>Land</th>
                         <th>Plaats</th>
-                        <th width="1%">Profiel</th>
+                        <th width="1%"></th>
+                        <th width="1%"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -369,7 +399,12 @@
                             <input type="hidden" value={$i.content} name="wishcontent">
                             <input type="hidden" value={$current_page} name="page">
                             <td>
-                                <button type="submit" formaction="/ProfileCheck/user={$i.user}">Profiel</button>
+                                <button formaction="/Wishes/wish_id={$i.wishid}" name="page" class="btn btn-sm" value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}" type="sumbit">
+                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                </button>
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-sm" formaction="/ProfileCheck/user={$i.user}"><span class="glyphicon glyphicon glyphicon-user"></span></button>
                             </td>
                     </tr>
 
@@ -403,8 +438,9 @@
                         <th>Wens</th>
                         <th>Land</th>
                         <th>Plaats</th>
-                        <th width="1%">Reset</th>
-                        <th width="1%">Profiel</th>
+                        <th width="1%"></th>
+                        <th width="1%"></th>
+                        <th width="1%"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -424,10 +460,15 @@
                             <input type="hidden" value={$i.content} name="wishcontent">
                             <input type="hidden" value={$current_page} name="page">
                             <td>
-                                <button type="submit" formaction="/AdminWish/action=redraw">Reset</button>
+                                <button formaction="/Wishes/wish_id={$i.wishid}" name="page" class="btn btn-sm" value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}" type="sumbit">
+                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                </button>
                             </td>
                             <td>
-                                <button type="submit" formaction="/ProfileCheck/user={$i.user}">Profiel</button>
+                                <button type="submit" class="btn btn-sm" formaction="/AdminWish/action=redraw"><span class="glyphicon glyphicon glyphicon-refresh"></button>
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-sm" formaction="/ProfileCheck/user={$i.user}"><span class="glyphicon glyphicon glyphicon-user"></span></button>
                             </td>
                     </tr>
 
@@ -461,8 +502,9 @@
                         <th>Wens</th>
                         <th>Land</th>
                         <th>Plaats</th>
-                        <th width="1%">Reset</th>
-                        <th width="1%">Profiel</th>
+                        <th width="1%"></th>
+                        <th width="1%"></th>
+                        <th width="1%"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -482,10 +524,15 @@
                             <input type="hidden" value={$i.content} name="wishcontent">
                             <input type="hidden" value={$current_page} name="page">
                             <td>
-                                <button type="submit" formaction="/AdminWish/action=redraw">Reset</button>
+                                <button formaction="/Wishes/wish_id={$i.wishid}" name="page" class="btn btn-sm" value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}" type="sumbit">
+                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                </button>
                             </td>
                             <td>
-                                <button type="submit" formaction="/ProfileCheck/user={$i.user}">Profiel</button>
+                                <button type="submit" class="btn btn-sm" formaction="/AdminWish/action=redraw"><span class="glyphicon glyphicon glyphicon-refresh"></button>
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-sm" formaction="/ProfileCheck/user={$i.user}"><span class="glyphicon glyphicon glyphicon-user"></span></button>
                             </td>
                     </tr>
 
@@ -498,3 +545,30 @@
             </div>
 
 
+                <div id="myModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Uitleg</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>Hier vind u uitleg over de icoontjes die in het wensbeheer system voor komen:</p>
+                                <p><button  class="btn btn-sm"><span class="glyphicon glyphicon-eye-open"></button></span> Opent een pagina waar je de bijbehorende wens in kan zien</p>
+                                <p><button  class="btn btn-sm"><span class="glyphicon glyphicon glyphicon-ok"></button></span> Accepteert de wens</p>
+                                <p><button  class="btn btn-sm"><span class="glyphicon glyphicon glyphicon-remove"></button></span> Weigert de wens</p>
+                                <p><button  class="btn btn-sm"><span class="glyphicon glyphicon glyphicon-user"></button></span> Gaat naar profiel pagina van een gebruiker</p>
+                                <p><button  class="btn btn-sm"><span class="glyphicon glyphicon glyphicon-refresh"></button></span> Gekozen wens gaat terug naar aangevraagde wensen</p>
+                                <p><button  class="btn btn-sm"><span class="glyphicon glyphicon glyphicon glyphicon-trash"></button></span> Verwijderd wens</p>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Sluiten</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
