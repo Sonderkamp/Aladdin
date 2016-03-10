@@ -29,10 +29,7 @@ class TalentController
         $this->checkGet();
         $this->checkSessions();
 
-//        $redirect = "/talents/p=".$this->page."/a=".$this->current_talent_number."/m=".$this->current_user_talent_number;
-//        redirect($redirect);
-
-        render("talentOverview.php",
+        render("talentOverview.php"/*"Admin/talent.php"*/,
             ["title" => "Talenten",
                 "talents" => $this->talents,
                 "user_talents" => $this->talents_user,
@@ -216,5 +213,12 @@ class TalentController
         if(!Empty($_SESSION["err_talent"])){
             $this->talent_error = $_SESSION["err_talent"];
         }
+    }
+
+    public function runAdmin()
+    {
+        render("Admin/talent.php",
+            ["title" => "Talenten"]);
+        exit(0);
     }
 }

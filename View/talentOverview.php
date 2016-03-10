@@ -74,7 +74,7 @@
                     </tbody>
                 </table>
                 {if $user_talents_number > 1}
-                <div class="center">
+                <div>
                     <nav>
                         <ul class="pagination">
                             {if $current_user_talent_number <= 1}

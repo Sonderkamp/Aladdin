@@ -244,13 +244,24 @@ a:hover {
 .talent-table{
     height: 500px;
 }
-.center{
-
-}
 .text-color-green{
     color: #35978f;
 }
 
-.active>li{
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
+    color: #ffffff;
     background-color: #35978f;
+}
+
+.pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
+    color: #ffffff;
+    background-color: #35978f;
+    border-color: #35978f;
+    cursor: default;
+}
+
+.pagination>li>a, .pagination>li>span {
+    color: #35978f;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
 }
