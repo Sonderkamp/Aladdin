@@ -19,6 +19,9 @@
 .btn-inbox:focus,.btn-inbox:active,.btn-inbox:visited {
     color: white;
 }
+.btn-add:focus,.btn-add:active,.btn-add:visited {
+    color: white;
+}
 .logo{
     margin-top: -27px;
     margin-left: -10px;
@@ -170,6 +173,10 @@ body {
     background-color: #E63946;
     color: white;
 }
+.btn-add{
+    background-color: #35978f;
+    color: white;
+}
 .dropdown{
     padding-right: 50px;
 }
@@ -232,4 +239,29 @@ a:hover {
 .noPadding
 {
     display: inline;
+}
+
+.talent-table{
+    height: 500px;
+}
+.text-color-green{
+    color: #35978f;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
+    color: #ffffff;
+    background-color: #35978f;
+}
+
+.pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
+    color: #ffffff;
+    background-color: #35978f;
+    border-color: #35978f;
+    cursor: default;
+}
+
+.pagination>li>a, .pagination>li>span {
+    color: #35978f;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
 }
