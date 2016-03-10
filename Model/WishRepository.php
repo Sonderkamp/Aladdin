@@ -72,6 +72,7 @@ class WishRepository {
             SELECT `Id` as lastwish FROM `wish` WHERE `User`=? ORDER BY `Date` DESC ", array($email));
         $id = $wishId[0]["lastwish"];
 
+
         // TODO: Delete ISACCEPTED, Moderator.username, Date.
         $query = "INSERT INTO `wishContent` (`Date`,`Content`, `Title`, `IsAccepted`,
                   `moderator_Username`, `wish_Id`,`Country`, `City`)

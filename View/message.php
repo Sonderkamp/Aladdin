@@ -60,13 +60,20 @@
         {else}
         <p id="err"></p>
         {/if}
-
-        <div class="panel panel-default">
+        {if $message->adminSender}
+            <div class="panel panel-default adminMessage">
+        {else}
+            <div class="panel panel-default">
+        {/if}
             <div class="panel-body message">
                 <p>
                     <span class="h3 title">{$message->title}</span>
-                    <span class="info">Naar: {$message->sender} </span>
-                    <br><span class="info">Van: {$message->receiver} </span>
+                    {if $message->adminSender}
+                     <span class="info">Van: <span class="glyphicon glyphicon-eye-open"></span> {$message->sender}</span>
+                    {else}
+                    <span class="info">Van: {$message->sender} </span>
+                    {/if}
+                    <br><span class="info">Naar: {$message->receiver} </span>
                     <br><span class="info">{$message->date} </span>
                 </p>
 
@@ -74,7 +81,7 @@
                 <span>{$message->content}</span><br><br>
             </div>
             <div class="panel-footer">
-                {if isset($trash)}
+                {if $message->folder == "trash"}
                 <form class=noPadding action="\Inbox\folder={$folderShortcut}" method="post">
                     <input type="hidden" name="delete" value="{$message->id}"/>
                     <button type="submit" class="btn btn-inbox">Permanent Verwijderen</button>
@@ -94,6 +101,19 @@
                     <button type="submit" class="btn btn-inbox">Beantwoorden</button>
                 </form>
                 <span class="info"><a class="btn btn-inbox">Rapporteren</a></span>
+            {if isset($message->links)}
+                {foreach from=$message->links item=link}
+                    {if $link->action == "Talent"}
+                        <a href="/Talents" class="btn btn-inbox">Mijn Talenten</a>
+                    {else if $link->action == "Wens"}
+                        <a href="/WishLINKTODO" class="btn btn-inbox">Bekijk wens</a>
+                    {else if $link->action == "PaginaLink"}
+                        <a href="{$link->content}" class="btn btn-inbox">Naar Pagina</a>
+                    {else if $link->action == "Bericht"}
+                        <a href="/Inbox/message={$link->content}" class="btn btn-inbox">Naar Bericht</a>
+                    {/if}
+                {/foreach}
+            {/if}
             </div>
         </div>
         <!--<span><button>Volgende Pagina</button></span><span class="info">Pagina 1</span> -->
@@ -142,7 +162,7 @@
                     <div class="panel-body">
                         <a href="#" class="title">Titel</a> <span
                             class="info">
-                             <span class="glyphicon glyphicon-eye-open"></span>Moderator
+                             <span class="glyphicon glyphicon-eye-open"></span> Moderator
                    <br>2 maart 2016</span>
                         <br>
                         <span>Uw talentaanvraag voor "Docent" is geaccepteerd.</span><br><br>

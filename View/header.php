@@ -52,7 +52,7 @@
 
 
             <ul class="nav navbar-nav navbar-left">
-
+                <li><a href="/about/action=home"> <span class="glyphicon glyphicon glyphicon-home"></span> Over Aladdin</a></li>
                 {if isset($admin)}
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -73,6 +73,7 @@
                 {if isset($user)}
                 <li><a href="/wishes"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
                 <li><a href="/Inbox"> <span class="glyphicon glyphicon glyphicon-envelope"></span> Berichten</a></li>
+                <li><a href="/Talents"> <span class="glyphicon glyphicon-align-justify"></span> Talenten</a></li>
                 {/if}
             </ul>
             <ul class="nav navbar-nav navbar-right">
