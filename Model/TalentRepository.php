@@ -350,4 +350,13 @@ class TalentRepository
           ORDER BY `talent`.`Name` ASC");
         return $result[0]["Number_of_talents"];
     }
+
+    public function updateTalent($name, $id)
+    {
+        Database::query_safe
+        ("UPDATE `talent`
+          SET`Name`=?
+          WHERE `Id`=?",
+            Array($name,$id));
+    }
 }

@@ -27,12 +27,9 @@
                         <tr>
                             <td class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{$talent -> name}</td>
                             <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                                <form action="/talents" method="post">
-                                    <input type="hidden" name="add_id" value="{$talent->id}"/>
-                                    <button type="submit" name="submit" class="btn btn-add btn-sm">
-                                        <span class="glyphicon glyphicon-ok"></span>
-                                    </button>
-                                </form>
+                                <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', $talent->name)}">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </button>
                             </td>
                         </tr>
                         {/foreach}
@@ -94,3 +91,40 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Remove-->
+{foreach from=$all_talents item=talent}
+<div id="myModal{preg_replace('/\s+/', '', $talent->name)}" class="modal fade" role="dialog">
+    <div class="modal-dialog">\
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Het talent {$talent->name} aanpassen</h4>
+            </div>
+            <form action="/talents" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <p>
+                            <div class="col-xs-3">
+                                Nieuwe naam:
+                            </div>
+                            <div class="col-xs-9">
+                                <input type="hidden" name="admin_talent_id" value="{$talent->id}">
+                                <input type="text" class="form-control" placeholder="Naam" name="admin_talent_name">
+                            </div>
+                        </p>
+                        <br>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default infoLeft" data-dismiss="modal">Sluiten</button>
+                        <button type="submit" name="submit" class="btn btn-inbox info">
+                            <span class="glyphicon glyphicon-edit"></span> Aanpassen
+                        </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{/foreach}

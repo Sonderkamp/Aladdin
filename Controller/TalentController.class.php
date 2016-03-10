@@ -29,6 +29,7 @@ class TalentController
 //        $this->checkGet();
 //        $this->checkSessions();
 
+        $this->checkAdminPost();
         $this->checkAdminGet();
         $this->checkAdminSession();
 
@@ -261,6 +262,36 @@ class TalentController
         else {
             $this->all_talents = $this->talent_repository->getAllTalents(1);
             $this->current_all_talents_number = 1;
+        }
+    }
+
+    private function checkAdminPost()
+    {
+        if (!Empty($_POST["admin_talent_name"]) && !Empty($_POST["admin_talent_id"])) {
+
+            if(strlen($_POST["admin_talent_name"]) > 0 && strlen($_POST["admin_talent_name"]) <= 45){
+                $correct = true;
+                foreach($this->talent_repository->getAllTalentsName() as $name_of_talent){
+                    if(strtolower($name_of_talent) == strtolower($_POST["admin_talent_name"])){
+                        $_SESSION["talent_name"] = $_POST["admin_talent_name"];
+                        $_SESSION["err_talent"] = "De ingevoegde naam is al toegevoegd, aangevraagd of geweigerd.";
+                        $correct = false;
+                        break;
+                    }
+                }
+                if($correct == true){
+                    $this->talent_repository->updateTalent(ucfirst(trim($_POST["admin_talent_name"])),$_POST["admin_talent_id"]);
+                    $_SESSION["admin_talent_name"] = "";
+                    $_SESSION["err_talent"] = "";
+                }
+            }
+            else {
+                
+            }
+
+            header("HTTP/1.1 303 See Other");
+            header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+            exit(0);
         }
     }
 }
