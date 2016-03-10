@@ -98,7 +98,22 @@
                 </div>
 
                 <div class="tab-pane" id="tab2">
-                    talent aanvragen
+                    <div>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Aangevraagde talenten</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach from=$requested_talents item=talent}
+                            <tr>
+                                <td class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{$talent -> name}</td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -132,9 +147,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default infoLeft" data-dismiss="modal">Sluiten</button>
-                        <button type="submit" name="submit" class="btn btn-inbox info">
-                            <span class="glyphicon glyphicon-edit"></span> Aanpassen
-                        </button>
+                    <button type="submit" name="submit" class="btn btn-inbox info">
+                        <span class="glyphicon glyphicon-edit"></span> Aanpassen
+                    </button>
                 </div>
             </form>
         </div>

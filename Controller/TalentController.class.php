@@ -37,7 +37,8 @@ class TalentController
             ["title" => "Talenten",
             "all_talents" => $this->all_talents,
             "all_talent_number" => $this->all_talents_number,
-            "current_all_talents_number" => $this->current_all_talents_number]);
+            "current_all_talents_number" => $this->current_all_talents_number,
+            "requested_talents" => $this->requested_talents]);
 
 //        render("talentOverview.php",
 //            ["title" => "Talenten",
