@@ -59,6 +59,10 @@
             </div>
 
 
+            {if isset($tagerror)}
+            <div class="form-error" id="err">Error: {htmlspecialchars($tagerror)}</div>
+            {/if}
+
             {if isset($error)}
             <div class="form-error" id="err">Error: {htmlspecialchars($error)}</div>
             {else}
@@ -71,6 +75,7 @@
                     Bevestig
                 </button>
             </a>
+
 
             <a href="/Wishes/action=go_back">
                 <button type=button class="btn btn-default side-button">

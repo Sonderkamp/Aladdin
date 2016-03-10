@@ -204,16 +204,35 @@ class WishController {
             $description = $_GET["description"];
             $tag = $_GET["tag"];
 
-            if (!Empty($title))
+            $valid = true;
+            $validTag = true;
+
+            if (!Empty($title)) {
                 $this->title = $title;
-            if (!Empty($description))
+            } else
+                $valid = false;
+            if (!Empty($description)) {
                 $this->description = $description;
-            if (!Empty($tag))
+            } else
+                $valid = false;
+            if (!Empty($tag)) {
                 $this->tag = $tag;
-            if (!Empty($city))
-                $this->city = $city;
-            if (!Empty($country))
-                $this->country = $country;
+            } else
+                $valid = false;
+
+            $tagErrorMessage = "een tag moet minimaal uit 3 tekens bestaan en beginnen met een #";
+            if(!$validTag){
+                render("addWish.php", ["error" => "vul AUB alles in!", "wishtitle" => $this->title,
+                    "description" => $this->description, "tag" => $this->tag, "tagerror" => $tagErrorMessage, "edit" => "isset"]);
+                exit(1);
+            }
+
+            if (!$valid) {
+                render("addWish.php", ["error" => "vul AUB alles in!", "wishtitle" => $this->title,
+                    "description" => $this->description, "tag" => $this->tag, "edit" => "isset"]);
+                exit(1);
+            }
+
 
             $allTags = $this->gethashtags($this->tag);
             $myArray = explode(',', $allTags);
@@ -234,7 +253,8 @@ class WishController {
         }
     }
 
-    private function go_back() {
+    private
+    function go_back() {
         $this->getMyWishes();
     }
 

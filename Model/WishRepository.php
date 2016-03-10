@@ -103,6 +103,7 @@ class WishRepository {
         }
 
         if(is_array($tag)){
+            $this->deleteAllWishTalents($id);
             foreach ($tag as $item) {
                 if (in_array($item, $allTags)) {
                     $this->addTalentToWish($item, $id);
@@ -112,6 +113,13 @@ class WishRepository {
                 }
             }
         }
+    }
+
+    public function deleteAllWishTalents($wishid){
+        $query = "DELETE from `talent_has_wish` WHERE `wish_Id` = ?";
+        $value = array($wishid);
+
+        Database::query_safe($query,$value);
     }
 
     public function addTalentToWish($talent, $wishId) {
