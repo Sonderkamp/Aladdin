@@ -135,7 +135,7 @@ class WishRepository {
         return true;
     }
 
-<<<<<<< HEAD
+
     public function getRequestedWishes($wishPage)
     {
 
@@ -242,7 +242,7 @@ AND wc.moderator_username is null
 
         return $result;
     }
-=======
+
     public function getWish($id){
 
         $result = Database::query_safe
@@ -320,5 +320,5 @@ AND wc.moderator_username is null
     }
 
 
->>>>>>> refs/heads/pr/3
+
 }
