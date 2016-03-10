@@ -8,10 +8,11 @@
  */
 class WishController {
 
-    public $wishes, $completedWishes, $incompletedWishes, $wishRepository, $title, $description, $tag, $isAccepted, $wishContentId;
+    public $wishes, $completedWishes, $incompletedWishes, $wishRepository, $talentRepository, $title, $description, $tag, $isAccepted, $wishContentId;
 
     public function __construct() {
         $this->wishRepository = new WishRepository();
+        $this->talentRepository = new TalentRepository();
         $this->wishes = $this->wishRepository->getWishes();
     }
 
@@ -50,19 +51,16 @@ class WishController {
                     apologize("404 not found, Go back to my wishes");
                     break;
             }
-        }
-        else if(isset($_GET["wish_id"])) {
+        } else if (isset($_GET["wish_id"])) {
             $this->getSpecificWish($_GET["wish_id"]);
-        }
-        else if(isset($_GET["requestMatch"])){
+        } else if (isset($_GET["requestMatch"])) {
             $this->requestMatch($_GET["requestMatch"]);
-        }
-        else {
+        } else {
             $this->getMyWishes();
         }
     }
 
-    private function searchWish($key){
+    private function searchWish($key) {
         //TODO WERKEND MAKEN
         $searchReturn = array_search($key, $this->wishes);
         render("wishOverview.php", ["title" => "Wensen overzicht", "wishes" => $searchReturn]);
@@ -116,9 +114,7 @@ class WishController {
                 exit(1);
             }
 
-            $tag = $this->wishRepository->getAllTalents();
-
-            render("addWish.php", ["title" => "Wens toevoegen", "allTags" => $tag]);
+            render("addWish.php", ["title" => "Wens toevoegen"]);
         } else {
             $this->wishContentId = $_GET["editwishbtn"];
             $_SESSION["wishcontentid"] = $_GET["editwishbtn"];
@@ -127,16 +123,20 @@ class WishController {
 
             $this->title = $wish[0]["Title"];
             $this->description = $wish[0]["Content"];
-            $this->city = $wish[0]["City"];
-            $this->country = $wish[0]["Country"];
 
-            $this->tag = $this->wishRepository->getWishTalent($this->wishContentId);
-
-            $tags = $this->wishRepository->getAllTalents();
+            $tempTag = $this->wishRepository->getWishTalent($this->wishContentId);
+            $this->tag = $this->prepend("#", implode(" #", $tempTag));
 
             render("addWish.php", ["wishtitle" => $this->title,
-                "description" => $this->description,
-                "city" => $this->city, "country" => $this->country, "edit" => "isset", "tag" => $this->tag, "allTags" => $tags]);
+                "description" => $this->description, "edit" => "isset", "tag" => $this->tag]);
+        }
+    }
+
+    function prepend($string, $chunk) {
+        if (!empty($chunk) && isset($chunk)) {
+            return $string . $chunk;
+        } else {
+            return $string;
         }
     }
 
@@ -155,11 +155,6 @@ class WishController {
             $this->title = $_GET["title"];
             $this->description = $_GET["description"];
             $this->tag = $_GET["tag"];
-            $this->city = $_GET["city"];
-            $this->country = $_GET["country"];
-
-            $tags = $this->wishRepository->getAllTalents();
-//            echo $this->gethashtags($this->tag);
 
             // check if input of form is not null
             if (Empty($this->title)
@@ -167,19 +162,19 @@ class WishController {
                 || Empty($this->tag)
             ) {
                 render("addWish.php", ["error" => "Vul AUB alles in", "wishtitle" => $this->title,
-                    "description" => $this->description,
-                    "city" => $this->city, "country" => $this->country, "allTags" => $tags, "edit" => "isset"]);
+                    "description" => $this->description, "edit" => "isset"]);
                 exit(1);
             }
+
+            $allTags = $this->gethashtags($this->tag);
+            $myArray = explode(',', $allTags);
+            $new_array = array_map('ucfirst', $myArray);
 
             // create an array with the wish
             $newWish = array();
             $newWish["title"] = $this->title;
             $newWish["description"] = $this->description;
-            $newWish["tag"] = $this->tag;
-            $newWish["city"] = $this->city;
-            $newWish["country"] = $this->country;
-            $newWish["isAccepted"] = $this->isAccepted;
+            $newWish["tag"] = $new_array;
 
             // send the array to the repository to add to the database
             $this->wishRepository->addWish($newWish);
@@ -188,18 +183,18 @@ class WishController {
         }
     }
 
-    private function getSpecificwish($id){
+    private function getSpecificwish($id) {
 
         $selectedWish = $this->wishRepository->getWish($id);
 
-        if($selectedWish->user != null) {
+        if ($selectedWish->user != null) {
             render("wishSpecificView.tpl", ["title" => "Wens: " . $id, "selectedWish" => $selectedWish]);
         } else {
             apologize("404 wish not found. Please wish for a better website!");
         }
     }
 
-    private function requestMatch($id){
+    private function requestMatch($id) {
         //TODO WRITE QUERY TO CREATE MATCH
     }
 
@@ -208,8 +203,6 @@ class WishController {
             $title = $_GET["title"];
             $description = $_GET["description"];
             $tag = $_GET["tag"];
-            $city = $_GET["city"];
-            $country = $_GET["country"];
 
             if (!Empty($title))
                 $this->title = $title;
@@ -222,15 +215,17 @@ class WishController {
             if (!Empty($country))
                 $this->country = $country;
 
+            $allTags = $this->gethashtags($this->tag);
+            $myArray = explode(',', $allTags);
+            $new_array = array_map('ucfirst', $myArray);
+
             // create an array with the wish
             $editWish = array();
             $editWish["title"] = $this->title;
             $editWish["description"] = $this->description;
-            $editWish["tag"] = $this->tag;
-            $editWish["city"] = $this->city;
-            $editWish["country"] = $this->country;
+            $editWish["tag"] = $new_array;
 
-            if(isset($_SESSION["wishcontentid"])){
+            if (isset($_SESSION["wishcontentid"])) {
                 $id = $_SESSION["wishcontentid"];
                 $this->wishRepository->wishContentQuery($editWish, $id);
             }

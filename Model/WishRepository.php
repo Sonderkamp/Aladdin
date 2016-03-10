@@ -9,7 +9,13 @@
 class WishRepository {
 
     private $email;
-    private $WISH_LIMIT = 3;
+    private $WISH_LIMIT = 100;
+
+    private $talentRepository;
+
+    public function __construct() {
+        $this->talentRepository = new TalentRepository();
+    }
 
     public function getWishes() {
         $result = Database::query
@@ -62,9 +68,6 @@ class WishRepository {
 
     // add wish to database
     public function addWish($newWish) {
-        $wish = $newWish["title"];
-        $description = $newWish["description"];
-        $tag = $newWish["tag"];
         $email = $this->getEmail();
         $status = "Aangemaakt";
 
@@ -81,32 +84,37 @@ class WishRepository {
 
         $this->wishContentQuery($newWish, $id);
     }
-//=======
-//
-//        // TODO: Delete ISACCEPTED, Moderator.username, Date.
-//        $query = "INSERT INTO `wishContent` (`Date`,`Content`, `Title`, `IsAccepted`,
-//                  `moderator_Username`, `wish_Id`,`Country`, `City`)
-//            VALUES (?,?,?,?,?,?,?,?)";
-//>>>>>>> 55b03be8450bc299653419b88ffbae238d319cf9
 
     // add wishContent to database & connect with wish
     public function wishContentQuery($content, $id) {
         $wish = $content["title"];
         $description = $content["description"];
         $tag = $content["tag"];
-        $country = $content["country"];
-        $city = $content["city"];
 
-        $query = "INSERT INTO `wishContent` (`Content`, `Title`, `wish_Id`,`Country`, `City`)
-            VALUES (?,?,?,?,?)";
-        $array = array($description, $wish, $id, $country, $city);
+        $query = "INSERT INTO `wishContent` (`Content`, `Title`, `wish_Id`)
+            VALUES (?,?,?)";
+        $array = array($description, $wish, $id);
         Database::query_safe($query, $array);
 
-        $this->addTalentToWish($tag, $id);
+        $array = $this->talentRepository->getAllTalents();
+        $allTags = array();
+        foreach ($array as $value) {
+            $allTags[] = $value["Name"];
+        }
+
+        if(is_array($tag)){
+            foreach ($tag as $item) {
+                if (in_array($item, $allTags)) {
+                    $this->addTalentToWish($item, $id);
+                } else {
+                    $this->talentRepository->addTalent($item);
+                    $this->addTalentToWish($item, $id);
+                }
+            }
+        }
     }
 
     public function addTalentToWish($talent, $wishId) {
-
         $query = "SELECT `Id` as talentId FROM `talent` WHERE `Name`=?";
         $array = array($talent);
         $result = Database::query_safe($query, $array);
@@ -131,11 +139,12 @@ class WishRepository {
         $amountWishes = $result[0]["counter"];
 
         $wishLimit = $this->WISH_LIMIT;
-        if ($amountWishes >= $wishLimit) return false;
+        if ($amountWishes >= $wishLimit)
+            return false;
         return true;
     }
 
-    public function getWish($id){
+    public function getWish($id) {
 
         $result = Database::query_safe
         ("SELECT
@@ -149,10 +158,10 @@ class WishRepository {
           FROM `wish` JOIN wishContent ON wish.Id = wishContent.wish_Id WHERE wish.Id = ?", array($id));
 
 
-        if($result != null){
+        if ($result != null) {
 
             $completed = false;
-            if($result[0]["Status"] == "Vervuld"){
+            if ($result[0]["Status"] == "Vervuld") {
                 $completed = true;
             }
 
@@ -185,22 +194,34 @@ class WishRepository {
         return $_SESSION["user"]->email;
     }
 
-
-    public function getAllTalents() {
-        $query = "SELECT `Name` FROM `talent` WHERE `isRejected`=? ORDER BY `Name` ASC";
-        $array = array(1);
-        return Database::query_safe($query,$array);
-    }
-
     public function getWishTalent($wishId) {
-        $query = "SELECT `talent_id` as talent FROM `talent_has_wish` WHERE `wish_id`=?";
+//        $query = "SELECT `talent_id` as talent FROM `talent_has_wish` WHERE `wish_id`=?";
+        $query = "SELECT * FROM `talent_has_wish` WHERE `wish_id`=?";
         $array = array($wishId);
         $result = Database::query_safe($query, $array);
-        $talentID = array($result[0]["talent"]);
 
-        $query = "SELECT `Name` FROM `talent` WHERE `Id`=?";
-        $result = Database::query_safe($query, $talentID);
-        return $result[0]["Name"];
+        $talentIDArray = array();
+        foreach ($result as $item) {
+            $talentIDArray[] = $item["talent_Id"];
+        }
+
+        $string = '(';
+        foreach ($talentIDArray as $item) {
+            $string .= $item . ',';
+        }
+        $value = substr($string, 0, -1);
+        $value .= ')';
+
+        $query1 = "SELECT `Name` FROM `talent` WHERE `Id` IN $value";
+        $result1 = Database::query($query1);
+
+        $size = count($result1);
+        $returnArray = array();
+        for ($i = 0; $i < $size; $i++) {
+            $returnArray[] = $result1[$i]["Name"];
+        }
+
+        return $returnArray;
     }
 
     public function getNewestWishContent($id) {
