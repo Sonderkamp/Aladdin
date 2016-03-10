@@ -10,120 +10,90 @@
     <div class="row">
         <div class=" col-xs-12 col-lg-2">
             <h5>Wensen Beheer</h5>
+            <div class="col-md-2">
+                <ul class="nav nav-pills nav-stacked">
+                    {if {$smarty.get.action} eq 'requested' || {$smarty.get.action} eq 'accept' ||
+                    {$smarty.get.action} eq 'deny' || !isset($smarty.get.action)}
+                    <li class="active"><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
+                    <li><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
+                    <li><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
+                    <li><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
+                    <li><a href="#tab5" data-toggle="tab">Vervulde Wensen</a></li>
+                    <li><a href="#tab6" data-toggle="tab">Geweigerde Wensen</a></li>
+                    <li><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
+
+                    {elseif {$smarty.get.action} eq 'open' || {$smarty.get.action} eq 'delete' || {$smarty.get.action} eq 'redraw'}
+                    <li><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
+                    <li class="active"><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
+                    <li><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
+                    <li><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
+                    <li><a href="#tab5" data-toggle="tab">Vervulde Wensen</a></li>
+                    <li><a href="#tab6" data-toggle="tab">Geweigerde Wensen</a></li>
+                    <li><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
+
+                    {elseif {$smarty.get.action} eq 'matched'}
+                    <li><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
+                    <li><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
+                    <li class="active"><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
+                    <li><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
+                    <li><a href="#tab5" data-toggle="tab">Vervulde Wensen</a></li>
+                    <li><a href="#tab6" data-toggle="tab">Geweigerde Wensen</a></li>
+                    <li><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
+
+                    {elseif {$smarty.get.action} eq 'current'}
+                    <li><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
+                    <li><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
+                    <li><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
+                    <li class="active"><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
+                    <li><a href="#tab5" data-toggle="tab">Vervulde Wensen</a></li>
+                    <li><a href="#tab6" data-toggle="tab">Geweigerde Wensen</a></li>
+                    <li><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
+
+                    {elseif {$smarty.get.action} eq 'done'}
+                    <li><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
+                    <li><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
+                    <li><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
+                    <li><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
+                    <li class="active"><a href="#tab5" data-toggle="tab">Vervulde Wensen</a></li>
+                    <li><a href="#tab6" data-toggle="tab">Geweigerde Wensen</a></li>
+                    <li><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
+
+                    {elseif {$smarty.get.action} eq 'denied'}
+                    <li><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
+                    <li><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
+                    <li><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
+                    <li><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
+                    <li><a href="#tab5" data-toggle="tab">Vervulde Wensen</a></li>
+                    <li class="active"><a href="#tab6" data-toggle="tab">Geweigerde Wensen</a></li>
+                    <li><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
+
+                    {elseif {$smarty.get.action} eq 'deleted'}
+                    <li><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
+                    <li><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
+                    <li><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
+                    <li><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
+                    <li><a href="#tab5" data-toggle="tab">Vervulde Wensen</a></li>
+                    <li><a href="#tab6" data-toggle="tab">Geweigerde Wensen</a></li>
+                    <li class="active"><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
 
 
-            <form action="/AdminWish/" method="get">
-                <table>
-                    <tr>
-                        <td>
-                            <a>
-                                {if {$smarty.get.action} eq 'requested' || {$smarty.get.action} eq 'accept' ||
-                                {$smarty.get.action} eq 'deny' || !isset($smarty.get.action)}
-                                <button type="submit" class="btn btn-primary side-button" formaction="/AdminWish/">
-                                    {else}
-                                    <button type="submit" class="btn btn-default side-button" formaction="/AdminWish/">
-                                        {/if}
-                                        <span class="glyphicon glyphicon-align-justify"></span> Aangevraagd
-                                    </button>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a>
-                                {if {$smarty.get.action} eq 'open' || {$smarty.get.action} eq 'delete' || {$smarty.get.action} eq 'redraw'}
-                                <button type="submit" class="btn btn-primary side-button"
-                                        formaction="/AdminWish/action=open">
-                                    {else}
-                                    <button type="submit" class="btn btn-default side-button"
-                                            formaction="/AdminWish/action=open">
-                                        {/if}
-                                        <span class="glyphicon glyphicon-align-justify"></span> Gepubliseerd
-                                    </button>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a>
-                                {if {$smarty.get.action} eq 'matched'}
-                                <button type="submit" class="btn btn-primary side-button"
-                                        formaction="/AdminWish/action=matched">
-                                    {else}
-                                    <button type="submit" class="btn btn-default side-button"
-                                            formaction="/AdminWish/action=matched">
-                                        {/if}
-                                        <span class="glyphicon glyphicon-ok"></span> Match gevonden
-                                    </button>
-                            </a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <a>
-                                {if {$smarty.get.action} eq 'current'}
-                                <button type="submit" class="btn btn-primary side-button"
-                                        formaction="/AdminWish/action=current">
-                                    {else}
-                                    <button type="submit" class="btn btn-default side-button"
-                                            formaction="/AdminWish/action=current">
-                                        {/if}
-                                        <span class="glyphicon glyphicon-ok"></span> Wordt vervuld
-                                    </button>
-                            </a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <a>
-                                {if {$smarty.get.action} eq 'done'}
-                                <button type="submit" class="btn btn-primary side-button"
-                                        formaction="/AdminWish/action=done">
-                                    {else}
-                                    <button type="submit" class="btn btn-default side-button"
-                                            formaction="/AdminWish/action=done">
-                                        {/if}
-                                        <span class="glyphicon glyphicon-ok"></span> Vervulde Wensen
-                                    </button>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a>
-                                {if {$smarty.get.action} eq 'denied'}
-                                <button type="submit" class="btn btn-primary side-button"
-                                        formaction="/AdminWish/action=denied">
-                                    {else}
-                                    <button type="submit" class="btn btn-default side-button"
-                                            formaction="/AdminWish/action=denied">
-                                        {/if}
-                                        <span class="glyphicon glyphicon-remove"></span> Geweigerde Wensen
-                                    </button>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a>
-                                {if {$smarty.get.action} eq 'deleted'}
-                                <button type="submit" class="btn btn-primary side-button"
-                                        formaction="/AdminWish/action=deleted">
-                                    {else}
-                                    <button type="submit" class="btn btn-default side-button"
-                                            formaction="/AdminWish/action=deleted">
-                                        {/if}
-                                        <span class="glyphicon glyphicon-remove"></span> Verwijderde wensen
-                                    </button>
-                            </a>
-                        </td>
-                    </tr>
 
 
-                </table>
-            </form>
+
+
+
+                    {else}
+                    <li class="active"><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
+                    <li><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
+                    <li><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
+                    <li><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
+                    <li><a href="#tab5" data-toggle="tab">Vervulde Wensen</a></li>
+                    <li><a href="#tab6" data-toggle="tab">Geweigerde Wensen</a></li>
+                    <li><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
+                    {/if}
+                </ul>
+            </div>
+
         </div>
         <div class="col-lg-10">
 

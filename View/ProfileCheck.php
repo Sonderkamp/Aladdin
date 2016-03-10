@@ -39,13 +39,13 @@
                     Postcode: {$cuser.Postalcode}<p>
                     Plaats: {$cuser.City}<p>
                     Geboortedatum: {$cuser.Dob}<p>
-Geslacht:
+                    Geslacht:
                     {if $cuser.Gender eq  'male'}Man
                     {elseif $cuser.Gender eq 'female'} Vrouw
                     {elseif $cuser.Gender eq  'other'} Anders
                     {else}
                     {/if} <p>
-Gehandicapt?: {if $cuser.Handicap}
+                    Gehandicapt?: {if $cuser.Handicap}
                     Ja
                     {elseif !$cuser.Handicap}
                     Nee
@@ -59,7 +59,7 @@ Gehandicapt?: {if $cuser.Handicap}
                     {elseif ($blockstatus.IsBlocked eq 1)}
                     <input type="submit" formaction="/ProfileCheck/action=unblock?user={$cuser.Email}" value="Deblokeer" class="btn btn-default">
                     {/if}
-<br>
+                    <br>
 
 
             </form>
@@ -67,9 +67,9 @@ Gehandicapt?: {if $cuser.Handicap}
 
 
 
-                </body>
+        </body>
 
-        </div>
+    </div>
     </div>
 </div>
 
