@@ -377,11 +377,53 @@ class User
 
     public function deleteUser($username)
     {
-        Database::query_safe("UPDATE user SET `IsActive`=0 WHERE Email=?",array($username));
+        Database::query_safe("UPDATE user SET `isactive`=0 WHERE email=?",array($username));
+
+
     }
 
     public function undeletekUser($username)
     {
-        Database::query_safe("UPDATE user SET `IsActive`=1 WHERE Email=?",array($username));
+        Database::query_safe("UPDATE user SET `isactive`=1 WHERE email=?",array($username));
     }
+
+    public function blockUser($username)
+    {
+        Database::query_safe("INSERT INTO adminBlock (`IsBlocked`, `Reason`, `moderator_Username`, `user_Email`) VALUES (1, 'xxxxx', 'Admin', ?)",array($username));
+
+
+    }
+
+    public function unblockUser($username)
+    {
+        Database::query_safe("INSERT INTO adminBlock (`IsBlocked`, `Reason`, `moderator_Username`, `user_Email`) VALUES (0, 'xxxxx', 'Admin', ?)",array($username));
+
+    }
+
+    public function getBlockStatus($username)
+    {
+        // query om alle blocks van een user te zien
+        $result = Database::query_safe("SELECT Block_Id,BlockDate,user_Email,IsBlocked as IsBlocked
+from adminBlock
+ where user_Email = ?
+              order by BlockDate asc",array($username));
+        $result = $result[0];
+        return $result;
+    }
+
+    public function getLastBlockStatus($username)
+    {
+        // query om alle blocks van een user te zien
+        $result = Database::query_safe("SELECT Block_Id,BlockDate,user_Email,IsBlocked as IsBlocked
+from adminBlock
+where BlockDate =
+        (select
+max(adminBlock.BlockDate) AS max_date
+              FROM adminBlock
+              where user_Email = ?)
+              order by BlockDate asc",array($username));
+        $result = $result[0];
+        return $result;
+    }
+
 }

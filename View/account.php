@@ -20,15 +20,15 @@
 
 
             <form action="/profile/action=change" method="post"> <p>
-                Email: <input name="email" type="text"  readonly="true" style="background-color: transparent" value={$user->email}><p>
-                initialen: <input type="text" name="initials" value={$user->initials} ><p>
-                Voornaam: <input type="text" name="name" value={$user->name} ><p>
-                Achternaam: <input type="text" name="surname" value={$user->surname} ><p>
-                Adress: <input type="text" name="address" value={$user->address} ><p>
-                Land: <input type="text" name="country" value={$user->country} ><p>
-                Postcode: <input type="text" name="postalcode" value={$user->postalcode} ><p>
-                Plaats: <input type="text" name="city" value={$user->city} ><p>
-                Geboortedatum: <input type="date" name="dob" value={$user->dob} ><p>
+                Email: <input name="email" type="text"  readonly="true" style="background-color: transparent" value="{$user->email}"><p>
+                initialen: <input type="text" name="initials" value="{$user->initials}" ><p>
+                Voornaam: <input type="text" name="name" value="{$user->name}" ><p>
+                Achternaam: <input type="text" name="surname" value="{$user->surname}" ><p>
+                Adress: <input type="text" name="address" value="{$user->address}" ><p>
+                Land: <input type="text" name="country" value="{$user->country}" ><p>
+                Postcode: <input type="text" name="postalcode" value="{$user->postalcode}" ><p>
+                Plaats: <input type="text" name="city" value="{$user->city}" ><p>
+                Geboortedatum: <input type="date" name="dob" value="{$user->dob}" ><p>
                 Geslacht:
                     {if $user->gender eq  'male'}
                     <input type='radio' name='gender' value ='male' checked> Man

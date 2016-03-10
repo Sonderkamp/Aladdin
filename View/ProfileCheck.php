@@ -14,8 +14,11 @@
         <body>
         <div class=" col-xs-2 col-lg-10">
             <h5>Profiel van {$cuser.DisplayName}</h5>
+            {if ($blockstatus.IsBlocked eq 1)}
+            <h5 style="color:red">{$cuser.DisplayName} is geblokeerd!</h5>
+            {/if}
             {if ($cuser.IsActive eq 0)}
-            <h5 style="color:red">{$cuser.DisplayName} is geblokeerd</h5>
+            <h5 style="color:red">{$cuser.DisplayName} heeft zijn account verwijderd!</h5>
             {/if}
             <hr/>
 
@@ -49,10 +52,11 @@ Gehandicapt?: {if $cuser.Handicap}
                     {/if} <p>
                 <p>
                     <br>
-                    {if ($cuser.IsActive eq 1)}
+
+                    {if ($blockstatus.IsBlocked eq 0)}
                     <input type="submit" formaction="/ProfileCheck/action=block?user={$cuser.Email}" value="Blokeer" class="btn btn-default">
 
-                    {elseif ($cuser.IsActive eq 0)}
+                    {elseif ($blockstatus.IsBlocked eq 1)}
                     <input type="submit" formaction="/ProfileCheck/action=unblock?user={$cuser.Email}" value="Deblokeer" class="btn btn-default">
                     {/if}
 <br>

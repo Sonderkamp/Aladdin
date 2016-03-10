@@ -47,22 +47,28 @@ class ProfileCheckController
     private function block($user)
     {
         $usermodel = new User();
-        $usermodel->deleteUser($user);
+        $usermodel->blockUser($user);
 
     }
 
     private function unblock($user)
     {
         $usermodel = new User();
-        $usermodel->undeletekUser($user);
+        $usermodel->unblockUser($user);
 
     }
+
+    private function getLastBlockStatus($user)
+{
+    $usermodel = new User();
+    return $usermodel->getLastBlockStatus($user);
+}
 
 
     private function renderProfilePage($user)
     {
 
-        render("profilecheck.php", ["title" => "Profiel", "cuser" => $this->getUserCheck($user)]);
+        render("profilecheck.php", ["title" => "Profiel", "cuser" => $this->getUserCheck($user), "blockstatus" => $this->getLastBlockStatus($user)]);
         exit();
     }
 

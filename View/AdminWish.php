@@ -165,7 +165,9 @@
                             <input type="hidden" value={$i.wishid} name="wishid">
                             <input type="hidden" value={$i.user} name="user">
                             <input type="hidden" value={$i.mdate|replace:' ':'%20'} name="mdate" step="1" >
-
+{if !isset($i.wishid)}
+                     hi
+                        {/if}
                             {if {$smarty.get.action} eq 'requested' || !isset($smarty.get.action) ||
                             {$smarty.get.action} eq 'changed'  ||  {$smarty.get.action} eq 'accept' || {$smarty.get.action} eq 'deny'}
                         <input type="hidden" value={$i.title} name="wishtitle">
