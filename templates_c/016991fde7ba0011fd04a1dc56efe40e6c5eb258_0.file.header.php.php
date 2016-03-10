@@ -1,17 +1,17 @@
 <?php
-/* Smarty version 3.1.29, created on 2016-03-08 17:52:54
+/* Smarty version 3.1.29, created on 2016-03-10 15:32:22
   from "C:\xampp\htdocs\View\header.php" */
 
 if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl, array (
   'has_nocache_code' => false,
   'version' => '3.1.29',
-  'unifunc' => 'content_56df0366b4c481_10019156',
+  'unifunc' => 'content_56e18576627912_99000127',
   'file_dependency' => 
   array (
     '016991fde7ba0011fd04a1dc56efe40e6c5eb258' => 
     array (
       0 => 'C:\\xampp\\htdocs\\View\\header.php',
-      1 => 1457455971,
+      1 => 1457620335,
       2 => 'file',
     ),
   ),
@@ -19,7 +19,7 @@ if ($_smarty_tpl->smarty->ext->_validateCompiled->decodeProperties($_smarty_tpl,
   array (
   ),
 ),false)) {
-function content_56df0366b4c481_10019156 ($_smarty_tpl) {
+function content_56e18576627912_99000127 ($_smarty_tpl) {
 ?>
 <!DOCTYPE html >
 <html lang="en">
@@ -84,7 +84,7 @@ function content_56df0366b4c481_10019156 ($_smarty_tpl) {
 
 
             <ul class="nav navbar-nav navbar-left">
-
+                <li><a href="/about/action=home"> <span class="glyphicon glyphicon glyphicon-home"></span> Over Aladdin</a></li>
                 <?php if (isset($_smarty_tpl->tpl_vars['admin']->value)) {?>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -105,6 +105,7 @@ function content_56df0366b4c481_10019156 ($_smarty_tpl) {
                 <?php if (isset($_smarty_tpl->tpl_vars['user']->value)) {?>
                 <li><a href="/wishes"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
                 <li><a href="/Inbox"> <span class="glyphicon glyphicon glyphicon-envelope"></span> Berichten</a></li>
+                <li><a href="/Talents"> <span class="glyphicon glyphicon-align-justify"></span> Talenten</a></li>
                 <?php }?>
             </ul>
             <ul class="nav navbar-nav navbar-right">

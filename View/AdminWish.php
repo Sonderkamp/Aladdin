@@ -7,178 +7,494 @@
 
 
 <div class="container">
-    <div class="row">
-        <div class=" col-xs-12 col-lg-2">
-            <h5>Wensen Beheer</h5>
-            <div class="col-md-2">
-                <ul class="nav nav-pills nav-stacked">
-                    {if {$smarty.get.action} eq 'requested' || {$smarty.get.action} eq 'accept' ||
-                    {$smarty.get.action} eq 'deny' || !isset($smarty.get.action)}
-                    <li class="active"><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
-                    <li><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
-                    <li><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
-                    <li><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
-                    <li><a href="#tab5" data-toggle="tab">Vervulde Wensen</a></li>
-                    <li><a href="#tab6" data-toggle="tab">Geweigerde Wensen</a></li>
-                    <li><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
 
-                    {elseif {$smarty.get.action} eq 'open' || {$smarty.get.action} eq 'delete' || {$smarty.get.action} eq 'redraw'}
-                    <li><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
-                    <li class="active"><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
-                    <li><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
-                    <li><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
-                    <li><a href="#tab5" data-toggle="tab">Vervulde Wensen</a></li>
-                    <li><a href="#tab6" data-toggle="tab">Geweigerde Wensen</a></li>
-                    <li><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
+    <h5>Wensen Beheer</h5>
+    <div class="col-md-2">
+        <ul class="nav nav-pills nav-stacked">
+            {if $current_page eq 'requested' || $current_page eq 'accept' ||
+            $current_page eq 'deny' || !isset($current_page)}
+            <li class="active"><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
+            <li><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
+            <li><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
+            <li><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
+            <li><a href="#tab5" data-toggle="tab">Vervulde Wensen</a></li>
+            <li><a href="#tab6" data-toggle="tab">Geweigerde Wensen</a></li>
+            <li><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
 
-                    {elseif {$smarty.get.action} eq 'matched'}
-                    <li><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
-                    <li><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
-                    <li class="active"><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
-                    <li><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
-                    <li><a href="#tab5" data-toggle="tab">Vervulde Wensen</a></li>
-                    <li><a href="#tab6" data-toggle="tab">Geweigerde Wensen</a></li>
-                    <li><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
+            {elseif $current_page eq 'open' || $current_page eq 'delete' || $current_page eq 'redraw'}
+            <li><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
+            <li class="active"><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
+            <li><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
+            <li><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
+            <li><a href="#tab5" data-toggle="tab">Vervulde Wensen</a></li>
+            <li><a href="#tab6" data-toggle="tab">Geweigerde Wensen</a></li>
+            <li><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
 
-                    {elseif {$smarty.get.action} eq 'current'}
-                    <li><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
-                    <li><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
-                    <li><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
-                    <li class="active"><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
-                    <li><a href="#tab5" data-toggle="tab">Vervulde Wensen</a></li>
-                    <li><a href="#tab6" data-toggle="tab">Geweigerde Wensen</a></li>
-                    <li><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
+            {elseif $current_page eq 'matched'}
+            <li><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
+            <li><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
+            <li class="active"><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
+            <li><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
+            <li><a href="#tab5" data-toggle="tab">Vervulde Wensen</a></li>
+            <li><a href="#tab6" data-toggle="tab">Geweigerde Wensen</a></li>
+            <li><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
 
-                    {elseif {$smarty.get.action} eq 'done'}
-                    <li><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
-                    <li><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
-                    <li><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
-                    <li><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
-                    <li class="active"><a href="#tab5" data-toggle="tab">Vervulde Wensen</a></li>
-                    <li><a href="#tab6" data-toggle="tab">Geweigerde Wensen</a></li>
-                    <li><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
+            {elseif $current_page eq 'current'}
+            <li><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
+            <li><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
+            <li><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
+            <li class="active"><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
+            <li><a href="#tab5" data-toggle="tab">Vervulde Wensen</a></li>
+            <li><a href="#tab6" data-toggle="tab">Geweigerde Wensen</a></li>
+            <li><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
 
-                    {elseif {$smarty.get.action} eq 'denied'}
-                    <li><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
-                    <li><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
-                    <li><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
-                    <li><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
-                    <li><a href="#tab5" data-toggle="tab">Vervulde Wensen</a></li>
-                    <li class="active"><a href="#tab6" data-toggle="tab">Geweigerde Wensen</a></li>
-                    <li><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
+            {elseif $current_page eq 'done'}
+            <li><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
+            <li><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
+            <li><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
+            <li><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
+            <li class="active"><a href="#tab5" data-toggle="tab">Vervulde Wensen</a></li>
+            <li><a href="#tab6" data-toggle="tab">Geweigerde Wensen</a></li>
+            <li><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
 
-                    {elseif {$smarty.get.action} eq 'deleted'}
-                    <li><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
-                    <li><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
-                    <li><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
-                    <li><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
-                    <li><a href="#tab5" data-toggle="tab">Vervulde Wensen</a></li>
-                    <li><a href="#tab6" data-toggle="tab">Geweigerde Wensen</a></li>
-                    <li class="active"><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
+            {elseif $current_page eq 'denied'}
+            <li><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
+            <li><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
+            <li><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
+            <li><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
+            <li><a href="#tab5" data-toggle="tab">Vervulde Wensen</a></li>
+            <li class="active"><a href="#tab6" data-toggle="tab">Geweigerde Wensen</a></li>
+            <li><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
 
+            {elseif $current_page eq 'deleted'}
+            <li><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
+            <li><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
+            <li><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
+            <li><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
+            <li><a href="#tab5" data-toggle="tab">Vervulde Wensen</a></li>
+            <li><a href="#tab6" data-toggle="tab">Geweigerde Wensen</a></li>
+            <li class="active"><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
 
 
+            {else}
+            <li class="active"><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
+            <li><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
+            <li><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
+            <li><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
+            <li><a href="#tab5" data-toggle="tab">Vervulde Wensen</a></li>
+            <li><a href="#tab6" data-toggle="tab">Geweigerde Wensen</a></li>
+            <li><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
+            {/if}
+        </ul>
+    </div>
 
 
+    <div class="col-md-10">
+        <div class="tab-content">
 
-
-                    {else}
-                    <li class="active"><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
-                    <li><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
-                    <li><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
-                    <li><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
-                    <li><a href="#tab5" data-toggle="tab">Vervulde Wensen</a></li>
-                    <li><a href="#tab6" data-toggle="tab">Geweigerde Wensen</a></li>
-                    <li><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
-                    {/if}
-                </ul>
-            </div>
-
-        </div>
-        <div class="col-lg-10">
-
-
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Gebruiker</th>
-                    <th>Wens</th>
-                    <th>Land</th>
-                    <th>Plaats</th>
-                    {if {$smarty.get.action} eq 'requested' || !isset($smarty.get.action) || {$smarty.get.action} eq
-                    'changed' ||  {$smarty.get.action} eq 'accept' || {$smarty.get.action} eq 'deny'}
-                    <th width="1%">Accepteren</th>
-                    <th width="1%">Afwijzen</th>
-                    <th width="1%">Profiel</th>
-                    {/if}
-                    {if {$smarty.get.action} eq 'open'  || {$smarty.get.action} eq 'redraw' || {$smarty.get.action} eq 'delete'}
-                    <th width="1%">Terug naar aangevraagd</th>
-                    {/if}
-                    {if {$smarty.get.action} eq 'matched' || {$smarty.get.action} eq 'current' || {$smarty.get.action}
-                    eq 'open'  || {$smarty.get.action} eq 'redraw' || {$smarty.get.action} eq 'delete'}
-                    <th width="1%">Verwijder</th>
-                    {/if}
-                </tr>
-                </thead>
-                <tbody>
-
-
-                {foreach from=$reqwishes item=wish item=i}
-
-                <tr>
-                    <form action="/AdminWish/action=accept" method="post">
-                        <td>{$i.display}</td>
-                        <td>{$i.content}</td>
-                        <td>{$i.country}</td>
-                        <td>{$i.city}</td>
+            {if $current_page == "requested"}
+            <div class="tab-pane fade in active" id="tab1">
+            {elseif $current_page == "open"  || $current_page eq 'redraw' || $current_page eq 'delete'}
+            <div class="tab-pane" id="tab1">
+            {elseif $current_page == "current"}
+            <div class="tab-pane" id="tab1">
+            {elseif $current_page == "matched"}
+            <div class="tab-pane" id="tab1">
+            {elseif $current_page == "done"}
+            <div class="tab-pane" id="tab1">
+            {elseif $current_page == "denied"}
+            <div class="tab-pane" id="tab1">
+            {elseif $current_page == "deleted"}
+            <div class="tab-pane" id="tab1">
+            {else}
+            <div class="tab-pane fade in active" id="tab1">
+            {/if}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Gebruiker</th>
+                        <th>Wens</th>
+                        <th>Land</th>
+                        <th>Plaats</th>
+                        <th width="1%">Accepteren</th>
+                        <th width="1%">Afwijzen</th>
+                        <th width="1%">Profiel</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach from=$reqwishes item=wish item=i}
+                    <tr>
+                        <form action="/AdminWish/action=accept" method="post">
+                            <td>{$i.display}</td>
+                            <td>{$i.title}</td>
+                            <td>{$i.country}</td>
+                            <td>{$i.city}</td>
 
                             <input type="hidden" value={$i.wishid} name="wishid">
                             <input type="hidden" value={$i.user} name="user">
                             <input type="hidden" value={$i.mdate|replace:' ':'%20'} name="mdate" step="1" >
-{if !isset($i.wishid)}
-                     hi
-                        {/if}
-                            {if {$smarty.get.action} eq 'requested' || !isset($smarty.get.action) ||
-                            {$smarty.get.action} eq 'changed'  ||  {$smarty.get.action} eq 'accept' || {$smarty.get.action} eq 'deny'}
-                        <input type="hidden" value={$i.title} name="wishtitle">
-                        <input type="hidden" value={$i.display} name="wishdisplay">
-                        <input type="hidden" value={$i.content} name="wishcontent">
-                        <td>
-                            <button type="submit" formaction="/AdminWish/action=accept">Accepteren</button>
-                        </td>
-                        <td>
-                            <button type="submit" formaction="/AdminWish/action=deny"
-                            ">Afwijzen</button>
-                        </td>
-                        <td>
-                            <button type="submit"  formaction="/ProfileCheck/user={$i.user}">Profiel</button>
-                        </td>
-                        {/if}
+                            <input type="hidden" value={$i.title} name="wishtitle">
+                            <input type="hidden" value={$i.display} name="wishdisplay">
+                            <input type="hidden" value={$i.content} name="wishcontent">
+                            <input type="hidden" value={$current_page} name="page">
+                            <td>
+                                <button type="submit" formaction="/AdminWish/action=accept">Accepteren</button>
+                            </td>
+                            <td>
+                                <button type="submit" formaction="/AdminWish/action=deny">Afwijzen</button>
+                            </td>
+                            <td>
+                                <button type="submit" formaction="/ProfileCheck/user={$i.user}">Profiel</button>
+                            </td>
+                    </tr>
 
-                        {if {$smarty.get.action} eq 'open' || {$smarty.get.action} eq 'redraw' || {$smarty.get.action} eq 'delete'}
+                    </form>
+                    {/foreach}
 
-                        <td>
-                            <button type="submit" formaction="/AdminWish/action=redraw"
-                            ">Aangevraagd</button>
-                        </td>
-                        {/if}
+                    </tbody>
+                </table>
+            </div>
+            {if $current_page == "requested"}
+            <div class="tab-pane" id="tab2">
+            {elseif $current_page == "open"  || $current_page eq 'redraw' || $current_page eq 'delete'}
+            <div class="tab-pane  fade in active" id="tab2">
+            {elseif $current_page == "current"}
+            <div class="tab-pane" id="tab2">
+            {elseif $current_page == "matched"}
+            <div class="tab-pane" id="tab2">
+            {elseif $current_page == "done"}
+            <div class="tab-pane" id="tab2">
+            {elseif $current_page == "denied"}
+            <div class="tab-pane" id="tab2">
+            {elseif $current_page == "deleted"}
+            <div class="tab-pane" id="tab2">
+            {else}
+            <div class="tab-pane fade in active" id="tab2">
+            {/if}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Gebruiker</th>
+                        <th>Wens</th>
+                        <th>Land</th>
+                        <th>Plaats</th>
+                        <th width="1%">Reset</th>
+                        <th width="1%">Verwijderen</th>
+                        <th width="1%">Profiel</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach from=$openwishes item=wish item=i}
+                    <tr>
+                        <form action="" method="post">
+                            <td>{$i.display}</td>
+                            <td>{$i.title}</td>
+                            <td>{$i.country}</td>
+                            <td>{$i.city}</td>
 
-                        {if {$smarty.get.action} eq 'matched' || {$smarty.get.action} eq 'current'||
-                        {$smarty.get.action} eq 'open' || {$smarty.get.action} eq 'redraw' || {$smarty.get.action} eq 'delete'}
+                            <input type="hidden" value={$i.wishid} name="wishid">
+                            <input type="hidden" value={$i.user} name="user">
+                            <input type="hidden" value={$i.mdate|replace:' ':'%20'} name="mdate" step="1" >
+                            <input type="hidden" value={$i.title} name="wishtitle">
+                            <input type="hidden" value={$i.display} name="wishdisplay">
+                            <input type="hidden" value={$i.content} name="wishcontent">
+                            <input type="hidden" value={$current_page} name="page">
+                            <td>
+                                <button type="submit" formaction="/AdminWish/action=redraw">Reset</button>
+                            </td>
+                            <td>
+                                <button type="submit" formaction="/AdminWish/action=delete">Verwijder</button>
+                            </td>
+                            <td>
+                                <button type="submit" formaction="/ProfileCheck/user={$i.user}">Profiel</button>
+                            </td>
+                    </tr>
 
-                        <td>
-                            <button type="submit" formaction="/AdminWish/action=delete"
-                            ">Verwijder</button>
-                        </td>
-                        {/if}
-                </tr>
+                    </form>
+                    {/foreach}
 
-                </form>
-                {/foreach}
+                    </tbody>
+                </table>
+            </div>
 
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+            {if $current_page == "requested"}
+            <div class="tab-pane" id="tab3">
+            {elseif $current_page == "open"  || $current_page eq 'redraw' || $current_page eq 'delete'}
+            <div class="tab-pane" id="tab3">
+            {elseif $current_page == "current"}
+            <div class="tab-pane"  fade in active id="tab3">
+            {elseif $current_page == "matched"}
+            <div class="tab-pane" id="tab3">
+            {elseif $current_page == "done"}
+            <div class="tab-pane" id="tab3">
+            {elseif $current_page == "denied"}
+            <div class="tab-pane" id="tab3">
+            {elseif $current_page == "deleted"}
+            <div class="tab-pane" id="tab3">
+            {else}
+            <div class="tab-pane fade in active" id="tab3">
+            {/if}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Gebruiker</th>
+                        <th>Wens</th>
+                        <th>Land</th>
+                        <th>Plaats</th>
+                        <th width="1%">Profiel</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach from=$matchedwishes item=wish item=i}
+                    <tr>
+                        <form action="" method="post">
+                            <td>{$i.display}</td>
+                            <td>{$i.title}</td>
+                            <td>{$i.country}</td>
+                            <td>{$i.city}</td>
+
+                            <input type="hidden" value={$i.wishid} name="wishid">
+                            <input type="hidden" value={$i.user} name="user">
+                            <input type="hidden" value={$i.mdate|replace:' ':'%20'} name="mdate" step="1" >
+                            <input type="hidden" value={$i.title} name="wishtitle">
+                            <input type="hidden" value={$i.display} name="wishdisplay">
+                            <input type="hidden" value={$i.content} name="wishcontent">
+                            <input type="hidden" value={$current_page} name="page">
+                            <td>
+                                <button type="submit" formaction="/ProfileCheck/user={$i.user}">Profiel</button>
+                            </td>
+                    </tr>
+
+                    </form>
+                    {/foreach}
+
+                    </tbody>
+                </table>
+            </div>
+            {if $current_page == "requested"}
+            <div class="tab-pane" id="tab4">
+            {elseif $current_page == "open"  || $current_page eq 'redraw' || $current_page eq 'delete'}
+            <div class="tab-pane" id="tab4">
+            {elseif $current_page == "current"}
+            <div class="tab-pane" id="tab4">
+            {elseif $current_page == "matched"}
+            <div class="tab-pane" fade in active  id="tab4">
+            {elseif $current_page == "done"}
+            <div class="tab-pane" id="tab4">
+            {elseif $current_page == "denied"}
+            <div class="tab-pane" id="tab4">
+            {elseif $current_page == "deleted"}
+            <div class="tab-pane" id="tab4">
+            {else}
+            <div class="tab-pane fade in active" id="tab4">
+            {/if}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Gebruiker</th>
+                        <th>Wens</th>
+                        <th>Land</th>
+                        <th>Plaats</th>
+                        <th width="1%">Profiel</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach from=$currentwishes item=wish item=i}
+                    <tr>
+                        <form action="" method="post">
+                            <td>{$i.display}</td>
+                            <td>{$i.title}</td>
+                            <td>{$i.country}</td>
+                            <td>{$i.city}</td>
+
+                            <input type="hidden" value={$i.wishid} name="wishid">
+                            <input type="hidden" value={$i.user} name="user">
+                            <input type="hidden" value={$i.mdate|replace:' ':'%20'} name="mdate" step="1" >
+                            <input type="hidden" value={$i.title} name="wishtitle">
+                            <input type="hidden" value={$i.display} name="wishdisplay">
+                            <input type="hidden" value={$i.content} name="wishcontent">
+                            <input type="hidden" value={$current_page} name="page">
+                            <td>
+                                <button type="submit" formaction="/ProfileCheck/user={$i.user}">Profiel</button>
+                            </td>
+                    </tr>
+
+                    </form>
+                    {/foreach}
+
+                    </tbody>
+                </table>
+            </div>
+            {if $current_page == "requested"}
+            <div class="tab-pane" id="tab5">
+            {elseif $current_page == "open"  || $current_page eq 'redraw' || $current_page eq 'delete'}
+            <div class="tab-pane" id="tab5">
+            {elseif $current_page == "current"}
+            <div class="tab-pane" id="tab5">
+            {elseif $current_page == "matched"}
+            <div class="tab-pane" fade in active  id="tab5">
+            {elseif $current_page == "done"}
+            <div class="tab-pane" id="tab5">
+            {elseif $current_page == "denied"}
+            <div class="tab-pane" id="tab5">
+            {elseif $current_page == "deleted"}
+            <div class="tab-pane" id="tab5">
+            {else}
+            <div class="tab-pane fade in active" id="tab5">
+            {/if}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Gebruiker</th>
+                        <th>Wens</th>
+                        <th>Land</th>
+                        <th>Plaats</th>
+                        <th width="1%">Profiel</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach from=$donewishes item=wish item=i}
+                    <tr>
+                        <form action="" method="post">
+                            <td>{$i.display}</td>
+                            <td>{$i.title}</td>
+                            <td>{$i.country}</td>
+                            <td>{$i.city}</td>
+
+                            <input type="hidden" value={$i.wishid} name="wishid">
+                            <input type="hidden" value={$i.user} name="user">
+                            <input type="hidden" value={$i.mdate|replace:' ':'%20'} name="mdate" step="1" >
+                            <input type="hidden" value={$i.title} name="wishtitle">
+                            <input type="hidden" value={$i.display} name="wishdisplay">
+                            <input type="hidden" value={$i.content} name="wishcontent">
+                            <input type="hidden" value={$current_page} name="page">
+                            <td>
+                                <button type="submit" formaction="/ProfileCheck/user={$i.user}">Profiel</button>
+                            </td>
+                    </tr>
+
+                    </form>
+                    {/foreach}
+
+                    </tbody>
+                </table>
+            </div>
+            {if $current_page == "requested"}
+            <div class="tab-pane" id="tab6">
+            {elseif $current_page == "open"  || $current_page eq 'redraw' || $current_page eq 'delete'}
+            <div class="tab-pane" id="tab6">
+            {elseif $current_page == "current"}
+            <div class="tab-pane" id="tab6">
+            {elseif $current_page == "matched"}
+            <div class="tab-pane" fade in active  id="tab6">
+            {elseif $current_page == "done"}
+            <div class="tab-pane" id="tab6">
+            {elseif $current_page == "denied"}
+            <div class="tab-pane" id="tab6">
+            {elseif $current_page == "deleted"}
+            <div class="tab-pane" id="tab6">
+            {else}
+            <div class="tab-pane fade in active" id="tab6">
+            {/if}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Gebruiker</th>
+                        <th>Wens</th>
+                        <th>Land</th>
+                        <th>Plaats</th>
+                        <th width="1%">Reset</th>
+                        <th width="1%">Profiel</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach from=$deniedwishes item=wish item=i}
+                    <tr>
+                        <form action="" method="post">
+                            <td>{$i.display}</td>
+                            <td>{$i.title}</td>
+                            <td>{$i.country}</td>
+                            <td>{$i.city}</td>
+
+                            <input type="hidden" value={$i.wishid} name="wishid">
+                            <input type="hidden" value={$i.user} name="user">
+                            <input type="hidden" value={$i.mdate|replace:' ':'%20'} name="mdate" step="1" >
+                            <input type="hidden" value={$i.title} name="wishtitle">
+                            <input type="hidden" value={$i.display} name="wishdisplay">
+                            <input type="hidden" value={$i.content} name="wishcontent">
+                            <input type="hidden" value={$current_page} name="page">
+                            <td>
+                                <button type="submit" formaction="/AdminWish/action=redraw">Reset</button>
+                            </td>
+                            <td>
+                                <button type="submit" formaction="/ProfileCheck/user={$i.user}">Profiel</button>
+                            </td>
+                    </tr>
+
+                    </form>
+                    {/foreach}
+
+                    </tbody>
+                </table>
+            </div>
+            {if $current_page == "requested"}
+            <div class="tab-pane" id="tab7">
+            {elseif $current_page == "open"  || $current_page eq 'redraw' || $current_page eq 'delete'}
+            <div class="tab-pane" id="tab7">
+            {elseif $current_page == "current"}
+            <div class="tab-pane" id="tab7">
+            {elseif $current_page == "matched"}
+            <div class="tab-pane" fade in active  id="tab7">
+            {elseif $current_page == "done"}
+            <div class="tab-pane" id="tab7">
+            {elseif $current_page == "denied"}
+            <div class="tab-pane" id="tab7">
+            {elseif $current_page == "deleted"}
+            <div class="tab-pane" id="tab7">
+            {else}
+            <div class="tab-pane fade in active" id="tab7">
+            {/if}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Gebruiker</th>
+                        <th>Wens</th>
+                        <th>Land</th>
+                        <th>Plaats</th>
+                        <th width="1%">Reset</th>
+                        <th width="1%">Profiel</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach from=$deletedwishes item=wish item=i}
+                    <tr>
+                        <form action="" method="post">
+                            <td>{$i.display}</td>
+                            <td>{$i.title}</td>
+                            <td>{$i.country}</td>
+                            <td>{$i.city}</td>
+
+                            <input type="hidden" value={$i.wishid} name="wishid">
+                            <input type="hidden" value={$i.user} name="user">
+                            <input type="hidden" value={$i.mdate|replace:' ':'%20'} name="mdate" step="1" >
+                            <input type="hidden" value={$i.title} name="wishtitle">
+                            <input type="hidden" value={$i.display} name="wishdisplay">
+                            <input type="hidden" value={$i.content} name="wishcontent">
+                            <input type="hidden" value={$current_page} name="page">
+                            <td>
+                                <button type="submit" formaction="/AdminWish/action=redraw">Reset</button>
+                            </td>
+                            <td>
+                                <button type="submit" formaction="/ProfileCheck/user={$i.user}">Profiel</button>
+                            </td>
+                    </tr>
+
+                    </form>
+                    {/foreach}
+
+                    </tbody>
+                </table>
+            </div>
+            </div>
+
 

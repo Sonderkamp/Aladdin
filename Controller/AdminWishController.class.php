@@ -8,8 +8,17 @@
  */
 class AdminWishController
 {
+    private $page;
+    public function __construct()
+    {
+        guaranteeLogin("/AdminWish");
 
+        if (!isset($this->page))
+        {
 
+        $this->page = "requested";
+        }
+    }
     public function run()
     {
         guaranteeLogin("/AdminWish");
@@ -46,6 +55,7 @@ class AdminWishController
                 case "redraw":
                     $this->wishAction('redraw', $_POST["wishid"],$_POST["mdate"],$_POST["user"]);
                     $this->wishPageAction('open');
+                    $this->page = 'open';
                     break;
                 case "delete":
                     $this->wishAction('delete', $_POST["wishid"],$_POST["mdate"],$_POST["user"]);
@@ -77,52 +87,61 @@ class AdminWishController
 
     public function renderPage()
     {
-        if (!Empty($_GET["action"])) {
-            switch (strtolower($_GET["action"])) {
-                case "requested":
-                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested')]);
-                    break;
-                case "accept":
-                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested')]);
-                    break;
-                case "deny":
-                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested')]);
-                    break;
-                case "changed":
-                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('changed')]);
-                    break;
-                case "open":
-                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('open')]);
-                    break;
-                case "redraw":
-                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('open')]);
-                    break;
-                case "delete":
-                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('open')]);
-                    break;
-                case "matched":
-                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('matched')]);
-                    break;
-                case "current":
-                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('current')]);
-                    break;
-                case "done":
-                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('done')]);
-                    break;
-                case "denied":
-                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('denied')]);
-                    break;
-                default:
-                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('reuqested')]);
-                    break;
-
-
-            }
-            exit();
-        }
-
-        render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested')]);
-        exit();
+//        if (!Empty($_GET["action"])) {
+//            switch (strtolower($_GET["action"])) {
+//                case "requested":
+//                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested'),"current_page" => $this->page ]);
+//                    break;
+//                case "accept":
+//                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested'),"current_page" => $this->page ]);
+//                    break;
+//                case "deny":
+//                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested'),"current_page" => $this->page ]);
+//                    break;
+//                case "changed":
+//                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('changed'),"current_page" => $this->page ]);
+//                    break;
+//                case "open":
+//                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('open'),"current_page" => $this->page ]);
+//                    break;
+//                case "redraw":
+//                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('open'),"current_page" => $this->page ]);
+//                    break;
+//                case "delete":
+//                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('open'),"current_page" => $this->page ]);
+//                    break;
+//                case "matched":
+//                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('matched'),"current_page" => $this->page ]);
+//                    break;
+//                case "current":
+//                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('current'),"current_page" => $this->page ]);
+//                    break;
+//                case "done":
+//                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('done'),"current_page" => $this->page ]);
+//                    break;
+//                case "denied":
+//                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('denied'),"current_page" => $this->page ]);
+//                    break;
+//                default:
+                    render("AdminWish.php", ["title" => "WensBeheer",
+                        "reqwishes" => $this->wishPageAction('requested'),
+                        "openwishes" => $this->wishPageAction('open'),
+                        "matchedwishes" => $this->wishPageAction('matched'),
+                        "currentwishes" => $this->wishPageAction('current'),
+                        "donewishes" => $this->wishPageAction('done'),
+                        "deniedwishes" => $this->wishPageAction('denied'),
+                        "deletedwishes" => $this->wishPageAction('deleted'),
+                        "current_page" => $this->page
+                    ]);
+//                    break;
+//
+//
+//            }
+//            exit();
+//        }
+//
+//        render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested'),"current_page" => $this->page]);
+//        exit();
     }
 
 
@@ -142,14 +161,14 @@ class AdminWishController
             case 'open':
                 $reqwishes = $wishmodel->getRequestedWishes('open');
                 break;
-            case 'done':
-                $reqwishes = $wishmodel->getRequestedWishes('done');
-                break;
             case 'matched':
                 $reqwishes = $wishmodel->getRequestedWishes('matched');
                 break;
             case 'current':
                 $reqwishes = $wishmodel->getRequestedWishes('current');
+                break;
+            case 'done':
+                $reqwishes = $wishmodel->getRequestedWishes('done');
                 break;
             case 'denied':
                 $reqwishes = $wishmodel->getRequestedWishes('denied');

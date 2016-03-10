@@ -25,35 +25,35 @@ class TalentController
 
     public function run()
     {
-//        $this->checkPost();
-//        $this->checkGet();
-//        $this->checkSessions();
+        $this->checkPost();
+        $this->checkGet();
+        $this->checkSessions();
 
-        $this->checkAdminGet();
-        $this->checkAdminSession();
+//        $this->checkAdminGet();
+//        $this->checkAdminSession();
 
-        render("Admin/talent.php",
-            ["title" => "Talenten",
-            "all_talents" => $this->all_talents,
-            "all_talent_number" => $this->all_talents_number,
-            "current_all_talents_number" => $this->current_all_talents_number]);
-
-//        render("talentOverview.php",
+//        render("Admin/talent.php",
 //            ["title" => "Talenten",
-//                "talents" => $this->talents,
-//                "user_talents" => $this->talents_user,
-//                "number_of_talents" => $this->talent_repository->checkNumberOfTalentsFromUser(),
-//                "talent_error" => "set",
-//                "user_talents_number" => $this->user_talents_number,
-//                "current_user_talent_number" => $this->current_user_talent_number,
-//                "talent_number" => $this->talent_numbers,
-//                "current_talent_number" => $this->current_talent_number,
-//                "current_page" => $this->page,
-//                "talent_name" => $this->talent_name,
-//                "added_talent_error" => $this->talent_error,
-//                "requested_talents" => $this->requested_talents,
-//                "requested_talents_number" => $this->requested_talents_number,
-//                "current_requested_talent_number" => $this->current_requested_talent_number]);
+//            "all_talents" => $this->all_talents,
+//            "all_talent_number" => $this->all_talents_number,
+//            "current_all_talents_number" => $this->current_all_talents_number]);
+
+        render("talentOverview.php",
+            ["title" => "Talenten",
+                "talents" => $this->talents,
+                "user_talents" => $this->talents_user,
+                "number_of_talents" => $this->talent_repository->checkNumberOfTalentsFromUser(),
+                "talent_error" => "set",
+                "user_talents_number" => $this->user_talents_number,
+                "current_user_talent_number" => $this->current_user_talent_number,
+                "talent_number" => $this->talent_numbers,
+                "current_talent_number" => $this->current_talent_number,
+                "current_page" => $this->page,
+                "talent_name" => $this->talent_name,
+                "added_talent_error" => $this->talent_error,
+                "requested_talents" => $this->requested_talents,
+                "requested_talents_number" => $this->requested_talents_number,
+                "current_requested_talent_number" => $this->current_requested_talent_number]);
         exit(0);
     }
 

@@ -5,7 +5,6 @@
 <!--Time: 21:48-->
 
 <div class="container">
-    <div id="rootwizard">
     <h5>Talenten</h5>
 
     <div class="col-md-2">
@@ -345,6 +344,6 @@
                 </form>
             </div>
         </div>\
-    </div>
+
 </div>
 {/foreach}
