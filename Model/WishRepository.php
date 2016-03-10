@@ -17,6 +17,7 @@ class WishRepository {
               w.Status,
               w.Id,
               w.User,
+              w.Date,
               w.CompletionDate,
               wc.Content,
               wc.Title,
@@ -52,8 +53,8 @@ class WishRepository {
                 $result[$i]["Content"],
                 $result[$i]["IsAccepted"],
                 $result[$i]["max_date"],
-                $result[$i]["Status"],
-                $date
+                $result[$i]["Date"],
+                $result[$i]["Status"]
             );
         }
 
@@ -163,6 +164,7 @@ class WishRepository {
                 $completed,
                 $result[0]["Content"],
                 $result[0]["IsAccepted"],
+                null,
                 $result[0]["Date"],
                 $result[0]["Status"]
             );

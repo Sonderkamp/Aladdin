@@ -99,37 +99,32 @@
                     <th>Gebruiker</th>
                     <th>Title</th>
                     <th>Content</th>
-                    <th></th>
+                    <th class="smallColumn"></th>
+                    <th class="smallColumn"></th>
                 </tr>
                 </thead>
                 <tbody>
                 {foreach from=$wishes item=wish}
-                <!--<<<<<<< HEAD-->
-                <!--                <tr>-->
-                <!--                    <td>{$wish -> user}</td>-->
-                <!--                    <td>{$wish -> title}</td>-->
-                <!--                    <td>{$wish -> country}</td>-->
-                <!--                    <td>{$wish -> city}</td>-->
-                <!--                    <td>{$wish -> content}</td>-->
-                <!--                    <td>-->
-                <!--                        <form action="/Wishes/action=open_edit_wish" method="get">-->
-                <!--                            <a>-->
-                <!--                                <button name="editwishbtn" value="{$wish -> id}" type="sumbit"-->
-                <!--                                        class="btn btn-inbox btn-sm" data-toggle="modal">-->
-                <!--                                    <span class="glyphicon glyphicon-edit"></span>-->
-                <!--=======-->
                 <tr>
                     <td>{$wish -> user}</td>
                     <td>{$wish -> title}</td>
                     <td>{$wish -> content}</td>
                     <td>
-                        <a href="/Wishes/wish_id={$wish->id}">
-                            <button class="btn btn-default">
-                                    <span class="glyphicon glyphicon-eye-open">
-                                    </span>
-                                <!--                                >>>>>>> 55b03be8450bc299653419b88ffbae238d319cf9-->
+                        <form method="post">
+                            <button class="btn btn-default"
+                                    formaction="/Wishes/wish_id={$wish->id}"
+                                    value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
+                                    type="submit"
+                                    name="page">
+                                <span class="glyphicon glyphicon-eye-open" />
                             </button>
-                        </a>
+                        </form>
+<!--                        <a href="/Wishes/wish_id={$wish->id}">-->
+<!--                            <button class="btn btn-default">-->
+<!--                                    <span class="glyphicon glyphicon-eye-open">-->
+<!--                                    </span>-->
+<!--                            </button>-->
+<!--                        </a>-->
                     </td>
                     <td>
                         <form action="/Wishes/action=open_edit_wish" method="get">

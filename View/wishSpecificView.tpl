@@ -20,13 +20,19 @@
 
         <div class="col-sm-3 form-group">
 
+            {if isset($previousPage)}
+                <a href="http://{$previousPage}"><button class="btn btn-sm">
+                Go back
+                </button></a>
+            {/if}
+
             <div class="row">
                 <label class="col-sm-4">Datum: </label>
-                <div class="col-sm-8">{$selectedWish->date}</div>
+                <div class="col-sm-8">{$selectedWish->contentDate}</div>
             </div>
 
             <div class="row">
-                <label class="col-sm-4">Gewenst door: </label>
+                <label class="col-sm-4">Wenser: </label>
                 <div class="col-sm-8">{$selectedWish->user}</div>
             </div>
 
@@ -39,7 +45,6 @@
                 <label class="col-sm-4">Stad: </label>
                 <div class="col-sm-8">Misschien de stad van de user?</div>
             </div>
-
 
         </div>
 

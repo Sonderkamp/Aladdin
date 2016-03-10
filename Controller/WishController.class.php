@@ -51,8 +51,23 @@ class WishController {
                     break;
             }
         }
+//        else if ($_SERVER["REQUEST_METHOD"] == "POST") {
+//            if (!Empty($_POST["wish_id"])) {
+//                $this->getSpecificwish($_POST["wish_id"]["wishOverview.php"]);
+//
+////                header("HTTP/1.1 303 See Other");
+////                header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+////                exit(0);
+//            }
+//        }
         else if(isset($_GET["wish_id"])) {
-            $this->getSpecificWish($_GET["wish_id"]);
+
+            if(isset($_POST["page"])){
+                $this->getSpecificWish($_GET["wish_id"], $_POST["page"]);
+            } else {
+                $this->getSpecificWish($_GET["wish_id"], null);
+            }
+
         }
         else if(isset($_GET["requestMatch"])){
             $this->requestMatch($_GET["requestMatch"]);
@@ -188,12 +203,12 @@ class WishController {
         }
     }
 
-    private function getSpecificwish($id){
+    private function getSpecificwish($id , $previousPage){
 
         $selectedWish = $this->wishRepository->getWish($id);
 
         if($selectedWish->user != null) {
-            render("wishSpecificView.tpl", ["title" => "Wens: " . $id, "selectedWish" => $selectedWish]);
+            render("wishSpecificView.tpl", ["title" => "Wens: " . $id, "selectedWish" => $selectedWish, "previousPage" => $previousPage]);
         } else {
             apologize("404 wish not found. Please wish for a better website!");
         }

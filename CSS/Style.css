@@ -233,3 +233,7 @@ a:hover {
 {
     display: inline;
 }
+
+.smallColumn{
+    width: 1%;
+}
