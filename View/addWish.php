@@ -57,25 +57,25 @@
                         {foreach from=$allTags item=tag}
                         <option>{$tag["Name"]}</option>
                         {/foreach}
-
                     </select>
                 </div>
             </div>
 
-<!---->
-<!--            <div class="form-group row authors-list">-->
-<!--                <div class="col-sm-10">-->
-<!--                    <select class="form-control" name="tag">-->
-<!--                        {if isset($tag)}-->
-<!--                        <option selected="selected">{($tag)}</option>-->
-<!--                        {/if}-->
-<!---->
-<!--                        {foreach from=$allTags item=tag}-->
-<!--                        <option>{$tag["Name"]}</option>-->
-<!--                        {/foreach}-->
-<!--                    </select>-->
-<!--                </div>-->
-<!--            </div>-->
+
+            <!---->
+            <!--            <div class="form-group row authors-list">-->
+            <!--                <div class="col-sm-10">-->
+            <!--                    <select class="form-control" name="tag">-->
+            <!--                        {if isset($tag)}-->
+            <!--                        <option selected="selected">{($tag)}</option>-->
+            <!--                        {/if}-->
+            <!---->
+            <!--                        {foreach from=$allTags item=tag}-->
+            <!--                        <option>{$tag["Name"]}</option>-->
+            <!--                        {/foreach}-->
+            <!--                    </select>-->
+            <!--                </div>-->
+            <!--            </div>-->
 
             <!--            <div class="form-group row authors-list">-->
             <!--                <label class="col-sm-2 form-control-label">Of typ zelf een tag in:</label>-->

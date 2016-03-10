@@ -8,8 +8,7 @@
  */
 class WishController {
 
-    public $wishes, $completedWishes, $incompletedWishes, $wishRepository;
-    public $title, $description, $tag, $city, $country, $isAccepted, $wishContentId;
+    public $wishes, $completedWishes, $incompletedWishes, $wishRepository, $title, $description, $tag, $isAccepted, $wishContentId;
 
     public function __construct() {
         $this->wishRepository = new WishRepository();
@@ -41,16 +40,32 @@ class WishController {
                 case "editwish":
                     $this->edit_wish();
                     break;
-                case "go_back";
+                case "go_back":
                     $this->go_back();
+                    break;
+                case "searchWish":
+                    $this->searchWish($_GET["action"]);
                     break;
                 default:
                     apologize("404 not found, Go back to my wishes");
                     break;
             }
-        } else {
+        }
+        else if(isset($_GET["wish_id"])) {
+            $this->getSpecificWish($_GET["wish_id"]);
+        }
+        else if(isset($_GET["requestMatch"])){
+            $this->requestMatch($_GET["requestMatch"]);
+        }
+        else {
             $this->getMyWishes();
         }
+    }
+
+    private function searchWish($key){
+        //TODO WERKEND MAKEN
+        $searchReturn = array_search($key, $this->wishes);
+        render("wishOverview.php", ["title" => "Wensen overzicht", "wishes" => $searchReturn]);
     }
 
     private function getMyWishes() {
@@ -173,6 +188,21 @@ class WishController {
         }
     }
 
+    private function getSpecificwish($id){
+
+        $selectedWish = $this->wishRepository->getWish($id);
+
+        if($selectedWish->user != null) {
+            render("wishSpecificView.tpl", ["title" => "Wens: " . $id, "selectedWish" => $selectedWish]);
+        } else {
+            apologize("404 wish not found. Please wish for a better website!");
+        }
+    }
+
+    private function requestMatch($id){
+        //TODO WRITE QUERY TO CREATE MATCH
+    }
+
     private function edit_wish() {
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
             $title = $_GET["title"];
@@ -225,6 +255,7 @@ class WishController {
         }
         //to remove last comma in a string
         return rtrim($hashtag, ',');
+
     }
 
 

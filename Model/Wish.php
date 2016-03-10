@@ -8,18 +8,20 @@
  */
 class Wish {
 
-    public $user, $title, $country, $city, $completed, $content, $accepted, $id, $contentDate;
 
-    function __construct($user, $title, $country, $city, $completed, $content, $accepted, $id, $contentDate) {
+    public $id, $user, $title, $completed, $content, $accepted, $newestDate, $status, $contentDate;
+
+    public function __construct($id, $user, $title, $completed, $content, $accepted, $newestDate, $status, $contentDate) {
+        $this->id = $id;
         $this->user = $user;
         $this->title = $title;
-        $this->country = $country;
-        $this->city = $city;
         $this->completed = $completed;
         $this->content = $content;
         $this->accepted = $accepted;
-        $this->id = $id;
+        $this->newestDate = $newestDate;
         $this->contentDate = $contentDate;
+        $this->status = $status;
+
     }
 
 }

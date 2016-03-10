@@ -10,6 +10,12 @@
 #01665e
 */
 
+.buttongroup{
+    margin-bottom: 10px;
+}
+.buttongrid{
+    border-top: 1px solid gray;
+}
 .btn-inbox:focus,.btn-inbox:active,.btn-inbox:visited {
     color: white;
 }

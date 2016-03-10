@@ -42,16 +42,18 @@ class WishRepository {
                 $completed = true;
             }
 
+            $date = date('Y-m-d H:i:s');
+
             $returnArray[$i] = new Wish(
+                $result[$i]["Id"],
                 $result[$i]["User"],
                 $result[$i]["Title"],
-                $result[$i]["Country"],
-                $result[$i]["City"],
                 $completed,
                 $result[$i]["Content"],
                 $result[$i]["IsAccepted"],
-                $result[$i]["Id"],
-                $result[$i]["max_date"]
+                $result[$i]["max_date"],
+                $result[$i]["Status"],
+                $date
             );
         }
 
@@ -60,6 +62,9 @@ class WishRepository {
 
     // add wish to database
     public function addWish($newWish) {
+        $wish = $newWish["title"];
+        $description = $newWish["description"];
+        $tag = $newWish["tag"];
         $email = $this->getEmail();
         $status = "Aangemaakt";
 
@@ -73,8 +78,16 @@ class WishRepository {
 
         $id = $wishId[0]["lastwish"];
 
+
         $this->wishContentQuery($newWish, $id);
     }
+//=======
+//
+//        // TODO: Delete ISACCEPTED, Moderator.username, Date.
+//        $query = "INSERT INTO `wishContent` (`Date`,`Content`, `Title`, `IsAccepted`,
+//                  `moderator_Username`, `wish_Id`,`Country`, `City`)
+//            VALUES (?,?,?,?,?,?,?,?)";
+//>>>>>>> 55b03be8450bc299653419b88ffbae238d319cf9
 
     // add wishContent to database & connect with wish
     public function wishContentQuery($content, $id) {
@@ -122,6 +135,45 @@ class WishRepository {
         return true;
     }
 
+    public function getWish($id){
+
+        $result = Database::query_safe
+        ("SELECT
+          wish.Id,
+          wish.Status,
+          wish.User,
+          wish.Date,
+          wishContent.Content,
+          wishContent.Title,
+          wishContent.IsAccepted
+          FROM `wish` JOIN wishContent ON wish.Id = wishContent.wish_Id WHERE wish.Id = ?", array($id));
+
+
+        if($result != null){
+
+            $completed = false;
+            if($result[0]["Status"] == "Vervuld"){
+                $completed = true;
+            }
+
+            $selectedWish = new Wish(
+                $result[0]["Id"],
+                $result[0]["User"],
+                $result[0]["Title"],
+                $completed,
+                $result[0]["Content"],
+                $result[0]["IsAccepted"],
+                $result[0]["Date"],
+                $result[0]["Status"]
+            );
+
+            return $selectedWish;
+        } else {
+            apologize("404 wens kan niet worden gevonden");
+        }
+
+    }
+
     public function getSelectedWish($id) {
         $query = "select * from `wishContent` where `wish_Id` = ? ORDER BY `date` DESC limit 1";
         $array = array($id);
@@ -132,6 +184,7 @@ class WishRepository {
     public function getEmail() {
         return $_SESSION["user"]->email;
     }
+
 
     public function getAllTalents() {
         $query = "SELECT `Name` FROM `talent` WHERE `isRejected`=? ORDER BY `Name` ASC";

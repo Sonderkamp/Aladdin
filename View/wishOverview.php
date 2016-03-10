@@ -83,24 +83,54 @@
             <div id="err"></div>
             {/if}
 
+            <form action="/wishes/action=searchWish" method="get">
+
+                <input class="form-control" name="title" placeholder="Wat is uw wens" value="Zoek een wens">
+
+                <button type="submit" class="btn btn-primary">
+                    Zoek
+                </button>
+
+            </form>
+
             <table class="table">
                 <thead>
                 <tr>
                     <th>Gebruiker</th>
                     <th>Title</th>
-                    <th>Country</th>
-                    <th>City</th>
                     <th>Content</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 {foreach from=$wishes item=wish}
+                <!--<<<<<<< HEAD-->
+                <!--                <tr>-->
+                <!--                    <td>{$wish -> user}</td>-->
+                <!--                    <td>{$wish -> title}</td>-->
+                <!--                    <td>{$wish -> country}</td>-->
+                <!--                    <td>{$wish -> city}</td>-->
+                <!--                    <td>{$wish -> content}</td>-->
+                <!--                    <td>-->
+                <!--                        <form action="/Wishes/action=open_edit_wish" method="get">-->
+                <!--                            <a>-->
+                <!--                                <button name="editwishbtn" value="{$wish -> id}" type="sumbit"-->
+                <!--                                        class="btn btn-inbox btn-sm" data-toggle="modal">-->
+                <!--                                    <span class="glyphicon glyphicon-edit"></span>-->
+                <!--=======-->
                 <tr>
                     <td>{$wish -> user}</td>
                     <td>{$wish -> title}</td>
-                    <td>{$wish -> country}</td>
-                    <td>{$wish -> city}</td>
                     <td>{$wish -> content}</td>
+                    <td>
+                        <a href="/Wishes/wish_id={$wish->id}">
+                            <button class="btn btn-default">
+                                    <span class="glyphicon glyphicon-eye-open">
+                                    </span>
+                                <!--                                >>>>>>> 55b03be8450bc299653419b88ffbae238d319cf9-->
+                            </button>
+                        </a>
+                    </td>
                     <td>
                         <form action="/Wishes/action=open_edit_wish" method="get">
                             <a>
