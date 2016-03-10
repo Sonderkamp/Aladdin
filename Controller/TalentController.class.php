@@ -73,7 +73,7 @@ class TalentController
                         }
                     }
                     if($correct == true){
-                        $this->talent_repository->addTalent(ucfirst(trim($_POST["talent_name"])));
+                        $this->talent_repository->addTalent($_POST["talent_name"]);
                         $_SESSION["talent_name"] = "";
                         $_SESSION["err_talent"] = "";
                     }
@@ -280,13 +280,13 @@ class TalentController
                     }
                 }
                 if($correct == true){
-                    $this->talent_repository->updateTalent(ucfirst(trim($_POST["admin_talent_name"])),$_POST["admin_talent_id"]);
+                    $this->talent_repository->updateTalent($_POST["admin_talent_name"],$_POST["admin_talent_id"]);
                     $_SESSION["admin_talent_name"] = "";
                     $_SESSION["err_talent"] = "";
                 }
             }
             else {
-                
+
             }
 
             header("HTTP/1.1 303 See Other");

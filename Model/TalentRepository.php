@@ -299,7 +299,7 @@ class TalentRepository
         Database::query_safe
         ("INSERT INTO `talent` (`Name`, `CreationDate`, `AcceptanceDate`, `IsRejected`, `moderator_Username`, `user_Email`)
           VALUES (?, CURRENT_TIMESTAMP, NULL, NULL, NULL, ?)",
-            array($name,$_SESSION["user"]->email));
+            array(ucfirst(strtolower(trim($name))),$_SESSION["user"]->email));
     }
 
     public function checkNumberOfTalentsFromUser()

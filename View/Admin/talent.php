@@ -19,13 +19,26 @@
                         <thead>
                         <tr>
                             <th>Alle talenten</th>
+                            <th>Is geaccepteerd</th>
+                            <th>Gecheckt door</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         {foreach from=$all_talents item=talent}
                         <tr>
-                            <td class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{$talent -> name}</td>
+                            <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">{$talent -> name}</td>
+                            {if !Empty($talent-> moderator_username)}
+                                {if $talent->is_rejected == true}
+                                <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Ja</td>
+                                {else}
+                                <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Nee</td>
+                                {/if}
+                                <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">{$talent -> moderator_username}</td>
+                            {else}
+                            <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">-</td>
+                            <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">-</td>
+                            {/if}
                             <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
                                 <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', $talent->name)}">
                                     <span class="glyphicon glyphicon-edit"></span>
