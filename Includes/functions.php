@@ -52,6 +52,13 @@
         exit;
     }
 
+    function guaranteeLogin($page)
+    {
+        $controller = new AccountController();
+        $controller->guaranteeLogin($page);
+    }
+
+
     /**
      * Renders template, passing in values.
      */
@@ -75,6 +82,8 @@
             $smarty->display("View/$template");
 
             // render footer
+//            $quote = new Quote();
+//            $value["Quote"] = $quote->getQuote();
             $smarty->display("View/footer.php");
         }
         // else err

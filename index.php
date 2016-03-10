@@ -17,7 +17,16 @@ switch ($page) {
     case "wishes":
         (new WishController())->run();
         break;
+    case "inbox":
+        (new MailController())->run();
+        break;
+    case "talents":
+        (new TalentController())->run();
+        break;
     case "index.php":
+        (new HomeController())->run();
+        break;
+    case "about":
         (new HomeController())->run();
         break;
     default:
