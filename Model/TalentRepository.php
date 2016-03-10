@@ -23,6 +23,34 @@ class TalentRepository
         return $returnArray;
     }
 
+    public function getAllTalents($value)
+    {
+        $value -= 1;
+        $value *= 10;
+        $result = Database::query
+        ("SELECT *
+          FROM `talent`
+          ORDER BY `talent`.`Name` ASC
+          LIMIT $value,10");
+
+        $returnArray = array();
+
+        for ($i = 0; $i < count($result); $i++) {
+
+            $returnArray[$i] = new Talent(
+                $result[$i]["Id"],
+                $result[$i]["Name"],
+                $result[$i]["CreationDate"],
+                $result[$i]["AcceptanceDate"],
+                $result[$i]["IsRejected"],
+                $result[$i]["moderator_Username"],
+                $result[$i]["user_Email"]
+            );
+        }
+
+        return $returnArray;
+    }
+
     public function getAcceptedTalents()
     {
         $result = Database::query
@@ -281,6 +309,14 @@ class TalentRepository
           FROM `talent_has_user`
           WHERE `user_Email` = ?",
             array($_SESSION["user"]->email));
+        return $result[0]["Number_of_talents"];
+    }
+
+    public function checkNumberOfAllTalents()
+    {
+        $result = Database::query
+        ("SELECT COUNT(`talent`.`Id`) AS `Number_of_talents`
+          FROM `talent`");
         return $result[0]["Number_of_talents"];
     }
 

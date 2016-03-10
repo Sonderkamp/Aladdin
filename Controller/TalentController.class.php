@@ -8,7 +8,7 @@
  */
 class TalentController
 {
-    private $page, $talents, $talents_user, $talent_repository, $talent_numbers, $current_talent_number, $user_talents_number, $current_user_talent_number, $talent_name, $talent_error, $requested_talents, $requested_talents_number, $current_requested_talent_number;
+    private $page, $all_talents, $current_all_talents_number, $all_talents_number, $talents, $talents_user, $talent_repository, $talent_numbers, $current_talent_number, $user_talents_number, $current_user_talent_number, $talent_name, $talent_error, $requested_talents, $requested_talents_number, $current_requested_talent_number;
 
     public function __construct()
     {
@@ -16,8 +16,8 @@ class TalentController
 
         $this->page = "m";
         $this->talent_repository = new TalentRepository();
-        $this->talents = $this->talent_repository->getTalentsWithoutAdded();
-        $this->talents_user = $this->talent_repository->getUserTalents();
+
+        $this->all_talents_number = ceil($this->talent_repository->checkNumberOfAllTalents()/10);
         $this->user_talents_number = ceil($this->talent_repository->checkNumberOfTalentsFromUser()/10);
         $this->talent_numbers = ceil($this->talent_repository->checkNumberOfTalents()/10);
         $this->requested_talents_number = ceil($this->talent_repository->checkNumberOfRequestedTalents()/10);
@@ -25,26 +25,35 @@ class TalentController
 
     public function run()
     {
-        $this->checkPost();
-        $this->checkGet();
-        $this->checkSessions();
+//        $this->checkPost();
+//        $this->checkGet();
+//        $this->checkSessions();
 
-        render("talentOverview.php"/*"Admin/talent.php"*/,
+        $this->checkAdminGet();
+        $this->checkAdminSession();
+
+        render("Admin/talent.php",
             ["title" => "Talenten",
-                "talents" => $this->talents,
-                "user_talents" => $this->talents_user,
-                "number_of_talents" => $this->talent_repository->checkNumberOfTalentsFromUser(),
-                "talent_error" => "set",
-                "user_talents_number" => $this->user_talents_number,
-                "current_user_talent_number" => $this->current_user_talent_number,
-                "talent_number" => $this->talent_numbers,
-                "current_talent_number" => $this->current_talent_number,
-                "current_page" => $this->page,
-                "talent_name" => $this->talent_name,
-                "added_talent_error" => $this->talent_error,
-                "requested_talents" => $this->requested_talents,
-                "requested_talents_number" => $this->requested_talents_number,
-                "current_requested_talent_number" => $this->current_requested_talent_number]);
+            "all_talents" => $this->all_talents,
+            "all_talent_number" => $this->all_talents_number,
+            "current_all_talents_number" => $this->current_all_talents_number]);
+
+//        render("talentOverview.php",
+//            ["title" => "Talenten",
+//                "talents" => $this->talents,
+//                "user_talents" => $this->talents_user,
+//                "number_of_talents" => $this->talent_repository->checkNumberOfTalentsFromUser(),
+//                "talent_error" => "set",
+//                "user_talents_number" => $this->user_talents_number,
+//                "current_user_talent_number" => $this->current_user_talent_number,
+//                "talent_number" => $this->talent_numbers,
+//                "current_talent_number" => $this->current_talent_number,
+//                "current_page" => $this->page,
+//                "talent_name" => $this->talent_name,
+//                "added_talent_error" => $this->talent_error,
+//                "requested_talents" => $this->requested_talents,
+//                "requested_talents_number" => $this->requested_talents_number,
+//                "current_requested_talent_number" => $this->current_requested_talent_number]);
         exit(0);
     }
 
@@ -220,5 +229,38 @@ class TalentController
         render("Admin/talent.php",
             ["title" => "Talenten"]);
         exit(0);
+    }
+
+    private function checkAdminSession()
+    {
+        if(!Empty($_SESSION["talent_admin"])){
+            if($this->all_talents_number > 1){
+                $this->current_all_talents_number = $_SESSION["talent_admin"];
+                $this->all_talents = $this->talent_repository->getAllTalents($_SESSION["talent_admin"]);
+            }
+            else{
+                $_SESSION["talent_admin"] = $this->all_talents_number;
+            }
+        }
+    }
+
+    private function checkAdminGet()
+    {
+        if (!Empty($_GET["admin_a"])) {
+            if($_GET["admin_a"] > 0 & $_GET["admin_a"] <= $this->all_talents_number) {
+                $this->all_talents = $this->talent_repository->getAllTalents($_GET["admin_a"]);
+                $this->current_all_talents_number = $_GET["admin_a"];
+                $_SESSION["talent_admin"] = $this->current_all_talents_number;
+            }
+            else{
+                $this->all_talents = $this->talent_repository->getAllTalents(1);
+                $this->current_all_talents_number = 1;
+                $_SESSION["talent_admin"] = $this->current_all_talents_number;
+            }
+        }
+        else {
+            $this->all_talents = $this->talent_repository->getAllTalents(1);
+            $this->current_all_talents_number = 1;
+        }
     }
 }
