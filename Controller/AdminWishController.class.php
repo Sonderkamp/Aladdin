@@ -90,40 +90,40 @@ class AdminWishController
 //        if (!Empty($_GET["action"])) {
 //            switch (strtolower($_GET["action"])) {
 //                case "requested":
-//                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested'),"current_page" => $this->page ]);
+//                    render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested'),"current_page" => $this->page ]);
 //                    break;
 //                case "accept":
-//                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested'),"current_page" => $this->page ]);
+//                    render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested'),"current_page" => $this->page ]);
 //                    break;
 //                case "deny":
-//                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested'),"current_page" => $this->page ]);
+//                    render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested'),"current_page" => $this->page ]);
 //                    break;
 //                case "changed":
-//                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('changed'),"current_page" => $this->page ]);
+//                    render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('changed'),"current_page" => $this->page ]);
 //                    break;
 //                case "open":
-//                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('open'),"current_page" => $this->page ]);
+//                    render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('open'),"current_page" => $this->page ]);
 //                    break;
 //                case "redraw":
-//                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('open'),"current_page" => $this->page ]);
+//                    render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('open'),"current_page" => $this->page ]);
 //                    break;
 //                case "delete":
-//                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('open'),"current_page" => $this->page ]);
+//                    render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('open'),"current_page" => $this->page ]);
 //                    break;
 //                case "matched":
-//                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('matched'),"current_page" => $this->page ]);
+//                    render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('matched'),"current_page" => $this->page ]);
 //                    break;
 //                case "current":
-//                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('current'),"current_page" => $this->page ]);
+//                    render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('current'),"current_page" => $this->page ]);
 //                    break;
 //                case "done":
-//                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('done'),"current_page" => $this->page ]);
+//                    render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('done'),"current_page" => $this->page ]);
 //                    break;
 //                case "denied":
-//                    render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('denied'),"current_page" => $this->page ]);
+//                    render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('denied'),"current_page" => $this->page ]);
 //                    break;
 //                default:
-                    render("AdminWish.php", ["title" => "WensBeheer",
+                    render("AdminWish.tpl", ["title" => "WensBeheer",
                         "reqwishes" => $this->wishPageAction('requested'),
                         "openwishes" => $this->wishPageAction('open'),
                         "matchedwishes" => $this->wishPageAction('matched'),
@@ -140,7 +140,7 @@ class AdminWishController
 //            exit();
 //        }
 //
-//        render("AdminWish.php", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested'),"current_page" => $this->page]);
+//        render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested'),"current_page" => $this->page]);
 //        exit();
     }
 

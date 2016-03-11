@@ -266,7 +266,7 @@
                         </table>
                     </div>
                     {if $requested_talents_number > 1}
-                    <div>
+                    <div style="  margin-left:auto;margin-right:auto;">
                         <nav>
                             <ul class="pagination">
                                 {if $current_requested_talent_number <= 1}

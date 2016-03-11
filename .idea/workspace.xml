@@ -2,36 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fdff3ebf-a012-4b8f-b011-ea94c721b9b6" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Model/MessageLink.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Model/Quote.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Model/TalentRepository.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/View/Admin/talent.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/View/wishSpecificView.tpl" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/templates_c/0e0383d900db65d30b16054145943052efaf7cc0_0.file.talentOverview.php.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/templates_c/6a4adaf0fed9fcf7ceb0e71ab946e96987ccac61_0.file.footer.php.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/templates_c/6d5aaf59146f593f2bfad54dce07ab2230c1f36d_0.file.error_view.php.php" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSS/Style.css" afterPath="$PROJECT_DIR$/CSS/Style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Controller/MailController.class.php" afterPath="$PROJECT_DIR$/Controller/MailController.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Controller/TalentController.class.php" afterPath="$PROJECT_DIR$/Controller/TalentController.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Controller/WishController.class.php" afterPath="$PROJECT_DIR$/Controller/WishController.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Includes/classes.php" afterPath="$PROJECT_DIR$/Includes/classes.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Includes/functions.php" afterPath="$PROJECT_DIR$/Includes/functions.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Model/Message.php" afterPath="$PROJECT_DIR$/Model/Message.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Model/MessageModel.php" afterPath="$PROJECT_DIR$/Model/MessageModel.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Model/Talent.php" afterPath="$PROJECT_DIR$/Model/Talent.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Model/Wish.php" afterPath="$PROJECT_DIR$/Model/Wish.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Model/WishRepository.php" afterPath="$PROJECT_DIR$/Model/WishRepository.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/Inbox.php" afterPath="$PROJECT_DIR$/View/Inbox.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/addWish.php" afterPath="$PROJECT_DIR$/View/addWish.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/completedWishOverview.php" afterPath="$PROJECT_DIR$/View/completedWishOverview.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/footer.php" afterPath="$PROJECT_DIR$/View/footer.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/header.php" afterPath="$PROJECT_DIR$/View/header.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/home.php" afterPath="$PROJECT_DIR$/View/home.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/incompletedWishOverview.php" afterPath="$PROJECT_DIR$/View/incompletedWishOverview.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/message.php" afterPath="$PROJECT_DIR$/View/message.php" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/View/AdminWish.php" afterPath="$PROJECT_DIR$/View/AdminWish.tpl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Controller/AdminWishController.class.php" afterPath="$PROJECT_DIR$/Controller/AdminWishController.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Controller/ProfileController.class.php" afterPath="$PROJECT_DIR$/Controller/ProfileController.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Model/User.php" afterPath="$PROJECT_DIR$/Model/User.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/talentOverview.php" afterPath="$PROJECT_DIR$/View/talentOverview.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/wishOverview.php" afterPath="$PROJECT_DIR$/View/wishOverview.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates_c/016991fde7ba0011fd04a1dc56efe40e6c5eb258_0.file.header.php.php" afterPath="$PROJECT_DIR$/templates_c/016991fde7ba0011fd04a1dc56efe40e6c5eb258_0.file.header.php.php" />
     </list>
     <ignored path="Aladdin.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -67,17 +43,7 @@
         <entry file="file://$PROJECT_DIR$/Controller/AdminWishController.class.php">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="189" column="62" selection-start-line="189" selection-start-column="62" selection-end-line="189" selection-end-column="62" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ProfileController.class.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Controller/ProfileController.class.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="118" column="12" selection-start-line="118" selection-start-column="12" selection-end-line="118" selection-end-column="29" />
+              <caret line="189" column="51" selection-start-line="189" selection-start-column="51" selection-end-line="189" selection-end-column="51" />
               <folding />
             </state>
           </provider>
@@ -86,8 +52,18 @@
       <file leaf-file-name="account.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/View/account.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="29" column="67" selection-start-line="29" selection-start-column="62" selection-end-line="29" selection-end-column="67" />
+            <state vertical-scroll-proportion="-15.346154">
+              <caret line="81" column="16" selection-start-line="81" selection-start-column="16" selection-end-line="81" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ProfileController.class.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Controller/ProfileController.class.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.33295965">
+              <caret line="141" column="17" selection-start-line="141" selection-start-column="17" selection-end-line="141" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -96,38 +72,89 @@
       <file leaf-file-name="User.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Model/User.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="228" column="37" selection-start-line="228" selection-start-column="37" selection-end-line="228" selection-end-column="37" />
-              <folding />
+            <state vertical-scroll-proportion="-10.769231">
+              <caret line="360" column="5" selection-start-line="360" selection-start-column="5" selection-end-line="360" selection-end-column="5" />
+              <folding>
+                <marker date="1457701872501" expanded="true" signature="1484:1563" placeholder="SELECT `Emai... user" />
+                <marker date="1457701872501" expanded="true" signature="1971:2038" placeholder="SELECT * FRO... user" />
+                <marker date="1457701872501" expanded="true" signature="2263:2327" placeholder="SELECT `Disp... user" />
+                <marker date="1457701872501" expanded="true" signature="2632:2670" placeholder="SELECT * FRO... user" />
+                <marker date="1457701872501" expanded="true" signature="3453:3504" placeholder="UPDATE `user... " />
+                <marker date="1457701872501" expanded="true" signature="6680:6991" placeholder="INSERT INTO `user`... " />
+                <marker date="1457701872501" expanded="true" signature="7860:7923" placeholder="SELECT count... user" />
+                <marker date="1457701872501" expanded="true" signature="8563:8637" placeholder="UPDATE `user... " />
+                <marker date="1457701872501" expanded="true" signature="9223:9303" placeholder="UPDATE `user... " />
+                <marker date="1457701872501" expanded="true" signature="9692:9777" placeholder="SELECT count... recoveryLog" />
+                <marker date="1457701872501" expanded="true" signature="10024:10078" placeholder="INSERT INTO `recoveryLog`... " />
+                <marker date="1457701872501" expanded="true" signature="10227:10272" placeholder="SELECT * FRO... user" />
+                <marker date="1457701872501" expanded="true" signature="10567:10614" placeholder="SELECT * FRO... user" />
+                <marker date="1457701872501" expanded="true" signature="10779:10838" placeholder="UPDATE `user... " />
+                <marker date="1457701872501" expanded="true" signature="13245:13286" placeholder="SELECT passw... user" />
+                <marker date="1457701872501" expanded="true" signature="13485:13630" placeholder="UPDATE user " />
+                <marker date="1457701872501" expanded="true" signature="14445:14487" placeholder="UPDATE user " />
+                <marker date="1457701872501" expanded="true" signature="14598:14640" placeholder="UPDATE user " />
+                <marker date="1457701872501" expanded="true" signature="14745:14859" placeholder="INSERT INTO adminBlock... " />
+                <marker date="1457701872501" expanded="true" signature="14968:15082" placeholder="INSERT INTO adminBlock... " />
+                <marker date="1457701872501" expanded="true" signature="15256:15390" placeholder="SELECT Block... adminBlock" />
+                <marker date="1457701872501" expanded="true" signature="15621:15871" placeholder="SELECT Block... adminBlock" />
+                <marker date="1457701872501" expanded="true" signature="15724:15833" placeholder="select max(a... adminBlock" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MessageModel.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Model/MessageModel.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="167" column="20" selection-start-line="167" selection-start-column="20" selection-end-line="167" selection-end-column="20" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WishRepository.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="WishRepository.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Model/WishRepository.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.9439462">
-              <caret line="102" column="0" selection-start-line="102" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
+            <state vertical-scroll-proportion="-3.5769231">
+              <caret line="177" column="22" selection-start-line="177" selection-start-column="22" selection-end-line="177" selection-end-column="22" />
               <folding>
-                <marker date="1457619945217" expanded="true" signature="239:863" placeholder="SELECT w.Sta... wish" />
-                <marker date="1457619945217" expanded="true" signature="579:690" placeholder="SELECT wish_... wishContent" />
-                <marker date="1457619945217" expanded="true" signature="1826:1875" placeholder="INSERT INTO `wish`... " />
-                <marker date="1457619945217" expanded="true" signature="1990:2061" placeholder="SELECT `Id` wish" />
-                <marker date="1457619945217" expanded="true" signature="2911:3017" placeholder="INSERT INTO `wishContent`... " />
-                <marker date="1457619945217" expanded="true" signature="3259:3311" placeholder="SELECT `Id` talent" />
-                <marker date="1457619945217" expanded="true" signature="3462:3529" placeholder="INSERT INTO `talent_has_wish`... " />
-                <marker date="1457619945217" expanded="true" signature="3763:3854" placeholder="select count... wish" />
+                <marker date="1457630221212" expanded="true" signature="239:863" placeholder="SELECT w.Sta... wish" />
+                <marker date="1457630221212" expanded="true" signature="579:690" placeholder="SELECT wish_... wishContent" />
+                <marker date="1457630221212" expanded="true" signature="1826:1875" placeholder="INSERT INTO `wish`... " />
+                <marker date="1457630221212" expanded="true" signature="1990:2061" placeholder="SELECT `Id` wish" />
+                <marker date="1457630221212" expanded="true" signature="2911:3017" placeholder="INSERT INTO `wishContent`... " />
+                <marker date="1457630221212" expanded="true" signature="3259:3311" placeholder="SELECT `Id` talent" />
+                <marker date="1457630221212" expanded="true" signature="3462:3529" placeholder="INSERT INTO `talent_has_wish`... " />
+                <marker date="1457630221212" expanded="true" signature="3763:3854" placeholder="select count... wish" />
+                <marker date="1457630221212" expanded="true" signature="4391:5496" placeholder="SELECT wc.wi... " />
+                <marker date="1457630221212" expanded="true" signature="5594:5977" placeholder="select u.Dis... " />
+                <marker date="1457630221212" expanded="true" signature="6072:6483" placeholder="select u.Dis... " />
+                <marker date="1457630221212" expanded="true" signature="6581:6995" placeholder="select u.Dis... " />
+                <marker date="1457630221212" expanded="true" signature="7093:7506" placeholder="select u.Dis... " />
+                <marker date="1457630221212" expanded="true" signature="7601:8007" placeholder="select u.Dis... " />
+                <marker date="1457630221212" expanded="true" signature="8104:8512" placeholder="select u.Dis... " />
+                <marker date="1457630221212" expanded="true" signature="8610:8958" placeholder="select u.Dis... " />
+                <marker date="1457630221212" expanded="true" signature="9111:9163" placeholder="UPDATE wishC... " />
+                <marker date="1457630221212" expanded="true" signature="9211:9277" placeholder="UPDATE wishC... " />
+                <marker date="1457630221212" expanded="true" signature="9325:9376" placeholder="UPDATE wish " />
+                <marker date="1457630221212" expanded="true" signature="9485:9536" placeholder="UPDATE wishC... " />
+                <marker date="1457630221212" expanded="true" signature="9584:9649" placeholder="UPDATE wishC... " />
+                <marker date="1457630221212" expanded="true" signature="9697:9745" placeholder="UPDATE wish " />
+                <marker date="1457630221212" expanded="true" signature="9852:9906" placeholder="UPDATE wishC... " />
+                <marker date="1457630221212" expanded="true" signature="9951:10019" placeholder="UPDATE wishC... " />
+                <marker date="1457630221212" expanded="true" signature="10064:10113" placeholder="UPDATE wish " />
+                <marker date="1457630221212" expanded="true" signature="10220:10272" placeholder="UPDATE wishC... " />
+                <marker date="1457630221212" expanded="true" signature="10320:10384" placeholder="UPDATE wishC... " />
+                <marker date="1457630221212" expanded="true" signature="10432:10481" placeholder="UPDATE wish " />
+                <marker date="1457630221212" expanded="true" signature="10587:10726" placeholder="select u.Ema... " />
+                <marker date="1457630221212" expanded="true" signature="10858:11131" placeholder="SELECT wish.... wish" />
+                <marker date="1457630221212" expanded="true" signature="11845:11921" placeholder="select * fro... wishContent" />
+                <marker date="1457630221212" expanded="true" signature="12174:12242" placeholder="SELECT `Name... talent" />
+                <marker date="1457630221212" expanded="true" signature="12394:12463" placeholder="SELECT `tale... talent_has_wish" />
+                <marker date="1457630221212" expanded="true" signature="12623:12663" placeholder="SELECT `Name... talent" />
+                <marker date="1457630221212" expanded="true" signature="12833:12925" placeholder="SELECT `wish... wishContent" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ProfileCheckController.class.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Controller/ProfileCheckController.class.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="4.923077">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -151,12 +178,15 @@
         <option value="$PROJECT_DIR$/index.php" />
         <option value="$PROJECT_DIR$/templates_c/d42548325bb2dfdfb97f890c43bf49e1526d5209_0.file.AdminWish.php.php" />
         <option value="$PROJECT_DIR$/Model/Wish.php" />
-        <option value="$PROJECT_DIR$/Controller/ProfileController.class.php" />
-        <option value="$PROJECT_DIR$/Model/User.php" />
         <option value="$PROJECT_DIR$/View/account.php" />
         <option value="$PROJECT_DIR$/Model/WishRepository.php" />
-        <option value="$PROJECT_DIR$/View/AdminWish.php" />
         <option value="$PROJECT_DIR$/Controller/AdminWishController.class.php" />
+        <option value="$PROJECT_DIR$/View/AdminWish.php" />
+        <option value="$PROJECT_DIR$/View/wishSpecificView.tpl" />
+        <option value="$PROJECT_DIR$/View/talentOverview.php" />
+        <option value="$PROJECT_DIR$/View/AdminWish.tpl" />
+        <option value="$PROJECT_DIR$/Model/User.php" />
+        <option value="$PROJECT_DIR$/Controller/ProfileController.class.php" />
       </list>
     </option>
   </component>
@@ -200,7 +230,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -337,11 +366,14 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
       <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.splitter.proportion" value="0.2" />
   </component>
   <component name="RunManager">
     <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
@@ -387,13 +419,14 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25416666" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -406,7 +439,6 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
@@ -433,22 +465,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Model/User.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="228" column="37" selection-start-line="228" selection-start-column="37" selection-end-line="228" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Model/MessageModel.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="167" column="20" selection-start-line="167" selection-start-column="20" selection-end-line="167" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates_c/3d0a6e5ec10402c5c1aea828548b756338b3cbf6_0.file.inbox.php.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="60.807693">
@@ -590,13 +606,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/View/talentOverview.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4573991">
-          <caret line="56" column="28" selection-start-line="56" selection-start-column="28" selection-end-line="56" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates_c/c074029f85bbe0ca71765dbdbd163614937380b0_0.file.account.php.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.29484305">
@@ -709,14 +718,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/View/account.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="29" column="67" selection-start-line="29" selection-start-column="62" selection-end-line="29" selection-end-column="67" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Includes/config.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.38116592">
@@ -738,26 +739,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Controller/ProfileController.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="118" column="12" selection-start-line="118" selection-start-column="12" selection-end-line="118" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/lib/phpstorm.jar!/resources/html5-schema/html5/web-forms2.rnc">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
           <caret line="594" column="22" selection-start-line="594" selection-start-column="22" selection-end-line="594" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Model/User.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="228" column="37" selection-start-line="228" selection-start-column="37" selection-end-line="228" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -772,15 +757,31 @@
     <entry file="file://$PROJECT_DIR$/Controller/AdminWishController.class.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="189" column="62" selection-start-line="189" selection-start-column="62" selection-end-line="189" selection-end-column="62" />
+          <caret line="189" column="51" selection-start-line="189" selection-start-column="51" selection-end-line="189" selection-end-column="51" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/View/AdminWish.php">
+    <entry file="file://$PROJECT_DIR$/View/AdminWish.tpl">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.25672644">
-          <caret line="161" column="37" selection-start-line="161" selection-start-column="37" selection-end-line="161" selection-end-column="37" />
+        <state vertical-scroll-proportion="-17.961538">
+          <caret line="479" column="18" selection-start-line="479" selection-start-column="18" selection-end-line="479" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/View/talentOverview.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.10426009">
+          <caret line="268" column="51" selection-start-line="268" selection-start-column="51" selection-end-line="268" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/View/wishSpecificView.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-17.961538">
+          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -793,20 +794,103 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/View/account.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-15.346154">
+          <caret line="81" column="16" selection-start-line="81" selection-start-column="16" selection-end-line="81" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Model/User.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.769231">
+          <caret line="360" column="5" selection-start-line="360" selection-start-column="5" selection-end-line="360" selection-end-column="5" />
+          <folding>
+            <marker date="1457701872501" expanded="true" signature="1484:1563" placeholder="SELECT `Emai... user" />
+            <marker date="1457701872501" expanded="true" signature="1971:2038" placeholder="SELECT * FRO... user" />
+            <marker date="1457701872501" expanded="true" signature="2263:2327" placeholder="SELECT `Disp... user" />
+            <marker date="1457701872501" expanded="true" signature="2632:2670" placeholder="SELECT * FRO... user" />
+            <marker date="1457701872501" expanded="true" signature="3453:3504" placeholder="UPDATE `user... " />
+            <marker date="1457701872501" expanded="true" signature="6680:6991" placeholder="INSERT INTO `user`... " />
+            <marker date="1457701872501" expanded="true" signature="7860:7923" placeholder="SELECT count... user" />
+            <marker date="1457701872501" expanded="true" signature="8563:8637" placeholder="UPDATE `user... " />
+            <marker date="1457701872501" expanded="true" signature="9223:9303" placeholder="UPDATE `user... " />
+            <marker date="1457701872501" expanded="true" signature="9692:9777" placeholder="SELECT count... recoveryLog" />
+            <marker date="1457701872501" expanded="true" signature="10024:10078" placeholder="INSERT INTO `recoveryLog`... " />
+            <marker date="1457701872501" expanded="true" signature="10227:10272" placeholder="SELECT * FRO... user" />
+            <marker date="1457701872501" expanded="true" signature="10567:10614" placeholder="SELECT * FRO... user" />
+            <marker date="1457701872501" expanded="true" signature="10779:10838" placeholder="UPDATE `user... " />
+            <marker date="1457701872501" expanded="true" signature="13245:13286" placeholder="SELECT passw... user" />
+            <marker date="1457701872501" expanded="true" signature="13485:13630" placeholder="UPDATE user " />
+            <marker date="1457701872501" expanded="true" signature="14445:14487" placeholder="UPDATE user " />
+            <marker date="1457701872501" expanded="true" signature="14598:14640" placeholder="UPDATE user " />
+            <marker date="1457701872501" expanded="true" signature="14745:14859" placeholder="INSERT INTO adminBlock... " />
+            <marker date="1457701872501" expanded="true" signature="14968:15082" placeholder="INSERT INTO adminBlock... " />
+            <marker date="1457701872501" expanded="true" signature="15256:15390" placeholder="SELECT Block... adminBlock" />
+            <marker date="1457701872501" expanded="true" signature="15621:15871" placeholder="SELECT Block... adminBlock" />
+            <marker date="1457701872501" expanded="true" signature="15724:15833" placeholder="select max(a... adminBlock" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Model/WishRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.9439462">
-          <caret line="102" column="0" selection-start-line="102" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
+        <state vertical-scroll-proportion="-3.5769231">
+          <caret line="177" column="22" selection-start-line="177" selection-start-column="22" selection-end-line="177" selection-end-column="22" />
           <folding>
-            <marker date="1457619945217" expanded="true" signature="239:863" placeholder="SELECT w.Sta... wish" />
-            <marker date="1457619945217" expanded="true" signature="579:690" placeholder="SELECT wish_... wishContent" />
-            <marker date="1457619945217" expanded="true" signature="1826:1875" placeholder="INSERT INTO `wish`... " />
-            <marker date="1457619945217" expanded="true" signature="1990:2061" placeholder="SELECT `Id` wish" />
-            <marker date="1457619945217" expanded="true" signature="2911:3017" placeholder="INSERT INTO `wishContent`... " />
-            <marker date="1457619945217" expanded="true" signature="3259:3311" placeholder="SELECT `Id` talent" />
-            <marker date="1457619945217" expanded="true" signature="3462:3529" placeholder="INSERT INTO `talent_has_wish`... " />
-            <marker date="1457619945217" expanded="true" signature="3763:3854" placeholder="select count... wish" />
+            <marker date="1457630221212" expanded="true" signature="239:863" placeholder="SELECT w.Sta... wish" />
+            <marker date="1457630221212" expanded="true" signature="579:690" placeholder="SELECT wish_... wishContent" />
+            <marker date="1457630221212" expanded="true" signature="1826:1875" placeholder="INSERT INTO `wish`... " />
+            <marker date="1457630221212" expanded="true" signature="1990:2061" placeholder="SELECT `Id` wish" />
+            <marker date="1457630221212" expanded="true" signature="2911:3017" placeholder="INSERT INTO `wishContent`... " />
+            <marker date="1457630221212" expanded="true" signature="3259:3311" placeholder="SELECT `Id` talent" />
+            <marker date="1457630221212" expanded="true" signature="3462:3529" placeholder="INSERT INTO `talent_has_wish`... " />
+            <marker date="1457630221212" expanded="true" signature="3763:3854" placeholder="select count... wish" />
+            <marker date="1457630221212" expanded="true" signature="4391:5496" placeholder="SELECT wc.wi... " />
+            <marker date="1457630221212" expanded="true" signature="5594:5977" placeholder="select u.Dis... " />
+            <marker date="1457630221212" expanded="true" signature="6072:6483" placeholder="select u.Dis... " />
+            <marker date="1457630221212" expanded="true" signature="6581:6995" placeholder="select u.Dis... " />
+            <marker date="1457630221212" expanded="true" signature="7093:7506" placeholder="select u.Dis... " />
+            <marker date="1457630221212" expanded="true" signature="7601:8007" placeholder="select u.Dis... " />
+            <marker date="1457630221212" expanded="true" signature="8104:8512" placeholder="select u.Dis... " />
+            <marker date="1457630221212" expanded="true" signature="8610:8958" placeholder="select u.Dis... " />
+            <marker date="1457630221212" expanded="true" signature="9111:9163" placeholder="UPDATE wishC... " />
+            <marker date="1457630221212" expanded="true" signature="9211:9277" placeholder="UPDATE wishC... " />
+            <marker date="1457630221212" expanded="true" signature="9325:9376" placeholder="UPDATE wish " />
+            <marker date="1457630221212" expanded="true" signature="9485:9536" placeholder="UPDATE wishC... " />
+            <marker date="1457630221212" expanded="true" signature="9584:9649" placeholder="UPDATE wishC... " />
+            <marker date="1457630221212" expanded="true" signature="9697:9745" placeholder="UPDATE wish " />
+            <marker date="1457630221212" expanded="true" signature="9852:9906" placeholder="UPDATE wishC... " />
+            <marker date="1457630221212" expanded="true" signature="9951:10019" placeholder="UPDATE wishC... " />
+            <marker date="1457630221212" expanded="true" signature="10064:10113" placeholder="UPDATE wish " />
+            <marker date="1457630221212" expanded="true" signature="10220:10272" placeholder="UPDATE wishC... " />
+            <marker date="1457630221212" expanded="true" signature="10320:10384" placeholder="UPDATE wishC... " />
+            <marker date="1457630221212" expanded="true" signature="10432:10481" placeholder="UPDATE wish " />
+            <marker date="1457630221212" expanded="true" signature="10587:10726" placeholder="select u.Ema... " />
+            <marker date="1457630221212" expanded="true" signature="10858:11131" placeholder="SELECT wish.... wish" />
+            <marker date="1457630221212" expanded="true" signature="11845:11921" placeholder="select * fro... wishContent" />
+            <marker date="1457630221212" expanded="true" signature="12174:12242" placeholder="SELECT `Name... talent" />
+            <marker date="1457630221212" expanded="true" signature="12394:12463" placeholder="SELECT `tale... talent_has_wish" />
+            <marker date="1457630221212" expanded="true" signature="12623:12663" placeholder="SELECT `Name... talent" />
+            <marker date="1457630221212" expanded="true" signature="12833:12925" placeholder="SELECT `wish... wishContent" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Controller/ProfileCheckController.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="4.923077">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Controller/ProfileController.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33295965">
+          <caret line="141" column="17" selection-start-line="141" selection-start-column="17" selection-end-line="141" selection-end-column="17" />
+          <folding />
         </state>
       </provider>
     </entry>

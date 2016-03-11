@@ -127,54 +127,55 @@ echo $_SESSION["user"]->getPassword($_SESSION["user"]->email)["password"];
     }
     private function changePass()
     {
+        $userModel = new User();
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            var_dump(password_hash($_POST["pwo"], PASSWORD_DEFAULT));
-            var_dump($_SESSION["user"]->getPassword($_SESSION["user"]->email));
-            $userModel = new User();
-            if ((Empty($_POST["username"]) || !$userModel->validateUsername($_POST["username"]))) {
-                echo "1";
-                render("account.php", ["error" => "Wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter, een nummer en een speciaal teken bevatten.", "title" => "nieuw wachtwoord"]);
-                exit();
-            }
-            if ($_SESSION["user"]->email != $_POST["username"]) {
-                echo "2";
-                render("account.php", ["error" => "Wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter, een nummer en een speciaal teken bevatten.", "title" => "nieuw wachtwoord"]);
-                exit();
-            }
-            // check passwords
-            if (Empty($_POST["password1"]) || Empty($_POST["password2"])) {
-                echo "3";
-                render("account.php", ["error" => "Niet alles ingevuld", "title" => "nieuw wachtwoord"]);
-                exit(1);
-            }
-            if ($_POST["password1"] != $_POST["password2"]) {
-                echo "4";
-                render("account.php", ["error" => "Wachtwoorden komen niet overeen.", "title" => "nieuw wachtwoord"]);
-                exit(1);
-            }
+            if($_SESSION["user"]->checkPassword($_POST["pwo"])) {
 
-            // save password
-            if (!$userModel->newPassword($_POST["username"], $_POST["password1"])) {
-                echo "5";
-                render("account.php", ["error" => "Wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter, een nummer en een speciaal teken bevatten.", "title" => "nieuw wachtwoord"]);
-                exit(1);
-            }
-
-
-
-
-            if (!Empty($_POST["username"]) && $userModel->validateUsername($_POST["username"]) && $_POST["password1"] == $_POST["password2"] ){
-                if($_POST["password1"] != $_POST["pwo"]) {
-                    $userModel->newPassword($_POST["username"], $_POST["password1"]);
+                $userModel = new User();
+                if ((Empty($_POST["username"]) || !$userModel->validateUsername($_POST["username"]))) {
+                    render("account.php", ["error" => "Wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter, een nummer en een speciaal teken bevatten.", "title" => "nieuw wachtwoord"]);
+                    exit();
+                }
+                if ($_SESSION["user"]->email != $_POST["username"]) {
+                    render("account.php", ["error" => "Wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter, een nummer en een speciaal teken bevatten.", "title" => "nieuw wachtwoord"]);
+                    exit();
+                }
+                // check passwords
+                if (Empty($_POST["password1"]) || Empty($_POST["password2"])) {
+                    render("account.php", ["error" => "Niet alles ingevuld", "title" => "nieuw wachtwoord"]);
+                    exit(1);
+                }
+                if ($_POST["password1"] != $_POST["password2"]) {
+                    render("account.php", ["error" => "Wachtwoorden komen niet overeen.", "title" => "nieuw wachtwoord"]);
+                    exit(1);
                 }
 
-                render("account.php", ["error" => "", "title" => "nieuw wachtwoord"]);
-            }
-            // new recovery creation
+                // save password
+                if (!$userModel->newPassword($_POST["username"], $_POST["password1"])) {
+                    render("account.php", ["error" => "Wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter, een nummer en een speciaal teken bevatten.", "title" => "nieuw wachtwoord"]);
+                    exit(1);
+                }
 
+
+
+                if (!Empty($_POST["username"]) && $userModel->validateUsername($_POST["username"]) && $_POST["password1"] == $_POST["password2"]) {
+                    if ($_POST["password1"] != $_POST["pwo"]) {
+                        $userModel->newPassword($_POST["username"], $_POST["password1"]);
+                    }
+
+                    render("account.php", ["error" => "", "title" => "nieuw wachtwoord","error" => "Uw wachtwoord is veranderd"]);
+                    exit();
+                }
+                // new recovery creation
+            }
+
+            elseif(!$_SESSION["user"]->checkPassword($_POST["pwo"])) {
+                render("account.php", ["error" => "", "title" => "nieuw wachtwoord","error" => "Oud password klopt niet"]);
+                exit(0);
+            }
 
         }
-
+        render("account.php", ["error" => "", "title" => "nieuw wachtwoord"]);
 
     }
 }

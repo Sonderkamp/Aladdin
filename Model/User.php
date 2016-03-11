@@ -357,12 +357,11 @@ class User
 
     }
 
-    public function getPassword()
+    public function checkPassword($password)
     {
-        // is dit safe?
         $result = Database::query_safe("SELECT password from user where email = ?",array($this->email));
         $result = $result[0];
-        return $result;
+        return password_verify($password, $result["password"]);
     }
 
     public function updateUser($arr)

@@ -13,7 +13,7 @@
         <ul class="nav nav-pills nav-stacked">
             {if $current_page eq 'requested' || $current_page eq 'accept' ||
             $current_page eq 'deny' || !isset($current_page)}
-            <li class="active"><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
+            <li class="active"><a href="#tab1" data-toggle="tab">Aangevraagde wensen</a></li>
             <li><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
             <li><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
             <li><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
@@ -22,7 +22,7 @@
             <li><a href="#tab7" data-toggle="tab">Verwijderde wensen</a></li>
 
             {elseif $current_page eq 'open' || $current_page eq 'delete' || $current_page eq 'redraw'}
-            <li><a href="#tab1" data-toggle="tab">Mijn Aangevraagd</a></li>
+            <li><a href="#tab1" data-toggle="tab">Aangevraagde wensen</a></li>
             <li class="active"><a href="#tab2" data-toggle="tab">Gepubliseerd</a></li>
             <li><a href="#tab3" data-toggle="tab">Match gevonden</a></li>
             <li><a href="#tab4" data-toggle="tab">Wordt vervuld</a></li>
@@ -495,6 +495,7 @@
             {else}
             <div class="tab-pane fade in active" id="tab7">
             {/if}
+
                 <table class="table">
                     <thead>
                     <tr>
