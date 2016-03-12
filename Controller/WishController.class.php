@@ -72,8 +72,8 @@ class WishController {
 //        else if(isset($_GET["search"])){
 //            $this->searchWish($_GET["search_key"]);
 //        }
-        else if(isset($_GET["requestMatch"])){
-            $this->requestMatch($_GET["requestMatch"]);
+        else if(isset($_POST["match/wish_id"])){
+            $this->requestMatch($_POST["match/wish_id"]);
         }
         else {
             $this->currentPage = "mywishes";
@@ -212,7 +212,7 @@ class WishController {
     }
 
     private function requestMatch($id){
-        //TODO WRITE QUERY TO CREATE MATCH
+        apologize($id);
     }
 
     private function edit_wish() {

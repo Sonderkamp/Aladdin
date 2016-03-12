@@ -64,6 +64,7 @@
                     <th>Content</th>
                     <th class="smallColumn"></th>
                     <th class="smallColumn"></th>
+                    <th class="smallColumn"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -85,12 +86,10 @@
                         </td>
                         <td>
                             <form action="/Wishes/action=open_edit_wish" method="get">
-                                <a>
-                                    <button name="editwishbtn" value="{$wish -> id}" type="sumbit"
-                                            class="btn btn-inbox btn-sm" data-toggle="modal">
-                                        <span class="glyphicon glyphicon-edit"></span>
-                                    </button>
-                                </a>
+                                <button name="editwishbtn" value="{$wish -> id}" type="sumbit"
+                                        class="btn btn-inbox btn-sm" data-toggle="modal">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </button>
                             </form>
                         </td>
                     </tr>
