@@ -54,9 +54,6 @@ class WishController {
                 case "go_back":
                     $this->go_back();
                     break;
-                case "searchWish":
-                    $this->searchWish($_GET["action"]);
-                    break;
                 default:
                     apologize("404 not found, Go back to my wishes");
                     break;
@@ -71,6 +68,10 @@ class WishController {
             }
 
         }
+        //werkt nog niet todat de hosting gefixt is
+//        else if(isset($_GET["search"])){
+//            $this->searchWish($_GET["search_key"]);
+//        }
         else if(isset($_GET["requestMatch"])){
             $this->requestMatch($_GET["requestMatch"]);
         }
@@ -81,8 +82,8 @@ class WishController {
     }
 
     private function searchWish($key){
-        //TODO WERKEND MAKEN
-        $searchReturn = array_search($key, $this->wishes);
+        //Werkt als de sql versie geupdate wordt.
+        $searchReturn = $this->wishRepository->searchWish($key);
         render("wishOverview.tpl", ["title" => "Wensen overzicht", "wishes" => $searchReturn]);
     }
 

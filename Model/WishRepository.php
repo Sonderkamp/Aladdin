@@ -145,6 +145,19 @@ class WishRepository {
         return $this->getReturnArray($result);
     }
 
+    public function searchWish($key){
+        $result = Database::query_safe("SELECT *
+        FROM wish
+        JOIN wishContent
+        ON wish.Id = wishContent.wish_Id
+        WHERE wishContent.Content
+        SOUNDS LIKE ?
+        OR wishContent.Title
+        SOUNDS LIKE ?" , array($key, $key));
+
+        return $this->getReturnArray($result);
+    }
+
     /**
      * add wish to database
      * @param $newWish

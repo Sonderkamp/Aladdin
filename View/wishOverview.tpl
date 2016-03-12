@@ -43,10 +43,10 @@
             {/if}
 
 
-            <form action="/wishes/action=searchWish" method="get">
+            <form action="/wishes/search" method="get">
                 <div class="row">
                     <div class="col-lg-10">
-                        <input class="form-control" name="title" placeholder="Wat is uw wens" value="Zoek een wens">
+                        <input class="form-control" name="search" placeholder="Zoek een wens">
                     </div>
                     <div class="col-lg-2">
                         <button type="submit" class="btn btn-primary">Zoek</button>
