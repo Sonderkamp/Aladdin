@@ -1,21 +1,21 @@
 <?php
 
 // your database's name
-define("DATABASE", "maxbets2_Aladdin");
+define("DATABASE", "mydb");
 
 // your database's password
-define("PASSWORD", "projectbaas");
+define("PASSWORD", "");
 
 // your database's server
-define("SERVER", "46.21.172.145");
+define("SERVER", "127.0.0.1");
 
 // your database's username
-define("USERNAME", "maxbets2_root");
+define("USERNAME", "root");
 
 // your database's username
 define("DEVELOPMENT", true);
 
-define("EMAILADRESS", "WebshopWebs@gmail.com");
+//define("EMAILADRESS", "WebshopWebs@gmail.com");
 
-define("EMAILWACHTWOORD", "webs2eindopdracht!");
+//define("EMAILWACHTWOORD", "webs2eindopdracht!");
 
