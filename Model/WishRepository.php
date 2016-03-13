@@ -11,12 +11,52 @@ class WishRepository {
     private $email;
     private $WISH_LIMIT = 3;
 
-    public function getWishes() {
-        $result = Database::query
+    /**
+     * Creates array of wish objects with the params given in the $queryResult.
+     * It is used to prevent duplicate code.
+     * @param $queryResult
+     * @return array
+     */
+    private function getReturnArray($queryResult){
+
+        $returnArray = array();
+
+        for ($i = 0; $i < count($queryResult); $i++) {
+            $completed = false;
+
+            if ($queryResult[$i]["Status"] == "Vervuld") {
+                $completed = true;
+            }
+
+            $returnArray[$i] = new Wish(
+                $queryResult[$i]["Id"],
+                $queryResult[$i]["User"],
+                $queryResult[$i]["Title"],
+                $completed,
+                $queryResult[$i]["Content"],
+                $queryResult[$i]["IsAccepted"],
+                $queryResult[$i]["max_date"],
+                $queryResult[$i]["Date"],
+                $queryResult[$i]["Status"]
+            );
+        }
+
+        return $returnArray;
+    }
+
+    /**
+     * @return array of wishes where user == current user
+     */
+    public function getMyWishes() {
+
+        $user = $this->getEmail();
+
+        $result = Database::query_safe
         ("SELECT
               w.Status,
               w.Id,
               w.User,
+              w.Date,
               w.CompletionDate,
               wc.Content,
               wc.Title,
@@ -31,36 +71,97 @@ class WishRepository {
               GROUP BY wish_Id) AS wcMax
               ON w.Id = wcMax.wish_Id
           JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
-          ORDER BY max_date DESC");
+          WHERE w.User = ?
+          ORDER BY max_date DESC"
+        , array($user));
 
-        $returnArray = array();
-
-        for ($i = 0; $i < count($result); $i++) {
-            $completed = false;
-
-            if ($result[$i]["Status"] == "Vervuld") {
-                $completed = true;
-            }
-
-            $date = date('Y-m-d H:i:s');
-
-            $returnArray[$i] = new Wish(
-                $result[$i]["Id"],
-                $result[$i]["User"],
-                $result[$i]["Title"],
-                $completed,
-                $result[$i]["Content"],
-                $result[$i]["IsAccepted"],
-                $result[$i]["max_date"],
-                $result[$i]["Status"],
-                $date
-            );
-        }
-
-        return $returnArray;
+        return $this->getReturnArray($result);
     }
 
-    // add wish to database
+    /**
+     * @return array of wishes where status == "vervuld"
+     */
+    public function getCompletedWishes() {
+
+        $status = "Vervuld";
+
+        $result = Database::query_safe
+        ("SELECT
+              w.Status,
+              w.Id,
+              w.User,
+              w.Date,
+              w.CompletionDate,
+              wc.Content,
+              wc.Title,
+              wc.Country,
+              wc.City,
+              wc.IsAccepted,
+              wc.moderator_Username,
+              wcMax.max_date
+          FROM wish AS w
+          JOIN (SELECT wish_Id, MAX(wishContent.Date) AS max_date
+              FROM wishContent
+              GROUP BY wish_Id) AS wcMax
+              ON w.Id = wcMax.wish_Id
+          JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
+          WHERE w.Status = ?
+          ORDER BY max_date DESC"
+            , array($status));
+
+        return $this->getReturnArray($result);
+    }
+
+    /**
+     * @return array of wishes where status != "vervuld"
+     */
+    public function getIncompletedWishes() {
+        $status = "Vervuld";
+
+        $result = Database::query_safe
+        ("SELECT
+              w.Status,
+              w.Id,
+              w.User,
+              w.Date,
+              w.CompletionDate,
+              wc.Content,
+              wc.Title,
+              wc.Country,
+              wc.City,
+              wc.IsAccepted,
+              wc.moderator_Username,
+              wcMax.max_date
+          FROM wish AS w
+          JOIN (SELECT wish_Id, MAX(wishContent.Date) AS max_date
+              FROM wishContent
+              GROUP BY wish_Id) AS wcMax
+              ON w.Id = wcMax.wish_Id
+          JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
+          WHERE w.Status != ?
+          ORDER BY max_date DESC"
+            , array($status));
+
+        return $this->getReturnArray($result);
+    }
+
+    public function searchWish($key){
+        $result = Database::query_safe("SELECT *
+        FROM wish
+        JOIN wishContent
+        ON wish.Id = wishContent.wish_Id
+        WHERE wishContent.Content
+        SOUNDS LIKE ?
+        OR wishContent.Title
+        SOUNDS LIKE ?" , array($key, $key));
+
+        return $this->getReturnArray($result);
+    }
+
+    /**
+     * add wish to database
+     * @param $newWish
+     */
     public function addWish($newWish) {
         $wish = $newWish["title"];
         $description = $newWish["description"];
@@ -81,15 +182,13 @@ class WishRepository {
 
         $this->wishContentQuery($newWish, $id);
     }
-//=======
-//
-//        // TODO: Delete ISACCEPTED, Moderator.username, Date.
-//        $query = "INSERT INTO `wishContent` (`Date`,`Content`, `Title`, `IsAccepted`,
-//                  `moderator_Username`, `wish_Id`,`Country`, `City`)
-//            VALUES (?,?,?,?,?,?,?,?)";
-//>>>>>>> 55b03be8450bc299653419b88ffbae238d319cf9
 
-    // add wishContent to database & connect with wish
+
+    /**
+     * add wishContent to database & connect with wish
+     * @param $content
+     * @param $id
+     */
     public function wishContentQuery($content, $id) {
         $wish = $content["title"];
         $description = $content["description"];
@@ -118,8 +217,11 @@ class WishRepository {
         Database::query_safe($query2, $array2);
     }
 
-
-    // check if user has less then 3 wishes
+    /**
+     * check if user has less then 3 wishes
+     * @param $email
+     * @return bool
+     */
     public function canAddWish($email) {
 
         $this->email = $email;
@@ -135,6 +237,11 @@ class WishRepository {
         return true;
     }
 
+    /**
+     * Gets wish using param
+     * @param $id
+     * @return Wish
+     */
 
     public function getRequestedWishes($wishPage)
     {
@@ -161,19 +268,19 @@ class WishRepository {
               ON w.Id = wcMax.wish_Id
           JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
           join user as u on w.user = u.Email
+          
+			WHERE w.status = 'Aangemaakt'
 
-WHERE w.status = 'Aangemaakt'
-
-AND u.IsActive =1
-AND (SELECT Isblocked
-from adminBlock
-where BlockDate =
-        (select
-max(adminBlock.BlockDate) AS max_date
-              FROM adminBlock
-              where user_Email = 'm1ozdemir@hotmail.com')
-              order by BlockDate asc) = 0
-AND wc.moderator_username is null
+			AND u.IsActive =1
+			AND (SELECT Isblocked
+			from adminBlock
+			where BlockDate =
+			        (select
+			max(adminBlock.BlockDate) AS max_date
+			              FROM adminBlock
+			              where user_Email = 'm1ozdemir@hotmail.com')
+			              order by BlockDate asc) = 0
+			AND wc.moderator_username is null
           ORDER BY max_date asc");
                 break;
             case 'changed':
@@ -271,6 +378,7 @@ AND wc.moderator_username is null
                 $completed,
                 $result[0]["Content"],
                 $result[0]["IsAccepted"],
+                null,
                 $result[0]["Date"],
                 $result[0]["Status"]
             );
@@ -282,6 +390,11 @@ AND wc.moderator_username is null
 
     }
 
+    /**
+     * Zou wel eens deprecated kunnen zijn -> even navragen bij mevlüt
+     * @param $id
+     * @return array|bool
+     */
     public function getSelectedWish($id) {
         $query = "select * from `wishContent` where `wish_Id` = ? ORDER BY `date` DESC limit 1";
         $array = array($id);
