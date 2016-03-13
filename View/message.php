@@ -21,22 +21,22 @@
     {/if}
 
     <div class="col-sm-3 hidden-xs">
-        <a href="\Inbox\action=new" class="btn btn-default" style="width:100%">Nieuw Bericht</a><br>
+        <a href="\Inbox\p={$page}\action=new" class="btn btn-default" style="width:100%">Nieuw Bericht</a><br>
         <br>
         {if isset($in)}
-        <a href="\Inbox" class="btn btn-default active" style="width:100%">Postvak in</a><br>
+        <a href="\Inbox\p={$page}" class="btn btn-default active" style="width:100%">Postvak in</a><br>
         {else}
-        <a href="\Inbox" class="btn btn-default" style="width:100%">Postvak in</a><br>
+        <a href="\Inbox\p={$page}" class="btn btn-default" style="width:100%">Postvak in</a><br>
         {/if}
         {if isset($out)}
-        <a href="\Inbox\folder=outbox" class="btn btn-default active" style="width:100%">Postvak uit</a><br>
+        <a href="\Inbox\folder=outbox\p={$page}" class="btn btn-default active" style="width:100%">Postvak uit</a><br>
         {else}
-        <a href="\Inbox\folder=outbox" class="btn btn-default" style="width:100%">Postvak uit</a><br>
+        <a href="\Inbox\folder=outbox\p={$page}" class="btn btn-default" style="width:100%">Postvak uit</a><br>
         {/if}
         {if isset($trash)}
-        <a href="\Inbox\folder=trash" class="btn btn-default active" style="width:100%">Prullenbak</a><br>
+        <a href="\Inbox\folder=trash\p={$page}" class="btn btn-default active" style="width:100%">Prullenbak</a><br>
         {else}
-        <a href="\Inbox\folder=trash" class="btn btn-default" style="width:100%">Prullenbak</a><br>
+        <a href="\Inbox\folder=trash\p={$page}" class="btn btn-default" style="width:100%">Prullenbak</a><br>
         {/if}
         <br><br>
     </div>
@@ -45,7 +45,7 @@
           <span class="info"><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal"> <span class="glyphicon glyphicon-info-sign"></span>
               </button></span>
         <div class="hidden-xs">
-            <form class="user-control form-inline" action="/Inbox/folder={$folderShortcut}" method="get">
+            <form class="user-control form-inline" action="/Inbox/folder={$folderShortcut}/p={$page}" method="get">
                 <input class="form-control white" value="{$search}" placeholder="Zoek Criteria" name="search"
                        type="text">
                 <button class="form-control btn-inbox" type="submit">Zoek</button>
@@ -82,21 +82,21 @@
             </div>
             <div class="panel-footer">
                 {if $message->folder == "trash"}
-                <form class=noPadding action="\Inbox\folder={$folderShortcut}" method="post">
+                <form class=noPadding action="\Inbox\folder={$folderShortcut}\p={$page}" method="post">
                     <input type="hidden" name="delete" value="{$message->id}"/>
                     <button type="submit" class="btn btn-inbox">Permanent Verwijderen</button>
                 </form>
-                <form class=noPadding action="\Inbox\folder={$folderShortcut}" method="post">
+                <form class=noPadding action="\Inbox\folder={$folderShortcut}\p={$page}" method="post">
                     <input type="hidden" name="reset" value="{$message->id}"/>
                     <button type="submit" class="btn btn-inbox">Terugzetten</button>
                 </form>
                 {else}
-                <form class=noPadding action="\Inbox\folder={$folderShortcut}" method="post">
+                <form class=noPadding action="\Inbox\folder={$folderShortcut}\p={$page}" method="post">
                     <input type="hidden" name="trash" value="{$message->id}"/>
                     <button type="submit" class="btn btn-inbox">Verwijderen</button>
                 </form>
                 {/if}
-                <form class=noPadding action="\Inbox\folder={$folderShortcut}" method="post">
+                <form class=noPadding action="\Inbox\folder={$folderShortcut}\p={$page}" method="post">
                     <input type="hidden" name="reply" value="{$message->id}"/>
                     <button type="submit" class="btn btn-inbox">Beantwoorden</button>
                 </form>
@@ -110,7 +110,7 @@
                     {else if $link->action == "PaginaLink"}
                         <a href="{$link->content}" class="btn btn-inbox">Naar Pagina</a>
                     {else if $link->action == "Bericht"}
-                        <a href="/Inbox/message={$link->content}" class="btn btn-inbox">Naar Bericht</a>
+                        <a href="/Inbox/p={$page}/message={$link->content}" class="btn btn-inbox">Naar Bericht</a>
                     {/if}
                 {/foreach}
             {/if}

@@ -11,8 +11,14 @@ switch ($page) {
     case "account":
         (new AccountController())->run();
         break;
+    case "profile":
+        (new ProfileController())->run();
+        break;
     case "admin":
         (new AdminController())->run();
+        break;
+    case "adminwish":
+        (new AdminWishController())->run();
         break;
     case "wishes":
         (new WishController())->run();
@@ -22,6 +28,9 @@ switch ($page) {
         break;
     case "talents":
         (new TalentController())->run();
+        break;
+    case "profilecheck":
+        (new ProfileCheckController())->run();
         break;
     case "index.php":
         (new HomeController())->run();

@@ -215,6 +215,8 @@ class User
         return $name . $res["Counter"];
     }
 
+
+
     public function newHash($username)
     {
         $this->token = bin2hex(openssl_random_pseudo_bytes(16));
@@ -353,6 +355,84 @@ class User
             Webshop";
         return true;
 
+    }
+
+    public function checkPassword($password)
+    {
+        $result = Database::query_safe("SELECT password from user where email = ?",array($this->email));
+        $result = $result[0];
+        return password_verify($password, $result["password"]);
+    }
+
+    public function updateUser($arr)
+    {
+
+        Database::query_safe("UPDATE user SET `name`=?, `Surname`=?, `Address`=?,`postalcode`=?,`country`=?,`city`=?,`dob`=?,`initials`=?,`gender`=?,`handicap`=? WHERE Email=?", Array($arr["name"],$arr["surname"],$arr["address"] ,$arr["postalcode"],$arr["country"],$arr["city"],$arr["dob"],$arr["initials"],$arr["gender"],$arr["handicap"],$arr["email"]));
+//        Database::query_safe("UPDATE user SET `name`=?, `Surname`=? WHERE Email=?", Array($arr["name"],$arr["surname"],$arr["email"]));
+
+
+
+        $this->name = $arr["name"];
+        $this->surname = $arr["surname"];
+        $this->address = $arr["address"];
+        $this->handicap = $arr["handicap"];
+        $this->postalcode = $arr["postalcode"];
+        $this->dob = $arr["dob"];
+        $this->country = $arr["country"];
+        $this->city = $arr["city"];
+        $this->gender = $arr["gender"];
+        $this->initials = $arr["initials"];
+    }
+
+    public function deleteUser($username)
+    {
+        Database::query_safe("UPDATE user SET `isactive`=0 WHERE email=?",array($username));
+
+
+    }
+
+    public function undeletekUser($username)
+    {
+        Database::query_safe("UPDATE user SET `isactive`=1 WHERE email=?",array($username));
+    }
+
+    public function blockUser($username)
+    {
+        Database::query_safe("INSERT INTO adminBlock (`IsBlocked`, `Reason`, `moderator_Username`, `user_Email`) VALUES (1, 'xxxxx', 'Admin', ?)",array($username));
+
+
+    }
+
+    public function unblockUser($username)
+    {
+        Database::query_safe("INSERT INTO adminBlock (`IsBlocked`, `Reason`, `moderator_Username`, `user_Email`) VALUES (0, 'xxxxx', 'Admin', ?)",array($username));
+
+    }
+
+    public function getBlockStatus($username)
+    {
+        // query om alle blocks van een user te zien
+        $result = Database::query_safe("SELECT Block_Id,BlockDate,user_Email,IsBlocked as IsBlocked
+from adminBlock
+ where user_Email = ?
+              order by BlockDate asc",array($username));
+        $result = $result[0];
+        return $result;
+    }
+
+    public function getLastBlockStatus($username)
+    {
+        // query om alle blocks van een user te zien
+        $result = Database::query_safe("SELECT Block_Id,BlockDate,user_Email,IsBlocked as IsBlocked
+from adminBlock
+where BlockDate =
+        (select
+max(adminBlock.BlockDate) AS max_date
+              FROM adminBlock
+              where user_Email = ?)
+              order by BlockDate asc",array($username));
+        $result = $result[0];
+        return $result;
     }
 
 }
