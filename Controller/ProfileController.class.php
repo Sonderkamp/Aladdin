@@ -118,7 +118,7 @@ class ProfileController
             else
                 $arr["handicap"] = true;
 
-echo $_SESSION["user"]->getPassword($_SESSION["user"]->email)["password"];
+echo $_SESSION["user"]->checkPassword($_SESSION["user"]->email)["password"];
             $_SESSION["user"]->updateUser($arr);
             render("account.php", ["title" => "profile", "error" => ""]);
 
@@ -175,7 +175,7 @@ echo $_SESSION["user"]->getPassword($_SESSION["user"]->email)["password"];
             }
 
         }
-        render("account.php", ["error" => "", "title" => "nieuw wachtwoord"]);
+        render("account.php", ["error" => "", "title" => "nieuw wachtwoord","error" => ""]);
 
     }
 }
