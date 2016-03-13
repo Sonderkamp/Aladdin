@@ -7,29 +7,40 @@ class MailController
     private $error = null;
     private $search = null;
     private $title = "";
+    private $page = 1;
 
     public function run()
     {
         $this->messageModel = new messageModel();
         guaranteeLogin("/Inbox");
 
+        if (!empty($_GET["p"])) {
+            $_GET["p"] = intval($_GET["p"]);
+            if (!is_int($_GET["p"])) {
+                $this->page = 1;
+            } else {
+                if ($_GET["p"] < 1)
+                    $this->page = 1;
+                $this->page = $_GET["p"];
+            }
+        } else
+            $this->page = 1;
+
+
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!Empty($_GET["action"])) {
                 switch (strtolower($_GET["action"])) {
                     case "new":
                         $this->sendNewMessage();
-                        redirect("/Inbox/folder=outbox");
+                        redirect("/Inbox/folder=outbox/page=1");
                     default:
-                        render("inbox.php", ["title" => "Inbox", "folder" => "Postvak in"]);
+                        render("inbox.php", ["title" => "Inbox", "folder" => "Postvak in", "page" => $this->page]);
                         break;
                 }
                 exit();
-            }
-            else
-            {
+            } else {
                 // reply
-                if(isset($_POST["reply"]))
-                {
+                if (isset($_POST["reply"])) {
                     if (filter_var($_POST["reply"], FILTER_VALIDATE_INT) === false) {
                         $this->error = "Invalide parameter meegegeven.";
                         $this->renderInbox();
@@ -47,50 +58,41 @@ class MailController
                         unset($names[$key]);
                     }
 
-                    $message->content = "\n\n\n-------------------------------\n Origineel: \n-------------------------------\n" .$message->content;
+                    $message->content = "\n\n\n-------------------------------\n Origineel: \n-------------------------------\n" . $message->content;
                     $message->content = str_replace("<br />", "\n", $message->content);
-                    render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "message" => $message, "names" => $names ]);
+                    render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "message" => $message, "names" => $names]);
 
                     exit();
 
-                }
-                else if(isset($_POST["delete"]))
-                {
+                } else if (isset($_POST["delete"])) {
                     if (filter_var($_POST["delete"], FILTER_VALIDATE_INT) === false) {
                         $this->error = "Invalide parameter meegegeven.";
                         $this->renderInbox();
                     }
-                    if($this->messageModel->connectMessage($_SESSION["user"]->email, $_POST["delete"]) === false)
-                    {
+                    if ($this->messageModel->connectMessage($_SESSION["user"]->email, $_POST["delete"]) === false) {
                         $this->error = "Het is niet mogelijk om andermans berichten te verwijderen.";
                         $this->renderInbox();
                     }
                     $this->messageModel->deleteMessage($_POST["delete"]);
                     $this->renderInbox();
-                }
-                else if(isset($_POST["trash"]))
-                {
+                } else if (isset($_POST["trash"])) {
                     if (filter_var($_POST["trash"], FILTER_VALIDATE_INT) === false) {
                         $this->error = "Invalide parameter meegegeven.";
                         $this->renderInbox();
                     }
-                    if($this->messageModel->connectMessage($_SESSION["user"]->email, $_POST["trash"]) === false)
-                    {
+                    if ($this->messageModel->connectMessage($_SESSION["user"]->email, $_POST["trash"]) === false) {
                         $this->error = "Het is niet mogelijk om andermans berichten te verwijderen.";
                         $this->renderInbox();
                     }
                     $this->messageModel->moveTrash($_POST["trash"]);
                     $this->renderInbox();
 
-                }
-                else if(isset($_POST["reset"]))
-                {
+                } else if (isset($_POST["reset"])) {
                     if (filter_var($_POST["reset"], FILTER_VALIDATE_INT) === false) {
                         $this->error = "Invalide parameter meegegeven.";
                         $this->renderInbox();
                     }
-                    if($this->messageModel->connectMessage($_SESSION["user"]->email, $_POST["reset"]) === false)
-                    {
+                    if ($this->messageModel->connectMessage($_SESSION["user"]->email, $_POST["reset"]) === false) {
                         $this->error = "Het is niet mogelijk om andermans berichten te verwijderen.";
                         $this->renderInbox();
                     }
@@ -115,7 +117,7 @@ class MailController
                         render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "names" => $names]);
                         break;
                     default:
-                        render("inbox.php", ["title" => "Inbox", "folder" => "Postvak in"]);
+                        render("inbox.php", ["title" => "Inbox", "folder" => "Postvak in", "page" => $this->messageModel->isValidPageInbox()]);
                         break;
                 }
                 exit();
@@ -146,21 +148,21 @@ class MailController
                 if (!Empty($_GET["folder"])) {
                     switch (strtolower($_GET["folder"])) {
                         case "inbox":
-                            render("message.php", ["title" => "Inbox", "folder" => "Postvak in" . $this->title, "folderShortcut" => "inbox", "in" => true, "message" => $message, "error" => $this->error, "search" => $this->search]);
+                            render("message.php", ["page" => $this->page, "title" => "Inbox", "folder" => "Postvak in" . $this->title, "folderShortcut" => "inbox", "in" => true, "message" => $message, "error" => $this->error, "search" => $this->search]);
                             break;
                         case "outbox":
-                            render("message.php", ["title" => "Inbox", "folder" => "Postvak uit" . $this->title, "out" => true, "folderShortcut" => "outbox", "message" => $message, "error" => $this->error, "search" => $this->search]);
+                            render("message.php", ["page" => $this->page, "title" => "Inbox", "folder" => "Postvak uit" . $this->title, "out" => true, "folderShortcut" => "outbox", "message" => $message, "error" => $this->error, "search" => $this->search]);
                             break;
                         case "trash":
-                            render("message.php", ["title" => "Inbox", "folder" => "Prullenbak" . $this->title, "trash" => true,"folderShortcut" => "trash" ,"message" => $message, "error" => $this->error, "search" => $this->search]);
+                            render("message.php", ["page" => $this->page, "title" => "Inbox", "folder" => "Prullenbak" . $this->title, "trash" => true, "folderShortcut" => "trash", "message" => $message, "error" => $this->error, "search" => $this->search]);
                             break;
                         default:
-                            render("message.php", ["title" => "Inbox", "folder" => "Postvak in" . $this->title, "folderShortcut" => "inbox", "message" => $message, "error" => $this->error, "search" => $this->search]);
+                            render("message.php", ["page" => $this->page, "title" => "Inbox", "folder" => "Postvak in" . $this->title, "folderShortcut" => "inbox", "message" => $message, "error" => $this->error, "search" => $this->search]);
                             break;
                     }
                     exit();
                 }
-                render("message.php", ["title" => "Inbox", "folder" => "Postvak in" . $this->title, "folderShortcut" => "inbox", "in" => true, "message" => $message, "error" => $this->error, "search" => $this->search]);
+                render("message.php", ["page" => $this->page, "title" => "Inbox", "folder" => "Postvak in" . $this->title, "folderShortcut" => "inbox", "in" => true, "message" => $message, "error" => $this->error, "search" => $this->search]);
                 exit();
             }
 
@@ -175,21 +177,21 @@ class MailController
         if (!Empty($_GET["folder"])) {
             switch (strtolower($_GET["folder"])) {
                 case "inbox":
-                    render("inbox.php", ["title" => "Inbox", "folder" => "Postvak in" . $this->title, "in" => true, "folderShortcut" => "inbox", "messages" => $this->messageModel->getInbox($this->search), "error" => $this->error, "search" => $this->search]);
+                    render("inbox.php", ["title" => "Inbox", "folder" => "Postvak in" . $this->title, "in" => true, "folderShortcut" => "inbox", "messages" => $this->messageModel->getInbox($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPageInbox()]);
                     break;
                 case "outbox":
-                    render("inbox.php", ["title" => "Inbox", "folder" => "Postvak uit" . $this->title, "out" => true, "folderShortcut" => "outbox", "messages" => $this->messageModel->getOutbox($this->search), "error" => $this->error, "search" => $this->search]);
+                    render("inbox.php", ["title" => "Inbox", "folder" => "Postvak uit" . $this->title, "out" => true, "folderShortcut" => "outbox", "messages" => $this->messageModel->getOutbox($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPageOutbox()]);
                     break;
                 case "trash":
-                    render("inbox.php", ["title" => "Inbox", "folder" => "Prullenbak" . $this->title, "trash" => true,"folderShortcut" => "trash", "messages" => $this->messageModel->getTrash($this->search), "error" => $this->error, "search" => $this->search]);
+                    render("inbox.php", ["title" => "Inbox", "folder" => "Prullenbak" . $this->title, "trash" => true, "folderShortcut" => "trash", "messages" => $this->messageModel->getTrash($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPageTrash()]);
                     break;
                 default:
-                    render("inbox.php", ["title" => "Inbox", "folder" => "Postvak in" . $this->title, "folderShortcut" => "inbox", "messages" => $this->messageModel->getInbox($this->search), "error" => $this->error, "search" => $this->search]);
+                    render("inbox.php", ["title" => "Inbox", "folder" => "Postvak in" . $this->title, "folderShortcut" => "inbox", "messages" => $this->messageModel->getInbox($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPageInbox()]);
                     break;
             }
             exit();
         }
-        render("inbox.php", ["title" => "Inbox", "folder" => "Postvak in" . $this->title, "in" => true, "folderShortcut" => "inbox", "messages" => $this->messageModel->getInbox($this->search), "error" => $this->error, "search" => $this->search]);
+        render("inbox.php", ["title" => "Inbox", "folder" => "Postvak in" . $this->title, "in" => true, "folderShortcut" => "inbox", "messages" => $this->messageModel->getInbox($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPageInbox()]);
         exit();
     }
 
@@ -205,7 +207,7 @@ class MailController
             empty($_POST["title"]) ||
             empty($_POST["message"])
         ) {
-            render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Niet alles is ingevuld." , "names" => $names]);
+            render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Niet alles is ingevuld.", "names" => $names]);
             exit();
         }
         $_POST["recipient"] = trim($_POST["recipient"]);
@@ -216,7 +218,7 @@ class MailController
             empty($_POST["title"]) ||
             empty($_POST["message"])
         ) {
-            render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Niet alles is ingevuld." , "names" => $names]);
+            render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Niet alles is ingevuld.", "names" => $names]);
             exit();
         }
 
@@ -224,7 +226,7 @@ class MailController
         $username = $user->getUsername($_POST["recipient"]);
 
         if ($username === false) {
-            render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Gebruiker bestaat niet" , "names" => $names]);
+            render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Gebruiker bestaat niet", "names" => $names]);
             exit();
         }
 
@@ -233,7 +235,7 @@ class MailController
         $res = $mes->checkblock($_SESSION["user"]->email, $username);
 
         if ($res !== false) {
-            render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => $res , "names" => $names]);
+            render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => $res, "names" => $names]);
             exit();
         }
 

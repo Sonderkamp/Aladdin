@@ -8,23 +8,108 @@
  */
 class messageModel
 {
-    public function getInbox($search)
+
+    private $page = 0;
+    private $size = 4;
+    private $pages = 0;
+
+    public function getInbox($search, $page)
     {
-        $res = DATABASE::query_safe("SELECT * FROM `inbox` WHERE `user_Email` = ? AND  folder_name = 'inbox' order by `Date` Desc ", array($_SESSION["user"]->email));
-        return $this->getMessages($res, $search);
+
+        $this->page = $page;
+        $this->page--;
+
+        if ($this->page < 0)
+            $this->page = 0;
+
+        $offset = $this->page * $this->size;
+
+
+        $res = DATABASE::query_safe("SELECT IF((SELECT count(*) FROM `inbox` WHERE `user_Email` = ? AND  `folder_name` = 'inbox' )>$offset,true,false) as 'res'", array($_SESSION["user"]->email));
+        if ($res[0]["res"] == false)
+            $this->page = 0;
+
+        $offset = $this->page * $this->size;
+        $res = DATABASE::query_safe("SELECT * FROM `inbox` WHERE `user_Email` = ? AND  folder_name = 'inbox' order by `Date` Desc", array($_SESSION["user"]->email));
+
+        $mess = $this->getMessages($res, $search);
+        $mess = array_chunk($mess, $this->size);
+        $this->pages = count($mess);
+
+        if(empty($mess[$this->page]))
+            return null;
+
+        return $mess[$this->page];
     }
 
-    public function getOutbox($search)
+    public function getOutbox($search, $page)
     {
-        $res = DATABASE::query_safe("SELECT * FROM `inbox` WHERE `user_Email` = ? AND  folder_name = 'outbox' order by `Date` Desc ", array($_SESSION["user"]->email));
-        return $this->getMessages($res, $search);
+        $this->page = $page;
+        $this->page--;
+
+        if ($this->page < 0)
+            $this->page = 0;
+
+        $offset = $this->page * $this->size;
+
+        $res = DATABASE::query_safe("SELECT IF((SELECT count(*) FROM `inbox` WHERE `user_Email` = ? AND  `folder_name` = 'outbox' )>$offset,true,false) as 'res'", array($_SESSION["user"]->email));
+        if ($res[0]["res"] == false)
+            $this->page = 0;
+        $offset = $this->page * $this->size;
+
+        $res = DATABASE::query_safe("SELECT * FROM `inbox` WHERE `user_Email` = ? AND  folder_name = 'outbox' order by `Date` Desc  ", array($_SESSION["user"]->email));
+        $mess = $this->getMessages($res, $search);
+        $mess = array_chunk($mess, $this->size);
+        $this->pages = count($mess);
+
+        if(empty($mess[$this->page]))
+            return null;
+
+        return $mess[$this->page];
     }
 
-    public function getTrash($search)
+    public function getTrash($search, $page)
     {
+        $this->page = $page;
+        $this->page--;
+
+        if ($this->page < 0)
+            $this->page = 0;
+
+        $offset = $this->page * $this->size;
+
+        $res = DATABASE::query_safe("SELECT IF((SELECT count(*) FROM `inbox` WHERE `user_Email` = ? AND  `folder_name` = 'trash' )>$offset,true,false) as 'res'", array($_SESSION["user"]->email));
+        if ($res[0]["res"] == false)
+            $this->page = 0;
+        $offset = $this->page * $this->size;
+
+
         $res = DATABASE::query_safe("SELECT * FROM `inbox` WHERE `user_Email` = ? AND  folder_name = 'trash' order by `Date` Desc ", array($_SESSION["user"]->email));
-        return $this->getMessages($res, $search);
+        $mess = $this->getMessages($res, $search);
+        $mess = array_chunk($mess, $this->size);
+        $this->pages = count($mess);
+
+        if(empty($mess[$this->page]))
+            return null;
+
+        return $mess[$this->page];
     }
+
+    public function isValidPageInbox()
+    {
+        return [$this->page + 1, $this->pages];
+    }
+
+    public function isValidPageOutbox()
+    {
+        return [$this->page + 1, $this->pages];
+    }
+
+    public function isValidPageTrash()
+    {
+        return [$this->page + 1, $this->pages];
+    }
+
 
     private function getMessages($dbres, $search)
     {
@@ -82,7 +167,6 @@ class messageModel
                     || strrpos(strtolower($mesmodel->sender), strtolower($search)) !== false
                     || strrpos(strtolower($mesmodel->title), strtolower($search)) !== false
                 ) {
-
 
 
                     $ret[] = $mesmodel;

@@ -1,0 +1,243 @@
+
+h3 {
+    color: #41AB5D;
+}
+
+.btn-default {
+    background-color: #41AB5D;
+    color: whitesmoke;
+}
+
+.btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
+    background-color: whitesmoke;
+}
+
+.buttongroup{
+    margin-bottom: 10px;
+}
+.buttongrid{
+    border-top: 1px solid gray;
+}
+.btn-inbox:focus,.btn-inbox:active,.btn-inbox:visited {
+    color: white;
+}
+.logo{
+    margin-top: -27px;
+    margin-left: -10px;
+    height: 75px;
+}
+a {
+    color: #41AB5D;
+    text-decoration: none;
+}
+a:hover {
+    color: #E63946;
+    text-decoration: none;
+}
+
+.white{
+    background-color: white;
+}
+.title{
+    font-size: 25px;
+}
+
+.info{
+    float: right;
+}
+
+.infoLeft{
+    float: left;
+}
+
+.navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>li>a:focus {
+    color: white;
+}
+
+input[type="radio"]:before, .radio input[type="radio"]:before, .radio-inline input[type="radio"]:before {
+    position: absolute;
+    left: 0;
+    top: -3px;
+    background-color: #41AB5D;
+    -webkit-transform: scale(0);
+    -ms-transform: scale(0);
+    -o-transform: scale(0);
+    transform: scale(0);
+}
+
+input[type="radio"]:checked:after, .radio input[type="radio"]:checked:after, .radio-inline input[type="radio"]:checked:after {
+    border-color: #41AB5D;
+}
+
+input[type="checkbox"]:checked:after, .checkbox input[type="checkbox"]:checked:after, .checkbox-inline input[type="checkbox"]:checked:after {
+    background-color: #41AB5D;
+    border-color: #41AB5D;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: floralwhite;
+}
+
+.navbar {
+    background-color: #41AB5D;
+    heigth: 10px;
+}
+
+
+body {
+    background-color: white;
+    font-family: 'PT Sans', sans-serif;
+    margin-bottom: 60px;
+}
+
+.quote, .source {
+    font-family: 'Indie Flower', cursive;
+    padding: 0px;
+    margin: 0px;
+    font-size: 25px;
+    display: block;
+    color: floralwhite;
+
+}
+
+.source {
+    font-family: 'PT Sans', sans-serif;
+    margin-top: -20px;
+    text-align: right;
+    font-size: 15px;
+    padding-right: 80px;
+}
+
+.footer {
+    background-color: #41AB5D;
+    text-align: center;
+}
+
+.header {
+    font-size: 35px;
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover > .dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu > a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover > a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left > .dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+.btn-inbox{
+    background-color: #ADDD8E;
+    color: white;
+}
+.dropdown{
+    padding-right: 50px;
+}
+
+.navbar-nav>li>.dropdown-menu {
+    margin-top: 0;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    margin-right: 50px;
+}
+.addbutton {
+    display: block;
+    width: 100%;
+}
+
+.addbutton > .text {
+    padding-left: 10px;
+}
+
+.padleft {
+    padding-left: 20%;
+}
+
+.subcategory {
+    padding: 10px;
+    color: #666666;
+}
+
+a:hover {
+    text-decoration: none !important;
+}
+
+.subcategory:hover {
+    background-color: #E0E0E0;
+}
+
+.category {
+    padding: 0px;
+}
+
+.small {
+    margin: 0px !important;
+}
+
+#wishcontaier {
+    padding-top: 30px;
+}
+
+.form-control::-webkit-input-placeholder { color: #41AB5D; }
+.form-control:-moz-placeholder { color: #41AB5D; }
+.form-control::-moz-placeholder { color: #41AB5D; }
+.form-control:-ms-input-placeholder { color: #41AB5D; }
+
+.adminMessage{
+    background-color: #F7FCB9;
+}
+.message{
+    min-height: 300px;
+}
+.noPadding
+{
+    display: inline;
+}
+
+@media (max-width: 767px) {
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+        color: white;
+    }
+
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover {
+        color: lightgrey;
+    }
+}
