@@ -71,7 +71,7 @@ class WishController {
 
         for ($i = 0; $i < count($this->wishes); $i++) {
             if ($this->wishes[$i]->user == $_SESSION["user"]->email) { // huidige user
-                $mywishes[$i] = $this->wishes[$i];
+                $mywishes[] = $this->wishes[$i];
             }
         }
 

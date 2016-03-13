@@ -21,34 +21,34 @@ class TalentRepository {
         return $returnArray;
     }
 
-
-    public function getAllTalents($value)
-    {
-        $value -= 1;
-        $value *= 10;
-        $result = Database::query
-        ("SELECT *
-          FROM `talent`
-          ORDER BY `talent`.`Name` ASC
-          LIMIT $value,10");
-
-        $returnArray = array();
-
-        for ($i = 0; $i < count($result); $i++) {
-
-            $returnArray[$i] = new Talent(
-                $result[$i]["Id"],
-                $result[$i]["Name"],
-                $result[$i]["CreationDate"],
-                $result[$i]["AcceptanceDate"],
-                $result[$i]["IsRejected"],
-                $result[$i]["moderator_Username"],
-                $result[$i]["user_Email"]
-            );
-        }
-
-        return $returnArray;
-    }
+//
+//    public function getAllTalents($value)
+//    {
+//        $value -= 1;
+//        $value *= 10;
+//        $result = Database::query
+//        ("SELECT *
+//          FROM `talent`
+//          ORDER BY `talent`.`Name` ASC
+//          LIMIT $value,10");
+//
+//        $returnArray = array();
+//
+//        for ($i = 0; $i < count($result); $i++) {
+//
+//            $returnArray[$i] = new Talent(
+//                $result[$i]["Id"],
+//                $result[$i]["Name"],
+//                $result[$i]["CreationDate"],
+//                $result[$i]["AcceptanceDate"],
+//                $result[$i]["IsRejected"],
+//                $result[$i]["moderator_Username"],
+//                $result[$i]["user_Email"]
+//            );
+//        }
+//
+//        return $returnArray;
+//    }
 
     public function getAcceptedTalents()
     {
@@ -298,7 +298,7 @@ class TalentRepository {
           VALUES (?, CURRENT_TIMESTAMP, NULL, NULL, NULL, ?)",
                 array($correctTalent, $_SESSION["user"]->email));
         }
-            array(ucfirst(strtolower(trim($name))),$_SESSION["user"]->email));
+            array(ucfirst(strtolower(trim($name))),$_SESSION["user"]->email);
     }
 
     public function checkNumberOfTalentsFromUser() {
