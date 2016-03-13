@@ -8,5 +8,5 @@
  */
 class Message
 {
-    public $date, $isopened, $title, $content, $receiver, $id, $adminSender, $sender;
+    public $date, $isopened, $title, $content, $receiver, $id, $adminSender, $sender, $folder, $links;
 }
