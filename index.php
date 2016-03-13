@@ -8,23 +8,28 @@ if (Empty($_GET["page"])) {
 
 $page = strtolower(htmlspecialchars($_GET["page"]));
 switch ($page) {
-    case "product":
-        (new ProductController())->run();
+    case "account":
+        (new AccountController())->run();
         break;
     case "admin":
         (new AdminController())->run();
         break;
-    case "admin2":
-        (new ProductController())->run();
+    case "wishes":
+        (new WishController())->run();
         break;
-    case "navigation":
-        (new NavigationController())->run();
+    case "inbox":
+        (new MailController())->run();
+        break;
+    case "talents":
+        (new TalentController())->run();
         break;
     case "index.php":
-    case "home":
+        (new HomeController())->run();
+        break;
+    case "about":
         (new HomeController())->run();
         break;
     default:
-        apologize("Sorry. Pagina bestaat niet!");
+        apologize("Sorry. Pagina bestaat niet");
         break;
 }
