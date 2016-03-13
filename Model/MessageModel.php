@@ -310,5 +310,7 @@ class messageModel
         $mail->message = "Dit bericht is verstuurd via " . $_SERVER["SERVER_NAME"] . ": \nReageren kan via de website. Mailtjes naar dit emailadress worden niet gezien.\n\n" . $message;
         $mail->sendMail();
 
+        return $itemNR;
+
     }
 }
