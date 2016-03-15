@@ -520,5 +520,4 @@ max(adminBlock.BlockDate) AS max_date
         $result = $result[0];
         return $result;
     }
-
 }

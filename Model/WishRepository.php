@@ -10,10 +10,17 @@ class WishRepository
 {
 
     private $email;
-    private $WISH_LIMIT = 3;
+    private $WISH_LIMIT = 100;
+
+    private $talentRepository;
+
+    public function __construct() {
+        $this->talentRepository = new TalentRepository();
+    }
 
     /**
      * Creates array of wish objects with the params given in the $queryResult.
+     * And adds the user elements to the given objects
      * It is used to prevent duplicate code.
      * @param $queryResult
      * @return array
@@ -24,8 +31,14 @@ class WishRepository
         $returnArray = array();
 
         for ($i = 0; $i < count($queryResult); $i++) {
-            $completed = false;
 
+            if (!isset($queryResult[$i]["max_date"])) {
+                $queryResult[$i]["max_date"] = null;
+            }
+
+            $userElements = $this->getUser($queryResult[$i]["User"]);
+
+            $completed = false;
             if ($queryResult[$i]["Status"] == "Vervuld") {
                 $completed = true;
             }
@@ -33,6 +46,8 @@ class WishRepository
             $returnArray[$i] = new Wish(
                 $queryResult[$i]["Id"],
                 $queryResult[$i]["User"],
+                $userElements[0]["DisplayName"],
+                $userElements[0]["City"],
                 $queryResult[$i]["Title"],
                 $completed,
                 $queryResult[$i]["Content"],
@@ -45,6 +60,11 @@ class WishRepository
 
         return $returnArray;
     }
+
+    private function getUser($email) {
+        return Database::query_safe("SELECT DisplayName, City FROM user WHERE user.Email = ?", array($email));
+    }
+
 
     /**
      * @return array of wishes where user == current user
@@ -170,9 +190,6 @@ class WishRepository
      */
     public function addWish($newWish)
     {
-        $wish = $newWish["title"];
-        $description = $newWish["description"];
-        $tag = $newWish["tag"];
         $email = $this->getEmail();
         $status = "Aangemaakt";
 
@@ -201,20 +218,39 @@ class WishRepository
         $wish = $content["title"];
         $description = $content["description"];
         $tag = $content["tag"];
-        $country = $content["country"];
-        $city = $content["city"];
 
-        $query = "INSERT INTO `wishContent` (`Content`, `Title`, `wish_Id`,`Country`, `City`)
-            VALUES (?,?,?,?,?)";
-        $array = array($description, $wish, $id, $country, $city);
+        $query = "INSERT INTO `wishContent` (`Content`, `Title`, `wish_Id`)
+            VALUES (?,?,?)";
+        $array = array($description, $wish, $id);
         Database::query_safe($query, $array);
 
-        $this->addTalentToWish($tag, $id);
+        $array = $this->talentRepository->getAllTalents();
+        $allTags = array();
+        foreach ($array as $value) {
+            $allTags[] = $value["Name"];
+        }
+
+        if (is_array($tag)) {
+            $this->deleteAllWishTalents($id);
+            foreach ($tag as $item) {
+                if (in_array($item, $allTags)) {
+                    $this->addTalentToWish($item, $id);
+                } else {
+                    $this->talentRepository->addTalent($item);
+                    $this->addTalentToWish($item, $id);
+                }
+            }
+        }
     }
 
-    public function addTalentToWish($talent, $wishId)
-    {
+    public function deleteAllWishTalents($wishid) {
+        $query = "DELETE from `talent_has_wish` WHERE `wish_Id` = ?";
+        $value = array($wishid);
 
+        Database::query_safe($query, $value);
+    }
+
+    public function addTalentToWish($talent, $wishId) {
         $query = "SELECT `Id` as talentId FROM `talent` WHERE `Name`=?";
         $array = array($talent);
         $result = Database::query_safe($query, $array);
@@ -243,18 +279,20 @@ class WishRepository
         $amountWishes = $result[0]["counter"];
 
         $wishLimit = $this->WISH_LIMIT;
-        if ($amountWishes >= $wishLimit) return false;
+        if ($amountWishes >= $wishLimit)
+            return false;
         return true;
     }
 
-    /**
-     * Gets wish using param
-     * @param $id
-     * @return Wish
-     */
 
-    public function getRequestedWishes($wishPage)
-    {
+//    public function getWish($id) {
+//    /**
+//     * Gets wish using param
+//     * @param $id
+//     * @return Wish
+//     */
+
+    public function getRequestedWishes($wishPage) {
 
         switch ($wishPage) {
             case 'requested':
@@ -496,7 +534,6 @@ AND ab.Block_Id = test.blockid) AS isblock
 
     public function AdminDeleteWish($id, $mdate)
     {
-
         Database::query_safe("UPDATE wishContent SET `IsAccepted`=0  WHERE wish_id=?", array($id));
         Database::query_safe("UPDATE wishContent SET `moderator_username`='Admin'  WHERE wish_id=?", array($id));
         Database::query_safe("UPDATE wish SET `Status`='Verwijderd'  WHERE id=?", array($id));
@@ -504,11 +541,11 @@ AND ab.Block_Id = test.blockid) AS isblock
 
     public function AdminRedrawWish($id, $mdate)
     {
-
         Database::query_safe("UPDATE wishContent SET `IsAccepted`=0  WHERE Date =?", array($mdate));
         Database::query_safe("UPDATE wishContent SET `moderator_username`= null  WHERE Date =?", array($mdate));
         Database::query_safe("UPDATE wish SET `Status`='Aangemaakt'  WHERE id=?", array($id));
     }
+
 
     public function getWishOwner($id)
     {
@@ -578,24 +615,10 @@ AND ab.Block_Id = test.blockid) AS isblock
 
         if ($result != null) {
 
-            $completed = false;
-            if ($result[0]["Status"] == "Vervuld") {
-                $completed = true;
-            }
-
-            $selectedWish = new Wish(
-                $result[0]["Id"],
-                $result[0]["User"],
-                $result[0]["Title"],
-                $completed,
-                $result[0]["Content"],
-                $result[0]["IsAccepted"],
-                null,
-                $result[0]["Date"],
-                $result[0]["Status"]
-            );
+            $selectedWish = $this->getReturnArray($result)[0];
 
             return $selectedWish;
+
         } else {
             apologize("404 wens kan niet worden gevonden");
         }
@@ -620,7 +643,6 @@ AND ab.Block_Id = test.blockid) AS isblock
         return $_SESSION["user"]->email;
     }
 
-
     public function getAllTalents()
     {
         $query = "SELECT `Name` FROM `talent` WHERE `isRejected`=? ORDER BY `Name` ASC";
@@ -633,11 +655,29 @@ AND ab.Block_Id = test.blockid) AS isblock
         $query = "SELECT `talent_id` as talent FROM `talent_has_wish` WHERE `wish_id`=?";
         $array = array($wishId);
         $result = Database::query_safe($query, $array);
-        $talentID = array($result[0]["talent"]);
 
-        $query = "SELECT `Name` FROM `talent` WHERE `Id`=?";
-        $result = Database::query_safe($query, $talentID);
-        return $result[0]["Name"];
+        $talentIDArray = array();
+        foreach ($result as $item) {
+            $talentIDArray[] = $item["talent_Id"];
+        }
+
+        $string = '(';
+        foreach ($talentIDArray as $item) {
+            $string .= $item . ',';
+        }
+        $value = substr($string, 0, -1);
+        $value .= ')';
+
+        $query1 = "SELECT `Name` FROM `talent` WHERE `Id` IN $value";
+        $result1 = Database::query($query1);
+
+        $size = count($result1);
+        $returnArray = array();
+        for ($i = 0; $i < $size; $i++) {
+            $returnArray[] = $result1[$i]["Name"];
+        }
+
+        return $returnArray;
     }
 
     public function getNewestWishContent($id)

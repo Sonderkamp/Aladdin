@@ -12,12 +12,24 @@ class Quote
 
     public function __construct()
     {
+
+
+    }
+
+    public function getQuote(){
         //TODO read quote shown and eliminate these from pool
-        $result = Database::query("SELECT * FROM quote");
 
-        $random = rand(0 , count($result) -1);
+        $result = Database::query_safe("
+            SELECT * FROM quote
+            JOIN quoteShown ON quote.Id = quoteShown.Quote
+            "
+        );
 
-        $this->content = $result[$random]["QuoteContent"];
+        $random = rand(0 , count($this->result));
+
+        $this->content = $result[$random]["Content"];
         $this->source = $result[$random]["Source"];
+
+        return $this->content . $this->source;
     }
 }

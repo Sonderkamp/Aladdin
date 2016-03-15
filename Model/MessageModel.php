@@ -8,12 +8,7 @@
  */
 class messageModel
 {
-
-    private $page = 0;
-    private $size = 4;
-    private $pages = 0;
-
-    public function getInbox($search, $page)
+    public function getInbox($search)
     {
 
         $this->page = $page;
@@ -40,10 +35,12 @@ class messageModel
             return null;
 
         return $mess[$this->page];
+
     }
 
-    public function getOutbox($search, $page)
+    public function getOutbox($search)
     {
+
         $this->page = $page;
         $this->page--;
 
@@ -66,25 +63,13 @@ class messageModel
             return null;
 
         return $mess[$this->page];
+
     }
 
-    public function getTrash($search, $page)
+    public function getTrash($search)
     {
-        $this->page = $page;
-        $this->page--;
-
-        if ($this->page < 0)
-            $this->page = 0;
-
-        $offset = $this->page * $this->size;
-
-        $res = DATABASE::query_safe("SELECT IF((SELECT count(*) FROM `inbox` WHERE `user_Email` = ? AND  `folder_name` = 'trash' )>$offset,true,false) as 'res'", array($_SESSION["user"]->email));
-        if ($res[0]["res"] == false)
-            $this->page = 0;
-        $offset = $this->page * $this->size;
-
-
         $res = DATABASE::query_safe("SELECT * FROM `inbox` WHERE `user_Email` = ? AND  folder_name = 'trash' order by `Date` Desc ", array($_SESSION["user"]->email));
+
         $mess = $this->getMessages($res, $search);
         $mess = array_chunk($mess, $this->size);
         $this->pages = count($mess);
@@ -99,17 +84,6 @@ class messageModel
     {
         return [$this->page + 1, $this->pages];
     }
-
-    public function isValidPageOutbox()
-    {
-        return [$this->page + 1, $this->pages];
-    }
-
-    public function isValidPageTrash()
-    {
-        return [$this->page + 1, $this->pages];
-    }
-
 
     private function getMessages($dbres, $search)
     {
@@ -169,6 +143,7 @@ class messageModel
                     || strrpos(strtolower($mesmodel->sender), strtolower($search)) !== false
                     || strrpos(strtolower($mesmodel->title), strtolower($search)) !== false
                 ) {
+
 
 
                     $ret[] = $mesmodel;
@@ -313,8 +288,6 @@ class messageModel
         $mail->subject = "Aladdin:  " . $title;
         $mail->message = "Dit bericht is verstuurd via " . $_SERVER["SERVER_NAME"] . ": \nReageren kan via de website. Mailtjes naar dit emailadress worden niet gezien.\n\n" . $message;
         $mail->sendMail();
-
-        return $itemNR;
 
     }
 }

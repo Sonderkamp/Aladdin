@@ -15,23 +15,17 @@ class ProfileCheckController
         guaranteeLogin("/ProfileCheck");
         if (isset($_GET["user"]) && !isset($_GET["action"])) {
             $this->renderProfilePage($_GET["user"]);
-        } elseif (isset($_GET["action"]) || isset($_GET["user"]))
-        {
-            if($_GET["action"] =='block')
-            {
+        } elseif (isset($_GET["action"]) || isset($_GET["user"])) {
+            if ($_GET["action"] == 'block') {
 
                 $this->block($_GET["user"]);
                 $this->renderProfilePage($_GET["user"]);
-            }
-            else if($_GET["action"] =='unblock')
-            {
+            } else if ($_GET["action"] == 'unblock') {
 
                 $this->unblock($_GET["user"]);
                 $this->renderProfilePage($_GET["user"]);
             }
-        }
-        else
-        {
+        } else {
             apologize("404 not found, This user does not exist");
         }
     }
@@ -59,10 +53,10 @@ class ProfileCheckController
     }
 
     private function getLastBlockStatus($user)
-{
-    $usermodel = new User();
-    return $usermodel->getLastBlockStatus($user);
-}
+    {
+        $usermodel = new User();
+        return $usermodel->getLastBlockStatus($user);
+    }
 
     private function getWishes($user)
     {
@@ -79,7 +73,7 @@ class ProfileCheckController
     private function renderProfilePage($user)
     {
 
-        render("profilecheck.php", ["title" => "Profiel", "cuser" => $this->getUserCheck($user), "blockstatus" => $this->getLastBlockStatus($user),"wishes" => $this->getWishes($user),"talents" => $this->getTalents($user)]);
+        render("profilecheck.php", ["title" => "Profiel", "cuser" => $this->getUserCheck($user), "blockstatus" => $this->getLastBlockStatus($user), "wishes" => $this->getWishes($user), "talents" => $this->getTalents($user)]);
         exit();
     }
 
