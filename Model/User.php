@@ -424,7 +424,7 @@ class User
 
     public function updateUser($arr)
     {
-        if (Empty($arr["username"])
+        if (Empty($arr["email"])
             || Empty($arr["name"])
             || Empty($arr["surname"])
             || Empty($arr["address"])
