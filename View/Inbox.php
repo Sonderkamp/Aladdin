@@ -62,7 +62,7 @@
         {if $message->adminSender}
         <div class="panel panel-default adminMessage">
             {else}
-            <div class="panel panel-default">
+            <div class="panel panel-default overflowhidden">
                 {/if}
                 <div class="panel-body">
                     <a href="\Inbox\folder={$folderShortcut}\p={$page[0]}\message={$message->id}" class="title">{$message->title}</a> <span

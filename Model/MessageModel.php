@@ -36,7 +36,7 @@ class messageModel
         $mess = array_chunk($mess, $this->size);
         $this->pages = count($mess);
 
-        if(empty($mess[$this->page]))
+        if (empty($mess[$this->page]))
             return null;
 
         return $mess[$this->page];
@@ -62,7 +62,7 @@ class messageModel
         $mess = array_chunk($mess, $this->size);
         $this->pages = count($mess);
 
-        if(empty($mess[$this->page]))
+        if (empty($mess[$this->page]))
             return null;
 
         return $mess[$this->page];
@@ -89,7 +89,7 @@ class messageModel
         $mess = array_chunk($mess, $this->size);
         $this->pages = count($mess);
 
-        if(empty($mess[$this->page]))
+        if (empty($mess[$this->page]))
             return null;
 
         return $mess[$this->page];
@@ -135,6 +135,8 @@ class messageModel
             if (count($pieces) > 2) {
                 $mesmodel->content .= $pieces[2];
             }
+
+            $mesmodel->content = htmlspecialcharsWithNL($mesmodel->content);
 
             $mesmodel->receiver = $User->getUser($mess["user_Receiver"])["DisplayName"];
             if ($mesmodel->content != $mess["Message"])
@@ -193,6 +195,7 @@ class messageModel
         $mesmodel->isopened = $res["IsOpend"];
         $mesmodel->title = $mess["Subject"];
         $mesmodel->content = $mess["Message"];
+        $mesmodel->content = htmlspecialcharsWithNL($mesmodel->content);
         $mesmodel->folder = $res["folder_Name"];
         $mesmodel->receiver = $User->getUser($mess["user_Receiver"])["DisplayName"];
 
@@ -280,6 +283,7 @@ class messageModel
     public function sendMessage($me, $recipient, $title, $message)
     {
 
+
         // DATABASE
         $user = new User();
         $pdo = DATABASE::getPDO();
@@ -287,7 +291,7 @@ class messageModel
         $itemNR = null;
         // TODO: Check if me equals admin
         if ($user->getUser($me) !== false) {
-            DATABASE::transaction_action_safe($pdo, "INSERT INTO `message` (`Subject`, `Message`, `user_Sender`, `user_Receiver`) VALUES ( ?, ?, ?, ?)", array($title, nl2br($message), $me, $recipient));
+            DATABASE::transaction_action_safe($pdo, "INSERT INTO `message` (`Subject`, `Message`, `user_Sender`, `user_Receiver`) VALUES ( ?, ?, ?, ?)", array($title, $message, $me, $recipient));
             $itemNR = $pdo->lastInsertId();
             DATABASE::transaction_action_safe($pdo, "INSERT INTO `inbox` ( `folder_Name`, `message_Id`, `user_Email`) VALUES ('outbox', ?, ?)", array($itemNR, $me));
             // insert into outbox

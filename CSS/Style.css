@@ -291,3 +291,7 @@ a:hover {
     background-color: #ffffff;
     border: 1px solid #dddddd;
 }
+
+.overflowhidden{
+    overflow: hidden;
+}

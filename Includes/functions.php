@@ -58,7 +58,10 @@
         $controller->guaranteeLogin($page);
     }
 
-
+    function htmlspecialcharsWithNL($string)
+    {
+        return nl2br(htmlspecialchars($string));
+    }
     /**
      * Renders template, passing in values.
      */
@@ -69,7 +72,6 @@
         {
             // extract variables into local scope
             $smarty = new Smarty();
-            $smarty->escape_html = true;
             $quote = new Quote();
 
             $smarty->assign($values, $quote);
