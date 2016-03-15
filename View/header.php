@@ -85,7 +85,7 @@
                        aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
                         {$user->displayName}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/account">Mijn profiel</a></li>
+                        <li><a href="/profile">Mijn profiel</a></li>
                         <li role="separator" class="divider"></li>
 <!--                        -->
 <!--                        TIJDELIJK OM ADMIN WENS BEHEER MAKELIJKER TE BERIJKEN-->

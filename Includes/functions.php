@@ -72,7 +72,9 @@
         {
             // extract variables into local scope
             $smarty = new Smarty();
-            $smarty->assign($values);
+            $quote = new Quote();
+
+            $smarty->assign($values, $quote);
 
             if(!empty($_SESSION["user"]))
                 $smarty->assign("user", $_SESSION["user"]);
@@ -85,8 +87,6 @@
             $smarty->display("View/$template");
 
             // render footer
-//            $quote = new Quote();
-//            $value["Quote"] = $quote->getQuote();
             $smarty->display("View/footer.php");
         }
         // else err
