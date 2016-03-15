@@ -186,12 +186,15 @@ class AdminWishController
     function wishAction($action, $wishID, $mdate,$username,$message,$title)
     {
         $wishmodel = new WishRepository();
-
+$wishdetails = $wishmodel->getWish($wishID);
         $newdate = str_replace('%20', ' ', $mdate);
         switch ($action) {
             case
             'accept':
                  $wishmodel->AdminAcceptWish($wishID,$newdate);
+                 $newmessage = "Je wens met de titel: ".$wishdetails->title.". is geaccepteerd, de inhoud van deze wens is: ".$wishdetails->content."";
+                $this->sendRefuseMessage($username,$wishID,$newmessage,"Je wens is geaccepteerd");
+
                 break;
             case 'deny':
                 $wishmodel->AdminRefuseWish($wishID,$newdate);

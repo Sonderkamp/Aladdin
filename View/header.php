@@ -87,8 +87,6 @@
                     <ul class="dropdown-menu">
                         <li><a href="/profile">Mijn profiel</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="/account">Wensen</a></li>
-                        <li role="separator" class="divider"></li>
 <!--                        -->
 <!--                        TIJDELIJK OM ADMIN WENS BEHEER MAKELIJKER TE BERIJKEN-->
 
