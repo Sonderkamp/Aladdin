@@ -11,6 +11,7 @@ class Wish {
 
     public $id, $userEmail, $userDisplayName, $userCity, $title, $completed, $content, $accepted, $newestDate, $status, $contentDate;
 
+
     /**
      * Wish constructor.
      * @param $id
@@ -25,7 +26,7 @@ class Wish {
      * @param $status
      * @param $contentDate
      */
-    public function __construct($id, $user, $userDisplayName, $userCity, $title, $completed, $content, $accepted, $newestDate, $contentDate , $status) {
+    public function __construct($id, $user, $userDisplayName, $userCity, $title, $completed, $content, $accepted, $newestDate, $contentDate, $status) {
         $this->id = $id;
         $this->userEmail = $user;
         $this->userDisplayName = $userDisplayName;
