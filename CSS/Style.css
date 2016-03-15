@@ -248,6 +248,20 @@ a:hover {
     color: #35978f;
 }
 
+.button-color-green{
+    color: #ffffff;
+    background-color: #35978f;
+}
+    .button-color-green a{
+        color: #FFFFFF;
+    }
+
+
+
+.small-margin-bot{
+    margin-bottom: 10px;
+}
+
 .nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
     color: #ffffff;
     background-color: #35978f;

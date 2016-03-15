@@ -2,9 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fdff3ebf-a012-4b8f-b011-ea94c721b9b6" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSS/Style.css" afterPath="$PROJECT_DIR$/CSS/Style.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Controller/WishController.class.php" afterPath="$PROJECT_DIR$/Controller/WishController.class.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Model/Wish.php" afterPath="$PROJECT_DIR$/Model/Wish.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Model/WishRepository.php" afterPath="$PROJECT_DIR$/Model/WishRepository.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/wishOverview.tpl" afterPath="$PROJECT_DIR$/View/wishOverview.tpl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/wishSpecificView.tpl" afterPath="$PROJECT_DIR$/View/wishSpecificView.tpl" />
     </list>
     <ignored path="Aladdin.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -25,120 +28,12 @@
     <favorites_list name="Aladdin" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="config.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Includes/config.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WishController.class.php" pinned="false" current-in-tab="false">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="WishController.class.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Controller/WishController.class.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-46.875">
-              <caret line="75" column="9" selection-start-line="75" selection-start-column="9" selection-end-line="75" selection-end-column="9" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TalentController.class.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Controller/TalentController.class.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-78.125">
-              <caret line="125" column="37" selection-start-line="125" selection-start-column="37" selection-end-line="125" selection-end-column="37" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/index.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.75">
-              <caret line="6" column="1" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="1" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HomeController.class.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Controller/HomeController.class.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.125">
-              <caret line="13" column="5" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="home.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/View/home.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.875">
-              <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="functions.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Includes/functions.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="36.25">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WishRepository.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Model/WishRepository.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6377551">
-              <caret line="224" column="0" selection-start-line="224" selection-start-column="0" selection-end-line="224" selection-end-column="0" />
-              <folding>
-                <marker date="1457645455000" expanded="true" signature="374:380" placeholder="SELECT w.Sta... wish" />
-                <marker date="1457645455000" expanded="true" signature="374:998" placeholder="SELECT w.Sta... wish" />
-                <marker date="1457645455000" expanded="true" signature="714:825" placeholder="SELECT wish_... wishContent" />
-                <marker date="1457645455000" expanded="true" signature="1846:1895" placeholder="INSERT INTO `wish`... " />
-                <marker date="1457645455000" expanded="true" signature="2010:2081" placeholder="SELECT `Id` wish" />
-                <marker date="1457645455000" expanded="true" signature="2529:2613" placeholder="INSERT INTO `wishContent`... " />
-                <marker date="1457645455000" expanded="true" signature="3368:3417" placeholder="DELETE from " />
-                <marker date="1457645455000" expanded="true" signature="3580:3632" placeholder="SELECT `Id` talent" />
-                <marker date="1457645455000" expanded="true" signature="3783:3850" placeholder="INSERT INTO `talent_has_wish`... " />
-                <marker date="1457645455000" expanded="true" signature="4084:4175" placeholder="select count... wish" />
-                <marker date="1457645455000" expanded="true" signature="4559:4832" placeholder="SELECT wish.... wish" />
-                <marker date="1457645455000" expanded="true" signature="5550:5626" placeholder="select * fro... wishContent" />
-                <marker date="1457645455000" expanded="true" signature="5887:5956" placeholder="SELECT `tale... talent_has_wish" />
-                <marker date="1457645455000" expanded="true" signature="5977:6026" placeholder="SELECT * FRO... talent_has_wish" />
-                <marker date="1457645455000" expanded="true" signature="6449:6490" placeholder="SELECT `Name... talent" />
-                <marker date="1457645455000" expanded="true" signature="6449:6491" placeholder="SELECT `Name... talent" />
-                <marker date="1457645455000" expanded="true" signature="6816:6908" placeholder="SELECT `wish... wishContent" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Wish.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Model/Wish.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-18.125">
-              <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name=".htaccess" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.htaccess">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.99661016">
+              <caret line="322" column="0" selection-start-line="322" selection-start-column="0" selection-end-line="322" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -160,11 +55,14 @@
         <option value="$PROJECT_DIR$/Model/Talent.php" />
         <option value="$PROJECT_DIR$/Controller/TalentController.class.php" />
         <option value="$PROJECT_DIR$/Model/TalentRepository.php" />
-        <option value="$PROJECT_DIR$/Model/WishRepository.php" />
         <option value="$PROJECT_DIR$/View/addWish.php" />
-        <option value="$PROJECT_DIR$/Controller/WishController.class.php" />
-        <option value="$PROJECT_DIR$/Model/Wish.php" />
         <option value="$PROJECT_DIR$/Model/Quote.php" />
+        <option value="$PROJECT_DIR$/Controller/WishController.class.php" />
+        <option value="$PROJECT_DIR$/CSS/Style.css" />
+        <option value="$PROJECT_DIR$/Model/WishRepository.php" />
+        <option value="$PROJECT_DIR$/View/wishOverview.tpl" />
+        <option value="$PROJECT_DIR$/View/wishSpecificView.tpl" />
+        <option value="$PROJECT_DIR$/Model/Wish.php" />
       </list>
     </option>
   </component>
@@ -178,9 +76,9 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" interpreter_name="PHP" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="62" />
+    <option name="x" value="131" />
     <option name="y" value="23" />
-    <option name="width" value="1459" />
+    <option name="width" value="1149" />
     <option name="height" value="758" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -208,8 +106,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -280,12 +176,28 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="CSS" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Aladdin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="htdocs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="Controller" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -338,12 +250,11 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="62" y="23" width="1459" height="758" extended-state="1" />
+    <frame x="131" y="23" width="1149" height="758" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19266056" sideWeight="0.494705" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22673893" sideWeight="0.494705" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="PHP-CGI Server" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -352,6 +263,7 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22347826" sideWeight="0.505295" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="PHP-CGI Server" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -396,6 +308,88 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/View/home.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Includes/functions.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Model/WishRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1458076295000" expanded="true" signature="1665:1720" placeholder="SELECT Displ... user" />
+            <marker date="1458076295000" expanded="true" signature="1943:2616" placeholder="SELECT w.Sta... wish" />
+            <marker date="1458076295000" expanded="true" signature="2305:2416" placeholder="SELECT wish_... wishContent" />
+            <marker date="1458076295000" expanded="true" signature="2898:3573" placeholder="SELECT w.Sta... wish" />
+            <marker date="1458076295000" expanded="true" signature="3260:3371" placeholder="SELECT wish_... wishContent" />
+            <marker date="1458076295000" expanded="true" signature="3858:4534" placeholder="SELECT w.Sta... wish" />
+            <marker date="1458076295000" expanded="true" signature="4220:4331" placeholder="SELECT wish_... wishContent" />
+            <marker date="1458076295000" expanded="true" signature="4701:4900" placeholder="SELECT * FRO... wish" />
+            <marker date="1458076295000" expanded="true" signature="5172:5221" placeholder="INSERT INTO `wish`... " />
+            <marker date="1458076295000" expanded="true" signature="5336:5407" placeholder="SELECT `Id` wish" />
+            <marker date="1458076295000" expanded="true" signature="5913:5997" placeholder="INSERT INTO `wishContent`... " />
+            <marker date="1458076295000" expanded="true" signature="6755:6804" placeholder="DELETE from " />
+            <marker date="1458076295000" expanded="true" signature="6968:7020" placeholder="SELECT `Id` talent" />
+            <marker date="1458076295000" expanded="true" signature="7171:7238" placeholder="INSERT INTO `talent_has_wish`... " />
+            <marker date="1458076295000" expanded="true" signature="7528:7619" placeholder="select count... wish" />
+            <marker date="1458076295000" expanded="true" signature="8295:9443" placeholder="SELECT wc.wi... " />
+            <marker date="1458076295000" expanded="true" signature="9541:9924" placeholder="select u.Dis... " />
+            <marker date="1458076295000" expanded="true" signature="10019:10430" placeholder="select u.Dis... " />
+            <marker date="1458076295000" expanded="true" signature="10528:10942" placeholder="select u.Dis... " />
+            <marker date="1458076295000" expanded="true" signature="11040:11453" placeholder="select u.Dis... " />
+            <marker date="1458076295000" expanded="true" signature="11548:11954" placeholder="select u.Dis... " />
+            <marker date="1458076295000" expanded="true" signature="12051:12459" placeholder="select u.Dis... " />
+            <marker date="1458076295000" expanded="true" signature="12557:12905" placeholder="select u.Dis... " />
+            <marker date="1458076295000" expanded="true" signature="13055:13107" placeholder="UPDATE wishC... " />
+            <marker date="1458076295000" expanded="true" signature="13156:13222" placeholder="UPDATE wishC... " />
+            <marker date="1458076295000" expanded="true" signature="13271:13322" placeholder="UPDATE wish " />
+            <marker date="1458076295000" expanded="true" signature="13429:13480" placeholder="UPDATE wishC... " />
+            <marker date="1458076295000" expanded="true" signature="13529:13594" placeholder="UPDATE wishC... " />
+            <marker date="1458076295000" expanded="true" signature="13643:13691" placeholder="UPDATE wish " />
+            <marker date="1458076295000" expanded="true" signature="13796:13850" placeholder="UPDATE wishC... " />
+            <marker date="1458076295000" expanded="true" signature="13896:13964" placeholder="UPDATE wishC... " />
+            <marker date="1458076295000" expanded="true" signature="14010:14059" placeholder="UPDATE wish " />
+            <marker date="1458076295000" expanded="true" signature="14164:14216" placeholder="UPDATE wishC... " />
+            <marker date="1458076295000" expanded="true" signature="14265:14329" placeholder="UPDATE wishC... " />
+            <marker date="1458076295000" expanded="true" signature="14378:14427" placeholder="UPDATE wish " />
+            <marker date="1458076295000" expanded="true" signature="14530:14669" placeholder="select u.Ema... " />
+            <marker date="1458076295000" expanded="true" signature="14815:15088" placeholder="SELECT wish.... wish" />
+            <marker date="1458076295000" expanded="true" signature="15522:15598" placeholder="select * fro... wishContent" />
+            <marker date="1458076295000" expanded="true" signature="15949:15998" placeholder="SELECT * FRO... talent_has_wish" />
+            <marker date="1458076295000" expanded="true" signature="16421:16463" placeholder="SELECT `Name... talent" />
+            <marker date="1458076295000" expanded="true" signature="16788:16880" placeholder="SELECT `wish... wishContent" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Model/Wish.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.htaccess">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Model/User.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-13.125">
@@ -450,25 +444,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="4.9915257">
           <caret line="269" column="9" selection-start-line="269" selection-start-column="9" selection-end-line="269" selection-end-column="9" />
-          <folding>
-            <marker date="1457627088000" expanded="true" signature="198:244" placeholder="SELECT `tale... talent" />
-            <marker date="1457627088000" expanded="true" signature="518:760" placeholder="SELECT * FRO... talent" />
-            <marker date="1457627088000" expanded="true" signature="1350:2095" placeholder="SELECT `tale... talent" />
-            <marker date="1457627088000" expanded="true" signature="1740:1850" placeholder="SELECT `tale... talent_has_user" />
-            <marker date="1457627088000" expanded="true" signature="2818:3589" placeholder="SELECT `tale... talent" />
-            <marker date="1457627088000" expanded="true" signature="3208:3318" placeholder="SELECT `tale... talent_has_user" />
-            <marker date="1457627088000" expanded="true" signature="4316:4821" placeholder="SELECT `tale... talent" />
-            <marker date="1457627088000" expanded="true" signature="5448:5927" placeholder="SELECT `tale... talent" />
-            <marker date="1457627088000" expanded="true" signature="6603:7065" placeholder="SELECT `tale... talent" />
-            <marker date="1457627088000" expanded="true" signature="7646:7774" placeholder="DELETE FROM " />
-            <marker date="1457627088000" expanded="true" signature="7917:7998" placeholder="INSERT INTO `talent_has_user`... " />
-            <marker date="1457627088000" expanded="true" signature="8335:8509" placeholder="INSERT INTO `talent`... " />
-            <marker date="1457627088000" expanded="true" signature="8697:8812" placeholder="SELECT COUNT... talent_has_user" />
-            <marker date="1457627088000" expanded="true" signature="9010:9579" placeholder="SELECT COUNT... talent" />
-            <marker date="1457627088000" expanded="true" signature="9224:9334" placeholder="SELECT `tale... talent_has_user" />
-            <marker date="1457627088000" expanded="true" signature="9781:10041" placeholder="SELECT COUNT... talent" />
-            <marker date="1457627088000" expanded="true" signature="10156:10224" placeholder="SELECT `Name... talent" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -493,59 +469,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Webshop/Includes/constants.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.53571427">
-          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Webshop/Includes/config.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Webshop/Includes/classes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Webshop/Includes/functions.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5102041">
-          <caret line="74" column="59" selection-start-line="74" selection-start-column="59" selection-end-line="74" selection-end-column="59" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Webshop/View/About.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Webshop/View/Footer.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Files/Database.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-4.2222223">
           <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -553,7 +480,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -561,9 +487,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -571,7 +494,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -627,23 +549,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/View/wishSpecificView.tpl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/View/wishOverview.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-66.25">
-          <caret line="106" column="16" selection-start-line="106" selection-start-column="16" selection-end-line="118" selection-end-column="105" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -651,7 +556,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -659,7 +563,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -667,7 +570,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -675,7 +577,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -683,7 +584,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-42.5">
           <caret line="68" column="38" selection-start-line="68" selection-start-column="38" selection-end-line="68" selection-end-column="38" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -691,7 +591,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -699,7 +598,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -707,7 +605,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -715,7 +612,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -723,7 +619,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-36.25">
           <caret line="63" column="17" selection-start-line="63" selection-start-column="17" selection-end-line="63" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -743,18 +638,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Controller/WishController.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-46.875">
-          <caret line="75" column="9" selection-start-line="75" selection-start-column="9" selection-end-line="75" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Controller/TalentController.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-78.125">
-          <caret line="125" column="37" selection-start-line="125" selection-start-column="37" selection-end-line="125" selection-end-column="37" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="125" column="17" selection-start-line="125" selection-start-column="17" selection-end-line="125" selection-end-column="17" />
           <folding />
         </state>
       </provider>
@@ -767,69 +654,125 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.php">
+    <entry file="file://$PROJECT_DIR$/View/wishSpecificView.tpl">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.75">
-          <caret line="6" column="1" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Controller/HomeController.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.125">
-          <caret line="13" column="5" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/View/home.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.875">
-          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Includes/functions.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="36.25">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.96330273">
+          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Model/Wish.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-18.125">
-          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+        <state vertical-scroll-proportion="1.0091743">
+          <caret line="44" column="0" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/View/wishOverview.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.013761468">
+          <caret line="105" column="49" selection-start-line="105" selection-start-column="49" selection-end-line="105" selection-end-column="49" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Model/WishRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6377551">
-          <caret line="224" column="0" selection-start-line="224" selection-start-column="0" selection-end-line="224" selection-end-column="0" />
+        <state vertical-scroll-proportion="-6.568807">
+          <caret line="103" column="24" selection-start-line="103" selection-start-column="24" selection-end-line="103" selection-end-column="24" />
           <folding>
-            <marker date="1457645455000" expanded="true" signature="374:380" placeholder="SELECT w.Sta... wish" />
-            <marker date="1457645455000" expanded="true" signature="374:998" placeholder="SELECT w.Sta... wish" />
-            <marker date="1457645455000" expanded="true" signature="714:825" placeholder="SELECT wish_... wishContent" />
-            <marker date="1457645455000" expanded="true" signature="1846:1895" placeholder="INSERT INTO `wish`... " />
-            <marker date="1457645455000" expanded="true" signature="2010:2081" placeholder="SELECT `Id` wish" />
-            <marker date="1457645455000" expanded="true" signature="2529:2613" placeholder="INSERT INTO `wishContent`... " />
-            <marker date="1457645455000" expanded="true" signature="3368:3417" placeholder="DELETE from " />
-            <marker date="1457645455000" expanded="true" signature="3580:3632" placeholder="SELECT `Id` talent" />
-            <marker date="1457645455000" expanded="true" signature="3783:3850" placeholder="INSERT INTO `talent_has_wish`... " />
-            <marker date="1457645455000" expanded="true" signature="4084:4175" placeholder="select count... wish" />
-            <marker date="1457645455000" expanded="true" signature="4559:4832" placeholder="SELECT wish.... wish" />
-            <marker date="1457645455000" expanded="true" signature="5550:5626" placeholder="select * fro... wishContent" />
-            <marker date="1457645455000" expanded="true" signature="5887:5956" placeholder="SELECT `tale... talent_has_wish" />
-            <marker date="1457645455000" expanded="true" signature="5977:6026" placeholder="SELECT * FRO... talent_has_wish" />
-            <marker date="1457645455000" expanded="true" signature="6449:6490" placeholder="SELECT `Name... talent" />
-            <marker date="1457645455000" expanded="true" signature="6449:6491" placeholder="SELECT `Name... talent" />
-            <marker date="1457645455000" expanded="true" signature="6816:6908" placeholder="SELECT `wish... wishContent" />
+            <marker date="1458076295000" expanded="true" signature="1665:1720" placeholder="SELECT Displ... user" />
+            <marker date="1458076295000" expanded="true" signature="1943:2616" placeholder="SELECT w.Sta... wish" />
+            <marker date="1458076295000" expanded="true" signature="2305:2416" placeholder="SELECT wish_... wishContent" />
+            <marker date="1458076295000" expanded="true" signature="2898:3573" placeholder="SELECT w.Sta... wish" />
+            <marker date="1458076295000" expanded="true" signature="3260:3371" placeholder="SELECT wish_... wishContent" />
+            <marker date="1458076295000" expanded="true" signature="3858:4534" placeholder="SELECT w.Sta... wish" />
+            <marker date="1458076295000" expanded="true" signature="4220:4331" placeholder="SELECT wish_... wishContent" />
+            <marker date="1458076295000" expanded="true" signature="4701:4900" placeholder="SELECT * FRO... wish" />
+            <marker date="1458076295000" expanded="true" signature="5172:5221" placeholder="INSERT INTO `wish`... " />
+            <marker date="1458076295000" expanded="true" signature="5336:5407" placeholder="SELECT `Id` wish" />
+            <marker date="1458076295000" expanded="true" signature="5913:5997" placeholder="INSERT INTO `wishContent`... " />
+            <marker date="1458076295000" expanded="true" signature="6755:6804" placeholder="DELETE from " />
+            <marker date="1458076295000" expanded="true" signature="6968:7020" placeholder="SELECT `Id` talent" />
+            <marker date="1458076295000" expanded="true" signature="7171:7238" placeholder="INSERT INTO `talent_has_wish`... " />
+            <marker date="1458076295000" expanded="true" signature="7528:7619" placeholder="select count... wish" />
+            <marker date="1458076295000" expanded="true" signature="8295:9443" placeholder="SELECT wc.wi... " />
+            <marker date="1458076295000" expanded="true" signature="9541:9924" placeholder="select u.Dis... " />
+            <marker date="1458076295000" expanded="true" signature="10019:10430" placeholder="select u.Dis... " />
+            <marker date="1458076295000" expanded="true" signature="10528:10942" placeholder="select u.Dis... " />
+            <marker date="1458076295000" expanded="true" signature="11040:11453" placeholder="select u.Dis... " />
+            <marker date="1458076295000" expanded="true" signature="11548:11954" placeholder="select u.Dis... " />
+            <marker date="1458076295000" expanded="true" signature="12051:12459" placeholder="select u.Dis... " />
+            <marker date="1458076295000" expanded="true" signature="12557:12905" placeholder="select u.Dis... " />
+            <marker date="1458076295000" expanded="true" signature="13055:13107" placeholder="UPDATE wishC... " />
+            <marker date="1458076295000" expanded="true" signature="13156:13222" placeholder="UPDATE wishC... " />
+            <marker date="1458076295000" expanded="true" signature="13271:13322" placeholder="UPDATE wish " />
+            <marker date="1458076295000" expanded="true" signature="13429:13480" placeholder="UPDATE wishC... " />
+            <marker date="1458076295000" expanded="true" signature="13529:13594" placeholder="UPDATE wishC... " />
+            <marker date="1458076295000" expanded="true" signature="13643:13691" placeholder="UPDATE wish " />
+            <marker date="1458076295000" expanded="true" signature="13796:13850" placeholder="UPDATE wishC... " />
+            <marker date="1458076295000" expanded="true" signature="13896:13964" placeholder="UPDATE wishC... " />
+            <marker date="1458076295000" expanded="true" signature="14010:14059" placeholder="UPDATE wish " />
+            <marker date="1458076295000" expanded="true" signature="14164:14216" placeholder="UPDATE wishC... " />
+            <marker date="1458076295000" expanded="true" signature="14265:14329" placeholder="UPDATE wishC... " />
+            <marker date="1458076295000" expanded="true" signature="14378:14427" placeholder="UPDATE wish " />
+            <marker date="1458076295000" expanded="true" signature="14530:14669" placeholder="select u.Ema... " />
+            <marker date="1458076295000" expanded="true" signature="14815:15088" placeholder="SELECT wish.... wish" />
+            <marker date="1458076295000" expanded="true" signature="15522:15598" placeholder="select * fro... wishContent" />
+            <marker date="1458076295000" expanded="true" signature="15949:15998" placeholder="SELECT * FRO... talent_has_wish" />
+            <marker date="1458076295000" expanded="true" signature="16421:16463" placeholder="SELECT `Name... talent" />
+            <marker date="1458076295000" expanded="true" signature="16788:16880" placeholder="SELECT `wish... wishContent" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Includes/functions.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/View/home.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.12844037">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Controller/HomeController.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.29816514">
+          <caret line="13" column="5" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.13761468">
+          <caret line="6" column="1" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CSS/Style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="2.3761468">
+          <caret line="263" column="0" selection-start-line="263" selection-start-column="0" selection-end-line="263" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Controller/WishController.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.99661016">
+          <caret line="322" column="0" selection-start-line="322" selection-start-column="0" selection-end-line="322" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
