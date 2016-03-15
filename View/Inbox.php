@@ -9,16 +9,20 @@
 <div class="container">
 
 
-    {if isset($search)}
+    {if !isset($search)}
+    {assign var="search" value=""}
+    {else}
+    {assign var="search" value=htmlspecialchars($search)}
+    {/if}
+
+    {if isset($search) && $search != ""}
     <h1>{$title} - {$search}</h1>
     {else}
     <h1>{$title}</h1>
     {/if}
     <h3>{$folder}</h3>
 
-    {if !isset($search)}
-    {assign var="search" value=""}
-    {/if}
+
 
     <div class="col-sm-3">
         <a href="\Inbox\p={$page[0]}\action=new" class="btn btn-default" style="width:100%">Nieuw Bericht</a><br>
