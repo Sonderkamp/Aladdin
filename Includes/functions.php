@@ -52,6 +52,16 @@
         exit;
     }
 
+    function guaranteeLogin($page)
+    {
+        $controller = new AccountController();
+        $controller->guaranteeLogin($page);
+    }
+
+    function htmlspecialcharsWithNL($string)
+    {
+        return nl2br(htmlspecialchars($string));
+    }
     /**
      * Renders template, passing in values.
      */
@@ -62,7 +72,9 @@
         {
             // extract variables into local scope
             $smarty = new Smarty();
-            $smarty->assign($values);
+            $quote = new Quote();
+
+            $smarty->assign($values, $quote);
 
             if(!empty($_SESSION["user"]))
                 $smarty->assign("user", $_SESSION["user"]);

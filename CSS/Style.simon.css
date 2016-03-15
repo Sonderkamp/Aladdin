@@ -33,7 +33,7 @@
 }
 
 a {
-    color: #01665e;
+    color: #6666ff;
     text-decoration: none;
 }
 
@@ -64,14 +64,14 @@ a:hover {
 }
 
 .navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>li>a:focus {
-    color: white;
+    color: #1a1aff;
 }
 
 input[type="radio"]:before, .radio input[type="radio"]:before, .radio-inline input[type="radio"]:before {
     position: absolute;
     left: 0;
     top: -3px;
-    background-color: #01665e;
+    background-color: #ff9933;
     -webkit-transform: scale(0);
     -ms-transform: scale(0);
     -o-transform: scale(0);
@@ -79,20 +79,20 @@ input[type="radio"]:before, .radio input[type="radio"]:before, .radio-inline inp
 }
 
 input[type="radio"]:checked:after, .radio input[type="radio"]:checked:after, .radio-inline input[type="radio"]:checked:after {
-    border-color: #01665e;
+    border-color: #ff9933;
 }
 
 input[type="checkbox"]:checked:after, .checkbox input[type="checkbox"]:checked:after, .checkbox-inline input[type="checkbox"]:checked:after {
-    background-color: #01665e;
-    border-color: #01665e;
+    background-color: #ff9933;
+    border-color: #ff9933;
 }
 
 .navbar-default .navbar-nav > li > a {
-    color: lightgrey;
+    color: #6666ff;
 }
 
 .navbar {
-    background-color: #01665e;
+    background-color: #ff9933;
     heigth: 10px;
 }
 
@@ -108,7 +108,7 @@ body {
     margin: 0px;
     font-size: 25px;
     display: block;
-    color: lightgrey;
+    color: #6666ff;
 
 }
 
@@ -121,7 +121,7 @@ body {
 }
 
 .footer {
-    background-color: #01665e;
+    background-color: #ff9933;
     text-align: center;
 }
 
@@ -183,7 +183,7 @@ body {
 }
 
 .btn-add{
-    background-color: #35978f;
+    background-color: #ff9933;
     color: white;
 }
 
@@ -236,10 +236,10 @@ a:hover {
     padding-top: 30px;
 }
 
-.form-control::-webkit-input-placeholder { color: #35978f; }
-.form-control:-moz-placeholder { color: #35978f; }
-.form-control::-moz-placeholder { color: #35978f; }
-.form-control:-ms-input-placeholder { color: #35978f; }
+.form-control::-webkit-input-placeholder { color: #ff9933; }
+.form-control:-moz-placeholder { color: #ff9933; }
+.form-control::-moz-placeholder { color: #ff9933; }
+.form-control:-ms-input-placeholder { color: #ff9933; }
 
 .adminMessage{
     background-color: #dfc27d;
@@ -262,12 +262,12 @@ a:hover {
 }
 
 .text-color-green{
-    color: #35978f;
+    color: #6666ff;
 }
 
 .button-color-green{
     color: #ffffff;
-    background-color: #35978f;
+    background-color: #ff9933;
 }
 
 .small-margin-bot{
@@ -276,22 +276,18 @@ a:hover {
 
 .nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
     color: #ffffff;
-    background-color: #35978f;
+    background-color: #ff9933;
 }
 
 .pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
     color: #ffffff;
-    background-color: #35978f;
-    border-color: #35978f;
+    background-color: #ff9933;
+    border-color: #ff9933;
     cursor: default;
 }
 
 .pagination>li>a, .pagination>li>span {
-    color: #35978f;
+    color: #ff9933;
     background-color: #ffffff;
     border: 1px solid #dddddd;
-}
-
-.overflowhidden{
-    overflow: hidden;
 }

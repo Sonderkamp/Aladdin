@@ -75,4 +75,31 @@ class Database
         exit(1);
     }
 
+    public static function getPDO()
+    {
+        return Database::open();
+    }
+    public static function transaction_action_safe($pdo, $sql, $parameters)
+    {
+        try {
+
+            $statement = $pdo->prepare($sql);
+
+            if ($statement === false)
+                return false;
+            // execute SQL statement
+            $result = $statement->execute($parameters);
+
+            if ($result !== false) {
+                $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+                return $result;
+            } else {
+                return false;
+            }
+
+        } catch (PDOException $e) {
+            Database::printError($e);
+        }
+    }
 }

@@ -22,3 +22,15 @@ deprecated/
 
 # Mongo Explorer plugin:
 .idea/mongoSettings.xml
+.idea/workspace.xml
+
+# Templates folder
+templates_c/
+.idea/workspace.xml
+untitled/gebruikersoverzicht.php
+untitled/database.class.php
+untitled/.idea/.name
+untitled/.idea/copyright/profiles_settings.xml
+untitled/.idea/dictionaries/simon.xml
+.idea/workspace.xml
+.idea/workspace.xml

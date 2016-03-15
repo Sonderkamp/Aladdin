@@ -8,10 +8,12 @@
     <meta name="theme-color" content="#2196F3">
 
     <link rel="stylesheet" href="https://bootswatch.com/paper/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/CSS/shop-homepage.css">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/theme-default.min.css" rel="stylesheet" type="text/css"/>
+    <link href='https://fonts.googleapis.com/css?family=PT+Sans|Indie+Flower' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="/CSS/Style.css">
-    <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/theme-default.min.css"
-          rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="/CSS/Wish.css">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/theme-default.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="/CSS/charts.css">
 
     {if isset($title)}
     <title>Aladdin: {htmlspecialchars($title)}</title>
@@ -41,7 +43,7 @@
                 <span class="icon-bar"></span>
             </button>
 
-            <a class="navbar-brand" href="/">Aladdin</a>
+            <a class="navbar-brand pull-left" href="/"><img alt="logo" class="logo" src="/Resources/Images/logo.png"/> </a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -49,25 +51,49 @@
 
 
 
-            <form class="navbar-form navbar-left" role="search" action="/Catalogue" method="get">
-                <div class="form-group">
-                    <input name="search" id="search" type="text" class="form-control" placeholder="Search">
-                </div>
-                <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search search"></button>
-            </form>
-
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="/about/action=home"> <span class="glyphicon glyphicon glyphicon-home"></span> Over Aladdin</a></li>
+                {if isset($admin)}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        <span class="glyphicon glyphicon-eye-open"></span> Administrator<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/admin">Statistieken</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/">Wens Aanvragen</a></li>
+                        <li><a href="/">Talent aanvragen</a></li>
+                        <li><a href="/">Meldingen</a></li>
+                        <li><a href="/">Berichten Centrum</a></li>
+                        <li role="separator" class="divider">
+                        <li><a href="/">Gebruikers</a></li>
+                    </ul>
+                </li>
+                {/if}
+                {if isset($user)}
+                <li><a href="/wishes"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
+                <li><a href="/Inbox"> <span class="glyphicon glyphicon glyphicon-envelope"></span> Berichten</a></li>
+                <li><a href="/Talents"> <span class="glyphicon glyphicon-align-justify"></span> Talenten</a></li>
+                {/if}
+            </ul>
             <ul class="nav navbar-nav navbar-right">
 
 
                 {if isset($user)}
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">{$user->email}<span class="caret"></span></a>
+                       aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
+                        {$user->displayName}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/account">Mijn profiel</a></li>
+                        <li><a href="/profile">Mijn profiel</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="/account">Wensen</a></li>
+<!--                        -->
+<!--                        TIJDELIJK OM ADMIN WENS BEHEER MAKELIJKER TE BERIJKEN-->
+
+                        <li><a href="/AdminWish">Wens Beheer</a></li>
                         <li role="separator" class="divider"></li>
+<!--                        -->
+<!--                        -->
                         <li><a href="/account/action=logout">Log uit</a></li>
                     </ul>
                 </li>
