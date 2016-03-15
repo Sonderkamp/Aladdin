@@ -269,6 +269,11 @@ a:hover {
     color: #ffffff;
     background-color: #35978f;
 }
+    .button-color-green a{
+        color: #FFFFFF;
+    }
+
+
 
 .small-margin-bot{
     margin-bottom: 10px;

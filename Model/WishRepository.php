@@ -13,6 +13,7 @@ class WishRepository {
 
     /**
      * Creates array of wish objects with the params given in the $queryResult.
+     * And adds the user elements to the given objects
      * It is used to prevent duplicate code.
      * @param $queryResult
      * @return array
@@ -22,8 +23,14 @@ class WishRepository {
         $returnArray = array();
 
         for ($i = 0; $i < count($queryResult); $i++) {
-            $completed = false;
 
+            if(!isset($queryResult[$i]["max_date"])){
+                $queryResult[$i]["max_date"] = null;
+            }
+
+            $userElements = $this->getUser($queryResult[$i]["User"]);
+
+            $completed = false;
             if ($queryResult[$i]["Status"] == "Vervuld") {
                 $completed = true;
             }
@@ -31,6 +38,8 @@ class WishRepository {
             $returnArray[$i] = new Wish(
                 $queryResult[$i]["Id"],
                 $queryResult[$i]["User"],
+                $userElements[0]["DisplayName"],
+                $userElements[0]["City"],
                 $queryResult[$i]["Title"],
                 $completed,
                 $queryResult[$i]["Content"],
@@ -43,6 +52,11 @@ class WishRepository {
 
         return $returnArray;
     }
+
+    private function getUser($email){
+        return Database::query_safe("SELECT DisplayName, City FROM user WHERE user.Email = ?" , array($email));
+    }
+
 
     /**
      * @return array of wishes where user == current user
@@ -366,24 +380,10 @@ class WishRepository {
 
         if($result != null){
 
-            $completed = false;
-            if($result[0]["Status"] == "Vervuld"){
-                $completed = true;
-            }
-
-            $selectedWish = new Wish(
-                $result[0]["Id"],
-                $result[0]["User"],
-                $result[0]["Title"],
-                $completed,
-                $result[0]["Content"],
-                $result[0]["IsAccepted"],
-                null,
-                $result[0]["Date"],
-                $result[0]["Status"]
-            );
+            $selectedWish = $this->getReturnArray($result)[0];
 
             return $selectedWish;
+
         } else {
             apologize("404 wens kan niet worden gevonden");
         }

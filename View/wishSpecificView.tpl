@@ -52,7 +52,7 @@
 
             <div class="row">
                 <label class="col-sm-4">Wenser: </label>
-                <div class="col-sm-8">{$selectedWish->user}</div>
+                <div class="col-sm-8">{$selectedWish->userDisplayName}</div>
             </div>
 
             <div class="row">
@@ -62,7 +62,7 @@
 
             <div class="row">
                 <label class="col-sm-4">Stad: </label>
-                <div class="col-sm-8">Misschien de stad van de user?</div>
+                <div class="col-sm-8">{$selectedWish->userCity}</div>
             </div>
 
         </div>
