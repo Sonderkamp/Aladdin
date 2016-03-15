@@ -463,4 +463,15 @@ class TalentRepository
         ",
             Array(1, "Admin", $id));
     }
+
+    public function getSelectedUserTalents($user)
+    {
+        $result = Database::query_safe
+        ("select Name as name
+from talent as t
+inner join talent_has_user as tu on t.Id = tu.talent_Id
+where tu.user_Email = ?",array($user));
+
+        return $result;
+    }
 }
