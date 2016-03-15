@@ -91,7 +91,6 @@ class TalentRepository
           `talent`.`moderator_Username`,
           `talent`.`user_Email`
           FROM `talent`
-          LEFT JOIN `talent_has_user` ON `talent`.`Id` = `talent_has_user`.`talent_Id`
           WHERE `talent`.`Id` NOT IN
               (SELECT `talent_Id`
               FROM `talent_has_user`
@@ -134,7 +133,6 @@ class TalentRepository
           `talent`.`moderator_Username`,
           `talent`.`user_Email`
           FROM `talent`
-          LEFT JOIN `talent_has_user` ON `talent`.`Id` = `talent_has_user`.`talent_Id`
           WHERE `talent`.`Id` NOT IN
               (SELECT `talent_Id`
               FROM `talent_has_user`
@@ -403,7 +401,6 @@ class TalentRepository
         $result = Database::query_safe
         ("SELECT COUNT(`talent`.`Id`) AS `Number_of_talents`
           FROM `talent`
-          LEFT JOIN `talent_has_user` ON `talent`.`Id` = `talent_has_user`.`talent_Id`
           WHERE `talent`.`Id` NOT IN
               (SELECT `talent_Id`
               FROM `talent_has_user`
