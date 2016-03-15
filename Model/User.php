@@ -508,7 +508,7 @@ from adminBlock
 
     public function getLastBlockStatus($username)
     {
-        // query om alle blocks van een user te zien
+        // query om de laatste block van een user te zien
         $result = Database::query_safe("SELECT Block_Id,BlockDate,user_Email,IsBlocked as IsBlocked
 from adminBlock
 where BlockDate =

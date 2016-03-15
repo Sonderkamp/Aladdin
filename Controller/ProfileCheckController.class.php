@@ -64,11 +64,22 @@ class ProfileCheckController
     return $usermodel->getLastBlockStatus($user);
 }
 
+    private function getWishes($user)
+    {
+        $wishmodel = new WishRepository();
+        return $wishmodel->getUserWishes($user);
+    }
+
+    private function getTalents($user)
+    {
+        $wishmodel = new TalentRepository();
+        return $wishmodel->getSelectedUserTalents($user);
+    }
 
     private function renderProfilePage($user)
     {
 
-        render("profilecheck.php", ["title" => "Profiel", "cuser" => $this->getUserCheck($user), "blockstatus" => $this->getLastBlockStatus($user)]);
+        render("profilecheck.php", ["title" => "Profiel", "cuser" => $this->getUserCheck($user), "blockstatus" => $this->getLastBlockStatus($user),"wishes" => $this->getWishes($user),"talents" => $this->getTalents($user)]);
         exit();
     }
 
