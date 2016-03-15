@@ -573,3 +573,30 @@
 
                     </div>
                 </div>
+                <div id="denyModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Uitleg</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>Hier vind u uitleg over de icoontjes die in het wensbeheer system voor komen:</p>
+                                <p><button  class="btn btn-sm"><span class="glyphicon glyphicon-eye-open"></button></span> Opent een pagina waar je de bijbehorende wens in kan zien</p>
+                                <p><button  class="btn btn-sm"><span class="glyphicon glyphicon glyphicon-ok"></button></span> Accepteert de wens</p>
+                                <p><button  class="btn btn-sm"><span class="glyphicon glyphicon glyphicon-remove"></button></span> Weigert de wens</p>
+                                <p><button  class="btn btn-sm"><span class="glyphicon glyphicon glyphicon-user"></button></span> Gaat naar profiel pagina van een gebruiker</p>
+                                <p><button  class="btn btn-sm"><span class="glyphicon glyphicon glyphicon-refresh"></button></span> Gekozen wens gaat terug naar aangevraagde wensen</p>
+                                <p><button  class="btn btn-sm"><span class="glyphicon glyphicon glyphicon glyphicon-trash"></button></span> Verwijderd wens</p>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Sluiten</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
