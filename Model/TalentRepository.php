@@ -6,8 +6,10 @@
  * Date: 6-3-2016
  * Time: 16:35
  */
-class TalentRepository {
-    public function getAllTalentsName() {
+class TalentRepository
+{
+    public function getAllTalentsName()
+    {
         $result = Database::query
         ("SELECT `talent`.`Name`
           FROM `talent`");
@@ -79,7 +81,8 @@ class TalentRepository {
         return $returnArray;
     }
 
-    public function getTalentsWithoutAdded() {
+    public function getTalentsWithoutAdded()
+    {
         $result = Database::query_safe
         ("SELECT `talent`.`Id`,
           `talent`.`Name`,
@@ -89,7 +92,6 @@ class TalentRepository {
           `talent`.`moderator_Username`,
           `talent`.`user_Email`
           FROM `talent`
-          LEFT JOIN `talent_has_user` ON `talent`.`Id` = `talent_has_user`.`talent_Id`
           WHERE `talent`.`Id` NOT IN
               (SELECT `talent_Id`
               FROM `talent_has_user`
@@ -119,7 +121,8 @@ class TalentRepository {
         return $returnArray;
     }
 
-    public function getSelectionTalents($value) {
+    public function getSelectionTalents($value)
+    {
         // TODO: check if value is number
         $value -= 1;
         $value *= 10;
@@ -132,7 +135,6 @@ class TalentRepository {
           `talent`.`moderator_Username`,
           `talent`.`user_Email`
           FROM `talent`
-          LEFT JOIN `talent_has_user` ON `talent`.`Id` = `talent_has_user`.`talent_Id`
           WHERE `talent`.`Id` NOT IN
               (SELECT `talent_Id`
               FROM `talent_has_user`
@@ -163,7 +165,8 @@ class TalentRepository {
         return $returnArray;
     }
 
-    public function getSelectionUserTalents($value) {
+    public function getSelectionUserTalents($value)
+    {
         // TODO: check if value is number
         $value -= 1;
         $value *= 10;
@@ -201,7 +204,8 @@ class TalentRepository {
         return $returnArray;
     }
 
-    public function getUserTalents() {
+    public function getUserTalents()
+    {
         $result = Database::query_safe
         ("SELECT `talent`.`Id`,
           `talent`.`Name`,
@@ -235,7 +239,8 @@ class TalentRepository {
         return $returnArray;
     }
 
-    public function getRequestedTalents($value) {
+    public function getRequestedTalents($value)
+    {
         $value -= 1;
         $value *= 10;
         $result = Database::query
@@ -271,7 +276,8 @@ class TalentRepository {
         return $returnArray;
     }
 
-    public function deleteTalentFromUser($id) {
+    public function deleteTalentFromUser($id)
+    {
         Database::query_safe
         ("DELETE FROM `talent_has_user`
           WHERE `talent_has_user`.`talent_Id` = ?
@@ -279,14 +285,16 @@ class TalentRepository {
             array($id, $_SESSION["user"]->email));
     }
 
-    public function addTalentToUser($id) {
+    public function addTalentToUser($id)
+    {
         Database::query_safe
         ("INSERT INTO `talent_has_user` (`talent_Id`, `user_Email`)
           VALUES (?, ?)",
             array($id, $_SESSION["user"]->email));
     }
 
-    public function addTalent($name) {
+    public function addTalent($name)
+    {
         $talentToLower = strtolower($name);
         $correctTalent = ucfirst($talentToLower);
 
@@ -298,10 +306,11 @@ class TalentRepository {
           VALUES (?, CURRENT_TIMESTAMP, NULL, NULL, NULL, ?)",
                 array($correctTalent, $_SESSION["user"]->email));
         }
-            array(ucfirst(strtolower(trim($name))),$_SESSION["user"]->email);
+        array(ucfirst(strtolower(trim($name))), $_SESSION["user"]->email);
     }
 
-    public function checkNumberOfTalentsFromUser() {
+    public function checkNumberOfTalentsFromUser()
+    {
         $result = Database::query_safe
         ("SELECT COUNT(`user_Email`) AS `Number_of_talents`
           FROM `talent_has_user`
@@ -310,11 +319,11 @@ class TalentRepository {
         return $result[0]["Number_of_talents"];
     }
 
-    public function checkNumberOfTalents() {
+    public function checkNumberOfTalents()
+    {
         $result = Database::query_safe
         ("SELECT COUNT(`talent`.`Id`) AS `Number_of_talents`
           FROM `talent`
-          LEFT JOIN `talent_has_user` ON `talent`.`Id` = `talent_has_user`.`talent_Id`
           WHERE `talent`.`Id` NOT IN
               (SELECT `talent_Id`
               FROM `talent_has_user`
@@ -328,7 +337,8 @@ class TalentRepository {
         return $result[0]["Number_of_talents"];
     }
 
-    public function checkNumberOfRequestedTalents() {
+    public function checkNumberOfRequestedTalents()
+    {
         $result = Database::query
         ("SELECT  COUNT(`talent`.`Id`) AS `Number_of_talents`
           FROM `talent`
@@ -339,13 +349,15 @@ class TalentRepository {
         return $result[0]["Number_of_talents"];
     }
 
-    public function getAllTalents() {
+    public function getAllTalents()
+    {
         $query = "SELECT `Name` FROM `talent` WHERE `isRejected`=? ORDER BY `Name` ASC";
         $array = array(1);
         return Database::query_safe($query, $array);
     }
 
-    public function getAllTalentNames($allTalents) {
+    public function getAllTalentNames($allTalents)
+    {
         $array = $allTalents;
         $allTags = array();
         foreach ($array as $value) {
@@ -362,7 +374,18 @@ class TalentRepository {
         ("UPDATE `talent`
           SET`Name`=?
           WHERE `Id`=?",
-            Array($name,$id));
+            Array($name, $id));
+    }
+
+    public function getSelectedUserTalents($user)
+    {
+        $result = Database::query_safe
+        ("select Name as name
+          from talent as t
+          inner join talent_has_user as tu on t.Id = tu.talent_Id
+          where tu.user_Email = ?", array($user));
+
+        return $result;
     }
 
 }

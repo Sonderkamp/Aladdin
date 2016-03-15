@@ -9,16 +9,20 @@
 <div class="container">
 
 
-    {if isset($search)}
+    {if !isset($search)}
+    {assign var="search" value=""}
+    {else}
+    {assign var="search" value=htmlspecialchars($search)}
+    {/if}
+
+    {if isset($search) && $search != ""}
     <h1>{$title} - {$search}</h1>
     {else}
     <h1>{$title}</h1>
     {/if}
     <h3>{$folder}</h3>
 
-    {if !isset($search)}
-    {assign var="search" value=""}
-    {/if}
+
 
     <div class="col-sm-3">
         <a href="\Inbox\action=new" class="btn btn-default" style="width:100%">Nieuw Bericht</a><br>
@@ -62,7 +66,7 @@
         {if $message->adminSender}
         <div class="panel panel-default adminMessage">
             {else}
-            <div class="panel panel-default">
+            <div class="panel panel-default overflowhidden">
                 {/if}
                 <div class="panel-body">
                     <a href="\Inbox\folder={$folderShortcut}\message={$message->id}" class="title">{$message->title}</a> <span

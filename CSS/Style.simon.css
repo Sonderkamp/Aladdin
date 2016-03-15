@@ -13,24 +13,30 @@
 .buttongroup{
     margin-bottom: 10px;
 }
+
 .buttongrid{
     border-top: 1px solid gray;
 }
+
 .btn-inbox:focus,.btn-inbox:active,.btn-inbox:visited {
     color: white;
 }
+
 .btn-add:focus,.btn-add:active,.btn-add:visited {
     color: white;
 }
+
 .logo{
     margin-top: -27px;
     margin-left: -10px;
     height: 75px;
 }
+
 a {
-    color: #01665e;
+    color: #6666ff;
     text-decoration: none;
 }
+
 a:hover {
     color: #E63946;
     text-decoration: none;
@@ -39,6 +45,7 @@ a:hover {
 .white{
     background-color: white;
 }
+
 .title{
     font-size: 25px;
 }
@@ -50,20 +57,21 @@ a:hover {
 .infoLeft{
     float: left;
 }
+
 .barBadge{
     margin-top: -3px;
     background-color: #8c510a;
 }
 
 .navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>li>a:focus {
-    color: white;
+    color: #1a1aff;
 }
 
 input[type="radio"]:before, .radio input[type="radio"]:before, .radio-inline input[type="radio"]:before {
     position: absolute;
     left: 0;
     top: -3px;
-    background-color: #01665e;
+    background-color: #ff9933;
     -webkit-transform: scale(0);
     -ms-transform: scale(0);
     -o-transform: scale(0);
@@ -71,23 +79,22 @@ input[type="radio"]:before, .radio input[type="radio"]:before, .radio-inline inp
 }
 
 input[type="radio"]:checked:after, .radio input[type="radio"]:checked:after, .radio-inline input[type="radio"]:checked:after {
-    border-color: #01665e;
+    border-color: #ff9933;
 }
 
 input[type="checkbox"]:checked:after, .checkbox input[type="checkbox"]:checked:after, .checkbox-inline input[type="checkbox"]:checked:after {
-    background-color: #01665e;
-    border-color: #01665e;
+    background-color: #ff9933;
+    border-color: #ff9933;
 }
 
 .navbar-default .navbar-nav > li > a {
-    color: lightgrey;
+    color: #6666ff;
 }
 
 .navbar {
-    background-color: #01665e;
+    background-color: #ff9933;
     heigth: 10px;
 }
-
 
 body {
     background-color: #E9EAED;
@@ -101,7 +108,7 @@ body {
     margin: 0px;
     font-size: 25px;
     display: block;
-    color: lightgrey;
+    color: #6666ff;
 
 }
 
@@ -114,7 +121,7 @@ body {
 }
 
 .footer {
-    background-color: #01665e;
+    background-color: #ff9933;
     text-align: center;
 }
 
@@ -169,14 +176,17 @@ body {
     -moz-border-radius: 6px 0 6px 6px;
     border-radius: 6px 0 6px 6px;
 }
+
 .btn-inbox{
     background-color: #E63946;
     color: white;
 }
+
 .btn-add{
-    background-color: #35978f;
+    background-color: #ff9933;
     color: white;
 }
+
 .dropdown{
     padding-right: 50px;
 }
@@ -187,6 +197,7 @@ body {
     border-top-left-radius: 0;
     margin-right: 50px;
 }
+
 .addbutton {
     display: block;
     width: 100%;
@@ -225,38 +236,39 @@ a:hover {
     padding-top: 30px;
 }
 
-.form-control::-webkit-input-placeholder { color: #35978f; }
-.form-control:-moz-placeholder { color: #35978f; }
-.form-control::-moz-placeholder { color: #35978f; }
-.form-control:-ms-input-placeholder { color: #35978f; }
+.form-control::-webkit-input-placeholder { color: #ff9933; }
+.form-control:-moz-placeholder { color: #ff9933; }
+.form-control::-moz-placeholder { color: #ff9933; }
+.form-control:-ms-input-placeholder { color: #ff9933; }
 
 .adminMessage{
     background-color: #dfc27d;
 }
+
 .message{
     min-height: 300px;
 }
-.noPadding
-{
+
+.noPadding{
     display: inline;
+}
+
+.smallColumn{
+    width: 1%;
 }
 
 .talent-table{
     height: 500px;
 }
+
 .text-color-green{
-    color: #35978f;
+    color: #6666ff;
 }
 
 .button-color-green{
     color: #ffffff;
-    background-color: #35978f;
+    background-color: #ff9933;
 }
-    .button-color-green a{
-        color: #FFFFFF;
-    }
-
-
 
 .small-margin-bot{
     margin-bottom: 10px;
@@ -264,22 +276,18 @@ a:hover {
 
 .nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
     color: #ffffff;
-    background-color: #35978f;
+    background-color: #ff9933;
 }
 
 .pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
     color: #ffffff;
-    background-color: #35978f;
-    border-color: #35978f;
+    background-color: #ff9933;
+    border-color: #ff9933;
     cursor: default;
 }
 
 .pagination>li>a, .pagination>li>span {
-    color: #35978f;
+    color: #ff9933;
     background-color: #ffffff;
     border: 1px solid #dddddd;
-}
-
-.overflowhidden{
-    overflow: hidden;
 }
