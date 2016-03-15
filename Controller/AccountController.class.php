@@ -309,12 +309,18 @@ class AccountController
         }
     }
 
+
+
     private function manage()
     {
-        // todo: render user-manage screen
-        echo $_SESSION["user"]->email;
-        exit();
-    }
+        //        // todo: render user-manage screen
+        //        echo $_SESSION["user"]->email;
+
+        render("account.php", ["title" => "account"]);
+         exit();
+     }
+
+
 
     /**
      * Logs out current user, if any.  Based on Example #1 at
