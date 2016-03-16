@@ -60,8 +60,9 @@
                 <thead>
                 <tr>
                     <th>Gebruiker</th>
-                    <th>Title</th>
-                    <th>Content</th>
+                    <th>Onderwerp</th>
+                    <th>Omschrijving</th>
+                    <th>Status</th>
                     <th class="smallColumn"></th>
                     <th class="smallColumn"></th>
                     <th class="smallColumn"></th>
@@ -70,9 +71,11 @@
                 <tbody>
                 {foreach from=$wishes item=wish}
                     <tr>
-                        <td>{$wish -> user}</td>
+                        <td>{$wish -> userDisplayName}</td>
+                        <td>{$wish -> userCity}</td>
                         <td>{$wish -> title}</td>
                         <td>{$wish -> content}</td>
+                        <td>{$wish -> status}</td>
                         <td>
                             <form method="post">
                                 <button class="btn btn-default"

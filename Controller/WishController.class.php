@@ -167,8 +167,6 @@ class WishController {
             $this->title = $_GET["title"];
             $this->description = $_GET["description"];
             $this->tag = $_GET["tag"];
-            $this->city = $_GET["city"];
-            $this->country = $_GET["country"];
 
             $tags = $this->wishRepository->getAllTalents();
 //            echo $this->gethashtags($this->tag);
@@ -189,8 +187,6 @@ class WishController {
             $newWish["title"] = $this->title;
             $newWish["description"] = $this->description;
             $newWish["tag"] = $this->tag;
-            $newWish["city"] = $this->city;
-            $newWish["country"] = $this->country;
             $newWish["isAccepted"] = $this->isAccepted;
 
             // send the array to the repository to add to the database
@@ -204,7 +200,7 @@ class WishController {
 
         $selectedWish = $this->wishRepository->getWish($id);
 
-        if($selectedWish->user != null) {
+        if($selectedWish->userEmail != null) {
             render("wishSpecificView.tpl", ["title" => "Wens: " . $id, "selectedWish" => $selectedWish, "previousPage" => $previousPage]);
         } else {
             apologize("404 wish not found. Please wish for a better website!");
@@ -220,31 +216,68 @@ class WishController {
             $title = $_GET["title"];
             $description = $_GET["description"];
             $tag = $_GET["tag"];
-            $city = $_GET["city"];
-            $country = $_GET["country"];
 
-            if (!Empty($title))
+            $valid = true;
+            $validTag = true;
+
+            if (!Empty($title)) {
                 $this->title = $title;
-            if (!Empty($description))
+            } else
+                $valid = false;
+            if (!Empty($description)) {
                 $this->description = $description;
-            if (!Empty($tag))
+            } else
+                $valid = false;
+            if (!Empty($tag)) {
                 $this->tag = $tag;
-            if (!Empty($city))
-                $this->city = $city;
-            if (!Empty($country))
-                $this->country = $country;
+            } else
+                $valid = false;
+
+            $tagErrorMessage = "een tag moet minimaal uit 3 tekens bestaan en beginnen met een #";
+            if (!$validTag) {
+                render("addWish.php", ["error" => "vul AUB alles in!", "wishtitle" => $this->title,
+                    "description" => $this->description, "tag" => $this->tag, "tagerror" => $tagErrorMessage, "edit" => "isset"]);
+                exit(1);
+            }
+
+            if (!$valid) {
+                render("addWish.php", ["error" => "vul AUB alles in!", "wishtitle" => $this->title,
+                    "description" => $this->description, "tag" => $this->tag, "edit" => "isset"]);
+                exit(1);
+            }
+
+
+            $allTags = $this->gethashtags($this->tag);
+            $myArray = explode(',', $allTags);
+            $new_array = array_map('ucfirst', $myArray);
 
             // create an array with the wish
             $editWish = array();
             $editWish["title"] = $this->title;
             $editWish["description"] = $this->description;
-            $editWish["tag"] = $this->tag;
-            $editWish["city"] = $this->city;
-            $editWish["country"] = $this->country;
+            $editWish["tag"] = $new_array;
 
-            if(isset($_SESSION["wishcontentid"])){
+            if (isset($_SESSION["wishcontentid"])) {
                 $id = $_SESSION["wishcontentid"];
                 $this->wishRepository->wishContentQuery($editWish, $id);
+
+                $head = "Beste, \n\n";
+                $msg = "Uw wensweiziging is ingedient, uw wens zal na goedkeuring zichtbaar zijn voor anderen, we houden u hiervan nog op de hoogte.\n\n";
+                $wish = "Uw nieuwe wens is als volgt: \n";
+                $wishName = "Naam van de wens: \t\t" . $this->title . " \n";
+                $wishDescription = "Beschrijving van de wens: \t" . $this->description . "\n";
+                $allTagsForMail = implode(' #', $new_array);
+                $wishTags = "Uw tags zijn: \t\t\t\t#" . $allTagsForMail . "\n\n";
+                $end = "Vriendelijke groeten, \n\n Alladin";
+
+                $message = $head . $msg . $wish . $wishName . $wishDescription . $wishTags . $end;
+
+                $mail = new Email();
+                $mail->fromName = "Alladin";
+                $mail->subject = "Wens is gewijzigd";
+                $mail->message = $message;
+                $mail->to = $_SESSION["user"]->email;
+                $mail->sendMail();
             }
 
             $this->go_back();
