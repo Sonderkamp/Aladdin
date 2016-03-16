@@ -9,13 +9,22 @@
 class WishRepository
 {
 
-    private $email;
-    private $WISH_LIMIT = 100;
-
-    private $talentRepository;
+    private $talentRepository,
+            $email,
+            $maxContentLength = 50,
+            $WISH_LIMIT = 100;
 
     public function __construct() {
         $this->talentRepository = new TalentRepository();
+    }
+
+    private function checkWishContent($string){
+        if(strlen($string) > $this->maxContentLength){
+            $returnString = substr($string , 0, $this->maxContentLength);
+            $returnString = $returnString . '...';
+            return $returnString;
+        }
+        return $string;
     }
 
     /**
@@ -35,6 +44,8 @@ class WishRepository
             if (!isset($queryResult[$i]["max_date"])) {
                 $queryResult[$i]["max_date"] = null;
             }
+
+            $queryResult[$i]["Content"] = $this->checkWishContent($queryResult[$i]["Content"]);
 
             $userElements = $this->getUser($queryResult[$i]["User"]);
 

@@ -95,6 +95,7 @@ class WishController {
         $mywishes = $this->wishRepository->getMyWishes();
 
         $canAddWish = $this->wishRepository->canAddWish($_SESSION["user"]->email);
+
         render("wishOverview.tpl", ["title" => "Wensen overzicht", "wishes" => $mywishes, "canAddWish" => $canAddWish , "currentPage" => $this->currentPage]);
     }
 
