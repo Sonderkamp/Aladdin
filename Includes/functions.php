@@ -72,7 +72,9 @@
         {
             // extract variables into local scope
             $smarty = new Smarty();
-            $smarty->assign($values);
+            $quote = new Quote();
+
+            $smarty->assign($values, $quote);
 
             if(!empty($_SESSION["user"]))
                 $smarty->assign("user", $_SESSION["user"]);

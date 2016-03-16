@@ -13,24 +13,30 @@
 .buttongroup{
     margin-bottom: 10px;
 }
+
 .buttongrid{
     border-top: 1px solid gray;
 }
+
 .btn-inbox:focus,.btn-inbox:active,.btn-inbox:visited {
     color: white;
 }
+
 .btn-add:focus,.btn-add:active,.btn-add:visited {
     color: white;
 }
+
 .logo{
     margin-top: -27px;
     margin-left: -10px;
     height: 75px;
 }
+
 a {
     color: #01665e;
     text-decoration: none;
 }
+
 a:hover {
     color: #E63946;
     text-decoration: none;
@@ -39,6 +45,7 @@ a:hover {
 .white{
     background-color: white;
 }
+
 .title{
     font-size: 25px;
 }
@@ -50,6 +57,7 @@ a:hover {
 .infoLeft{
     float: left;
 }
+
 .barBadge{
     margin-top: -3px;
     background-color: #8c510a;
@@ -169,14 +177,17 @@ body {
     -moz-border-radius: 6px 0 6px 6px;
     border-radius: 6px 0 6px 6px;
 }
+
 .btn-inbox{
     background-color: #E63946;
     color: white;
 }
+
 .btn-add{
     background-color: #35978f;
     color: white;
 }
+
 .dropdown{
     padding-right: 50px;
 }
@@ -187,6 +198,7 @@ body {
     border-top-left-radius: 0;
     margin-right: 50px;
 }
+
 .addbutton {
     display: block;
     width: 100%;

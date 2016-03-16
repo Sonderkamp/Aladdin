@@ -9,17 +9,16 @@
 class AdminWishController
 {
     private $page;
-
     public function __construct()
     {
         guaranteeLogin("/AdminWish");
 
-        if (!isset($this->page)) {
+        if (!isset($this->page))
+        {
 
-            $this->page = "requested";
+        $this->page = "requested";
         }
     }
-
     public function run()
     {
         guaranteeLogin("/AdminWish");
