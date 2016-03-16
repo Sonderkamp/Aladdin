@@ -11,7 +11,6 @@ class User
     public $email, $isAdmin, $name, $surname, $token, $address,
         $handicap, $postalcode, $country, $city, $dob, $gender, $displayName, $initials;
 
-
     public function validate($username, $password)
     {
         if ($this->validateUsername($username)) {
@@ -519,6 +518,15 @@ max(adminBlock.BlockDate) AS max_date
               where user_Email = ?)
               order by BlockDate asc", array($username));
         $result = $result[0];
+        return $result;
+    }
+
+    public function getAllBlocks($user)
+    {
+        $result = Database::query_safe("SELECT Block_Id ,BlockDate as bdate,IsBlocked as isblocked
+              from adminBlock
+              where user_Email = ?
+              order by Block_Id desc", array($user));
         return $result;
     }
 
