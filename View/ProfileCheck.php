@@ -94,21 +94,26 @@
                 <thead>
                 <tr>
                     <th>Titel</th>
-                    <th>Land</th>
-                    <th>Plaats</th>
+                    <th width="1%">Status</th>
+                    <th width="1%">Wens</th>
                 </tr>
                 </thead>
             {foreach from=$wishes item=wish}
                 <tr>
             <td>{$wish.title|escape:"html"}</td>
-                <td>{$wish.country}</td>
-                <td>{$wish.city}</td>
-                </tr>
+                    <td>{$wish.status}</td>
+                <td>
+                    <form method="post">
+                    <button type="submit"  formaction="/Wishes/wish_id={$wish.wishid}"><span class="glyphicon glyphicon-eye-open"></span></button>
+                    </form>
+
+                </td>
+
             {/foreach}
                 </table>
 
 
-                <div class="col-lg-8 ">
+                <div class="col-lg-6 ">
                     <h5>Talenten</h5>
 
                     <hr/>
@@ -125,6 +130,28 @@
                         {/foreach}
                     </table>
                     </div>
+            <div class="col-lg-6 ">
+                <h5>Blokkeergeschiedenis</h5>
+
+                <hr/>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Blokkeergeschiedenis</th>
+                    </tr>
+                    </thead>
+                    {foreach from=$blocks item=block item=i}
+                    <tr>
+                        <td>{$i.bdate}</td>
+                        {if {$i.isblocked} eq 1}
+                        <td>Geblokeerd</td>
+                        {else}
+                        <td>Gedeblokeerd</td>
+                        {/if}
+                    </tr>
+                    {/foreach}
+                </table>
+            </div>
         </div>
 
 

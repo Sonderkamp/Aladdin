@@ -76,10 +76,17 @@ class ProfileCheckController
         return $wishmodel->getSelectedUserTalents($user);
     }
 
+    private function getBlocks($user)
+    {
+        $usermodel = new User();
+        return $usermodel->getAllBlocks($user);
+    }
+
+
     private function renderProfilePage($user)
     {
 
-        render("profilecheck.php", ["title" => "Profiel", "cuser" => $this->getUserCheck($user), "blockstatus" => $this->getLastBlockStatus($user),"wishes" => $this->getWishes($user),"talents" => $this->getTalents($user)]);
+        render("profilecheck.php", ["title" => "Profiel", "cuser" => $this->getUserCheck($user), "blockstatus" => $this->getLastBlockStatus($user),"wishes" => $this->getWishes($user),"talents" => $this->getTalents($user),"blocks" => $this->getBlocks($user)]);
         exit();
     }
 
