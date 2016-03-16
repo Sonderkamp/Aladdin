@@ -264,8 +264,8 @@ class User
 
     public function createDislay($arr)
     {
-        $arr["initial"] = trim($arr["initial"], '.');
-        $name = $arr["initial"] . ". " . $arr["surname"];
+        $arr["initial"] = strtoupper(trim($arr["initial"], '.'));
+        $name = $arr["initial"] . ". " . ucfirst($arr["surname"]);
 
         // first try
         $res = Database::query_safe("SELECT count(*) AS Counter FROM `user` WHERE DisplayName LIKE ? ", array($name));
@@ -441,7 +441,7 @@ class User
 
         $arr["username"] = strtolower(trim($arr["email"]));
         $arr["name"] = strtolower(trim($arr["name"]));
-        $arr["surname"] = trim($arr["surname"]);
+        $arr["surname"] = ucfirst(trim($arr["surname"]));
         $arr["address"] = strtolower(trim($arr["address"]));
         $arr["postalcode"] = strtoupper(trim($arr["postalcode"]));
         $arr["country"] = strtolower(trim($arr["country"]));
@@ -457,7 +457,7 @@ class User
         $d = DateTime::createFromFormat('d-m-Y', $arr["dob"]);
         if (!($this->initials == $_POST["initials"] && $this->surname == $_POST["surname"])) {
 
-        $newname = array("initial" => $_POST["initials"], "surname" => $_POST["surname"]);
+        $newname = array("initial" => $arr["initial"], "surname" => $arr["surname"]);
         $newdisplay = $this->createDislay($newname);
         }
         else{
@@ -467,6 +467,7 @@ class User
         Database::query_safe("UPDATE user SET `name`=?, `Surname`=?, `Address`=?,`postalcode`=?,`country`=?,`city`=?,`Dob`=?,`initials`=?,`gender`=?,`handicap`=?,`DisplayName`=?  WHERE Email=?", Array($arr["name"], $arr["surname"], $arr["address"], $arr["postalcode"], $arr["country"], $arr["city"], $d->format('Y-m-d'), $arr["initial"], $arr["gender"], $arr["handicap"],$newdisplay, $arr["username"]));
 //        Database::query_safe("UPDATE user SET `name`=?, `Surname`=? WHERE Email=?", Array($arr["name"],$arr["surname"],$arr["email"]));
 
+        ;
 
         $this->name = $arr["name"];
         $this->surname = $arr["surname"];
