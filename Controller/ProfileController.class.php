@@ -77,12 +77,13 @@ class ProfileController
     private function manage()
     {
 
-        render("account.php", ["title" => "profile", "error" => ""]);
+        render("account.php", ["title" => "profile", "error" => "","errorc" => ""]);
         exit();
     }
 
     private function changeDetails()
     {
+        $usermodel = new User();
 
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -96,34 +97,39 @@ class ProfileController
                 || Empty($_POST["dob"])
                 || Empty($_POST["gender"])
             ) {
-                render("account.php", ["title" => "profile", "error" => "Vul AUB alles in"]);
+                render("account.php", ["title" => "profile", "error" => "Vul AUB alles in","errorc" => ""]);
                 exit(1);
             }
+            $array = array("username" => $_POST["email"],"name" => $_POST["name"],"surname" => $_POST["surname"],"address" => $_POST["address"],"postalcode" => $_POST["postalcode"],"country" => $_POST["country"],"city" => $_POST["city"],"dob" => $_POST["dob"],"initial" => $_POST["initials"],"gender" => $_POST["gender"]);
 
-            $arr = [];
-            $arr["email"] = strtolower(filter_var($_POST["email"], FILTER_SANITIZE_EMAIL));
+            if ($usermodel->validateUser($array)) {
+                $arr = [];
+                $arr["email"] = strtolower(filter_var($_POST["email"], FILTER_SANITIZE_EMAIL));
 
-            $arr["name"] = strtolower($_POST["name"]);
-            $arr["surname"] = $_POST["surname"];
-            $arr["address"] = $_POST["address"];
-            $arr["postalcode"] = $_POST["postalcode"];
-            $arr["country"] = $_POST["country"];
-            $arr["city"] = $_POST["city"];
-            $arr["dob"] = $_POST["dob"];
-            $arr["initials"] = $_POST["initials"];
-            $arr["gender"] = $_POST["gender"];
+                $arr["name"] = strtolower($_POST["name"]);
+                $arr["surname"] = $_POST["surname"];
+                $arr["address"] = $_POST["address"];
+                $arr["postalcode"] = $_POST["postalcode"];
+                $arr["country"] = $_POST["country"];
+                $arr["city"] = $_POST["city"];
+                $arr["dob"] = $_POST["dob"];
+                $arr["initials"] = $_POST["initials"];
+                $arr["gender"] = $_POST["gender"];
 
-            if (Empty($_POST["handicap"]))
-                $arr["handicap"] = false;
-            else
-                $arr["handicap"] = true;
+                if (Empty($_POST["handicap"]))
+                    $arr["handicap"] = false;
+                else
+                    $arr["handicap"] = true;
 
-            echo $_SESSION["user"]->checkPassword($_SESSION["user"]->email)["password"];
-            $_SESSION["user"]->updateUser($arr);
-            render("account.php", ["title" => "profile", "error" => ""]);
+                echo $_SESSION["user"]->checkPassword($_SESSION["user"]->email)["password"];
+                $_SESSION["user"]->updateUser($arr);
+                render("account.php", ["title" => "profile", "error" => "","errorc" => "gegevens gewijzigd"]);
+                exit();
 
-
+            }
         }
+        render("account.php", ["title" => "profile", "errorc" => "een van de ingevoerde invoer velden klopt niet", "error" => ""]);
+        exit();
     }
 
     private function changePass()
@@ -163,7 +169,7 @@ class ProfileController
                         $userModel->newPassword($_POST["username"], $_POST["password1"]);
                         $messagemodel = new messageModel();
                         $messagemodel->sendMessage("Admin", $_SESSION["user"]->email, "Je wachtwoord voor Aladdin is veranderd", "Je wachtwoord voor Aladdin is veranderd heeft u dit niet zelf gedaan vraag dan een nieuw wachtwoord aan op http://localhost/Account/action=Recover");
-                        render("account.php", ["error" => "", "title" => "nieuw wachtwoord", "error" => "Uw wachtwoord is veranderd"]);
+                        render("account.php", ["error" => "", "title" => "nieuw wachtwoord", "error" => "Uw wachtwoord is veranderd","errorc" => ""]);
                         exit();
                     }
 
@@ -171,12 +177,12 @@ class ProfileController
                 }
                 // new recovery creation
             } elseif (!$_SESSION["user"]->checkPassword($_POST["pwo"])) {
-                render("account.php", ["error" => "", "title" => "nieuw wachtwoord", "error" => "Oud password klopt niet"]);
+                render("account.php", ["error" => "", "title" => "nieuw wachtwoord", "error" => "Oud password klopt niet","errorc" => ""]);
                 exit(0);
             }
 
         }
-        render("account.php", ["error" => "", "title" => "nieuw wachtwoord", "error" => ""]);
+        render("account.php", ["error" => "", "title" => "nieuw wachtwoord", "error" => "","errorc" => ""]);
 
     }
 }

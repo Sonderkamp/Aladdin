@@ -12,12 +12,14 @@
 
         <body>
         <div class=" col-xs-2 col-lg-4">
-            <h5>Profiel van {$cuser.DisplayName}</h5>
+
             {if ($blockstatus.IsBlocked eq 1)}
             <h5 style="color:red">{$cuser.DisplayName} is geblokeerd!</h5>
-            {/if}
-            {if ($cuser.IsActive eq 0)}
+
+            {elseif ($cuser.IsActive eq 0)}
             <h5 style="color:red">{$cuser.DisplayName} heeft zijn account verwijderd!</h5>
+            {else}
+            <h5>Profiel van {$cuser.DisplayName}</h5>
             {/if}
             <hr/>
 
@@ -98,7 +100,7 @@
                 </thead>
             {foreach from=$wishes item=wish}
                 <tr>
-            <td>{$wish.title}</td>
+            <td>{$wish.title|escape:"html"}</td>
                 <td>{$wish.country}</td>
                 <td>{$wish.city}</td>
                 </tr>
@@ -118,7 +120,7 @@
                         </thead>
                         {foreach from=$talents item=talent}
                         <tr>
-                            <td>{$talent.name}</td>
+                            <td>{$talent.name|escape:"html"}</td>
                         </tr>
                         {/foreach}
                     </table>
