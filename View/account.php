@@ -44,7 +44,7 @@
                                data-validation-allowing="-_ "
                                data-validation-error-msg="Straat en huisnummer kan alleen letters, spaties en streepjes(-_) bevatten">
             <p>
-                Geboortedatum:  <input type="text" data-validation="birthdate" value="{$user->dob}"  name="dob" data-validation-format="dd-mm-yyyy"
+                Geboortedatum:  <input type="text" data-validation="birthdate" value="{$user->dob|date_format:"%d-%m-%Y"}"  name="dob" data-validation-format="dd-mm-yyyy"
                                        required
                                        data-validation-error-msg="invalide datum." data-validation-help="dd-mm-yyyy">
             <p>
