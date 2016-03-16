@@ -37,14 +37,14 @@
             <p>
 
                 Postcode: <input type="text" name="postalcode" value="{$user->postalcode}"  required data-validation="custom"
-                                 data-validation-regexp="([0-9][0-9][0-9][0-9][aA-zZ][aA-zZ])|([0-9][0-9][0-9][0-9][\s][aA-zZ][aA-zZ])"
+                                 data-validation-regexp="(^[0-9][0-9][0-9][0-9][aA-zZ][aA-zZ]$)|(^[0-9][0-9][0-9][0-9][\s][aA-zZ][aA-zZ]$)"
                                  data-validation-error-msg="invalide postcode gegeven">
             <p>
                 Plaats: <input type="text" name="city" value="{$user->city}"  required required data-validation="alphanumeric"
                                data-validation-allowing="-_ "
                                data-validation-error-msg="Straat en huisnummer kan alleen letters, spaties en streepjes(-_) bevatten">
             <p>
-                Geboortedatum: <input type="date" name="dob" value="{$user->dob}"  data-validation-format="dd-mm-yyyy"
+                Geboortedatum: <input type="text" name="dob" value="{$user->dob}"  data-validation-format="dd-mm-yyyy"
                                       required
                                       data-validation-error-msg="invalide datum." data-validation-help="dd-mm-yyyy">
             <p>
@@ -73,6 +73,7 @@
                 <input type='checkbox' name='handicap'>
                 {/if}
             <p>
+            {$errorc}
             <p>
                 <br>
                 <input type="submit" value="wijzig" class="btn btn-default" style="float: right;">
