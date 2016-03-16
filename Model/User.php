@@ -11,6 +11,24 @@ class User
     public $email, $isAdmin, $name, $surname, $token, $address,
         $handicap, $postalcode, $country, $city, $dob, $gender, $displayName, $initials;
 
+    public function __construct($email, $isAdmin, $name, $surname, $token, $address, $handicap,
+                                $postalcode, $country, $city, $dob, $gender, $displayName, $initals){
+        $this->email = $email;
+        $this->isAdmin = $isAdmin;
+        $this->name = $name;
+        $this->surname = $surname;
+        $this->token = $token;
+        $this->address = $address;
+        $this->handicap = $handicap;
+        $this->postalcode = $postalcode;
+        $this->country = $country;
+        $this->city = $city;
+        $this->dob = $dob;
+        $this->gender = $gender;
+        $this->displayName = $displayName;
+        $this->initials = $initals;
+    }
+
     public function validate($username, $password)
     {
         if ($this->validateUsername($username)) {

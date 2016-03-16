@@ -9,13 +9,22 @@
 class WishRepository
 {
 
-    private $email;
-    private $WISH_LIMIT = 100;
-
-    private $talentRepository;
+    private $talentRepository,
+            $email,
+            $maxContentLength = 50,
+            $WISH_LIMIT = 100;
 
     public function __construct() {
         $this->talentRepository = new TalentRepository();
+    }
+
+    private function checkWishContent($string){
+        if(strlen($string) > $this->maxContentLength){
+            $returnString = substr($string , 0, $this->maxContentLength);
+            $returnString = $returnString . '...';
+            return $returnString;
+        }
+        return $string;
     }
 
     /**
@@ -36,8 +45,9 @@ class WishRepository
                 $queryResult[$i]["max_date"] = null;
             }
 
-            $userElements = $this->getUser($queryResult[$i]["User"]);
+            $queryResult[$i]["Content"] = $this->checkWishContent($queryResult[$i]["Content"]);
 
+            $newUser = $this->getUser($queryResult[$i]["User"]);
             $completed = false;
             if ($queryResult[$i]["Status"] == "Vervuld") {
                 $completed = true;
@@ -45,9 +55,7 @@ class WishRepository
 
             $returnArray[$i] = new Wish(
                 $queryResult[$i]["Id"],
-                $queryResult[$i]["User"],
-                $userElements[0]["DisplayName"],
-                $userElements[0]["City"],
+                $newUser,
                 $queryResult[$i]["Title"],
                 $completed,
                 $queryResult[$i]["Content"],
@@ -62,7 +70,26 @@ class WishRepository
     }
 
     private function getUser($email) {
-        return Database::query_safe("SELECT DisplayName, City FROM user WHERE user.Email = ?", array($email));
+        $result = Database::query_safe("SELECT * FROM user WHERE user.Email = ?", array($email));
+
+        $newUser = new User(
+            $email,
+            $result[0]["Admin"],
+            $result[0]["Name"],
+            $result[0]["Surname"],
+            null,
+            $result[0]["Address"],
+            $result[0]["Handicap"],
+            $result[0]["Postalcode"],
+            $result[0]["Country"],
+            $result[0]["City"],
+            $result[0]["Dob"],
+            $result[0]["Gender"],
+            $result[0]["DisplayName"],
+            $result[0]["Initials"]
+        );
+
+        return $newUser;
     }
 
 
@@ -95,6 +122,7 @@ class WishRepository
               ON w.Id = wcMax.wish_Id
           JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
           WHERE w.User = ?
+          AND w.Status != 'Geweigerd'
           ORDER BY max_date DESC"
             , array($user));
 
@@ -164,6 +192,7 @@ class WishRepository
               ON w.Id = wcMax.wish_Id
           JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
           WHERE w.Status != ?
+          AND w.Status != 'Geweigerd'
           ORDER BY max_date DESC"
             , array($status));
 
