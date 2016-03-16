@@ -126,11 +126,11 @@
             </div>
             {/if}
             {if $page[0] > 1 && $page[0] != $page[1]}
-            <span><a href="\Inbox\folder={$folderShortcut}\p={$page[0]  - 1}" class="btn btn-default">Vorige</a><a href="\Inbox\folder={$folderShortcut}\p={$page[0]   + 1}" class="btn btn-default">Volgende</a></span><span class="info">Pagina {$page[0]} / {$page[1]}</span>
+            <span><a href="\Inbox\folder={$folderShortcut}\p={$page[0]  - 1}?search={$search}" class="btn btn-default">Vorige</a><a href="\Inbox\folder={$folderShortcut}\p={$page[0]   + 1}?search={$search}" class="btn btn-default">Volgende</a></span><span class="info">Pagina {$page[0]} / {$page[1]}</span>
             {else if $page[0] > 1}
-            <span><a href="\Inbox\folder={$folderShortcut}\p={$page[0]  - 1}" class="btn btn-default">Vorige</a><span class="info">Pagina {$page[0]} / {$page[1]}</span>
+            <span><a href="\Inbox\folder={$folderShortcut}\p={$page[0]  - 1}?search={$search}" class="btn btn-default">Vorige</a><span class="info">Pagina {$page[0]} / {$page[1]}</span>
             {else if $page[1] > 1}
-            <span><a href="\Inbox\folder={$folderShortcut}\p={$page[0]  + 1}" class="btn btn-default">Volgende</a></span><span class="info">Pagina 1 / {$page[1]}</span>
+            <span><a href="\Inbox\folder={$folderShortcut}\p={$page[0]  + 1}?search={$search}" class="btn btn-default">Volgende</a></span><span class="info">Pagina 1 / {$page[1]}</span>
             {else}
             <span class="info">Pagina 1</span>
             {/if}
