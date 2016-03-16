@@ -182,6 +182,7 @@ class AdminWishController
     function wishAction($action, $wishID, $mdate, $username, $message, $title)
     {
         $wishmodel = new WishRepository();
+        $messagemmodel = new messageModel();
         $wishdetails = $wishmodel->getWish($wishID);
         $newdate = str_replace('%20', ' ', $mdate);
         switch ($action) {
@@ -191,11 +192,14 @@ class AdminWishController
                 $newmessage = "Je wens met de titel: " . $wishdetails->title . ". is geaccepteerd, de inhoud van deze wens is: " . $wishdetails->content . "";
                 $this->sendRefuseMessage($username, $wishID, $newmessage, "Je wens is geaccepteerd");
 
+
                 break;
             case 'deny':
                 $wishmodel->AdminRefuseWish($wishID, $newdate);
 
                 $this->sendRefuseMessage($username, $wishID, $message, $title);
+                // set link message?
+
                 break;
 
             case 'delete':
@@ -217,5 +221,8 @@ class AdminWishController
         $test = $wishmodel->getWishOwner($wishid);
         //"Geachte " + $_GET["wishdisplay"] +"<p> Je wens is afgewezen als u de reden hiervoor wilt weten kunt u contact opnemen via de website. <p> hieronder kunt u de inhoud van de wens nog inzien.<p><p><h4>" + $_GET["wishtitle"] +"</h4><p>" + $_GET["wishcontent"] +"</p>"
         $messagemodel->sendMessage($_SESSION["user"]->email, $user, $title, $message);
+        $messageID = $messagemodel->currentMessageId($user,$title,$message);
+        $messagemodel->setLink($wishid,'Wens',$messageID);
+        
     }
 }
