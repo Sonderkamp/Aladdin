@@ -720,5 +720,19 @@ AND ab.Block_Id = test.blockid) AS isblock
         return $result;
     }
 
+    public function getAllWishesByEmail($email){
+        $query = "SELECT * FROM `wish` WHERE `user` = ?";
+        $array = array($email);
+        $result = Database::query_safe($query, $array);
+
+
+        $allWishId = array();
+        foreach($result as $item){
+            $allWishId[] = $item["Id"];
+        }
+
+        return $allWishId;
+    }
+
 
 }
