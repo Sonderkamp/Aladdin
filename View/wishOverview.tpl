@@ -86,7 +86,7 @@
                         <td>
                             <form action="/Wishes/action=open_edit_wish" method="get">
                                 <button name="editwishbtn" value="{$wish -> id}" type="sumbit"
-                                        class="btn btn-inbox btn-sm" data-toggle="modal">
+                                        class="btn btn-inbox" data-toggle="modal">
                                     <span class="glyphicon glyphicon-edit"></span>
                                 </button>
                             </form>
