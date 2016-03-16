@@ -223,6 +223,6 @@ class AdminWishController
         $messagemodel->sendMessage($_SESSION["user"]->email, $user, $title, $message);
         $messageID = $messagemodel->currentMessageId($user,$title,$message);
         $messagemodel->setLink($wishid,'Wens',$messageID);
-        
+
     }
 }

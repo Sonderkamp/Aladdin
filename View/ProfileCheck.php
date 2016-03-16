@@ -100,7 +100,7 @@
                 </thead>
             {foreach from=$wishes item=wish}
                 <tr>
-            <td>{$wish.title}</td>
+            <td>{$wish.title|escape:"html"}</td>
                 <td>{$wish.country}</td>
                 <td>{$wish.city}</td>
                 </tr>
@@ -120,7 +120,7 @@
                         </thead>
                         {foreach from=$talents item=talent}
                         <tr>
-                            <td>{$talent.name}</td>
+                            <td>{$talent.name|escape:"html"}</td>
                         </tr>
                         {/foreach}
                     </table>
