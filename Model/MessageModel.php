@@ -83,7 +83,6 @@ class messageModel
             $this->page = 0;
         $offset = $this->page * $this->size;
 
-
         $res = DATABASE::query_safe("SELECT * FROM `inbox` WHERE `user_Email` = ? AND  folder_name = 'trash' order by `Date` Desc ", array($_SESSION["user"]->email));
         $mess = $this->getMessages($res, $search);
         $mess = array_chunk($mess, $this->size);
