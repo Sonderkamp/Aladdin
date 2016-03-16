@@ -151,7 +151,7 @@ class messageModel
 
     public function getMessage($messageID, $me)
     {
-        $res = DATABASE::query_safe("SELECT * FROM `inbox` WHERE `Id` = ? and `user_Email` = ? ", array($messageID, $me));
+        $res = DATABASE::query_safe("SELECT * FROM `inbox` WHERE `message_Id` = ? and `user_Email` = ? ", array($messageID, $me));
         if ($res === false || $res === null || count($res) == 0)
             return false;
 

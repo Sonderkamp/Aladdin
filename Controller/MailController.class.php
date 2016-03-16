@@ -32,7 +32,7 @@ class MailController
                 switch (strtolower($_GET["action"])) {
                     case "new":
                         $this->sendNewMessage();
-                        redirect("/Inbox/folder=outbox/page=1");
+                        redirect("/Inbox/folder=outbox/p=1");
                     default:
                         render("inbox.php", ["title" => "Inbox", "folder" => "Postvak in", "page" => $this->page]);
                         break;
