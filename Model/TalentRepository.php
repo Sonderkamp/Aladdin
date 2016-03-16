@@ -25,14 +25,25 @@ class TalentRepository
 
     public function getAllTalents($value)
     {
-        $value -= 1;
-        $value *= 10;
-        $result = Database::query
-        ("SELECT *
+        $result = null;
+        if ($value === false)
+        {
+            $result = Database::query
+            ("SELECT *
+          FROM `talent`
+          ORDER BY `talent`.`Name` ASC");
+        } else
+        {
+            $value -= 1;
+            $value *= 10;
+            $result = Database::query
+            ("SELECT *
           FROM `talent`
           ORDER BY `talent`.`Name` ASC
           LIMIT $value,10");
 
+
+        }
         $returnArray = array();
 
         for ($i = 0; $i < count($result); $i++) {
@@ -49,6 +60,7 @@ class TalentRepository
         }
 
         return $returnArray;
+
     }
 
     public function getAcceptedTalents()
@@ -245,7 +257,7 @@ class TalentRepository
           JOIN `user` ON `talent_has_user`.`user_Email` = `user`.`Email`
           WHERE `user`.`Email` = ?
           ORDER BY `talent`.`Name` ASC",
-        array($_SESSION["user"]->email));
+            array($_SESSION["user"]->email));
 
         $returnArray = array();
 
@@ -344,7 +356,7 @@ class TalentRepository
         ("DELETE FROM `talent_has_user`
           WHERE `talent_has_user`.`talent_Id` = ?
           AND `talent_has_user`.`user_Email` = ?",
-            array($id,$_SESSION["user"]->email));
+            array($id, $_SESSION["user"]->email));
     }
 
     public function addTalentToUser($id)
@@ -352,7 +364,7 @@ class TalentRepository
         Database::query_safe
         ("INSERT INTO `talent_has_user` (`talent_Id`, `user_Email`)
           VALUES (?, ?)",
-            array($id,$_SESSION["user"]->email));
+            array($id, $_SESSION["user"]->email));
     }
 
     public function addTalentToUser2($id, $user)
@@ -360,12 +372,12 @@ class TalentRepository
         Database::query_safe
         ("INSERT INTO `talent_has_user` (`talent_Id`, `user_Email`)
           VALUES (?, ?)",
-            array($id,$user));
+            array($id, $user));
     }
 
     public function addTalent($name)
     {
-        if(!Empty(trim($name)) || trim($name) != "" || preg_match('/[^a-z\s]/i', $name)){
+        if (!Empty(trim($name)) || trim($name) != "" || preg_match('/[^a-z\s]/i', $name)) {
             Database::query_safe
             ("INSERT INTO `talent` (`Name`,
                                     `CreationDate`,
@@ -374,7 +386,7 @@ class TalentRepository
                                     `moderator_Username`,
                                     `user_Email`)
           VALUES (?, CURRENT_TIMESTAMP, NULL, NULL, NULL, ?)",
-                array(ucfirst(strtolower(trim($name))),$_SESSION["user"]->email));
+                array(ucfirst(strtolower(trim($name))), $_SESSION["user"]->email));
         }
     }
 
@@ -430,7 +442,7 @@ class TalentRepository
 
     public function updateTalentName($name, $id)
     {
-        if(!preg_match('/[^a-z\s]/i', $name)) {
+        if (!preg_match('/[^a-z\s]/i', $name)) {
             Database::query_safe
             ("UPDATE `talent`
               SET `Name`=?
@@ -446,7 +458,7 @@ class TalentRepository
           SET `IsRejected`=?,
           `moderator_Username`=?
           WHERE Id = ?",
-            Array(0,"Admin",$id));
+            Array(0, "Admin", $id));
     }
 
     public function acceptTalent($id)
@@ -467,7 +479,7 @@ class TalentRepository
         ("select Name as name
 from talent as t
 inner join talent_has_user as tu on t.Id = tu.talent_Id
-where tu.user_Email = ?",array($user));
+where tu.user_Email = ?", array($user));
 
         return $result;
     }
