@@ -72,6 +72,7 @@ class WishRepository
     private function getUser($email) {
         $result = Database::query_safe("SELECT * FROM user WHERE user.Email = ?", array($email));
 
+
         $newUser = new User();
         $newUser->email = $email;
         $newUser->isAdmin = $result[0]["Admin"];
@@ -685,8 +686,9 @@ AND ab.Block_Id = test.blockid) AS isblock
 
         $talentIDArray = array();
         foreach ($result as $item) {
-            $talentIDArray[] = $item["talent_Id"];
+            $talentIDArray[] = $item["talent"];
         }
+
 
         $string = '(';
         foreach ($talentIDArray as $item) {
@@ -706,6 +708,7 @@ AND ab.Block_Id = test.blockid) AS isblock
 
         return $returnArray;
     }
+
 
     public function getNewestWishContent($id)
     {

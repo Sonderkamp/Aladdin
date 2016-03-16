@@ -10,7 +10,7 @@ class User
 {
     public $email, $isAdmin, $name, $surname, $token, $address,
         $handicap, $postalcode, $country, $city, $dob, $gender, $displayName, $initials;
-    
+
     public function validate($username, $password)
     {
         if ($this->validateUsername($username)) {
