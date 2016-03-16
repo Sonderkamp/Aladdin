@@ -40,7 +40,6 @@ class messageModel
             return null;
 
         return $mess[$this->page];
-
     }
 
     public function getOutbox($search, $page)
@@ -67,7 +66,6 @@ class messageModel
             return null;
 
         return $mess[$this->page];
-
     }
 
     public function getTrash($search, $page)
@@ -84,7 +82,6 @@ class messageModel
         if ($res[0]["res"] == false)
             $this->page = 0;
         $offset = $this->page * $this->size;
-
 
         $res = DATABASE::query_safe("SELECT * FROM `inbox` WHERE `user_Email` = ? AND  folder_name = 'trash' order by `Date` Desc ", array($_SESSION["user"]->email));
         $mess = $this->getMessages($res, $search);

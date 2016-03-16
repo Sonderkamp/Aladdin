@@ -9,15 +9,12 @@
 class Wish {
 
 
-    public $id, $userEmail, $userDisplayName, $userCity, $title, $completed, $content, $accepted, $newestDate, $status, $contentDate;
-
+    public $id, $user, $title, $completed, $content, $accepted, $newestDate, $status, $contentDate;
 
     /**
      * Wish constructor.
      * @param $id
-     * @param $userEmail
-     * @param $userDisplayName
-     * @param $userCity
+     * @param $user
      * @param $title
      * @param $completed
      * @param $content
@@ -26,11 +23,9 @@ class Wish {
      * @param $status
      * @param $contentDate
      */
-    public function __construct($id, $user, $userDisplayName, $userCity, $title, $completed, $content, $accepted, $newestDate, $contentDate, $status) {
+    public function __construct($id, $user, $title, $completed, $content, $accepted, $newestDate, $contentDate , $status) {
         $this->id = $id;
-        $this->userEmail = $user;
-        $this->userDisplayName = $userDisplayName;
-        $this->userCity = $userCity;
+        $this->user = $user;
         $this->title = $title;
         $this->completed = $completed;
         $this->content = $content;

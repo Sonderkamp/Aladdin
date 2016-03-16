@@ -53,20 +53,20 @@ class AdminWishController
 //                    $this->wishPageAction('accept');
                     break;
                 case "redraw":
-                    $this->wishAction('redraw', $_POST["wishid"], $_POST["mdate"], $_POST["user"], "", "");
+                    $this->wishAction('redraw', $_POST["wishid"],$_POST["mdate"],$_POST["user"],"","");
                     $this->wishPageAction('open');
                     $this->page = 'open';
                     break;
                 case "delete":
-                    $this->wishAction('delete', $_POST["wishid"], $_POST["mdate"], $_POST["user"], "", "");
+                    $this->wishAction('delete', $_POST["wishid"],$_POST["mdate"],$_POST["user"],"","");
                     $this->wishPageAction('open');
                     break;
                 case "accept":
-                    $this->wishAction('accept', $_POST["wishid"], $_POST["mdate"], $_POST["user"], "", "");
+                    $this->wishAction('accept', $_POST["wishid"],$_POST["mdate"],$_POST["user"],"","");
                     $this->wishPageAction('requested');
                     break;
                 case "deny":
-                    $this->wishAction('deny', $_POST["wishid"], $_POST["mdate"], $_POST["user"], $_POST["message"], $_POST["messagetitle"]);
+                    $this->wishAction('deny', $_POST["wishid"],$_POST["mdate"],$_POST["user"],$_POST["message"],$_POST["messagetitle"]);
                     $this->wishPageAction('requested');
                     break;
                 default:
@@ -80,6 +80,9 @@ class AdminWishController
         $this->renderPage();
         exit();
     }
+
+
+
 
 
     public function renderPage()
@@ -120,16 +123,16 @@ class AdminWishController
 //                    render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('denied'),"current_page" => $this->page ]);
 //                    break;
 //                default:
-        render("AdminWish.tpl", ["title" => "WensBeheer",
-            "reqwishes" => $this->wishPageAction('requested'),
-            "openwishes" => $this->wishPageAction('open'),
-            "matchedwishes" => $this->wishPageAction('matched'),
-            "currentwishes" => $this->wishPageAction('current'),
-            "donewishes" => $this->wishPageAction('done'),
-            "deniedwishes" => $this->wishPageAction('denied'),
-            "deletedwishes" => $this->wishPageAction('deleted'),
-            "current_page" => $this->page
-        ]);
+                    render("AdminWish.tpl", ["title" => "WensBeheer",
+                        "reqwishes" => $this->wishPageAction('requested'),
+                        "openwishes" => $this->wishPageAction('open'),
+                        "matchedwishes" => $this->wishPageAction('matched'),
+                        "currentwishes" => $this->wishPageAction('current'),
+                        "donewishes" => $this->wishPageAction('done'),
+                        "deniedwishes" => $this->wishPageAction('denied'),
+                        "deletedwishes" => $this->wishPageAction('deleted'),
+                        "current_page" => $this->page
+                    ]);
 //                    break;
 //
 //
@@ -140,6 +143,7 @@ class AdminWishController
 //        render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested'),"current_page" => $this->page]);
 //        exit();
     }
+
 
 
     private function wishPageAction($page)
@@ -179,43 +183,43 @@ class AdminWishController
 
 
     private
-    function wishAction($action, $wishID, $mdate, $username, $message, $title)
+    function wishAction($action, $wishID, $mdate,$username,$message,$title)
     {
         $wishmodel = new WishRepository();
-        $wishdetails = $wishmodel->getWish($wishID);
+$wishdetails = $wishmodel->getWish($wishID);
         $newdate = str_replace('%20', ' ', $mdate);
         switch ($action) {
             case
             'accept':
-                $wishmodel->AdminAcceptWish($wishID, $newdate);
-                $newmessage = "Je wens met de titel: " . $wishdetails->title . ". is geaccepteerd, de inhoud van deze wens is: " . $wishdetails->content . "";
-                $this->sendRefuseMessage($username, $wishID, $newmessage, "Je wens is geaccepteerd");
+                 $wishmodel->AdminAcceptWish($wishID,$newdate);
+                 $newmessage = "Je wens met de titel: ".$wishdetails->title.". is geaccepteerd, de inhoud van deze wens is: ".$wishdetails->content."";
+                $this->sendRefuseMessage($username,$wishID,$newmessage,"Je wens is geaccepteerd");
 
                 break;
             case 'deny':
-                $wishmodel->AdminRefuseWish($wishID, $newdate);
+                $wishmodel->AdminRefuseWish($wishID,$newdate);
 
-                $this->sendRefuseMessage($username, $wishID, $message, $title);
+                $this->sendRefuseMessage($username,$wishID,$message,$title);
                 break;
 
             case 'delete':
-                $wishmodel->AdminDeleteWish($wishID, $newdate);
+                $wishmodel->AdminDeleteWish($wishID,$newdate);
 //                $this->sendRefuseMessage($username,$wishID,$message,$title);
                 break;
 
             case 'redraw':
-                $wishmodel->AdminRedrawWish($wishID, $newdate);
+                $wishmodel->AdminRedrawWish($wishID,$newdate);
 //                $this->sendRefuseMessage($username,$wishID,$message,$title);
                 break;
         }
     }
 
-    private function sendRefuseMessage($user, $wishid, $message, $title)
-    {
-        $messagemodel = new messageModel();
-        $wishmodel = new WishRepository();
-        $test = $wishmodel->getWishOwner($wishid);
+    private function sendRefuseMessage($user,$wishid,$message,$title)
+{
+    $messagemodel = new messageModel();
+    $wishmodel = new WishRepository();
+    $test = $wishmodel->getWishOwner($wishid);
         //"Geachte " + $_GET["wishdisplay"] +"<p> Je wens is afgewezen als u de reden hiervoor wilt weten kunt u contact opnemen via de website. <p> hieronder kunt u de inhoud van de wens nog inzien.<p><p><h4>" + $_GET["wishtitle"] +"</h4><p>" + $_GET["wishcontent"] +"</p>"
-        $messagemodel->sendMessage($_SESSION["user"]->email, $user, $title, $message);
-    }
+        $messagemodel->sendMessage($_SESSION["user"]->email,$user,$title,$message);
+}
 }

@@ -87,8 +87,6 @@
             $smarty->display("View/$template");
 
             // render footer
-//            $quote = new Quote();
-//            $value["Quote"] = $quote->getQuote();
             $smarty->display("View/footer.php");
         }
         // else err
