@@ -122,6 +122,7 @@ class WishRepository
               ON w.Id = wcMax.wish_Id
           JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
           WHERE w.User = ?
+          AND w.Status != 'Geweigerd'
           ORDER BY max_date DESC"
             , array($user));
 
@@ -191,6 +192,7 @@ class WishRepository
               ON w.Id = wcMax.wish_Id
           JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
           WHERE w.Status != ?
+          AND w.Status != 'Geweigerd'
           ORDER BY max_date DESC"
             , array($status));
 
