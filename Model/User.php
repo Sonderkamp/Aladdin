@@ -455,13 +455,14 @@ class User
             return "Validatie mislukt. check uw gegevens. Voor interactieve validatie, zet uw javascipt aan.";
         }
         $d = DateTime::createFromFormat('d-m-Y', $arr["dob"]);
-        if (!($this->initials == $_POST["initials"] && $this->surname == $_POST["surname"])) {
+
+        if (!(strtolower($this->initials) == strtolower($_POST["initials"]) && strtolower($this->surname) == strtolower($_POST["surname"]))) {
 
         $newname = array("initial" => $arr["initial"], "surname" => $arr["surname"]);
         $newdisplay = $this->createDislay($newname);
         }
         else{
-            $newdisplay = $arr["initial"] . ". " . $arr["surname"];
+            $newdisplay = $this->displayName;
         }
 
         Database::query_safe("UPDATE user SET `name`=?, `Surname`=?, `Address`=?,`postalcode`=?,`country`=?,`city`=?,`Dob`=?,`initials`=?,`gender`=?,`handicap`=?,`DisplayName`=?  WHERE Email=?", Array($arr["name"], $arr["surname"], $arr["address"], $arr["postalcode"], $arr["country"], $arr["city"], $d->format('Y-m-d'), $arr["initial"], $arr["gender"], $arr["handicap"],$newdisplay, $arr["username"]));
