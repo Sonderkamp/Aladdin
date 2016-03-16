@@ -66,11 +66,11 @@
                 <tbody>
                 {foreach from=$wishes item=wish}
                     <tr>
-                        <td>{$wish -> userDisplayName}</td>
-                        <td>{$wish -> userCity}</td>
-                        <td>{$wish -> title}</td>
-                        <td>{$wish -> content}</td>
-                        <td>{$wish -> status}</td>
+                        <td>{htmlspecialchars($wish -> userDisplayName)}</td>
+                        <td>{htmlspecialchars($wish -> userCity)}</td>
+                        <td>{htmlspecialchars($wish -> title)}</td>
+                        <td>{htmlspecialchars($wish -> content)}</td>
+                        <td>{htmlspecialchars($wish -> status)}</td>
                         <td>
                             <form method="post">
                                 <button class="btn btn-default"
