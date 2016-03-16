@@ -60,17 +60,17 @@
                     <th>Omschrijving</th>
                     <th>Status</th>
                     <th class="smallColumn"></th>
-                    <th class="smallColumn"></th>
+                    {if $currentPage == "mywishes"}<th class="smallColumn"></th>{/if}
                 </tr>
                 </thead>
                 <tbody>
                 {foreach from=$wishes item=wish}
                     <tr>
-                        <td>{htmlspecialchars($wish -> user -> displayName)}</td>
-                        <td>{htmlspecialchars($wish -> user -> city)}</td>
-                        <td>{htmlspecialchars($wish -> title)}</td>
-                        <td>{htmlspecialchars($wish -> content)}</td>
-                        <td>{htmlspecialchars($wish -> status)}</td>
+                        <td>{htmlspecialcharsWithNL($wish -> user -> displayName)}</td>
+                        <td>{htmlspecialcharsWithNL($wish -> user -> city)}</td>
+                        <td>{htmlspecialcharsWithNL($wish -> title)}</td>
+                        <td>{htmlspecialcharsWithNL($wish -> content)}</td>
+                        <td>{htmlspecialcharsWithNL($wish -> status)}</td>
                         <td>
                             <form method="post">
                                 <button class="btn btn-default"
@@ -82,14 +82,16 @@
                                 </button>
                             </form>
                         </td>
+                        {if $currentPage == "mywishes"}
                         <td>
                             <form action="/Wishes/action=open_edit_wish" method="get">
                                 <button name="editwishbtn" value="{$wish -> id}" type="sumbit"
-                                        class="btn btn-inbox btn-sm" data-toggle="modal">
+                                        class="btn btn-inbox" data-toggle="modal">
                                     <span class="glyphicon glyphicon-edit"></span>
                                 </button>
                             </form>
                         </td>
+                        {/if}
                     </tr>
                 {/foreach}
                 </tbody>
