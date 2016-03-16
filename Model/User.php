@@ -521,4 +521,13 @@ max(adminBlock.BlockDate) AS max_date
         return $result;
     }
 
+    public function getAllBlocks($user)
+    {
+        $result = Database::query_safe("SELECT Block_Id ,BlockDate as bdate,IsBlocked as isblocked
+              from adminBlock
+              where user_Email = ?
+              order by Block_Id desc", array($user));
+        return $result;
+    }
+
 }
