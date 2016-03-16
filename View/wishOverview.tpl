@@ -7,29 +7,18 @@
 
 <div class="container">
     <div class="row">
-         <span class="hidden-xs hidden-sm  hidden-md info">
-                 <a href="/Wishes/action=open_wish">
-                     <button type="button" {if !$canAddWish}disabled{/if} class="btn btn-primary">
-                         <span class="glyphicon glyphicon-plus"></span>
-                     </button>
-                 </a>
-         </span>
 
         <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2">
             <h5>Wensen overzicht</h5>
             <hr/>
-            <span class="hidden-lg info">
-                 <a href="/Wishes/action=open_wish">
-                     <button type="button" {if !$canAddWish}disabled{/if} class="btn btn-primary">
-                         <span class="glyphicon glyphicon-plus"></span>
-                     </button>
-                 </a>
-            </span>
 
             <ul class="nav nav-pills nav-stacked">
-                <li {if $currentPage == "mywishes"} class="active" {/if}><a href="/wishes/action=mywishes">Mijn wensen</a></li>
-                <li {if $currentPage == "incompletedwishes"} class="active" {/if}><a href="/wishes/action=incompletedwishes">Onvervulde wensen</a></li>
-                <li {if $currentPage == "completedwishes"} class="active" {/if}><a href="/wishes/action=completedwishes">Vervulde wensen</a></li>
+                <li {if $currentPage == "mywishes"} class="active" {/if}><a href="/wishes/action=mywishes">Mijn
+                        wensen</a></li>
+                <li {if $currentPage == "incompletedwishes"} class="active" {/if}><a
+                            href="/wishes/action=incompletedwishes">Onvervulde wensen</a></li>
+                <li {if $currentPage == "completedwishes"} class="active" {/if}><a
+                            href="/wishes/action=completedwishes">Vervulde wensen</a></li>
             </ul>
 
         </div>
@@ -43,17 +32,23 @@
             {/if}
 
 
-            <form action="/wishes/search" method="get">
-                <div class="row">
-                    <div class="col-lg-10">
+            <div class="row">
+                <form action="/wishes/search" method="get">
+                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
                         <input class="form-control" name="search" placeholder="Zoek een wens">
                     </div>
-                    <div class="col-lg-2">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
                         <button type="submit" class="btn btn-primary">Zoek</button>
                     </div>
-                </div>
-            </form>
-
+                </form>
+                <span class="col-lg-2 col-md-2 col-sm-2 col-xs-2 info">
+                 <a href="/Wishes/action=open_wish">
+                     <button type="button" {if !$canAddWish}disabled{/if} class="btn btn-primary">
+                         <span class="glyphicon glyphicon-plus"></span>
+                     </button>
+                 </a>
+                </span>
+            </div>
 
 
             <table class="table">
