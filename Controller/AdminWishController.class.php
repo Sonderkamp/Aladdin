@@ -220,9 +220,8 @@ class AdminWishController
         $wishmodel = new WishRepository();
         $test = $wishmodel->getWishOwner($wishid);
         //"Geachte " + $_GET["wishdisplay"] +"<p> Je wens is afgewezen als u de reden hiervoor wilt weten kunt u contact opnemen via de website. <p> hieronder kunt u de inhoud van de wens nog inzien.<p><p><h4>" + $_GET["wishtitle"] +"</h4><p>" + $_GET["wishcontent"] +"</p>"
-        $messagemodel->sendMessage($_SESSION["user"]->email, $user, $title, $message);
-        $messageID = $messagemodel->currentMessageId($user,$title,$message);
+        $messageID = $messagemodel->sendMessage($_SESSION["user"]->email, $user, $title, $message);
+        echo $messageID;
         $messagemodel->setLink($wishid,'Wens',$messageID);
-
     }
 }

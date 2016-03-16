@@ -448,9 +448,9 @@
             {elseif $current_page == "current"}
             <div class="tab-pane" id="tab5">
             {elseif $current_page == "matched"}
-            <div class="tab-pane" fade in active  id="tab5">
+            <div class="tab-pane"   id="tab5">
             {elseif $current_page == "done"}
-            <div class="tab-pane" id="tab5">
+            <div class="tab-pane"  fade in active  id="tab5">
             {elseif $current_page == "denied"}
             <div class="tab-pane" id="tab5">
             {elseif $current_page == "deleted"}
@@ -527,11 +527,11 @@
             {elseif $current_page == "current"}
             <div class="tab-pane" id="tab6">
             {elseif $current_page == "matched"}
-            <div class="tab-pane" fade in active  id="tab6">
+            <div class="tab-pane"  id="tab6">
             {elseif $current_page == "done"}
             <div class="tab-pane" id="tab6">
             {elseif $current_page == "denied"}
-            <div class="tab-pane" id="tab6">
+            <div class="tab-pane"  fade in active   id="tab6">
             {elseif $current_page == "deleted"}
             <div class="tab-pane" id="tab6">
             {else}
@@ -610,13 +610,13 @@
             {elseif $current_page == "current"}
             <div class="tab-pane" id="tab7">
             {elseif $current_page == "matched"}
-            <div class="tab-pane" fade in active  id="tab7">
+            <div class="tab-pane" id="tab7">
             {elseif $current_page == "done"}
             <div class="tab-pane" id="tab7">
             {elseif $current_page == "denied"}
             <div class="tab-pane" id="tab7">
             {elseif $current_page == "deleted"}
-            <div class="tab-pane" id="tab7">
+            <div class="tab-pane"  fade in active  id="tab7">
             {else}
             <div class="tab-pane fade in active" id="tab7">
             {/if}

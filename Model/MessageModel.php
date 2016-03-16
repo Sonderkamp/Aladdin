@@ -320,19 +320,5 @@ class messageModel
 
     }
 
-    public function currentMessageId($user,$title,$message)
-    {
-        $res = DATABASE::query_safe("
-SELECT Id as id,user_Receiver,Subject,message,CreationDate FROM `message`
-where user_Receiver = ?
-and CreationDate =
-(select max(CreationDate)
- from message
- where user_Receiver = ?
- AND Subject = ?
- AND Message = ?
-    )", array($user,$user, $title,$message));
 
-return $res[0]["id"];
-    }
 }
