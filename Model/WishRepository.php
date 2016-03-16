@@ -191,6 +191,7 @@ class WishRepository
           JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
           WHERE w.Status != ?
           AND w.Status != 'Geweigerd'
+          AND w.Status != 'Aangemaakt'
           ORDER BY max_date DESC"
             , array($status));
 
