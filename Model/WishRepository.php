@@ -72,10 +72,7 @@ class WishRepository
     private function getUser($email) {
         $result = Database::query_safe("SELECT * FROM user WHERE user.Email = ?", array($email));
 
-<<<<<<< HEAD
 
-=======
->>>>>>> fc9b2170058b23cf4df110783a01a9bee52ac216
         $newUser = new User();
         $newUser->email = $email;
         $newUser->isAdmin = $result[0]["Admin"];
