@@ -37,7 +37,7 @@ class messageModel
         $offset = $this->page * $this->size;
 
         if ($search != "") {
-            $res = DATABASE::query_safe("SELECT * FROM `inbox` left join `message` on
+            $res = DATABASE::query_safe("SELECT * , `inbox`.`Id` as 'inbId' FROM `inbox` left join `message` on
 `inbox`.`message_Id`= `message`.`Id`  WHERE `user_Email` = ? AND  folder_name = ? order by `Date` Desc", array($_SESSION["user"]->email, $folder));
 
             $mess = $this->getMessages($res, $search);
@@ -49,7 +49,7 @@ class messageModel
 
             return $mess[$this->page];
         } else {
-            $res = DATABASE::query_safe("SELECT * FROM `inbox` left join `message` on
+            $res = DATABASE::query_safe("SELECT *, `inbox`.`Id` as 'inbId' FROM `inbox` left join `message` on
 `inbox`.`message_Id`= `message`.`Id` WHERE `user_Email` = ? AND  folder_name = ? order by `Date` Desc Limit $offset, $this->size", array($_SESSION["user"]->email, $folder));
             $mess = $this->getMessages($res, $search);
             return $mess;
@@ -112,7 +112,7 @@ class messageModel
             if ($mesmodel->content != $row["Message"])
                 $mesmodel->content .= "...";
 
-            $mesmodel->id = $row["Id"];
+            $mesmodel->id = $row["inbId"];
             $mesmodel->adminSender = false;
 
             if (isset($row["moderator_Sender"])) {
@@ -151,7 +151,7 @@ class messageModel
 
     public function getMessage($messageID, $me)
     {
-        $res = DATABASE::query_safe("SELECT * FROM `inbox` WHERE `message_Id` = ? and `user_Email` = ? ", array($messageID, $me));
+        $res = DATABASE::query_safe("SELECT * FROM `inbox` WHERE `Id` = ? and `user_Email` = ? ", array($messageID, $me));
         if ($res === false || $res === null || count($res) == 0)
             return false;
 
