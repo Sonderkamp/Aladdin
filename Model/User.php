@@ -200,6 +200,7 @@ class User
 
     public function validateUser($array)
     {
+//        var_dump($array["dob"]);
         $array["username"] = strtolower(trim($array["username"]));
         $array["name"] = strtolower(trim($array["name"]));
         $array["surname"] = trim($array["surname"]);
@@ -213,7 +214,6 @@ class User
 
         // USERNAME
         // valid email
-
         // NAME
         if (preg_match("/^[a-zA-Z][A-Za-z\\- ]+$/", $array["name"]) == false)
             return false;
@@ -249,6 +249,7 @@ class User
             return false;
 
         // DOB
+        
         $d = DateTime::createFromFormat('d-m-Y', $array["dob"]);
         if (($d && $d->format('d-m-Y') == $array["dob"]) === false)
             return false;
@@ -453,8 +454,10 @@ class User
         if ($this->validateUser($arr) === false) {
             return "Validatie mislukt. check uw gegevens. Voor interactieve validatie, zet uw javascipt aan.";
         }
+        $d = DateTime::createFromFormat('d-m-Y', $arr["dob"]);
 
-        Database::query_safe("UPDATE user SET `name`=?, `Surname`=?, `Address`=?,`postalcode`=?,`country`=?,`city`=?,`dob`=?,`initials`=?,`gender`=?,`handicap`=? WHERE Email=?", Array($arr["name"], $arr["surname"], $arr["address"], $arr["postalcode"], $arr["country"], $arr["city"], $arr["dob"], $arr["initial"], $arr["gender"], $arr["handicap"], $arr["username"]));
+
+        Database::query_safe("UPDATE user SET `name`=?, `Surname`=?, `Address`=?,`postalcode`=?,`country`=?,`city`=?,`Dob`=?,`initials`=?,`gender`=?,`handicap`=? WHERE Email=?", Array($arr["name"], $arr["surname"], $arr["address"], $arr["postalcode"], $arr["country"], $arr["city"], $d->format('Y-m-d'), $arr["initial"], $arr["gender"], $arr["handicap"], $arr["username"]));
 //        Database::query_safe("UPDATE user SET `name`=?, `Surname`=? WHERE Email=?", Array($arr["name"],$arr["surname"],$arr["email"]));
 
 

@@ -113,6 +113,7 @@ class ProfileController
                 $arr["country"] = $_POST["country"];
                 $arr["city"] = $_POST["city"];
                 $arr["dob"] = $_POST["dob"];
+
                 $arr["initials"] = $_POST["initials"];
                 $arr["gender"] = $_POST["gender"];
 
