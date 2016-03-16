@@ -55,10 +55,10 @@
                 <thead>
                 <tr>
                     <th>Gebruiker</th>
+                    <th>Plaats</th>
                     <th>Onderwerp</th>
                     <th>Omschrijving</th>
                     <th>Status</th>
-                    <th class="smallColumn"></th>
                     <th class="smallColumn"></th>
                     <th class="smallColumn"></th>
                 </tr>
@@ -66,8 +66,8 @@
                 <tbody>
                 {foreach from=$wishes item=wish}
                     <tr>
-                        <td>{htmlspecialchars($wish -> userDisplayName)}</td>
-                        <td>{htmlspecialchars($wish -> userCity)}</td>
+                        <td>{htmlspecialchars($wish -> user -> displayName)}</td>
+                        <td>{htmlspecialchars($wish -> user -> city)}</td>
                         <td>{htmlspecialchars($wish -> title)}</td>
                         <td>{htmlspecialchars($wish -> content)}</td>
                         <td>{htmlspecialchars($wish -> status)}</td>

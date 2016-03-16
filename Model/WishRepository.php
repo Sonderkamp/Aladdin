@@ -47,8 +47,7 @@ class WishRepository
 
             $queryResult[$i]["Content"] = $this->checkWishContent($queryResult[$i]["Content"]);
 
-            $userElements = $this->getUser($queryResult[$i]["User"]);
-
+            $newUser = $this->getUser($queryResult[$i]["User"]);
             $completed = false;
             if ($queryResult[$i]["Status"] == "Vervuld") {
                 $completed = true;
@@ -56,9 +55,7 @@ class WishRepository
 
             $returnArray[$i] = new Wish(
                 $queryResult[$i]["Id"],
-                $queryResult[$i]["User"],
-                $userElements[0]["DisplayName"],
-                $userElements[0]["City"],
+                $newUser,
                 $queryResult[$i]["Title"],
                 $completed,
                 $queryResult[$i]["Content"],
@@ -73,7 +70,26 @@ class WishRepository
     }
 
     private function getUser($email) {
-        return Database::query_safe("SELECT DisplayName, City FROM user WHERE user.Email = ?", array($email));
+        $result = Database::query_safe("SELECT * FROM user WHERE user.Email = ?", array($email));
+
+        $newUser = new User(
+            $email,
+            $result[0]["Admin"],
+            $result[0]["Name"],
+            $result[0]["Surname"],
+            null,
+            $result[0]["Address"],
+            $result[0]["Handicap"],
+            $result[0]["Postalcode"],
+            $result[0]["Country"],
+            $result[0]["City"],
+            $result[0]["Dob"],
+            $result[0]["Gender"],
+            $result[0]["DisplayName"],
+            $result[0]["Initials"]
+        );
+
+        return $newUser;
     }
 
 

@@ -201,7 +201,7 @@ class WishController {
 
         $selectedWish = $this->wishRepository->getWish($id);
 
-        if($selectedWish->userEmail != null) {
+        if($selectedWish->user->email != null) {
             render("wishSpecificView.tpl", ["title" => "Wens: " . $id, "selectedWish" => $selectedWish, "previousPage" => $previousPage]);
         } else {
             apologize("404 wish not found. Please wish for a better website!");
