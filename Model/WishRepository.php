@@ -72,22 +72,21 @@ class WishRepository
     private function getUser($email) {
         $result = Database::query_safe("SELECT * FROM user WHERE user.Email = ?", array($email));
 
-        $newUser = new User(
-            $email,
-            $result[0]["Admin"],
-            $result[0]["Name"],
-            $result[0]["Surname"],
-            null,
-            $result[0]["Address"],
-            $result[0]["Handicap"],
-            $result[0]["Postalcode"],
-            $result[0]["Country"],
-            $result[0]["City"],
-            $result[0]["Dob"],
-            $result[0]["Gender"],
-            $result[0]["DisplayName"],
-            $result[0]["Initials"]
-        );
+
+        $newUser = new User();
+        $newUser->email = $email;
+        $newUser->isAdmin = $result[0]["Admin"];
+        $newUser->name = $result[0]["Name"];
+        $newUser->surname = $result[0]["Surname"];
+        $newUser->address = $result[0]["Address"];
+        $newUser->handicap = $result[0]["Handicap"];
+        $newUser->postalcode = $result[0]["Postalcode"];
+        $newUser->country = $result[0]["Country"];
+        $newUser->city = $result[0]["City"];
+        $newUser->dob = $result[0]["Dob"];
+        $newUser->gender = $result[0]["Gender"];
+        $newUser->displayName = $result[0]["DisplayName"];
+        $newUser->initials = $result[0]["Initials"];
 
         return $newUser;
     }
@@ -687,8 +686,9 @@ AND ab.Block_Id = test.blockid) AS isblock
 
         $talentIDArray = array();
         foreach ($result as $item) {
-            $talentIDArray[] = $item["talent_Id"];
+            $talentIDArray[] = $item["talent"];
         }
+
 
         $string = '(';
         foreach ($talentIDArray as $item) {
@@ -708,6 +708,7 @@ AND ab.Block_Id = test.blockid) AS isblock
 
         return $returnArray;
     }
+
 
     public function getNewestWishContent($id)
     {
