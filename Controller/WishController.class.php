@@ -287,8 +287,7 @@ class WishController {
 
                 $newmail = new MessageModel();
                 $msgID = $newmail->sendMessage("Admin", $mail->to, $mail->subject, $mail->message);
-                echo "ID: " . $id;
-//                $newmail->setLink($id, "Wens", $msgID);
+                $newmail->setLink($id, "Wens", $msgID);
             }
 
             $this->go_back();
