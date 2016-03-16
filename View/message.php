@@ -21,22 +21,22 @@
     {/if}
 
     <div class="col-sm-3 hidden-xs">
-        <a href="\Inbox\p={$page}\action=new" class="btn btn-default" style="width:100%">Nieuw Bericht</a><br>
+        <a href="/Inbox/p={$page}/action=new" class="btn btn-default" style="width:100%">Nieuw Bericht</a><br>
         <br>
         {if isset($in)}
-        <a href="\Inbox\p={$page}" class="btn btn-default active" style="width:100%">Postvak in</a><br>
+        <a href="/Inbox/p={$page}" class="btn btn-default active" style="width:100%">Postvak in</a><br>
         {else}
-        <a href="\Inbox\p={$page}" class="btn btn-default" style="width:100%">Postvak in</a><br>
+        <a href="/Inbox/p={$page}" class="btn btn-default" style="width:100%">Postvak in</a><br>
         {/if}
         {if isset($out)}
-        <a href="\Inbox\folder=outbox\p={$page}" class="btn btn-default active" style="width:100%">Postvak uit</a><br>
+        <a href="/Inbox/folder=outbox/p={$page}" class="btn btn-default active" style="width:100%">Postvak uit</a><br>
         {else}
-        <a href="\Inbox\folder=outbox\p={$page}" class="btn btn-default" style="width:100%">Postvak uit</a><br>
+        <a href="/Inbox/folder=outbox/p={$page}" class="btn btn-default" style="width:100%">Postvak uit</a><br>
         {/if}
         {if isset($trash)}
-        <a href="\Inbox\folder=trash\p={$page}" class="btn btn-default active" style="width:100%">Prullenbak</a><br>
+        <a href="/Inbox/folder=trash/p={$page}" class="btn btn-default active" style="width:100%">Prullenbak</a><br>
         {else}
-        <a href="\Inbox\folder=trash\p={$page}" class="btn btn-default" style="width:100%">Prullenbak</a><br>
+        <a href="/Inbox/folder=trash/p={$page}" class="btn btn-default" style="width:100%">Prullenbak</a><br>
         {/if}
         <br><br>
     </div>
@@ -82,21 +82,21 @@
             </div>
             <div class="panel-footer">
                 {if $message->folder == "trash"}
-                <form class=noPadding action="\Inbox\folder={$folderShortcut}\p={$page}" method="post">
+                <form class=noPadding action="/Inbox/folder={$folderShortcut}/p={$page}" method="post">
                     <input type="hidden" name="delete" value="{$message->id}"/>
                     <button type="submit" class="btn btn-inbox">Permanent Verwijderen</button>
                 </form>
-                <form class=noPadding action="\Inbox\folder={$folderShortcut}\p={$page}" method="post">
+                <form class=noPadding action="/Inbox/folder={$folderShortcut}/p={$page}" method="post">
                     <input type="hidden" name="reset" value="{$message->id}"/>
                     <button type="submit" class="btn btn-inbox">Terugzetten</button>
                 </form>
                 {else}
-                <form class=noPadding action="\Inbox\folder={$folderShortcut}\p={$page}" method="post">
+                <form class=noPadding action="/Inbox/folder={$folderShortcut}/p={$page}" method="post">
                     <input type="hidden" name="trash" value="{$message->id}"/>
                     <button type="submit" class="btn btn-inbox">Verwijderen</button>
                 </form>
                 {/if}
-                <form class=noPadding action="\Inbox\folder={$folderShortcut}\p={$page}" method="post">
+                <form class=noPadding action="/Inbox/folder={$folderShortcut}/p={$page}" method="post">
                     <input type="hidden" name="reply" value="{$message->id}"/>
                     <button type="submit" class="btn btn-inbox">Beantwoorden</button>
                 </form>
@@ -106,7 +106,7 @@
                     {if $link->action == "Talent"}
                         <a href="/Talents" class="btn btn-inbox">Mijn Talenten</a>
                     {else if $link->action == "Wens"}
-                        <a href="/WishLINKTODO" class="btn btn-inbox">Bekijk wens</a>
+                        <a href="/Wishes/wish_id={$link->content}" class="btn btn-inbox">Bekijk wens</a>
                     {else if $link->action == "PaginaLink"}
                         <a href="{$link->content}" class="btn btn-inbox">Naar Pagina</a>
                     {else if $link->action == "Bericht"}
@@ -121,22 +121,22 @@
 
     <div class="col-xs-12 hidden-sm hidden-md hidden-lg">
         {if isset($in)}
-        <a href="\Inbox" class="btn btn-default active" style="width:100%">Postvak in</a><br>
+        <a href="/Inbox" class="btn btn-default active" style="width:100%">Postvak in</a><br>
         {else}
-        <a href="\Inbox" class="btn btn-default" style="width:100%">Postvak in</a><br>
+        <a href="/Inbox" class="btn btn-default" style="width:100%">Postvak in</a><br>
         {/if}
         {if isset($out)}
-        <a href="\Inbox\folder=outbox" class="btn btn-default active" style="width:100%">Postvak uit</a><br>
+        <a href="/Inbox/folder=outbox" class="btn btn-default active" style="width:100%">Postvak uit</a><br>
         {else}
-        <a href="\Inbox\folder=outbox" class="btn btn-default" style="width:100%">Postvak uit</a><br>
+        <a href="/Inbox/folder=outbox" class="btn btn-default" style="width:100%">Postvak uit</a><br>
         {/if}
         {if isset($trash)}
-        <a href="\Inbox\folder=trash" class="btn btn-default active" style="width:100%">Prullenbak</a><br>
+        <a href="/Inbox/folder=trash" class="btn btn-default active" style="width:100%">Prullenbak</a><br>
         {else}
-        <a href="\Inbox\folder=trash" class="btn btn-default" style="width:100%">Prullenbak</a><br>
+        <a href="/Inbox/folder=trash" class="btn btn-default" style="width:100%">Prullenbak</a><br>
         {/if}
         <br>
-        <a href="\Inbox\action=new" class="btn btn-default" style="width:100%">Nieuw Bericht</a><br>
+        <a href="/Inbox/action=new" class="btn btn-default" style="width:100%">Nieuw Bericht</a><br>
         <br>
         <form class="user-control form-inline" action="/Inbox/folder={$folderShortcut}" method="get">
             <input class="form-control white" value="{$search}" placeholder="Zoek Criteria" name="search"

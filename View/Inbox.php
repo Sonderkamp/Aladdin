@@ -25,22 +25,22 @@
 
 
     <div class="col-sm-3">
-        <a href="\Inbox\p={$page[0]}\action=new" class="btn btn-default" style="width:100%">Nieuw Bericht</a><br>
+        <a href="/Inbox/p={$page[0]}/action=new" class="btn btn-default" style="width:100%">Nieuw Bericht</a><br>
         <br>
         {if isset($in)}
-        <a href="\Inbox" class="btn btn-default active"  style="width:100%">Postvak in</a><br>
+        <a href="/Inbox" class="btn btn-default active"  style="width:100%">Postvak in</a><br>
         {else}
-        <a href="\Inbox" class="btn btn-default" style="width:100%">Postvak in</a><br>
+        <a href="/Inbox" class="btn btn-default" style="width:100%">Postvak in</a><br>
         {/if}
         {if isset($out)}
-        <a href="\Inbox\folder=outbox" class="btn btn-default active" style="width:100%">Postvak uit</a><br>
+        <a href="/Inbox/folder=outbox" class="btn btn-default active" style="width:100%">Postvak uit</a><br>
         {else}
-        <a href="\Inbox\folder=outbox" class="btn btn-default" style="width:100%">Postvak uit</a><br>
+        <a href="/Inbox/folder=outbox" class="btn btn-default" style="width:100%">Postvak uit</a><br>
         {/if}
         {if isset($trash)}
-        <a href="\Inbox\folder=trash" class="btn btn-default active" style="width:100%">Prullenbak</a><br>
+        <a href="/Inbox/folder=trash" class="btn btn-default active" style="width:100%">Prullenbak</a><br>
         {else}
-        <a href="\Inbox\folder=trash" class="btn btn-default" style="width:100%">Prullenbak</a><br>
+        <a href="/Inbox/folder=trash" class="btn btn-default" style="width:100%">Prullenbak</a><br>
         {/if}
         <br>
     </div>
@@ -49,7 +49,7 @@
         <span class="info"><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal"> <span class="glyphicon glyphicon-info-sign"></span>
             </button></span>
         <div class="hidden-sm hidden-md hidden-lg"><br><br></div>
-        <form class="user-control form-inline" action="\Inbox\folder={$folderShortcut}" method="get">
+        <form class="user-control form-inline" action="/Inbox/folder={$folderShortcut}" method="get">
             <input class="form-control white" value="{$search}" placeholder="Zoek Criteria" name="search" type="text">
             <button class="form-control btn-inbox" type="submit">Zoek</button>
         </form>
@@ -69,7 +69,7 @@
             <div class="panel panel-default overflowhidden">
                 {/if}
                 <div class="panel-body">
-                    <a href="\Inbox\folder={$folderShortcut}\p={$page[0]}\message={$message->id}" class="title">{$message->title}</a> <span
+                    <a href="/Inbox/folder={$folderShortcut}/p={$page[0]}/message={$message->id}" class="title">{$message->title}</a> <span
                         class="info">
                     {if isset($out)}
                     {$message->receiver}
@@ -84,23 +84,23 @@
                     <span>{$message->content}</span><br><br>
                 </div>
                 <div class="panel-footer">
-                    <a href="\Inbox\folder={$folderShortcut}\p={$page[0]}\message={$message->id}" class="btn btn-inbox">Openen</a> <span
+                    <a href="/Inbox/folder={$folderShortcut}/p={$page[0]}/message={$message->id}" class="btn btn-inbox">Openen</a> 
                     {if isset($trash)}
-                    <form class=noPadding action="\Inbox\folder={$folderShortcut}\p={$page[0]}" method="post">
+                    <form class=noPadding action="/Inbox/folder={$folderShortcut}/p={$page[0]}" method="post">
                         <input type="hidden" name="delete" value="{$message->id}"/>
                         <button type="submit" class="btn btn-inbox">Permanent Verwijderen</button>
                     </form>
-                    <form class=noPadding action="\Inbox\folder={$folderShortcut}\p={$page[0]}" method="post">
+                    <form class=noPadding action="/Inbox/folder={$folderShortcut}/p={$page[0]}" method="post">
                         <input type="hidden" name="reset" value="{$message->id}"/>
                         <button type="submit" class="btn btn-inbox">Terugzetten</button>
                     </form>
                     {else}
-                    <form class=noPadding action="\Inbox\folder={$folderShortcut}\p={$page[0]}" method="post">
+                    <form class=noPadding action="/Inbox/folder={$folderShortcut}/p={$page[0]}" method="post">
                         <input type="hidden" name="trash" value="{$message->id}"/>
                         <button type="submit" class="btn btn-inbox">Verwijderen</button>
                     </form>
                     {/if}
-                    <form class=noPadding action="\Inbox\folder={$folderShortcut}\p={$page[0]}" method="post">
+                    <form class=noPadding action="/Inbox/folder={$folderShortcut}/p={$page[0]}" method="post">
                         <input type="hidden" name="reply" value="{$message->id}"/>
                         <button type="submit" class="btn btn-inbox">Beantwoorden</button>
                     </form>
@@ -109,7 +109,7 @@
                     {if $link->action == "Talent"}
                     <a href="/Talents" class="btn btn-inbox">Mijn Talenten</a>
                     {else if $link->action == "Wens"}
-                    <a href="/WishLINKTODO" class="btn btn-inbox">Bekijk wens</a>
+                    <a href="/Wishes/wish_id={$link->content}" class="btn btn-inbox">Bekijk wens</a>
                     {else if $link->action == "PaginaLink"}
                     <a href="{$link->content}" class="btn btn-inbox">Naar Pagina</a>
                     {else if $link->action == "Bericht"}
@@ -126,11 +126,11 @@
             </div>
             {/if}
             {if $page[0] > 1 && $page[0] != $page[1]}
-            <span><a href="\Inbox\folder={$folderShortcut}\p={$page[0]  - 1}?search={$search}" class="btn btn-default">Vorige</a><a href="\Inbox\folder={$folderShortcut}\p={$page[0]   + 1}?search={$search}" class="btn btn-default">Volgende</a></span><span class="info">Pagina {$page[0]} / {$page[1]}</span>
+            <span><a href="/Inbox/folder={$folderShortcut}/p={$page[0]  - 1}?search={$search}" class="btn btn-default">Vorige</a><a href="/Inbox/folder={$folderShortcut}/p={$page[0]   + 1}?search={$search}" class="btn btn-default">Volgende</a></span><span class="info">Pagina {$page[0]} / {$page[1]}</span>
             {else if $page[0] > 1}
-            <span><a href="\Inbox\folder={$folderShortcut}\p={$page[0]  - 1}?search={$search}" class="btn btn-default">Vorige</a><span class="info">Pagina {$page[0]} / {$page[1]}</span>
+            <span><a href="/Inbox/folder={$folderShortcut}/p={$page[0]  - 1}?search={$search}" class="btn btn-default">Vorige</a><span class="info">Pagina {$page[0]} / {$page[1]}</span>
             {else if $page[1] > 1}
-            <span><a href="\Inbox\folder={$folderShortcut}\p={$page[0]  + 1}?search={$search}" class="btn btn-default">Volgende</a></span><span class="info">Pagina 1 / {$page[1]}</span>
+            <span><a href="/Inbox/folder={$folderShortcut}/p={$page[0]  + 1}?search={$search}" class="btn btn-default">Volgende</a></span><span class="info">Pagina 1 / {$page[1]}</span>
             {else}
             <span class="info">Pagina 1</span>
             {/if}
