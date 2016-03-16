@@ -13,7 +13,7 @@
 
 
     </div>
-    <div class="col-lg-3 ">
+    <div class="col-lg-4 ">
         <h5>Mijn gegevens</h5>
 
         <form action="/profile/action=change" method="post"><p>
@@ -44,9 +44,9 @@
                                data-validation-allowing="-_ "
                                data-validation-error-msg="Straat en huisnummer kan alleen letters, spaties en streepjes(-_) bevatten">
             <p>
-                Geboortedatum: <input type="text" name="dob" value="{$user->dob}"  data-validation-format="dd-mm-yyyy"
-                                      required
-                                      data-validation-error-msg="invalide datum." data-validation-help="dd-mm-yyyy">
+                Geboortedatum:  <input type="text" data-validation="birthdate" value="{$user->dob}"  name="dob" data-validation-format="dd-mm-yyyy"
+                                       required
+                                       data-validation-error-msg="invalide datum." data-validation-help="dd-mm-yyyy">
             <p>
                 Geslacht:
                 {if $user->gender eq 'male'}
