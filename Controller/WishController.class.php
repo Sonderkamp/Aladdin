@@ -139,8 +139,6 @@ class WishController {
             $id = $wish[0]["wish_Id"];
             $returnWish = $this->wishRepository->getAllWishesByEmail($_SESSION["user"]->email);
 
-            print_r($returnWish);
-
             if(!in_array($id,$returnWish)){
                 $this->getMyWishes();
                 exit(1);
