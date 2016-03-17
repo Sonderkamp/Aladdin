@@ -747,7 +747,7 @@
                 {*</div>*}
 
 
-                <div class="modal" id="profileModal">
+                <div class="modal fade" id="profileModal">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -792,7 +792,7 @@
                 </script>
 
 
-                <div class="modal" id="checkModal">
+                <div class="modal fade" id="checkModal">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -839,7 +839,7 @@
                     });
                     </script>
 
-                <div class="modal" id="denyModal">
+                <div  class="modal fade" id="denyModal">
                     <div class="modal-dialog">
                         <div class="modal-content">
 
