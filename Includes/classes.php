@@ -11,6 +11,7 @@ include_once("Model/MessageLink.php");
 include_once("Model/WishRepository.php");
 include_once("Model/TalentRepository.php");
 include_once("Model/Quote.php");
+include_once("Model/Graph.php");
 
 include_once("Controller/WishController.class.php");
 include_once("Controller/TalentController.class.php");

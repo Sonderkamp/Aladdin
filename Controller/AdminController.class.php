@@ -13,13 +13,29 @@ class AdminController
 
         guaranteeLogin("/admin");
 
-        if(Empty($_SESSION["admin"]))
-        {
-            render("adminHome.tpl", ["title" => "Statistiek"]);
-            exit();
-        }
-        else
-        {
+
+        if (Empty($_SESSION["admin"])) {
+
+            if (!empty($_GET["csv"])) {
+
+                $val = new Graph();
+                switch($_GET["csv"])
+                {
+                    case "users":
+                        $val->getUsers();
+                        exit();
+                    case "wishes":
+                        $val->getWishes();
+                        exit();
+                        break;
+                }
+
+
+            } else {
+                render("adminHome.tpl", ["title" => "Statistiek"]);
+                exit();
+            }
+        } else {
             // log IP van gebruiker die admin pagina probeert te openen
             apologize("Niet als admin ingelogd.");
         }
