@@ -74,8 +74,7 @@ function loadData() {
                 return new Date(a.date) - new Date(b.date);
             });
 
-            // todo: if today not set, set it to 0
-
+            addtoday(data);
             var yearRange = d3.extent(data[0], function (d) {
                 return formatDate(d.date);
             });
@@ -88,6 +87,17 @@ function loadData() {
             // Draw the visualization for the first time
             updateVisualization();
         });
+}
+
+function addtoday(data) {
+
+    for (var i = 0; i < data.length; i++) {
+        if (formatDate(data[i].data[data[i].data.length - 1].date) != formatDate(new Date())) {
+            data[i].data.push({"date": formatDate.parse(formatDate(new Date())), "amount": 0});
+        }
+
+    }
+
 }
 
 var yAxisDOM;
