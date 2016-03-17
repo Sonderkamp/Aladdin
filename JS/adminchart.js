@@ -19,6 +19,8 @@ var svg = d3.select("#chart-area").append("svg")
 // Date parser (https://github.com/mbostock/d3/wiki/Time-Formatting)
 var formatDate = d3.time.format("%Y-%m-%d");
 
+var dateRender = d3.time.format("%d-%m-%Y");
+
 var min = 0;
 var max = 0;
 
@@ -173,17 +175,27 @@ function initSlider() {
 
     var diffDays = Math.round(Math.abs((min.getTime() - max.getTime())/(oneDay)));
 
-    slider = $("#slider").slider({min: 0, max: diffDays, value: [0, diffDays], focus: true});
+    $("#mindate").text(dateRender(lowFilter));
+    $("#maxdate").text(dateRender(highFilter));
+
+    slider = $("#slider").slider({min: 0, max: diffDays, value: [0, diffDays], focus: true, formatter: sliderFormat});
     slider.on('slideStop', function (inp) {
         oldLow = lowFilter;
         oldHigh = highFilter;
 
         lowFilter = addDays(min, inp.value[0]);
         highFilter = addDays(min, inp.value[1]);
+
+        $("#mindate").text(dateRender(lowFilter));
+        $("#maxdate").text(dateRender(highFilter));
         updateVisualization();
     });
 }
 
+function sliderFormat(inp1)
+{
+    return dateRender(addDays(min,inp1[0])) + " - " + dateRender(addDays(min,inp1[1]));
+}
 
 var value = 0;
 var label;

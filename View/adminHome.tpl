@@ -10,7 +10,7 @@
                                                    value=""/> </span>
 
         <div id="chart-area"></div>
-
+       <p> Datum bereik: <span id="mindate">2013-1-1</span> - <span id="maxdate">2013-1-1</span> </p>
     </div>
     <div class="col-md-1"></div>
     <div class="col-xs-12 col-md-5 col-md-offset-1 toppad">
