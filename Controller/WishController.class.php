@@ -180,6 +180,11 @@ class WishController {
             $this->description = $_POST["description"];
             $this->tag = $_POST["tag"];
 
+            $tagtest = substr($this->tag, 0, 1);
+            echo "TAG: " . $tagtest;
+
+            //TODO: if first char of tag != #, check it. -> error wishrepo line 287
+
             // check if input of form is not null
             if (Empty($this->title)
                 || Empty($this->description)
