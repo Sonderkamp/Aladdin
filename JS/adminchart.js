@@ -61,10 +61,19 @@ function loadData() {
             });
 
             // Store csv data in global variable
-            data = [{"data": wishes, "name": "Aantal nieuwe wensen"}, {
-                "data": users,
-                "name": "Aantal nieuwe gebruikers"
-            }];
+            data = [
+                {
+                    "data": wishes,
+                    "name": "Aantal nieuwe wensen",
+                    "suffix": "nieuwe wensen",
+                    "info": wishinfo
+                },
+                {
+                    "data": users,
+                    "name": "Aantal nieuwe gebruikers",
+                    "suffix": "nieuwe gebruikers",
+                    "info": userinfo
+                }];
 
             console.log(data);
 
@@ -96,6 +105,8 @@ function loadData() {
             updateVisualization();
         });
 }
+
+
 
 function addtoday(data) {
 
@@ -171,9 +182,9 @@ function addDays(date, days) {
 
 function initSlider() {
 
-    var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+    var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
 
-    var diffDays = Math.round(Math.abs((min.getTime() - max.getTime())/(oneDay)));
+    var diffDays = Math.round(Math.abs((min.getTime() - max.getTime()) / (oneDay)));
 
     $("#mindate").text(dateRender(lowFilter));
     $("#maxdate").text(dateRender(highFilter));
@@ -192,9 +203,8 @@ function initSlider() {
     });
 }
 
-function sliderFormat(inp1)
-{
-    return dateRender(addDays(min,inp1[0])) + " - " + dateRender(addDays(min,inp1[1]));
+function sliderFormat(inp1) {
+    return dateRender(addDays(min, inp1[0])) + " - " + dateRender(addDays(min, inp1[1]));
 }
 
 var value = 0;
@@ -215,14 +225,13 @@ function updateVisualization() {
 
 
     // create tip
-    //if (tip == null) {
-    //    tip = d3.tip().attr('class', 'd3-tip').html(function (d) {
-    //            return d.EDITION + "<br>" + $("#ranking-type option:selected").html() + " " + d[value];
-    //        })
-    //        .offset([-10, 0]);
-    //    svg.call(tip);
-    //}
-
+    if (tip == null) {
+        tip = d3.tip().attr('class', 'd3-tip').html(function (d) {
+                return d.amount + " "+ data[value].suffix;
+            })
+            .offset([-10, 0]);
+        svg.call(tip);
+    }
 
 
     var yRange = d3.extent(values, function (d) {
@@ -293,19 +302,41 @@ function updateVisualization() {
             return -500;
         })
         .attr("class", "tooltip-circle")
-        .transition()
-        .duration(500)
-        .attr("cx", function (d) {
-            if (isNaN(x(d.date)))
-                return 0;
-            return x(d.date);
+        .on("mouseover", function (d) {
+            d3.select(this)
+                .transition()
+                .duration(100)
+                .attr("r", 12)
+                .attr("cx", function (d) {
+                    if (isNaN(x(d.date)))
+                        return 0;
+                    return x(d.date);
+                })
+                .attr("cy", function (d) {
+                    if (isNaN(y(d.amount)))
+                        return 0;
+                    return y(d.amount);
+                });
+            tip.show(d);
         })
-        .attr("r", 6)
-        .attr("cy", function (d) {
-            if (isNaN(y(d.amount)))
-                return 0;
-            return y(d.amount);
-        });
+        .on("mouseout", function (d) {
+            d3.select(this)
+                .transition()
+                .duration(100)
+                .attr("r", 6)
+                .attr("cx", function (d) {
+                    if (isNaN(x(d.date)))
+                        return 0;
+                    return x(d.date);
+                })
+                .attr("cy", function (d) {
+                    if (isNaN(y(d.amount)))
+                        return 0;
+                    return y(d.amount);
+                });
+            tip.hide(d);
+        })
+        .on("click", data[value].info);
 
 
     // UPDATE points
@@ -388,24 +419,12 @@ function drawLine(values) {
 
 }
 
-//// Show details for a specific FIFA World Cup
-function showEdition(d) {
+function wishinfo(d)
+{
+    alert("ToDo");
+}
 
-
-    if ($("#title").text() == d.EDITION) {
-        $("#info").toggleClass("hidden")
-    }
-    else
-        $("#info").removeClass("hidden");
-
-    $("#title").text(d.EDITION);
-    $("#winner").text(d.WINNER);
-    $("#year").text(formatDate(d.YEAR));
-    $("#goals").text(d.GOALS);
-    $("#avgGoals").text(d.AVERAGE_GOALS);
-    $("#matches").text(d.MATCHES);
-    $("#teams").text(d.TEAMS);
-    $("#avgAttendance").text(d.AVERAGE_ATTENDANCE);
-    $("#location").text(d.LOCATION);
-
+function userinfo(d)
+{
+    alert("ToDo");
 }
