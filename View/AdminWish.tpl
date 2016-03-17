@@ -116,8 +116,6 @@
                     <tr>
                         <th>Gebruiker</th>
                         <th>Wens</th>
-                        <th>Land</th>
-                        <th>Plaats</th>
                         <th width="1%"></th>
                         <th width="1%"></th>
                         <th width="1%"></th>
@@ -130,9 +128,6 @@
                         <form action="/AdminWish/action=accept" method="post">
                             <td>{$i.display}</td>
                             <td>{$i.title|escape:"html"}</td>
-                            <td>{$i.country}</td>
-                            <td>{$i.city}</td>
-
                             <input type="hidden" value={$i.wishid} name="wishid">
                             <input type="hidden" value={$i.user} name="user">
                             <input type="hidden" value={$i.mdate|replace:' ':'%20'} name="mdate" step="1" >
@@ -147,8 +142,6 @@
                                         data-content="{$i.content|escape:"html"}"
                                         data-owner="{$i.display}"
                                         data-status="{$i.status}"
-                                        data-city="{$i.city}"
-                                        data-country="{$i.country}"
                                         data-date="{$i.mdate}"
                                         data-target="#checkModal">
                                     <span class="glyphicon glyphicon-eye-open"></span>
@@ -178,8 +171,8 @@
                                         data-email="{$i.user}"
                                         data-address="{$i.address}"
                                         data-postalcode="{$i.postalcode}"
-                                        data-country="{$i.country}"
-                                        data-city="{$i.city}"
+                                        data-country="{$i.ucountry}"
+                                        data-city="{$i.ucity}"
                                         data-target="#profileModal">
                                     <span class="glyphicon glyphicon glyphicon-user"></span>
                                 </button>
@@ -214,8 +207,6 @@
                     <tr>
                         <th>Gebruiker</th>
                         <th>Wens</th>
-                        <th>Land</th>
-                        <th>Plaats</th>
                         <th width="1%"></th>
                         <th width="1%"></th>
                         <th width="1%"></th>
@@ -228,8 +219,6 @@
                         <form action="" method="post">
                             <td>{$i.display}</td>
                             <td>{$i.title|escape:"html"}</td>
-                            <td>{$i.country}</td>
-                            <td>{$i.city}</td>
 
                             <input type="hidden" value={$i.wishid} name="wishid">
                             <input type="hidden" value={$i.user} name="user">
@@ -246,8 +235,6 @@
                                         data-content="{$i.content|escape:"html"}"
                                         data-owner="{$i.display}"
                                         data-status="{$i.status}"
-                                        data-city="{$i.city}"
-                                        data-country="{$i.country}"
                                         data-date="{$i.mdate}"
                                         data-target="#checkModal">
                                     <span class="glyphicon glyphicon-eye-open"></span>
@@ -266,8 +253,8 @@
                                         data-email="{$i.user}"
                                         data-address="{$i.address}"
                                         data-postalcode="{$i.postalcode}"
-                                        data-country="{$i.country}"
-                                        data-city="{$i.city}"
+                                        data-country="{$i.ucountry}"
+                                        data-city="{$i.ucity}"
                                         data-target="#profileModal">
                                     <span class="glyphicon glyphicon glyphicon-user"></span>
                                 </button>
@@ -303,8 +290,6 @@
                     <tr>
                         <th>Gebruiker</th>
                         <th>Wens</th>
-                        <th>Land</th>
-                        <th>Plaats</th>
                         <th width="1%"></th>
                         <th width="1%"></th>
                     </tr>
@@ -315,8 +300,6 @@
                         <form action="" method="post">
                             <td>{$i.display}</td>
                             <td>{$i.title|escape:"html"}</td>
-                            <td>{$i.country}</td>
-                            <td>{$i.city}</td>
 
                             <input type="hidden" value={$i.wishid} name="wishid">
                             <input type="hidden" value={$i.user} name="user">
@@ -332,8 +315,6 @@
                                         data-content="{$i.content|escape:"html"}"
                                         data-owner="{$i.display}"
                                         data-status="{$i.status}"
-                                        data-city="{$i.city}"
-                                        data-country="{$i.country}"
                                         data-date="{$i.mdate}"
                                         data-target="#checkModal">
                                     <span class="glyphicon glyphicon-eye-open"></span>
@@ -346,8 +327,8 @@
                                         data-email="{$i.user}"
                                         data-address="{$i.address}"
                                         data-postalcode="{$i.postalcode}"
-                                        data-country="{$i.country}"
-                                        data-city="{$i.city}"
+                                        data-country="{$i.ucountry}"
+                                        data-city="{$i.ucity}"
                                         data-target="#profileModal">
                                     <span class="glyphicon glyphicon glyphicon-user"></span>
                                 </button>
@@ -384,8 +365,6 @@
                     <tr>
                         <th>Gebruiker</th>
                         <th>Wens</th>
-                        <th>Land</th>
-                        <th>Plaats</th>
                         <th width="1%"></th>
                         <th width="1%"></th>
                     </tr>
@@ -396,8 +375,6 @@
                         <form action="" method="post">
                             <td>{$i.display}</td>
                             <td>{$i.title|escape:"html"}</td>
-                            <td>{$i.country}</td>
-                            <td>{$i.city}</td>
 
                             <input type="hidden" value={$i.wishid} name="wishid">
                             <input type="hidden" value={$i.user} name="user">
@@ -413,8 +390,6 @@
                                         data-content="{$i.content|escape:"html"}"
                                         data-owner="{$i.display}"
                                         data-status="{$i.status}"
-                                        data-city="{$i.city}"
-                                        data-country="{$i.country}"
                                         data-date="{$i.mdate}"
                                         data-target="#checkModal">
                                     <span class="glyphicon glyphicon-eye-open"></span>
@@ -427,8 +402,8 @@
                                         data-email="{$i.user}"
                                         data-address="{$i.address}"
                                         data-postalcode="{$i.postalcode}"
-                                        data-country="{$i.country}"
-                                        data-city="{$i.city}"
+                                        data-country="{$i.ucountry}"
+                                        data-city="{$i.ucity}"
                                         data-target="#profileModal">
                                     <span class="glyphicon glyphicon glyphicon-user"></span>
                                 </button>
@@ -463,8 +438,6 @@
                     <tr>
                         <th>Gebruiker</th>
                         <th>Wens</th>
-                        <th>Land</th>
-                        <th>Plaats</th>
                         <th width="1%"></th>
                         <th width="1%"></th>
                     </tr>
@@ -475,8 +448,6 @@
                         <form action="" method="post">
                             <td>{$i.display}</td>
                             <td>{$i.title|escape:"html"}</td>
-                            <td>{$i.country}</td>
-                            <td>{$i.city}</td>
 
                             <input type="hidden" value={$i.wishid} name="wishid">
                             <input type="hidden" value={$i.user} name="user">
@@ -492,8 +463,6 @@
                                         data-content="{$i.content|escape:"html"}"
                                         data-owner="{$i.display}"
                                         data-status="{$i.status}"
-                                        data-city="{$i.city}"
-                                        data-country="{$i.country}"
                                         data-date="{$i.mdate}"
                                         data-target="#checkModal">
                                     <span class="glyphicon glyphicon-eye-open"></span>
@@ -506,8 +475,8 @@
                                         data-email="{$i.user}"
                                         data-address="{$i.address}"
                                         data-postalcode="{$i.postalcode}"
-                                        data-country="{$i.country}"
-                                        data-city="{$i.city}"
+                                        data-country="{$i.ucountry}"
+                                        data-city="{$i.ucity}"
                                         data-target="#profileModal">
                                     <span class="glyphicon glyphicon glyphicon-user"></span>
                                 </button>
@@ -542,8 +511,6 @@
                     <tr>
                         <th>Gebruiker</th>
                         <th>Wens</th>
-                        <th>Land</th>
-                        <th>Plaats</th>
                         <th width="1%"></th>
                         <th width="1%"></th>
                         <th width="1%"></th>
@@ -555,8 +522,6 @@
                         <form action="" method="post">
                             <td>{$i.display}</td>
                             <td>{$i.title|escape:"html"}</td>
-                            <td>{$i.country}</td>
-                            <td>{$i.city}</td>
 
                             <input type="hidden" value={$i.wishid} name="wishid">
                             <input type="hidden" value={$i.user} name="user">
@@ -572,8 +537,6 @@
                                         data-content="{$i.content|escape:"html"}"
                                         data-owner="{$i.display}"
                                         data-status="{$i.status}"
-                                        data-city="{$i.city}"
-                                        data-country="{$i.country}"
                                         data-date="{$i.mdate}"
                                         data-target="#checkModal">
                                     <span class="glyphicon glyphicon-eye-open"></span>
@@ -589,8 +552,8 @@
                                         data-email="{$i.user}"
                                         data-address="{$i.address}"
                                         data-postalcode="{$i.postalcode}"
-                                        data-country="{$i.country}"
-                                        data-city="{$i.city}"
+                                        data-country="{$i.ucountry}"
+                                        data-city="{$i.ucity}"
                                         data-target="#profileModal">
                                     <span class="glyphicon glyphicon glyphicon-user"></span>
                                 </button>
@@ -626,8 +589,6 @@
                     <tr>
                         <th>Gebruiker</th>
                         <th>Wens</th>
-                        <th>Land</th>
-                        <th>Plaats</th>
                         <th width="1%"></th>
                         <th width="1%"></th>
                         <th width="1%"></th>
@@ -639,8 +600,6 @@
                         <form action="" method="post">
                             <td>{$i.display}</td>
                             <td>{$i.title|escape:"html"}</td>
-                            <td>{$i.country}</td>
-                            <td>{$i.city}</td>
 
                             <input type="hidden" value={$i.wishid} name="wishid">
                             <input type="hidden" value={$i.user} name="user">
@@ -656,8 +615,6 @@
                                         data-content="{$i.content|escape:"html"}"
                                         data-owner="{$i.display}"
                                         data-status="{$i.status}"
-                                        data-city="{$i.city}"
-                                        data-country="{$i.country}"
                                         data-date="{$i.mdate}"
                                         data-target="#checkModal">
                                     <span class="glyphicon glyphicon-eye-open"></span>
@@ -673,8 +630,8 @@
                                         data-email="{$i.user}"
                                         data-address="{$i.address}"
                                         data-postalcode="{$i.postalcode}"
-                                        data-country="{$i.country}"
-                                        data-city="{$i.city}"
+                                        data-country="{$i.ucountry}"
+                                        data-city="{$i.ucity}"
                                         data-target="#profileModal">
                                     <span class="glyphicon glyphicon glyphicon-user"></span>
                                 </button>
@@ -804,8 +761,6 @@
                                     Wens titel: <input type=""  readonly style="background: transparent; border: transparent" name="title" value=""/></p>
                                     <p>Wens eigenaar: <input type=""  readonly style="background: transparent; border: transparent" name="owner" value=""/></p>
                                     <p>Wens status: <input type=""  readonly style="background: transparent; border: transparent" name="status" value=""/></p>
-                                    <p>Wens plaats: <input type=""  readonly style="background: transparent; border: transparent" name="city" value=""/></p>
-                                    <p>Wens land: <input type=""  readonly style="background: transparent; border: transparent" name="country" value=""/></p>
                                     <p>Aanmaak datum: <input type="datetime"  readonly style="background: transparent; border: transparent" name="date" value=""/></p>
                                 <p>Wens inhoud: <textarea    readonly style="background: transparent; border: transparent; width:100%;height: 150px;  resize: none; font-size: 13px;"  name="content" value=""></textarea></p>
 
@@ -829,10 +784,6 @@
                         $(e.currentTarget).find('input[name="owner"]').val(owner);
                         var status = $(e.relatedTarget).data('status');
                         $(e.currentTarget).find('input[name="status"]').val(status);
-                        var city = $(e.relatedTarget).data('city');
-                        $(e.currentTarget).find('input[name="city"]').val(city);
-                        var country = $(e.relatedTarget).data('country');
-                        $(e.currentTarget).find('input[name="country"]').val(country);
                         var date = $(e.relatedTarget).data('date');
                         $(e.currentTarget).find('input[name="date"]').val(date);
 
