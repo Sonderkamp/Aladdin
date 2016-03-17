@@ -33,7 +33,7 @@ class TalentController
         $this->checkGet();
         $this->checkSessions();
 
-        render("talentOverview.php",
+        render("talentOverview.tpl",
             ["title" => "Talenten",
                 "talents" => $this->talents,
                 "user_talents" => $this->talents_user,
@@ -231,7 +231,7 @@ class TalentController
         $this->checkAdminGet();
         $this->checkAdminSession();
 
-        render("Admin/talent.php",
+        render("Admin/talent.tpl",
             ["title" => "Talenten",
             "all_talents" => $this->all_talents,
             "all_talent_number" => $this->all_talents_number,

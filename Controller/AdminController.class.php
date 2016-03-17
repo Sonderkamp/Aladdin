@@ -15,7 +15,7 @@ class AdminController
 
         if(!Empty($_SESSION["admin"]))
         {
-            render("adminHome.php", ["title" => "Statistiek"]);
+            render("adminHome.tpl", ["title" => "Statistiek"]);
             exit();
         }
         else

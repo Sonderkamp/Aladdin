@@ -112,17 +112,17 @@ class AccountController
                 }
                 // check passwords
                 if (Empty($_POST["password1"]) || Empty($_POST["password2"])) {
-                    render("newPassword.php", ["error" => "Niet alles ingevuld", "title" => "nieuw wachtwoord", "username" => $username, "token" => $_POST["token"]]);
+                    render("newPassword.tpl", ["error" => "Niet alles ingevuld", "title" => "nieuw wachtwoord", "username" => $username, "token" => $_POST["token"]]);
                     exit(1);
                 }
                 if ($_POST["password1"] != $_POST["password2"]) {
-                    render("newPassword.php", ["error" => "Wachtwoorden komen niet overeen.", "title" => "nieuw wachtwoord", "username" => $username, "token" => $_POST["token"]]);
+                    render("newPassword.tpl", ["error" => "Wachtwoorden komen niet overeen.", "title" => "nieuw wachtwoord", "username" => $username, "token" => $_POST["token"]]);
                     exit(1);
                 }
 
                 // save password
                 if (!$userModel->newPassword($_POST["username"], $_POST["password1"])) {
-                    render("newPassword.php", ["error" => "Wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter, een nummer en een speciaal teken bevatten.", "title" => "nieuw wachtwoord", "username" => $username, "token" => $_POST["token"]]);
+                    render("newPassword.tpl", ["error" => "Wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter, een nummer en een speciaal teken bevatten.", "title" => "nieuw wachtwoord", "username" => $username, "token" => $_POST["token"]]);
                     exit(1);
                 }
                 // reset hash & date
@@ -141,7 +141,7 @@ class AccountController
                     $mailer = new Email();
                     if ($userModel->setRecoveryMail($mailer, $_POST["username"])) {
                         $mailer->sendMail();
-                        render("messageScreen.php", ["title" => "Email verzonden.", "message" => "Er is een email verstuurd naar " . $_POST["username"] . " met een link om uw wachtwoord te resetten.
+                        render("messageScreen.tpl", ["title" => "Email verzonden.", "message" => "Er is een email verstuurd naar " . $_POST["username"] . " met een link om uw wachtwoord te resetten.
                     Deze link verschijnt binnen drie minuten.
                     als u niks binnenkrijgt, kijk alstublieft in uw spam folder."]);
                         exit(1);
@@ -156,12 +156,12 @@ class AccountController
         } else if (!Empty($_GET["token"])) {
 
             $username = $this->checkRecoveryToken($_GET["token"]);
-            render("newPassword.php", ["title" => "nieuw wachtwoord", "username" => $username, "token" => $_GET["token"]]);
+            render("newPassword.tpl", ["title" => "nieuw wachtwoord", "username" => $username, "token" => $_GET["token"]]);
             exit(1);
 
         }
         // new recovery
-        render("recover.php", ["title" => "Log in", "username" => ""]);
+        render("recover.tpl", ["title" => "Log in", "username" => ""]);
 
     }
 
@@ -220,19 +220,19 @@ class AccountController
             }
             $this->loginError("Niet alle gegevens zijn ingevuld");
         } else {
-            render("login.php", ["title" => "Log in", "username" => ""]);
+            render("login.tpl", ["title" => "Log in", "username" => ""]);
         }
     }
 
     private function loginError($mess)
     {
-        render("login.php", ["title" => "Log in", "error" => $mess, "username" => htmlspecialchars($_POST["username"])]);
+        render("login.tpl", ["title" => "Log in", "error" => $mess, "username" => htmlspecialchars($_POST["username"])]);
         exit();
     }
 
     private function recoverError($mess)
     {
-        render("recover.php", ["title" => "Log in", "error" => $mess, "username" => htmlspecialchars($_POST["username"])]);
+        render("recover.tpl", ["title" => "Log in", "error" => $mess, "username" => htmlspecialchars($_POST["username"])]);
         exit();
     }
 
@@ -252,13 +252,13 @@ class AccountController
                 || Empty($_POST["dob"])
                 || Empty($_POST["gender"])
             ) {
-                render("register.php", ["title" => "register", "error" => "Vul AUB alles in"]);
+                render("register.tpl", ["title" => "register", "error" => "Vul AUB alles in"]);
                 exit(1);
             }
 
             // Validate stuff
             if ($_POST["password1"] != $_POST["password2"]) {
-                render("register.php", ["title" => "register", "error" => "wachtwoorden komen niet overeen."]);
+                render("register.tpl", ["title" => "register", "error" => "wachtwoorden komen niet overeen."]);
                 exit(1);
             }
 
@@ -286,25 +286,25 @@ class AccountController
                 $mailer = new Email();
                 if ($userModel->setActivateMail($mailer, $arr["username"])) {
                     $mailer->sendMail();
-                    render("messageScreen.php", ["title" => "Email verzonden.", "message" => "Er is een email verstuurd naar " . $arr["username"] . " met een activatielink.
+                    render("messageScreen.tpl", ["title" => "Email verzonden.", "message" => "Er is een email verstuurd naar " . $arr["username"] . " met een activatielink.
                     Deze link verschijnt binnen drie minuten.
                     als u niks binnenkrijgt, kijk alstublieft in uw spam folder."]);
                     exit(1);
 
                 } else {
-                    render("register.php", ["title" => "register", "error" => "Mail send error"]);
+                    render("register.tpl", ["title" => "register", "error" => "Mail send error"]);
                     exit(1);
                 }
 
             }
-            render("register.php", ["title" => "register", "error" => $res]);
+            render("register.tpl", ["title" => "register", "error" => $res]);
             exit(1);
             // usermodel register
             // send email with register token.
 
 
         } else {
-            render("register.php", ["title" => "register"]);
+            render("register.tpl", ["title" => "register"]);
             exit();
         }
     }
@@ -316,7 +316,7 @@ class AccountController
         //        // todo: render user-manage screen
         //        echo $_SESSION["user"]->email;
 
-        render("account.php", ["title" => "account"]);
+        render("account.tpl", ["title" => "account"]);
          exit();
      }
 

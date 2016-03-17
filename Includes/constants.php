@@ -12,7 +12,7 @@ define("SERVER", "46.21.172.145");
 // your database's username
 define("USERNAME", "maxbets2_root");
 
-// your database's username
+
 define("DEVELOPMENT", true);
 
 define("EMAILADRESS", "WebshopWebs@gmail.com");

@@ -130,7 +130,7 @@ class WishController {
                 exit(1);
             }
 
-            render("addWish.php", ["title" => "Wens toevoegen"]);
+            render("addWish.tpl", ["title" => "Wens toevoegen"]);
         } else {
             $this->wishContentId = $_GET["editwishbtn"];
             $_SESSION["wishcontentid"] = $_GET["editwishbtn"];
@@ -150,7 +150,7 @@ class WishController {
             $tempTag = $this->wishRepository->getWishTalent($this->wishContentId);
 
             $this->tag = $this->prepend("#", implode(" #", $tempTag));
-            render("addWish.php", ["wishtitle" => $this->title,
+            render("addWish.tpl", ["wishtitle" => $this->title,
                 "description" => $this->description, "edit" => "isset", "tag" => $this->tag]);
         }
     }
@@ -172,7 +172,7 @@ class WishController {
 
             // check if user has 3 wishes
             if (!$canAddWish) {
-                render("addWish.php", ["wishError" => "U heeft al 3 wensen, u kunt geen wensen meer toevoegen."]);
+                render("addWish.tpl", ["wishError" => "U heeft al 3 wensen, u kunt geen wensen meer toevoegen."]);
                 exit(1);
             }
 
@@ -185,7 +185,7 @@ class WishController {
                 || Empty($this->description)
                 || Empty($this->tag)
             ) {
-                render("addWish.php", ["error" => "Vul AUB alles in", "wishtitle" => $this->title,
+                render("addWish.tpl", ["error" => "Vul AUB alles in", "wishtitle" => $this->title,
                     "description" => $this->description, "edit" => "isset"]);
                 exit(1);
             }
@@ -248,13 +248,13 @@ class WishController {
 
             $tagErrorMessage = "een tag moet minimaal uit 3 tekens bestaan en beginnen met een #";
             if (!$validTag) {
-                render("addWish.php", ["error" => "vul AUB alles in!", "wishtitle" => $this->title,
+                render("addWish.tpl", ["error" => "vul AUB alles in!", "wishtitle" => $this->title,
                     "description" => $this->description, "tag" => $this->tag, "tagerror" => $tagErrorMessage, "edit" => "isset"]);
                 exit(1);
             }
 
             if (!$valid) {
-                render("addWish.php", ["error" => "vul AUB alles in!", "wishtitle" => $this->title,
+                render("addWish.tpl", ["error" => "vul AUB alles in!", "wishtitle" => $this->title,
                     "description" => $this->description, "tag" => $this->tag, "edit" => "isset"]);
                 exit(1);
             }

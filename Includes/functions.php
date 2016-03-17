@@ -81,7 +81,7 @@
 
 
             // render header
-            $smarty->display("View/header.php");
+            $smarty->display("View/header.tpl");
 
             // render template
             $smarty->display("View/$template");
@@ -89,7 +89,7 @@
             // render footer
 //            $quote = new Quote();
 //            $value["Quote"] = $quote->getQuote();
-            $smarty->display("View/footer.php");
+            $smarty->display("View/footer.tpl");
         }
         // else err
         else
