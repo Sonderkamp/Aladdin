@@ -5,9 +5,11 @@
         <div class="btn-group chart" role="group" aria-label="...">
             <button type="button" onclick="setXaxis(1);" class="btn btn-default">Gebruikers</button>
             <button type="button" onclick="setXaxis(0);" class="btn btn-default">Wensen</button>
+            <span class="filter info"> <input class="slider" id="slider" type="text" class="span2"
+                                                            value=""/> </span>
+
         </div>
-         <span class="filter"> Year Filter: <input class="slider" id="slider" type="text" class="span2"
-                                                   value=""/> </span>
+
 
         <div id="chart-area"></div>
        <p> Datum bereik: <span id="mindate">2013-1-1</span> - <span id="maxdate">2013-1-1</span> </p>
