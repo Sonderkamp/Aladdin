@@ -121,7 +121,36 @@ function setXaxis(val) {
 
     if (value != val) {
         value = val;
-        updateVisualization();
+
+        if (values != data[value].data) {
+            values = [];
+
+            // reset path
+            if (lineDOM == null) {
+                // create lineDOM
+                lineDOM = svg.append("path")
+                    .attr("class", "line");
+            }
+            else {
+                // remove line
+                lineDOM.attr("d", null);
+            }
+
+            // move points offscreen
+            svg.selectAll("circle").data(values, function (d) {
+                    return d.date
+                })
+                .exit()
+                .transition()
+                .duration(500)
+                .attr("cy", function (d) {
+                    return -200;
+                })
+                .remove()
+                .each("end", function () {
+                    updateVisualization();
+                });
+        }
     }
 
 }
@@ -142,10 +171,12 @@ function initSlider() {
 
 var value = 0;
 var label;
+var values;
 // Render visualization
 function updateVisualization() {
 
-    var values = data[value].data;
+
+    values = data[value].data;
 
 
     // remove values outside range boundries
@@ -210,8 +241,57 @@ function updateVisualization() {
 
     // REMOVE points
     svg.selectAll("circle").data(values, function (d) {
-        return d.date
-    }).exit()
+            return d.date
+        })
+        .exit()
+        .transition()
+        .duration(500)
+        .attr("cy", function (d) {
+            return -200;
+        })
+        .attr("cx", function (d) {
+            if (formatDate(d.date) > highFilter)
+                return width;
+            return 0;
+        })
+        .remove();
+
+    // CREATE points
+    svg.selectAll("circle").data(values, function (d) {
+            return d.date
+        })
+        .enter()
+        .append("circle")
+        .attr("r", 0)
+        .attr("cx", function (d) {
+            if (isNaN(x(d.date)))
+                return 0;
+            return x(d.date);
+        })
+        .attr("r", 6)
+        .attr("cy", function (d) {
+            return 0;
+        })
+        .attr("class", "tooltip-circle")
+        .transition()
+        .duration(500)
+        .attr("cx", function (d) {
+            if (isNaN(x(d.date)))
+                return 0;
+            return x(d.date);
+        })
+        .attr("r", 6)
+        .attr("cy", function (d) {
+            if (isNaN(y(d.amount)))
+                return 0;
+            return y(d.amount);
+        });
+
+
+    // UPDATE points
+    svg.selectAll("circle").data(values, function (d) {
+            return d.date
+        })
         .transition()
         .duration(500)
         .attr("cx", function (d) {
@@ -224,87 +304,9 @@ function updateVisualization() {
                 return 0;
             return y(d.amount);
         })
-        .remove();
-
-    // CREATE points
-    svg.selectAll("circle").data(values, function (d) {
-            return d.date
-        })
-        .enter()
-        .append("circle")
-        .attr("cx", function (d) {
-            if (isNaN(x(d.date)))
-                return 0;
-            return x(d.date);
-        })
-        .attr("r", 6)
-        .attr("cy", function (d) {
-            if (isNaN(y(d.amount)))
-                return 0;
-            return y(d.amount);
-        })
-        .attr("class", "tooltip-circle")
-        .on("click", showEdition)
-        .on("mouseover", function (d) {
-            d3.select(this)
-                .transition()
-                .duration(100)
-                .attr("r", 12)
-                .attr("cx", function (d) {
-                    if (isNaN(x(d.date)))
-                        return 0;
-                    return x(d.date);
-                })
-                .attr("cy", function (d) {
-                    if (isNaN(y(d.amount)))
-                        return 0;
-                    return y(d.amount);
-                });
-            //tip.show(d);
-        })
-        .on("mouseout", function (d) {
-            d3.select(this)
-                .transition()
-                .duration(100)
-                .attr("r", 6)
-                .attr("cx", function (d) {
-                    if (isNaN(x(d.date)))
-                        return 0;
-                    return x(d.date);
-                })
-                .attr("cy", function (d) {
-                    if (isNaN(y(d.amount)))
-                        return 0;
-                    return y(d.amount);
-                });
-            //tip.hide(d);
-        })
-        .transition()
-        .duration(800)
-        .attr("cx", function (d) {
-            if (isNaN(x(d.date)))
-                return 0;
-            return x(d.date);
+        .each("end", function () {
+            drawLine(values)
         });
-
-    // UPDATE points
-    svg.selectAll("circle").data(values, function (d) {
-            return d.date
-        })
-        .transition()
-        .duration(800)
-        .attr("cx", function (d) {
-            if (isNaN(x(d.date)))
-                return 0;
-            return x(d.date);
-        })
-        .attr("cy", function (d) {
-            if (isNaN(y(d.amount)))
-                return 0;
-            return y(d.amount);
-        }).each("end", function () {
-        drawLine(values)
-    });
 
     // don't update axis if no value is in range
     if (values.length == 0)
@@ -316,7 +318,7 @@ function updateVisualization() {
     }
     yAxisDOM
         .transition()
-        .duration(800)
+        .duration(500)
         .call(yAxis);
 
     if (xAxisDOM == null) {
@@ -332,7 +334,7 @@ function updateVisualization() {
     label.html(data[value].name);
     xAxisDOM
         .transition()
-        .duration(800)
+        .duration(500)
         .call(xAxis);
 
 
