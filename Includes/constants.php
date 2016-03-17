@@ -1,18 +1,18 @@
 <?php
 
 // your database's name
-define("DATABASE", "maxbets2_Aladdin");
+define("DATABASE", "aladdin_db2");
 
 // your database's password
-define("PASSWORD", "projectbaas");
+define("PASSWORD", "Ab12345");
 
 // your database's server
-define("SERVER", "46.21.172.145");
+define("SERVER", "databases.aii.avans.nl");
 
 // your database's username
-define("USERNAME", "maxbets2_root");
+define("USERNAME", "aladdin");
 
-// your database's username
+
 define("DEVELOPMENT", true);
 
 define("EMAILADRESS", "WebshopWebs@gmail.com");

@@ -27,22 +27,13 @@ class TalentController
 
     public function run()
     {
+        // if admin
+        // else deze
         $this->checkPost();
         $this->checkGet();
         $this->checkSessions();
 
-//        $this->checkAdminPost();
-//        $this->checkAdminGet();
-//        $this->checkAdminSession();
-//
-//        render("Admin/talent.php",
-//            ["title" => "Talenten",
-//            "all_talents" => $this->all_talents,
-//            "all_talent_number" => $this->all_talents_number,
-//            "current_all_talents_number" => $this->current_all_talents_number,
-//            "unaccepted_talents" => $this->unaccepted_talents]);
-
-        render("talentOverview.php",
+        render("talentOverview.tpl",
             ["title" => "Talenten",
                 "talents" => $this->talents,
                 "user_talents" => $this->talents_user,
@@ -236,8 +227,16 @@ class TalentController
 
     public function runAdmin()
     {
-        render("Admin/talent.php",
-            ["title" => "Talenten"]);
+        $this->checkAdminPost();
+        $this->checkAdminGet();
+        $this->checkAdminSession();
+
+        render("Admin/talent.tpl",
+            ["title" => "Talenten",
+            "all_talents" => $this->all_talents,
+            "all_talent_number" => $this->all_talents_number,
+            "current_all_talents_number" => $this->current_all_talents_number,
+            "unaccepted_talents" => $this->unaccepted_talents]);
         exit(0);
     }
 

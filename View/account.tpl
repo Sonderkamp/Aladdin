@@ -17,8 +17,9 @@
         <h5>Mijn gegevens</h5>
 
         <form action="/profile/action=change" method="post"><p>
-                Email: <input name="email" type="text" readonly="true" style="background-color: transparent"
+                Email: <input name="email" type="text" readonly="true" style="background-color: transparent ; border-color: transparent"
                               value="{$user->email}">
+            <br><br>
             <p>
                 initialen: <input type="text" name="initials" value="{$user->initials}" required data-validation="custom" data-validation-regexp="^([a-zA-Z\.]+)$"
                                   data-validation-error-msg="Initialen mogen alleen letters en punten bevatten.">

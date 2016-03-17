@@ -31,7 +31,7 @@
                 <li>
                     <form method="post">
                         <button class="btn btn-default button-color-green"
-                                formaction="/Wishes/match/wish_id={$wish->id}"
+                                formaction="/Wishes/match/wish_id={$selectedWish->id}"
                                 type="submit">
                             Match
                         </button>

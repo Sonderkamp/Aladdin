@@ -77,7 +77,7 @@ class ProfileController
     private function manage()
     {
 
-        render("account.php", ["title" => "profile", "error" => "","errorc" => ""]);
+        render("account.tpl", ["title" => "profile", "error" => "","errorc" => ""]);
         exit();
     }
 
@@ -97,7 +97,7 @@ class ProfileController
                 || Empty($_POST["dob"])
                 || Empty($_POST["gender"])
             ) {
-                render("account.php", ["title" => "profile", "error" => "Vul AUB alles in","errorc" => ""]);
+                render("account.tpl", ["title" => "profile", "error" => "Vul AUB alles in","errorc" => ""]);
                 exit(1);
             }
             $array = array("username" => $_POST["email"],"name" => $_POST["name"],"surname" => $_POST["surname"],"address" => $_POST["address"],"postalcode" => $_POST["postalcode"],"country" => $_POST["country"],"city" => $_POST["city"],"dob" => $_POST["dob"],"initial" => $_POST["initials"],"gender" => $_POST["gender"]);
@@ -124,12 +124,12 @@ class ProfileController
 
                 echo $_SESSION["user"]->checkPassword($_SESSION["user"]->email)["password"];
                 $_SESSION["user"]->updateUser($arr);
-                render("account.php", ["title" => "profile", "error" => "","errorc" => "gegevens gewijzigd"]);
+                render("account.tpl", ["title" => "profile", "error" => "","errorc" => "gegevens gewijzigd"]);
                 exit();
 
             }
         }
-        render("account.php", ["title" => "profile", "errorc" => "een van de ingevoerde invoer velden klopt niet", "error" => ""]);
+        render("account.tpl", ["title" => "profile", "errorc" => "een van de ingevoerde invoer velden klopt niet", "error" => ""]);
         exit();
     }
 
@@ -141,26 +141,26 @@ class ProfileController
 
                 $userModel = new User();
                 if ((Empty($_POST["username"]) || !$userModel->validateUsername($_POST["username"]))) {
-                    render("account.php", ["error" => "Wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter, een nummer en een speciaal teken bevatten.", "title" => "nieuw wachtwoord"]);
+                    render("account.tpl", ["error" => "Wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter, een nummer en een speciaal teken bevatten.", "title" => "nieuw wachtwoord"]);
                     exit();
                 }
                 if ($_SESSION["user"]->email != $_POST["username"]) {
-                    render("account.php", ["error" => "Wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter, een nummer en een speciaal teken bevatten.", "title" => "nieuw wachtwoord"]);
+                    render("account.tpl", ["error" => "Wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter, een nummer en een speciaal teken bevatten.", "title" => "nieuw wachtwoord"]);
                     exit();
                 }
                 // check passwords
                 if (Empty($_POST["password1"]) || Empty($_POST["password2"])) {
-                    render("account.php", ["error" => "Niet alles ingevuld", "title" => "nieuw wachtwoord"]);
+                    render("account.tpl", ["error" => "Niet alles ingevuld", "title" => "nieuw wachtwoord"]);
                     exit(1);
                 }
                 if ($_POST["password1"] != $_POST["password2"]) {
-                    render("account.php", ["error" => "Wachtwoorden komen niet overeen.", "title" => "nieuw wachtwoord"]);
+                    render("account.tpl", ["error" => "Wachtwoorden komen niet overeen.", "title" => "nieuw wachtwoord"]);
                     exit(1);
                 }
 
                 // save password
                 if (!$userModel->newPassword($_POST["username"], $_POST["password1"])) {
-                    render("account.php", ["error" => "Wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter, een nummer en een speciaal teken bevatten.", "title" => "nieuw wachtwoord"]);
+                    render("account.tpl", ["error" => "Wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter, een nummer en een speciaal teken bevatten.", "title" => "nieuw wachtwoord"]);
                     exit(1);
                 }
 
@@ -170,7 +170,7 @@ class ProfileController
                         $userModel->newPassword($_POST["username"], $_POST["password1"]);
                         $messagemodel = new messageModel();
                         $messagemodel->sendMessage("Admin", $_SESSION["user"]->email, "Je wachtwoord voor Aladdin is veranderd", "Je wachtwoord voor Aladdin is veranderd heeft u dit niet zelf gedaan vraag dan een nieuw wachtwoord aan op http://localhost/Account/action=Recover");
-                        render("account.php", ["error" => "", "title" => "nieuw wachtwoord", "error" => "Uw wachtwoord is veranderd","errorc" => ""]);
+                        render("account.tpl", ["error" => "", "title" => "nieuw wachtwoord", "error" => "Uw wachtwoord is veranderd","errorc" => ""]);
                         exit();
                     }
 
@@ -178,12 +178,12 @@ class ProfileController
                 }
                 // new recovery creation
             } elseif (!$_SESSION["user"]->checkPassword($_POST["pwo"])) {
-                render("account.php", ["error" => "", "title" => "nieuw wachtwoord", "error" => "Oud password klopt niet","errorc" => ""]);
+                render("account.tpl", ["error" => "", "title" => "nieuw wachtwoord", "error" => "Oud password klopt niet","errorc" => ""]);
                 exit(0);
             }
 
         }
-        render("account.php", ["error" => "", "title" => "nieuw wachtwoord", "error" => "","errorc" => ""]);
+        render("account.tpl", ["error" => "", "title" => "nieuw wachtwoord", "error" => "","errorc" => ""]);
 
     }
 }
