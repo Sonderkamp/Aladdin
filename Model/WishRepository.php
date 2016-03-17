@@ -360,7 +360,6 @@ AND ab.BlockDate = test.abmax_date
 AND ab.Block_Id = test.blockid) AS isblock
               ON u.Email = isblock.User_Email
               where (isBlocked = 0 OR isBlocked is null)
-              AND status = 'Aangemaakt'
               AND u.IsActive = 1
               AND wc.IsAccepted = 0
               AND wc.moderator_username is null
@@ -405,10 +404,16 @@ AND ab.Block_Id = test.blockid) AS isblock
             from wishContent wc
             INNER JOIN wish w on w.id = wc.wish_Id
             INNER JOIN user u on w.user = u.email
+             JOIN (SELECT wish_Id as wishid, MAX(wishContent.Date) AS max_date
+              FROM wishContent
+              where moderator_username is not null
+            AND isaccepted = 1 GROUP BY wish_Id ) AS wccMax
+              ON w.Id = wccMax.wishid
             WHERE status = 'Gepubliseerd'
             AND wc.moderator_username is not null
             AND wc.isaccepted = 1
             AND u.IsActive =1
+            AND wc.Date = wccMax.max_date
             ORDER BY mdate asc");
                 break;
             case 'matched':
@@ -428,10 +433,15 @@ AND ab.Block_Id = test.blockid) AS isblock
             from wishContent wc
             INNER JOIN wish w on w.id = wc.wish_Id
             INNER JOIN user u on w.user = u.email
+            JOIN (SELECT wish_Id as wishid, MAX(wishContent.Date) AS max_date
+              FROM wishContent
+              where moderator_username is not null
+            AND isaccepted = 1 GROUP BY wish_Id ) AS wccMax
             WHERE status = 'Match gevonden'
             AND wc.moderator_username is not null
             AND wc.isaccepted = 1
             AND u.IsActive =1
+            AND wc.Date = wccMax.max_date
             ORDER BY mdate asc");
                 break;
             case 'current':
@@ -451,10 +461,15 @@ AND ab.Block_Id = test.blockid) AS isblock
             from wishContent wc
             INNER JOIN wish w on w.id = wc.wish_Id
             INNER JOIN user u on w.user = u.email
+            JOIN (SELECT wish_Id as wishid, MAX(wishContent.Date) AS max_date
+              FROM wishContent
+              where moderator_username is not null
+            AND isaccepted = 1 GROUP BY wish_Id ) AS wccMax
             WHERE status = 'Wordt vervuld'
             AND wc.moderator_username is not null
             AND wc.isaccepted = 1
             AND u.IsActive =1
+            AND wc.Date = wccMax.max_date
             ORDER BY mdate asc");
                 break;
             case 'done':
@@ -474,10 +489,15 @@ AND ab.Block_Id = test.blockid) AS isblock
             from wishContent wc
             INNER JOIN wish w on w.id = wc.wish_Id
             INNER JOIN user u on w.user = u.email
+            JOIN (SELECT wish_Id as wishid, MAX(wishContent.Date) AS max_date
+              FROM wishContent
+              where moderator_username is not null
+            AND isaccepted = 1 GROUP BY wish_Id ) AS wccMax
             WHERE status = 'Vervuld'
             AND wc.moderator_username is not null
             AND wc.isaccepted = 1
             AND u.IsActive =1
+            AND wc.Date = wccMax.max_date
             ORDER BY mdate asc");
                 break;
             case 'denied':
@@ -497,10 +517,15 @@ AND ab.Block_Id = test.blockid) AS isblock
             from wishContent wc
             INNER JOIN wish w on w.id = wc.wish_Id
             INNER JOIN user u on w.user = u.email
+            JOIN (SELECT wish_Id as wishid, MAX(wishContent.Date) AS max_date
+              FROM wishContent
+              where moderator_username is not null
+            AND isaccepted = 1 GROUP BY wish_Id ) AS wccMax
             WHERE status = 'Geweigerd'
             AND wc.moderator_username is not null
             AND wc.isaccepted = 0
             AND u.IsActive =1
+            AND wc.Date = wccMax.max_date
             ORDER BY mdate asc");
                 break;
             case 'deleted':
@@ -520,8 +545,13 @@ AND ab.Block_Id = test.blockid) AS isblock
             from wishContent wc
             INNER JOIN wish w on w.id = wc.wish_Id
             INNER JOIN user u on w.user = u.email
+            JOIN (SELECT wish_Id as wishid, MAX(wishContent.Date) AS max_date
+              FROM wishContent
+              where moderator_username is not null
+            AND isaccepted = 1 GROUP BY wish_Id ) AS wccMax
             WHERE status = 'Verwijderd'
             AND u.IsActive =1
+            AND wc.Date = wccMax.max_date
             ORDER BY mdate asc");
                 break;
         }
@@ -533,8 +563,12 @@ AND ab.Block_Id = test.blockid) AS isblock
     {
         Database::query_safe("UPDATE wishContent SET `IsAccepted`=1  WHERE Date =?", array($mdate));
         Database::query_safe("UPDATE wishContent SET `moderator_username`='Admin'  WHERE Date =?", array($mdate));
-        Database::query_safe("UPDATE wish SET `Status`='Gepubliseerd'  WHERE id=?", array($id));
 
+        $currentstatus = Database::query_safe("SELECT status as status from wish where id =?",array($id));
+
+        if (($currentstatus[0]["status"] == 'Aangemaakt')) {
+            Database::query_safe("UPDATE wish SET `Status`='Gepubliseerd'  WHERE id=?", array($id));
+        }
 
     }
 
