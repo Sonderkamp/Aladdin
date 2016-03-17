@@ -6,6 +6,9 @@
             <button type="button" onclick="setXaxis(1);" class="btn btn-default">Gebruikers</button>
             <button type="button" onclick="setXaxis(0);" class="btn btn-default">Wensen</button>
         </div>
+         <span class="filter"> Year Filter: <input class="slider" id="slider" type="text" class="span2"
+                                                   value=""/> </span>
+
         <div id="chart-area"></div>
 
     </div>
@@ -23,4 +26,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.14/d3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.6.7/d3-tip.min.js"></script>
 <script src="js/queue.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/6.0.16/bootstrap-slider.min.js"></script>
 <script src="/JS/adminchart.js"></script>

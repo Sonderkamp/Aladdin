@@ -75,14 +75,20 @@ function loadData() {
             });
 
             addtoday(data);
-            var yearRange = d3.extent(data[0], function (d) {
-                return formatDate(d.date);
-            });
 
-            min = +yearRange[0];
-            max = +yearRange[1];
+
+            min = data[0].data[0].date;
+            max = data[0].data[data[0].data.length - 1].date;
+
+            if (data[0].data[0].date > data[1].data[0].date)
+                min = data[1].data[0].date;
+
+            if (data[0].data[data[0].data.length - 1].date < data[1].data[data[1].data.length - 1].date)
+                max = data[0].data[data[0].data.length - 1].date;
+
             lowFilter = min;
             highFilter = max;
+
             initSlider();
             // Draw the visualization for the first time
             updateVisualization();
@@ -155,15 +161,25 @@ function setXaxis(val) {
 
 }
 
-function initSlider() {
-    var slider = $("#slider").slider({min: min, max: max, value: [min, max], focus: true});
+function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+}
 
+function initSlider() {
+
+    var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+
+    var diffDays = Math.round(Math.abs((min.getTime() - max.getTime())/(oneDay)));
+
+    slider = $("#slider").slider({min: 0, max: diffDays, value: [0, diffDays], focus: true});
     slider.on('slideStop', function (inp) {
         oldLow = lowFilter;
         oldHigh = highFilter;
 
-        lowFilter = inp.value[0];
-        highFilter = inp.value[1];
+        lowFilter = addDays(min, inp.value[0]);
+        highFilter = addDays(min, inp.value[1]);
         updateVisualization();
     });
 }
@@ -180,10 +196,10 @@ function updateVisualization() {
 
 
     // remove values outside range boundries
-    //values = values.filter(function (d) {
-    //    var year = formatDate(d.date);
-    //    return (lowFilter <= year && year <= highFilter);
-    //});
+    values = values.filter(function (d) {
+        var date = new Date(d.date);
+        return (lowFilter <= date && date <= highFilter);
+    });
 
 
     // create tip
@@ -195,10 +211,6 @@ function updateVisualization() {
     //    svg.call(tip);
     //}
 
-    // create ranges/scales/axis
-    var yearRange = d3.extent(values, function (d) {
-        return d.date;
-    });
 
 
     var yRange = d3.extent(values, function (d) {
@@ -216,7 +228,7 @@ function updateVisualization() {
         .range([height, 0]);
 
     x = d3.time.scale()
-        .domain([yearRange[0], yearRange[1]])
+        .domain([lowFilter, highFilter])
         .range([7, width]);
 
     var yAxis = d3.svg.axis()
@@ -246,13 +258,10 @@ function updateVisualization() {
         .exit()
         .transition()
         .duration(500)
-        .attr("cy", function (d) {
-            return -200;
-        })
         .attr("cx", function (d) {
-            if (formatDate(d.date) > highFilter)
-                return width;
-            return 0;
+            if (new Date(d.date) > highFilter)
+                return width + 200;
+            return -200;
         })
         .remove();
 
@@ -262,7 +271,6 @@ function updateVisualization() {
         })
         .enter()
         .append("circle")
-        .attr("r", 0)
         .attr("cx", function (d) {
             if (isNaN(x(d.date)))
                 return 0;
@@ -270,7 +278,7 @@ function updateVisualization() {
         })
         .attr("r", 6)
         .attr("cy", function (d) {
-            return 0;
+            return -500;
         })
         .attr("class", "tooltip-circle")
         .transition()
