@@ -13,7 +13,7 @@ class AdminController
 
         guaranteeLogin("/admin");
 
-        if(!Empty($_SESSION["admin"]))
+        if(Empty($_SESSION["admin"]))
         {
             render("adminHome.tpl", ["title" => "Statistiek"]);
             exit();
