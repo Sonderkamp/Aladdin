@@ -17,7 +17,7 @@ var svg = d3.select("#chart-area").append("svg")
 
 
 // Date parser (https://github.com/mbostock/d3/wiki/Time-Formatting)
-var formatDate = d3.time.format("%Y");
+var formatDate = d3.time.format("%Y-%m-%d");
 
 var min = 0;
 var max = 0;
@@ -39,39 +39,65 @@ var data;
 
 // Load CSV file
 function loadData() {
-    d3.csv("/JS/fifa-world-cup.csv", function (error, csv) {
+    queue()
+        .defer(d3.csv, "/admin/csv=wishes")
+        .defer(d3.csv, "/admin/csv=users")
+        .await(function (error, wishes, users) {
 
-        csv.forEach(function (d) {
-            // Convert string to 'date object'
-            d.YEAR = formatDate.parse(d.YEAR);
+            wishes.forEach(function (d) {
+                // Convert string to 'date object'
+                d.date = formatDate.parse(d.date);
+                // Convert numeric values to 'numbers'
+                d.amount = +d.amount;
+            });
 
-            // Convert numeric values to 'numbers'
-            d.TEAMS = +d.TEAMS;
-            d.MATCHES = +d.MATCHES;
-            d.GOALS = +d.GOALS;
-            d.AVERAGE_GOALS = +d.AVERAGE_GOALS;
-            d.AVERAGE_ATTENDANCE = +d.AVERAGE_ATTENDANCE;
+            users.forEach(function (d) {
+                // Convert string to 'date object'
+                d.date = formatDate.parse(d.date);
+                // Convert numeric values to 'numbers'
+                d.amount = +d.amount;
+            });
+
+            // Store csv data in global variable
+            data = [{"data": wishes, "name": "Aantal nieuwe wensen"}, {
+                "data": users,
+                "name": "Aantal nieuwe gebruikers"
+            }];
+
+            console.log(data);
+
+            data[0].data.sort(function (a, b) {
+                return new Date(a.date) - new Date(b.date);
+            });
+
+            data[1].data.sort(function (a, b) {
+                return new Date(a.date) - new Date(b.date);
+            });
+
+            addtoday(data);
+            var yearRange = d3.extent(data[0], function (d) {
+                return formatDate(d.date);
+            });
+
+            min = +yearRange[0];
+            max = +yearRange[1];
+            lowFilter = min;
+            highFilter = max;
+            initSlider();
+            // Draw the visualization for the first time
+            updateVisualization();
         });
+}
 
-        // Store csv data in global variable
-        data = csv;
+function addtoday(data) {
 
-        data.sort(function (a, b) {
-            return new Date(a.YEAR) - new Date(b.YEAR);
-        });
+    for (var i = 0; i < data.length; i++) {
+        if (formatDate(data[i].data[data[i].data.length - 1].date) != formatDate(new Date())) {
+            data[i].data.push({"date": formatDate.parse(formatDate(new Date())), "amount": 0});
+        }
 
-        var yearRange = d3.extent(data, function (d) {
-            return formatDate(d.YEAR);
-        });
+    }
 
-        min = +yearRange[0];
-        max = +yearRange[1];
-        lowFilter = min;
-        highFilter = max;
-        initSlider();
-        // Draw the visualization for the first time
-        updateVisualization();
-    });
 }
 
 var yAxisDOM;
@@ -91,10 +117,12 @@ var highFilter = 3;
 var oldLow = 0;
 var oldHigh = 0;
 
-function setXaxis(val)
-{
-    value = val.toUpperCase();
-    updateVisualization();
+function setXaxis(val) {
+
+    if (value != val) {
+        value = val;
+        updateVisualization();
+    }
 
 }
 
@@ -112,39 +140,38 @@ function initSlider() {
 }
 
 
-var value = "GOALS";
+var value = 0;
+var label;
 // Render visualization
 function updateVisualization() {
 
-    value;
-    var values = data;
+    var values = data[value].data;
 
 
     // remove values outside range boundries
-    values = values.filter(function (d) {
-        var year = formatDate(d.YEAR);
-        return (lowFilter <= year && year <= highFilter);
-    });
-
+    //values = values.filter(function (d) {
+    //    var year = formatDate(d.date);
+    //    return (lowFilter <= year && year <= highFilter);
+    //});
 
 
     // create tip
-    if (tip == null) {
-        tip = d3.tip().attr('class', 'd3-tip').html(function (d) {
-                return d.EDITION + "<br>" + $("#ranking-type option:selected").html() + " " + d[value];
-            })
-            .offset([-10, 0]);
-        svg.call(tip);
-    }
+    //if (tip == null) {
+    //    tip = d3.tip().attr('class', 'd3-tip').html(function (d) {
+    //            return d.EDITION + "<br>" + $("#ranking-type option:selected").html() + " " + d[value];
+    //        })
+    //        .offset([-10, 0]);
+    //    svg.call(tip);
+    //}
 
     // create ranges/scales/axis
     var yearRange = d3.extent(values, function (d) {
-        return d.YEAR;
+        return d.date;
     });
 
 
     var yRange = d3.extent(values, function (d) {
-        return d[value];
+        return d.amount;
     });
 
     var upperBound = yRange[1] + (yRange[1] / 100 * 10);
@@ -183,35 +210,38 @@ function updateVisualization() {
 
     // REMOVE points
     svg.selectAll("circle").data(values, function (d) {
-        return d.EDITION
+        return d.date
     }).exit()
         .transition()
         .duration(500)
         .attr("cx", function (d) {
-            if (formatDate(d.YEAR) > highFilter)
-                return width;
-            return 0;
+            if (isNaN(x(d.date)))
+                return 0;
+            return x(d.date);
         })
         .attr("cy", function (d) {
-            return y(d[value]);
+            if (isNaN(y(d.amount)))
+                return 0;
+            return y(d.amount);
         })
         .remove();
 
     // CREATE points
     svg.selectAll("circle").data(values, function (d) {
-            return d.EDITION
+            return d.date
         })
         .enter()
         .append("circle")
         .attr("cx", function (d) {
-            if (formatDate(d.YEAR) > oldHigh) {
-                return width;
-            }
-            return 0;
+            if (isNaN(x(d.date)))
+                return 0;
+            return x(d.date);
         })
         .attr("r", 6)
         .attr("cy", function (d) {
-            return y(d[value])
+            if (isNaN(y(d.amount)))
+                return 0;
+            return y(d.amount);
         })
         .attr("class", "tooltip-circle")
         .on("click", showEdition)
@@ -221,12 +251,16 @@ function updateVisualization() {
                 .duration(100)
                 .attr("r", 12)
                 .attr("cx", function (d) {
-                    return x(d.YEAR);
+                    if (isNaN(x(d.date)))
+                        return 0;
+                    return x(d.date);
                 })
                 .attr("cy", function (d) {
-                    return y(d[value])
+                    if (isNaN(y(d.amount)))
+                        return 0;
+                    return y(d.amount);
                 });
-            tip.show(d);
+            //tip.show(d);
         })
         .on("mouseout", function (d) {
             d3.select(this)
@@ -234,36 +268,46 @@ function updateVisualization() {
                 .duration(100)
                 .attr("r", 6)
                 .attr("cx", function (d) {
-                    return x(d.YEAR);
+                    if (isNaN(x(d.date)))
+                        return 0;
+                    return x(d.date);
                 })
                 .attr("cy", function (d) {
-                    return y(d[value])
+                    if (isNaN(y(d.amount)))
+                        return 0;
+                    return y(d.amount);
                 });
-            tip.hide(d);
+            //tip.hide(d);
         })
         .transition()
         .duration(800)
         .attr("cx", function (d) {
-            return x(d.YEAR);
+            if (isNaN(x(d.date)))
+                return 0;
+            return x(d.date);
         });
 
     // UPDATE points
     svg.selectAll("circle").data(values, function (d) {
-            return d.EDITION
+            return d.date
         })
         .transition()
         .duration(800)
         .attr("cx", function (d) {
-            return x(d.YEAR);
+            if (isNaN(x(d.date)))
+                return 0;
+            return x(d.date);
         })
         .attr("cy", function (d) {
-            return y(d[value])
+            if (isNaN(y(d.amount)))
+                return 0;
+            return y(d.amount);
         }).each("end", function () {
         drawLine(values)
     });
 
     // don't update axis if no value is in range
-    if(values.length == 0)
+    if (values.length == 0)
         return;
 
     if (yAxisDOM == null) {
@@ -280,11 +324,12 @@ function updateVisualization() {
             .attr("class", "axis x-axis")
             .attr("transform", "translate(0," + height + ")")
 
-        svg.append("text")
+        label = svg.append("text")
             .attr("x", width / 2 - 40)
             .attr("y", 30)
-            .html("Aantal logins");
+            .html("");
     }
+    label.html(data[value].name);
     xAxisDOM
         .transition()
         .duration(800)
@@ -298,10 +343,10 @@ function drawLine(values) {
     // create line structure
     line = d3.svg.line()
         .x(function (d) {
-            return x(d.YEAR);
+            return x(d.date);
         })
         .y(function (d) {
-            return y(d[value]);
+            return y(d.amount);
         })
         .interpolate("linear");
 
@@ -321,7 +366,7 @@ function drawLine(values) {
 
 }
 
-// Show details for a specific FIFA World Cup
+//// Show details for a specific FIFA World Cup
 function showEdition(d) {
 
 
