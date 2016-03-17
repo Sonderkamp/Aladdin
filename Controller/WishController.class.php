@@ -136,6 +136,13 @@ class WishController {
             $_SESSION["wishcontentid"] = $_GET["editwishbtn"];
 
             $wish = $this->wishRepository->getSelectedWish($this->wishContentId);
+            $id = $wish[0]["wish_Id"];
+            $returnWish = $this->wishRepository->getAllWishesByEmail($_SESSION["user"]->email);
+
+            if(!in_array($id,$returnWish)){
+                $this->getMyWishes();
+                exit(1);
+            }
 
             $this->title = $wish[0]["Title"];
             $this->description = $wish[0]["Content"];
@@ -158,7 +165,7 @@ class WishController {
 
     private
     function add_wish() {
-        if ($_SERVER["REQUEST_METHOD"] == "GET") {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // boolean if user has less than 3 wishes
             $canAddWish = $this->wishRepository->canAddWish($_SESSION["user"]->email);
@@ -169,9 +176,9 @@ class WishController {
                 exit(1);
             }
 
-            $this->title = $_GET["title"];
-            $this->description = $_GET["description"];
-            $this->tag = $_GET["tag"];
+            $this->title = $_POST["title"];
+            $this->description = $_POST["description"];
+            $this->tag = $_POST["tag"];
 
             // check if input of form is not null
             if (Empty($this->title)
@@ -218,10 +225,10 @@ class WishController {
     }
 
     private function edit_wish() {
-        if ($_SERVER["REQUEST_METHOD"] == "GET") {
-            $title = $_GET["title"];
-            $description = $_GET["description"];
-            $tag = $_GET["tag"];
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $title = $_POST["title"];
+            $description = $_POST["description"];
+            $tag = $_POST["tag"];
 
             $valid = true;
             $validTag = true;
