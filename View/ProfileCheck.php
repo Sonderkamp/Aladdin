@@ -14,7 +14,7 @@
         <div class=" col-xs-2 col-lg-4">
 
             {if ($blockstatus.IsBlocked eq 1)}
-            <h5 style="color:red">{$cuser.DisplayName} is geblokeerd!</h5>
+            <h5 style="color:red">{$cuser.DisplayName} is geblokkeerd!</h5>
 
             {elseif ($cuser.IsActive eq 0)}
             <h5 style="color:red">{$cuser.DisplayName} heeft zijn account verwijderd!</h5>
@@ -74,11 +74,11 @@
                     <br>
 
                     {if ($blockstatus.IsBlocked eq 0)}
-                    <input type="submit" formaction="/ProfileCheck/action=block?user={$cuser.Email}" value="Blokeer"
+                    <input type="submit" formaction="/ProfileCheck/action=block?user={$cuser.Email}" value="Blokkeer"
                            class="btn btn-default">
 
                     {elseif ($blockstatus.IsBlocked eq 1)}
-                    <input type="submit" formaction="/ProfileCheck/action=unblock?user={$cuser.Email}" value="Deblokeer"
+                    <input type="submit" formaction="/ProfileCheck/action=unblock?user={$cuser.Email}" value="Deblokkeer"
                            class="btn btn-default">
                     {/if}
                     <br>
@@ -144,9 +144,9 @@
                     <tr>
                         <td>{$i.bdate}</td>
                         {if {$i.isblocked} eq 1}
-                        <td>Geblokeerd</td>
+                        <td>Geblokkeerd</td>
                         {else}
-                        <td>Gedeblokeerd</td>
+                        <td>Gedeblokkeerd</td>
                         {/if}
                     </tr>
                     {/foreach}

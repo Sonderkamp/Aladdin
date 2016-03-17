@@ -332,14 +332,12 @@ class WishRepository
               u.DisplayName as display,
               u.Address as address,
               u.Postalcode as postalcode,
-              u.Country as country,
-              u.City as city,
+              u.Country as ucountry,
+              u.City as ucity,
               w.status as status,
               w.User as user,
               wc.Content as content,
               wc.Title as title,
-              wc.Country as country,
-              wc.City as city,
               wc.IsAccepted as accepted,
               wc.moderator_Username as modname,
               wcMax.max_date as mdate,
@@ -381,8 +379,6 @@ AND ab.Block_Id = test.blockid) AS isblock
               wc.Date as mdate,
               wc.Title as title ,
               wc.Content as content ,
-              wc.country as country ,
-              wc.City as city,
               wc.Date as mdate
             from wishContent wc
             INNER JOIN wish w on w.id = wc.wish_Id
@@ -405,8 +401,6 @@ AND ab.Block_Id = test.blockid) AS isblock
             wc.Date as mdate,
             wc.Title as title ,
             wc.Content as content ,
-            wc.country as country ,
-            wc.City as city,
               wc.Date as mdate
             from wishContent wc
             INNER JOIN wish w on w.id = wc.wish_Id
@@ -430,8 +424,6 @@ AND ab.Block_Id = test.blockid) AS isblock
             wc.Date as mdate,
             wc.Title as title ,
             wc.Content as content ,
-            wc.country as country ,
-            wc.City as city,
               wc.Date as mdate
             from wishContent wc
             INNER JOIN wish w on w.id = wc.wish_Id
@@ -455,8 +447,6 @@ AND ab.Block_Id = test.blockid) AS isblock
             wc.Date as mdate,
             wc.Title as title ,
             wc.Content as content ,
-            wc.country as country ,
-            wc.City as city,
               wc.Date as mdate
             from wishContent wc
             INNER JOIN wish w on w.id = wc.wish_Id
@@ -480,8 +470,6 @@ AND ab.Block_Id = test.blockid) AS isblock
             wc.Date as mdate,
             wc.Title as title ,
             wc.Content as content ,
-            wc.country as country ,
-            wc.City as city,
               wc.Date as mdate
             from wishContent wc
             INNER JOIN wish w on w.id = wc.wish_Id
@@ -505,8 +493,6 @@ AND ab.Block_Id = test.blockid) AS isblock
             wc.Date as mdate,
             wc.Title as title ,
             wc.Content as content ,
-            wc.country as country ,
-            wc.City as city,
               wc.Date as mdate
             from wishContent wc
             INNER JOIN wish w on w.id = wc.wish_Id
@@ -530,8 +516,6 @@ AND ab.Block_Id = test.blockid) AS isblock
             wc.Date as mdate,
             wc.Title as title ,
             wc.Content as content ,
-            wc.country as country ,
-            wc.City as city ,
               wc.Date as mdate
             from wishContent wc
             INNER JOIN wish w on w.id = wc.wish_Id
@@ -598,8 +582,6 @@ AND ab.Block_Id = test.blockid) AS isblock
               w.User as user,
               wc.Content as content,
               wc.Title as title,
-              wc.Country as country,
-              wc.City as city,
               wc.IsAccepted as accepted,
               wc.moderator_Username as modname,
               wcMax.max_date as mdate,
