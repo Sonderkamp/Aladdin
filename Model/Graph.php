@@ -22,12 +22,16 @@ GROUP BY CAST(Date AS DATE)");
         echo $csvString;
     }
 
-    public function getUsers()
+    public function getUsersMonth()
     {
-        $list = Database::query(" SELECT count(`Email`) AS amount, CAST(`CreationDate` AS DATE) AS 'Date' FROM `user`
-GROUP BY CAST(`CreationDate` AS DATE)");
+        $list = Database::query("SELECT count(`Email`) AS amount, EXTRACT( YEAR_MONTH FROM `CreationDate` )  AS 'Date' FROM `user`
+where `CreationDate` > CURRENT_DATE() - INTERVAL 12 MONTH
+ GROUP BY YEAR(`CreationDate`), MONTH(`CreationDate`)");
 
         $csvString = 'amount,date' . "\n";
+        $csvString .= '12,201602' . "\n";
+        $csvString .= '10,201601' . "\n";
+        $csvString .= '6,201512' . "\n";
         foreach ($list as $fields) {
             $csvString .= $this->tocsv($fields) . "\n";
         }

@@ -15,10 +15,8 @@
     background-image: none;
     background-color: #457B9D;
 }
-
-.slider {
-    margin-left: 50px;
-    margin-top: -60px;
+.slide-object{
+    padding-left: 20px;
 }
 
 .slider-handle {

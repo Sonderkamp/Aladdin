@@ -21,8 +21,8 @@ class AdminController
                 $val = new Graph();
                 switch($_GET["csv"])
                 {
-                    case "users":
-                        $val->getUsers();
+                    case "usersMonth":
+                        $val->getUsersMonth();
                         exit();
                     case "wishes":
                         $val->getWishes();

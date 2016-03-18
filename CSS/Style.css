@@ -250,3 +250,29 @@ a:hover {
 body{
     background-color: rgba(253, 174, 97, 0.11);
 }
+
+
+
+body
+{
+    overflow: hidden;
+}
+#slide-panel {
+    width:500px;
+    height: 100vh;
+    margin-top:-20px;
+    padding:10px;
+    background:#FDAE61;
+    margin-right:-500px;
+    float: right;
+    max-width: 500px;
+    z-index: -1;
+}
+#content
+{
+    height: 500px;
+    width: 100%;
+    float: right;
+    padding-right: 5%;
+    z-index: -1;
+}

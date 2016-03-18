@@ -18,7 +18,7 @@ var svg = d3.select("#chart-area").append("svg")
 
 // Date parser (https://github.com/mbostock/d3/wiki/Time-Formatting)
 var formatDate = d3.time.format("%Y-%m-%d");
-
+var formatDateUser = d3.time.format("%Y%m");
 var dateRender = d3.time.format("%d-%m-%Y");
 
 var min = 0;
@@ -43,7 +43,7 @@ var data;
 function loadData() {
     queue()
         .defer(d3.csv, "/admin/csv=wishes")
-        .defer(d3.csv, "/admin/csv=users")
+        .defer(d3.csv, "/admin/csv=usersMonth")
         .await(function (error, wishes, users) {
 
             wishes.forEach(function (d) {
@@ -55,7 +55,7 @@ function loadData() {
 
             users.forEach(function (d) {
                 // Convert string to 'date object'
-                d.date = formatDate.parse(d.date);
+                d.date = formatDateUser.parse(d.date);
                 // Convert numeric values to 'numbers'
                 d.amount = +d.amount;
             });
@@ -63,42 +63,31 @@ function loadData() {
             // Store csv data in global variable
             data = [
                 {
-                    "data": wishes,
+                    "data": wishes.sort(function (a, b) {
+                        return new Date(a.date) - new Date(b.date);
+                    }),
                     "name": "Aantal nieuwe wensen",
                     "suffix": "nieuwe wensen",
-                    "info": wishinfo
+                    "info": wishinfo,
+                    "slider": wishinfo,
+                    "min": wishes[0].date,
+                    "max":wishes[wishes.length - 1].date,
                 },
                 {
-                    "data": users,
-                    "name": "Aantal nieuwe gebruikers",
+                    "data": users.sort(function (a, b) {
+                        return new Date(a.date) - new Date(b.date);
+                    }),
+                    "name": "Nieuwe gebruikers afgelopen 12 maanden",
                     "suffix": "nieuwe gebruikers",
-                    "info": userinfo
+                    "info": userinfo,
+                    "slider": wishinfo,
+                    "min": new Date((new Date()).setFullYear(new Date().getFullYear() - 1)),
+                    "max":(new Date())
                 }];
 
-            console.log(data);
-
-            data[0].data.sort(function (a, b) {
-                return new Date(a.date) - new Date(b.date);
-            });
-
-            data[1].data.sort(function (a, b) {
-                return new Date(a.date) - new Date(b.date);
-            });
-
-            addtoday(data);
+            addtoday(data[0]);
 
 
-            min = data[0].data[0].date;
-            max = data[0].data[data[0].data.length - 1].date;
-
-            if (data[0].data[0].date > data[1].data[0].date)
-                min = data[1].data[0].date;
-
-            if (data[0].data[data[0].data.length - 1].date < data[1].data[data[1].data.length - 1].date)
-                max = data[0].data[data[0].data.length - 1].date;
-
-            lowFilter = min;
-            highFilter = max;
 
             initSlider();
             // Draw the visualization for the first time
@@ -107,14 +96,10 @@ function loadData() {
 }
 
 
-
 function addtoday(data) {
 
-    for (var i = 0; i < data.length; i++) {
-        if (formatDate(data[i].data[data[i].data.length - 1].date) != formatDate(new Date())) {
-            data[i].data.push({"date": formatDate.parse(formatDate(new Date())), "amount": 0});
-        }
-
+    if (formatDate(data.data[data.data.length - 1].date) != formatDate(new Date())) {
+        data.data.push({"date": formatDate.parse(formatDate(new Date())), "amount": 0});
     }
 
 }
@@ -167,6 +152,8 @@ function setXaxis(val) {
                 })
                 .remove()
                 .each("end", function () {
+
+                    initSlider();
                     updateVisualization();
                 });
         }
@@ -181,6 +168,12 @@ function addDays(date, days) {
 }
 
 function initSlider() {
+
+    min = data[value].min;
+    max = data[value].max;
+
+    lowFilter = min;
+    highFilter = max;
 
     var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
 
@@ -227,7 +220,7 @@ function updateVisualization() {
     // create tip
     if (tip == null) {
         tip = d3.tip().attr('class', 'd3-tip').html(function (d) {
-                return d.amount + " "+ data[value].suffix + "<br><br> klik voor meer info";
+                return d.amount + " " + data[value].suffix + "<br><br> klik voor meer info";
             })
             .offset([-10, 0]);
         svg.call(tip);
@@ -258,7 +251,8 @@ function updateVisualization() {
 
     var xAxis = d3.svg.axis()
         .scale(x)
-        .orient("bottom");
+        .orient("bottom")
+        .ticks(4);
 
 
     if (lineDOM == null) {
@@ -419,12 +413,71 @@ function drawLine(values) {
 
 }
 
-function wishinfo(d)
-{
-    alert("ToDo");
+function wishinfo(d) {
+    var panel = $('#slide-panel');
+    if (panel.hasClass("visible")) {
+        panel.removeClass('visible').animate({'margin-right': '-500px'});
+        $('#content').css({'margin-left': '0px'});
+    } else {
+        panel.addClass('visible').animate({'margin-right': '0px'});
+        $('#content').css({'margin-left': '-500px'});
+    }
+    return false;
 }
 
-function userinfo(d)
-{
-    alert("ToDo");
+function userinfo(d) {
+    var panel = $('#slide-panel');
+    if (panel.hasClass("visible")) {
+        panel.removeClass('visible').animate({'margin-right': '-500px'});
+        $('#content').css({'margin-left': '0px'});
+    } else {
+        panel.addClass('visible').animate({'margin-right': '0px'});
+        $('#content').css({'margin-left': '-500px'});
+    }
+    return false;
+}
+
+
+Date.prototype.dateAdd = function(size,value) {
+    value = parseInt(value);
+    var incr = 0;
+    switch (size) {
+        case 'day':
+            incr = value * 24;
+            this.dateAdd('hour',incr);
+            break;
+        case 'hour':
+            incr = value * 60;
+            this.dateAdd('minute',incr);
+            break;
+        case 'week':
+            incr = value * 7;
+            this.dateAdd('day',incr);
+            break;
+        case 'minute':
+            incr = value * 60;
+            this.dateAdd('second',incr);
+            break;
+        case 'second':
+            incr = value * 1000;
+            this.dateAdd('millisecond',incr);
+            break;
+        case 'month':
+            value = value + this.getUTCMonth();
+            if (value/12>0) {
+                this.dateAdd('year',value/12);
+                value = value % 12;
+            }
+            this.setUTCMonth(value);
+            break;
+        case 'millisecond':
+            this.setTime(this.getTime() + value);
+            break;
+        case 'year':
+            this.setFullYear(this.getUTCFullYear()+value);
+            break;
+        default:
+            throw new Error('Invalid date increment passed');
+            break;
+    }
 }
