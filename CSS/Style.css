@@ -241,3 +241,12 @@ a:hover {
         color: lightgrey;
     }
 }
+
+.homebuttons>a>img{
+    max-width: 300px;
+    margin: auto;
+}
+
+body{
+    background-color: rgba(253, 174, 97, 0.11);
+}
