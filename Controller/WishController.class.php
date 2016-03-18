@@ -188,12 +188,12 @@ class WishController {
                 $this->tag = $tag;
             }
 
-            $size = count($this->gethashtags($this->tag));
+            $size = strlen($this->gethashtags($this->tag));
 
             // check if input of form is not null
             if (Empty($this->title)
                 || Empty($this->description)
-                || Empty($this->tag) || $size == 1
+                || Empty($this->tag) || $size == 0
             ) {
                 render("addWish.tpl", ["error" => "Vul AUB alles in", "wishtitle" => $this->title,
                     "description" => $this->description, "edit" => "isset"]);
@@ -240,23 +240,37 @@ class WishController {
             $description = $_POST["description"];
             $tag = $_POST["tag"];
 
+            $firstcharOfTag = substr($tag, 0, 1);
+
+            if ($firstcharOfTag != "#") {
+                $tempTag = "#";
+                $tempTag .= $tag;
+                $tag = $tempTag;
+            }
+
             $valid = true;
             $validTag = true;
 
             if (!Empty($title)) {
                 $this->title = $title;
-            } else
+            } else {
                 $valid = false;
+            }
             if (!Empty($description)) {
                 $this->description = $description;
-            } else
+            } else {
                 $valid = false;
+            }
             if (!Empty($tag)) {
                 $this->tag = $tag;
-            } else
-                $valid = false;
+                if(strlen($this->gethashtags($this->tag)) == 0){
+                    $validTag = false;
+                }
+            } else {
+                $validTag = false;
+            }
 
-            $tagErrorMessage = "een tag moet minimaal uit 3 tekens bestaan en beginnen met een #";
+            $tagErrorMessage = "Ongelidige tag #";
             if (!$validTag) {
                 render("addWish.tpl", ["error" => "vul AUB alles in!", "wishtitle" => $this->title,
                     "description" => $this->description, "tag" => $this->tag, "tagerror" => $tagErrorMessage, "edit" => "isset"]);
@@ -273,6 +287,7 @@ class WishController {
             $allTags = $this->gethashtags($this->tag);
             $myArray = explode(',', $allTags);
             $new_array = array_map('ucfirst', $myArray);
+
 
             // create an array with the wish
             $editWish = array();
@@ -312,7 +327,8 @@ class WishController {
     }
 
 
-    private function go_back() {
+    private
+    function go_back() {
         $this->getMyWishes();
     }
 
