@@ -182,9 +182,6 @@ class WishController {
 
             $firstcharOfTag = substr($this->tag, 0, 1);
 
-            //TODO: if first char of tag != #, check it. -> error wishrepo line 287
-
-//            echo "TAG: " . $tagtest;
             if ($firstcharOfTag != "#") {
                 $tag = "#";
                 $tag .= $this->tag;
@@ -192,8 +189,6 @@ class WishController {
             }
 
             $size = count($this->gethashtags($this->tag));
-
-            echo "SIZE: " . $size;
 
             // check if input of form is not null
             if (Empty($this->title)
