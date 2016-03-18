@@ -139,7 +139,7 @@ class WishController {
             $id = $wish[0]["wish_Id"];
             $returnWish = $this->wishRepository->getAllWishesByEmail($_SESSION["user"]->email);
 
-            if(!in_array($id,$returnWish)){
+            if (!in_array($id, $returnWish)) {
                 $this->getMyWishes();
                 exit(1);
             }
@@ -180,15 +180,25 @@ class WishController {
             $this->description = $_POST["description"];
             $this->tag = $_POST["tag"];
 
-            $tagtest = substr($this->tag, 0, 1);
-            echo "TAG: " . $tagtest;
+            $firstcharOfTag = substr($this->tag, 0, 1);
 
             //TODO: if first char of tag != #, check it. -> error wishrepo line 287
+
+//            echo "TAG: " . $tagtest;
+            if ($firstcharOfTag != "#") {
+                $tag = "#";
+                $tag .= $this->tag;
+                $this->tag = $tag;
+            }
+
+            $size = count($this->gethashtags($this->tag));
+
+            echo "SIZE: " . $size;
 
             // check if input of form is not null
             if (Empty($this->title)
                 || Empty($this->description)
-                || Empty($this->tag)
+                || Empty($this->tag) || $size == 1
             ) {
                 render("addWish.tpl", ["error" => "Vul AUB alles in", "wishtitle" => $this->title,
                     "description" => $this->description, "edit" => "isset"]);
@@ -217,10 +227,10 @@ class WishController {
 
         $selectedWish = $this->wishRepository->getWish($id);
 
-        if($selectedWish->user->email != null && $selectedWish->status != "Geweigerd") {
-            render("wishSpecificView.tpl", ["title" => "Wens: " . $id, "selectedWish" => $selectedWish, "previousPage" => $previousPage]);
-        }
-        else {
+        if ($selectedWish->user->email != null && $selectedWish->status != "Geweigerd") {
+            render("wishSpecificView.tpl",
+                ["title" => "Wens: " . $id, "selectedWish" => $selectedWish, "previousPage" => $previousPage]);
+        } else {
             apologize("404 wish not found. Please wish for a better website!");
         }
     }
@@ -305,7 +315,6 @@ class WishController {
             $this->go_back();
         }
     }
-
 
 
     private function go_back() {
