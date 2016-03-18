@@ -29,26 +29,27 @@ class TalentController
     {
         // if admin
         // else deze
-        $this->checkPost();
-        $this->checkGet();
-        $this->checkSessions();
-
-        render("talentOverview.tpl",
-            ["title" => "Talenten",
-                "talents" => $this->talents,
-                "user_talents" => $this->talents_user,
-                "number_of_talents" => $this->talent_repository->checkNumberOfTalentsFromUser(),
-                "talent_error" => "set",
-                "user_talents_number" => $this->user_talents_number,
-                "current_user_talent_number" => $this->current_user_talent_number,
-                "talent_number" => $this->talent_numbers,
-                "current_talent_number" => $this->current_talent_number,
-                "current_page" => $this->page,
-                "talent_name" => $this->talent_name,
-                "added_talent_error" => $this->talent_error,
-                "requested_talents" => $this->requested_talents,
-                "requested_talents_number" => $this->requested_talents_number,
-                "current_requested_talent_number" => $this->current_requested_talent_number]);
+        $this->runAdmin();
+//        $this->checkPost();
+//        $this->checkGet();
+//        $this->checkSessions();
+//
+//        render("talentOverview.tpl",
+//            ["title" => "Talenten",
+//                "talents" => $this->talents,
+//                "user_talents" => $this->talents_user,
+//                "number_of_talents" => $this->talent_repository->checkNumberOfTalentsFromUser(),
+//                "talent_error" => "set",
+//                "user_talents_number" => $this->user_talents_number,
+//                "current_user_talent_number" => $this->current_user_talent_number,
+//                "talent_number" => $this->talent_numbers,
+//                "current_talent_number" => $this->current_talent_number,
+//                "current_page" => $this->page,
+//                "talent_name" => $this->talent_name,
+//                "added_talent_error" => $this->talent_error,
+//                "requested_talents" => $this->requested_talents,
+//                "requested_talents_number" => $this->requested_talents_number,
+//                "current_requested_talent_number" => $this->current_requested_talent_number]);
         exit(0);
     }
 

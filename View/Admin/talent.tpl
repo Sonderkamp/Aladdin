@@ -17,83 +17,185 @@
                 <div class="tab-pane fade in active" id="tab1">
                     <table class="table">
                         <thead>
-                        <tr>
-                            <th>Alle talenten</th>
-                            <th>Is geaccepteerd</th>
-                            <th>Gecheckt door</th>
-                            <th></th>
-                        </tr>
+                            <tr>
+                                <th>Alle talenten</th>
+                                <th>Is geaccepteerd</th>
+                                <th>Gecheckt door</th>
+                                <th></th>
+                            </tr>
                         </thead>
                         <tbody>
-                        {foreach from=$all_talents item=talent}
-                        <tr>
-                            <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">{$talent -> name}</td>
-                            {if !Empty($talent-> moderator_username)}
-                                {if $talent->is_rejected == true}
-                                <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Ja</td>
-                                {else}
-                                <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">Nee</td>
-                                {/if}
-                                <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">{$talent -> moderator_username}</td>
-                            {else}
-                            <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">-</td>
-                            <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">-</td>
-                            {/if}
-                            <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                                <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', $talent->name)}">
-                                    <span class="glyphicon glyphicon-edit"></span>
-                                </button>
-                            </td>
-                        </tr>
-                        {/foreach}
+                            {foreach from=$all_talents item=talent}
+                                <tr>
+                                    <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">{$talent -> name}</td>
+                                        {if !Empty($talent-> moderator_username)}
+                                            <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                {if $talent->is_rejected == true}
+                                                    Ja
+                                                {else}
+                                                    Nee
+                                                {/if}
+                                            </td>
+                                            <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">{$talent -> moderator_username}</td>
+                                        {else}
+                                            <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">-</td>
+                                            <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">-</td>
+                                        {/if}
+                                    <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                        <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', $talent->name)}">
+                                            <span class="glyphicon glyphicon-edit"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {/foreach}
                         </tbody>
                     </table>
                     {if $all_talent_number > 1}
-                    <div>
-                        <nav>
-                            <ul class="pagination">
-                                {if $current_all_talents_number <= 1}
-                                <li class="disabled">
-                                    <a href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                                {else}
-                                <li>
-                                    <a href="/talents/admin_a={$current_all_talents_number - 1}" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                                {/if}
+                        <div>
+                            <nav>
+                                {if $all_talent_number < 7}
+                                    <ul class="pagination">
+                                        {if $current_all_talents_number <= 1}
+                                            <li class="disabled">
+                                                <a href="#" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </a>
+                                            </li>
+                                        {else}
+                                            <li>
+                                                <a href="/talents/admin_a={$current_all_talents_number - 1}" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </a>
+                                            </li>
+                                        {/if}
 
-                                {for $number=1 to $all_talent_number}
-                                {if $number == $current_all_talents_number}
-                                <li class="active">
-                                    <a href="#">{$number}</a>
-                                </li>
-                                {else}
-                                <li>
-                                    <a href="/talents/admin_a={$number}">{$number}</a>
-                                </li>
-                                {/if}
-                                {/for}
+                                        {for $number=1 to $all_talent_number}
+                                            {if $number == $current_all_talents_number}
+                                                <li class="active">
+                                                    <a href="#">{$number}</a>
+                                                </li>
+                                            {else}
+                                                <li>
+                                                    <a href="/talents/admin_a={$number}">{$number}</a>
+                                                </li>
+                                            {/if}
+                                        {/for}
 
-                                {if $current_all_talents_number >= $all_talent_number}
-                                <li class="disabled">
-                                    <a href="#" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </li>
+                                        {if $current_all_talents_number >= $all_talent_number}
+                                            <li class="disabled">
+                                                <a href="#" aria-label="Next">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </a>
+                                            </li>
+                                        {else}
+                                            <li>
+                                                <a href="/talents/admin_a={$current_all_talents_number + 1}" aria-label="Next">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </a>
+                                            </li>
+                                        {/if}
+                                    </ul>
                                 {else}
-                                <li>
-                                    <a href="/talents/admin_a={$current_all_talents_number + 1}" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </li>
+                                    <ul class="pagination">
+                                        {if $current_all_talents_number <= 1}
+                                            <li class="disabled">
+                                                <a href="#" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </a>
+                                            </li>
+                                        {else}
+                                            <li>
+                                                <a href="/talents/admin_a={$current_all_talents_number - 1}" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </a>
+                                            </li>
+                                        {/if}
+                                        {if 1 == $current_all_talents_number}
+                                            <li class="active">
+                                                <a href="#">1</a>
+                                            </li>
+                                        {else}
+                                            <li>
+                                                <a href="/talents/admin_a=1">1</a>
+                                            </li>
+                                        {/if}
+                                        {if $current_all_talents_number < 4}
+                                            {for $number=2 to 4}
+                                                {if $number == $current_all_talents_number}
+                                                    <li class="active">
+                                                        <a href="#">{$number}</a>
+                                                    </li>
+                                                {else}
+                                                    <li>
+                                                        <a href="/talents/admin_a={$number}">{$number}</a>
+                                                    </li>
+                                                {/if}
+                                            {/for}
+                                            <li class="disabled">
+                                                <a href="#">...</a>
+                                            </li>
+                                        {elseif $current_all_talents_number > ($all_talent_number - 3)}
+                                            <li class="disabled">
+                                                <a href="#">...</a>
+                                            </li>
+                                            {for $number=($all_talent_number - 3) to ($all_talent_number - 1)}
+                                                {if $number == $current_all_talents_number}
+                                                    <li class="active">
+                                                        <a href="#">{$number}</a>
+                                                    </li>
+                                                {else}
+                                                    <li>
+                                                        <a href="/talents/admin_a={$number}">{$number}</a>
+                                                    </li>
+                                                {/if}
+                                            {/for}
+                                        {else}
+                                            <li class="disabled">
+                                                <a href="#">...</a>
+                                            </li>
+                                            {for $number=($current_all_talents_number - 1) to ($current_all_talents_number + 1)}
+                                                {if $number == $current_all_talents_number}
+                                                    <li class="active">
+                                                        <a href="#">{$number}</a>
+                                                    </li>
+                                                {else}
+                                                    <li>
+                                                        <a href="/talents/admin_a={$number}">{$number}</a>
+                                                    </li>
+                                                {/if}
+                                            {/for}
+                                            <li class="disabled">
+                                                <a href="#">...</a>
+                                            </li>
+                                        {/if}
+                                        {if $all_talent_number == $current_all_talents_number}
+                                            <li class="active">
+                                                <a href="#">{$number}</a>
+                                            </li>
+                                        {else}
+                                            <li>
+                                                <a href="/talents/admin_a={$all_talent_number}">
+                                                    <span aria-hidden="true">{$all_talent_number}</span>
+                                                </a>
+                                            </li>
+                                        {/if}
+                                        {if $current_all_talents_number >= $all_talent_number}
+                                            <li class="disabled">
+                                                <a href="#" aria-label="Next">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </a>
+                                            </li>
+                                        {else}
+                                            <li>
+                                                <a href="/talents/admin_a={$current_all_talents_number + 1}" aria-label="Next">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </a>
+                                            </li>
+                                        {/if}
+                                    </ul>
                                 {/if}
-                            </ul>
-                        </nav>
-                    </div>
+                            </nav>
+                        </div>
                     {/if}
                 </div>
 
