@@ -11,7 +11,22 @@ class Wish {
 
     public $id, $user, $title, $completed, $content, $accepted, $newestDate, $status, $contentDate;
 
-    public function __construct($id, $user, $title, $completed, $content, $accepted, $newestDate, $status, $contentDate) {
+
+    /**
+     * Wish constructor.
+     * @param $id
+     * @param $userEmail
+     * @param $userDisplayName
+     * @param $userCity
+     * @param $title
+     * @param $completed
+     * @param $content
+     * @param $accepted
+     * @param $newestDate
+     * @param $status
+     * @param $contentDate
+     */
+    public function __construct($id, $user, $title, $completed, $content, $accepted, $newestDate, $contentDate, $status) {
         $this->id = $id;
         $this->user = $user;
         $this->title = $title;

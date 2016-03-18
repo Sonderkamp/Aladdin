@@ -9,7 +9,7 @@ class HomeController
         if (isset($_SESSION["user"]) && !(isset($_GET["action"]) && $_GET["action"] == "home"))
             (new WishController())->run();
         else
-            render("home.php", ["title" => "Aladdin"]);
+            render("home.tpl", ["title" => "Aladdin"]);
         exit(1);
     }
 

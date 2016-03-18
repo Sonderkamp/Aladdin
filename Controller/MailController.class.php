@@ -32,9 +32,9 @@ class MailController
                 switch (strtolower($_GET["action"])) {
                     case "new":
                         $this->sendNewMessage();
-                        redirect("/Inbox/folder=outbox/page=1");
+                        redirect("/Inbox/folder=outbox/p=1");
                     default:
-                        render("inbox.php", ["title" => "Inbox", "folder" => "Postvak in", "page" => $this->page]);
+                        render("inbox.tpl", ["title" => "Inbox", "folder" => "Postvak in", "page" => $this->page]);
                         break;
                 }
                 exit();
@@ -60,7 +60,7 @@ class MailController
 
                     $message->content = "\n\n\n-------------------------------\n Origineel: \n-------------------------------\n" . $message->content;
                     $message->content = str_replace("<br />", "\n", $message->content);
-                    render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "message" => $message, "names" => $names]);
+                    render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "message" => $message, "names" => $names]);
 
                     exit();
 
@@ -114,10 +114,10 @@ class MailController
                         if (($key = array_search($_SESSION["user"]->displayName, $names)) !== false) {
                             unset($names[$key]);
                         }
-                        render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "names" => $names]);
+                        render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "names" => $names]);
                         break;
                     default:
-                        render("inbox.php", ["title" => "Inbox", "folder" => "Postvak in", "page" => $this->messageModel->isValidPageInbox()]);
+                        render("inbox.tpl", ["title" => "Inbox", "folder" => "Postvak in", "page" => $this->messageModel->isValidPageInbox()]);
                         break;
                 }
                 exit();
@@ -148,21 +148,21 @@ class MailController
                 if (!Empty($_GET["folder"])) {
                     switch (strtolower($_GET["folder"])) {
                         case "inbox":
-                            render("message.php", ["page" => $this->page, "title" => "Inbox", "folder" => "Postvak in" . $this->title, "folderShortcut" => "inbox", "in" => true, "message" => $message, "error" => $this->error, "search" => $this->search]);
+                            render("message.tpl", ["page" => $this->page, "title" => "Inbox", "folder" => "Postvak in" . $this->title, "folderShortcut" => "inbox", "in" => true, "message" => $message, "error" => $this->error, "search" => $this->search]);
                             break;
                         case "outbox":
-                            render("message.php", ["page" => $this->page, "title" => "Inbox", "folder" => "Postvak uit" . $this->title, "out" => true, "folderShortcut" => "outbox", "message" => $message, "error" => $this->error, "search" => $this->search]);
+                            render("message.tpl", ["page" => $this->page, "title" => "Inbox", "folder" => "Postvak uit" . $this->title, "out" => true, "folderShortcut" => "outbox", "message" => $message, "error" => $this->error, "search" => $this->search]);
                             break;
                         case "trash":
-                            render("message.php", ["page" => $this->page, "title" => "Inbox", "folder" => "Prullenbak" . $this->title, "trash" => true, "folderShortcut" => "trash", "message" => $message, "error" => $this->error, "search" => $this->search]);
+                            render("message.tpl", ["page" => $this->page, "title" => "Inbox", "folder" => "Prullenbak" . $this->title, "trash" => true, "folderShortcut" => "trash", "message" => $message, "error" => $this->error, "search" => $this->search]);
                             break;
                         default:
-                            render("message.php", ["page" => $this->page, "title" => "Inbox", "folder" => "Postvak in" . $this->title, "folderShortcut" => "inbox", "message" => $message, "error" => $this->error, "search" => $this->search]);
+                            render("message.tpl", ["page" => $this->page, "title" => "Inbox", "folder" => "Postvak in" . $this->title, "folderShortcut" => "inbox", "message" => $message, "error" => $this->error, "search" => $this->search]);
                             break;
                     }
                     exit();
                 }
-                render("message.php", ["page" => $this->page, "title" => "Inbox", "folder" => "Postvak in" . $this->title, "folderShortcut" => "inbox", "in" => true, "message" => $message, "error" => $this->error, "search" => $this->search]);
+                render("message.tpl", ["page" => $this->page, "title" => "Inbox", "folder" => "Postvak in" . $this->title, "folderShortcut" => "inbox", "in" => true, "message" => $message, "error" => $this->error, "search" => $this->search]);
                 exit();
             }
 
@@ -177,21 +177,21 @@ class MailController
         if (!Empty($_GET["folder"])) {
             switch (strtolower($_GET["folder"])) {
                 case "inbox":
-                    render("inbox.php", ["title" => "Inbox", "folder" => "Postvak in" . $this->title, "in" => true, "folderShortcut" => "inbox", "messages" => $this->messageModel->getInbox($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPageInbox()]);
+                    render("inbox.tpl", ["title" => "Inbox", "folder" => "Postvak in" . $this->title, "in" => true, "folderShortcut" => "inbox", "messages" => $this->messageModel->getInbox($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPageInbox()]);
                     break;
                 case "outbox":
-                    render("inbox.php", ["title" => "Inbox", "folder" => "Postvak uit" . $this->title, "out" => true, "folderShortcut" => "outbox", "messages" => $this->messageModel->getOutbox($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPageOutbox()]);
+                    render("inbox.tpl", ["title" => "Inbox", "folder" => "Postvak uit" . $this->title, "out" => true, "folderShortcut" => "outbox", "messages" => $this->messageModel->getOutbox($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPageOutbox()]);
                     break;
                 case "trash":
-                    render("inbox.php", ["title" => "Inbox", "folder" => "Prullenbak" . $this->title, "trash" => true, "folderShortcut" => "trash", "messages" => $this->messageModel->getTrash($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPageTrash()]);
+                    render("inbox.tpl", ["title" => "Inbox", "folder" => "Prullenbak" . $this->title, "trash" => true, "folderShortcut" => "trash", "messages" => $this->messageModel->getTrash($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPageTrash()]);
                     break;
                 default:
-                    render("inbox.php", ["title" => "Inbox", "folder" => "Postvak in" . $this->title, "folderShortcut" => "inbox", "messages" => $this->messageModel->getInbox($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPageInbox()]);
+                    render("inbox.tpl", ["title" => "Inbox", "folder" => "Postvak in" . $this->title, "folderShortcut" => "inbox", "messages" => $this->messageModel->getInbox($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPageInbox()]);
                     break;
             }
             exit();
         }
-        render("inbox.php", ["title" => "Inbox", "folder" => "Postvak in" . $this->title, "in" => true, "folderShortcut" => "inbox", "messages" => $this->messageModel->getInbox($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPageInbox()]);
+        render("inbox.tpl", ["title" => "Inbox", "folder" => "Postvak in" . $this->title, "in" => true, "folderShortcut" => "inbox", "messages" => $this->messageModel->getInbox($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPageInbox()]);
         exit();
     }
 
@@ -207,7 +207,7 @@ class MailController
             empty($_POST["title"]) ||
             empty($_POST["message"])
         ) {
-            render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Niet alles is ingevuld.", "names" => $names]);
+            render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Niet alles is ingevuld.", "names" => $names]);
             exit();
         }
         $_POST["recipient"] = trim($_POST["recipient"]);
@@ -218,7 +218,7 @@ class MailController
             empty($_POST["title"]) ||
             empty($_POST["message"])
         ) {
-            render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Niet alles is ingevuld.", "names" => $names]);
+            render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Niet alles is ingevuld.", "names" => $names]);
             exit();
         }
 
@@ -226,7 +226,7 @@ class MailController
         $username = $user->getUsername($_POST["recipient"]);
 
         if ($username === false) {
-            render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Gebruiker bestaat niet", "names" => $names]);
+            render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Gebruiker bestaat niet", "names" => $names]);
             exit();
         }
 
@@ -235,7 +235,7 @@ class MailController
         $res = $mes->checkblock($_SESSION["user"]->email, $username);
 
         if ($res !== false) {
-            render("newMessage.php", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => $res, "names" => $names]);
+            render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => $res, "names" => $names]);
             exit();
         }
 

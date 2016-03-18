@@ -8,12 +8,37 @@
 <div id="wishcontaier" class="container">
 
     {if isset($wishError)}
-        <div class="form-error" id="err">Error: {htmlspecialchars($wishError)}</div>
+        <div class="form-error" id="err">Error: {htmlspecialcharsWithNL($wishError)}</div>
     {else}
         <div id="err"></div>
     {/if}
     <div class="col-lg-12">
-        <h1 class="text-center">{$selectedWish->title}</h1>
+        <h1 class="text-center">{htmlspecialcharsWithNL($selectedWish->title)}</h1>
+    </div>
+
+    <div class="col-log-12 small-margin-bot">
+        <ul class="nav nav-pills">
+
+            {if isset($previousPage)}
+                <li>
+                    <button class="btn btn-default button-color-green">
+                        <a href="http://{$previousPage}">Go Back</a>
+                    </button>
+                </li>
+            {/if}
+
+            {if !$selectedWish->completed}
+                <li>
+                    <form method="post">
+                        <button class="btn btn-default button-color-green"
+                                formaction="/Wishes/match/wish_id={$selectedWish->id}"
+                                type="submit">
+                            Match
+                        </button>
+                    </form>
+                </li>
+            {/if}
+        </ul>
     </div>
 
     <div class="row">
@@ -22,12 +47,12 @@
 
             <div class="row">
                 <label class="col-sm-4">Datum: </label>
-                <div class="col-sm-8">{$selectedWish->date}</div>
+                <div class="col-sm-8">{$selectedWish->contentDate}</div>
             </div>
 
             <div class="row">
-                <label class="col-sm-4">Gewenst door: </label>
-                <div class="col-sm-8">{$selectedWish->user}</div>
+                <label class="col-sm-4">Wenser: </label>
+                <div class="col-sm-8">{htmlspecialcharsWithNL($selectedWish->user->displayName)}</div>
             </div>
 
             <div class="row">
@@ -36,8 +61,8 @@
             </div>
 
             <div class="row">
-                <label class="col-sm-4">Stad: </label>
-                <div class="col-sm-8">Misschien de stad van de user?</div>
+                <label class="col-sm-4">Plaats: </label>
+                <div class="col-sm-8">{htmlspecialcharsWithNL($selectedWish->user->city)}</div>
             </div>
 
 
@@ -45,7 +70,7 @@
 
         <div class="col-sm-6">
 
-            <p>{$selectedWish->content}</p>
+            <p>{htmlspecialcharsWithNL($selectedWish->content)}</p>
 
         </div>
 
@@ -53,7 +78,7 @@
 
 
     {if isset($error)}
-        <div class="form-error" id="err">Error: {htmlspecialchars($error)}</div>
+        <div class="form-error" id="err">Error: {htmlspecialcharsWithNL($error)}</div>
     {else}
         <div id="err"></div>
     {/if}

@@ -17,7 +17,9 @@ var svg = d3.select("#chart-area").append("svg")
 
 
 // Date parser (https://github.com/mbostock/d3/wiki/Time-Formatting)
-var formatDate = d3.time.format("%Y");
+var formatDate = d3.time.format("%Y-%m-%d");
+
+var dateRender = d3.time.format("%d-%m-%Y");
 
 var min = 0;
 var max = 0;
@@ -39,39 +41,82 @@ var data;
 
 // Load CSV file
 function loadData() {
-    d3.csv("/JS/fifa-world-cup.csv", function (error, csv) {
+    queue()
+        .defer(d3.csv, "/admin/csv=wishes")
+        .defer(d3.csv, "/admin/csv=users")
+        .await(function (error, wishes, users) {
 
-        csv.forEach(function (d) {
-            // Convert string to 'date object'
-            d.YEAR = formatDate.parse(d.YEAR);
+            wishes.forEach(function (d) {
+                // Convert string to 'date object'
+                d.date = formatDate.parse(d.date);
+                // Convert numeric values to 'numbers'
+                d.amount = +d.amount;
+            });
 
-            // Convert numeric values to 'numbers'
-            d.TEAMS = +d.TEAMS;
-            d.MATCHES = +d.MATCHES;
-            d.GOALS = +d.GOALS;
-            d.AVERAGE_GOALS = +d.AVERAGE_GOALS;
-            d.AVERAGE_ATTENDANCE = +d.AVERAGE_ATTENDANCE;
+            users.forEach(function (d) {
+                // Convert string to 'date object'
+                d.date = formatDate.parse(d.date);
+                // Convert numeric values to 'numbers'
+                d.amount = +d.amount;
+            });
+
+            // Store csv data in global variable
+            data = [
+                {
+                    "data": wishes,
+                    "name": "Aantal nieuwe wensen",
+                    "suffix": "nieuwe wensen",
+                    "info": wishinfo
+                },
+                {
+                    "data": users,
+                    "name": "Aantal nieuwe gebruikers",
+                    "suffix": "nieuwe gebruikers",
+                    "info": userinfo
+                }];
+
+            console.log(data);
+
+            data[0].data.sort(function (a, b) {
+                return new Date(a.date) - new Date(b.date);
+            });
+
+            data[1].data.sort(function (a, b) {
+                return new Date(a.date) - new Date(b.date);
+            });
+
+            addtoday(data);
+
+
+            min = data[0].data[0].date;
+            max = data[0].data[data[0].data.length - 1].date;
+
+            if (data[0].data[0].date > data[1].data[0].date)
+                min = data[1].data[0].date;
+
+            if (data[0].data[data[0].data.length - 1].date < data[1].data[data[1].data.length - 1].date)
+                max = data[0].data[data[0].data.length - 1].date;
+
+            lowFilter = min;
+            highFilter = max;
+
+            initSlider();
+            // Draw the visualization for the first time
+            updateVisualization();
         });
+}
 
-        // Store csv data in global variable
-        data = csv;
 
-        data.sort(function (a, b) {
-            return new Date(a.YEAR) - new Date(b.YEAR);
-        });
 
-        var yearRange = d3.extent(data, function (d) {
-            return formatDate(d.YEAR);
-        });
+function addtoday(data) {
 
-        min = +yearRange[0];
-        max = +yearRange[1];
-        lowFilter = min;
-        highFilter = max;
-        initSlider();
-        // Draw the visualization for the first time
-        updateVisualization();
-    });
+    for (var i = 0; i < data.length; i++) {
+        if (formatDate(data[i].data[data[i].data.length - 1].date) != formatDate(new Date())) {
+            data[i].data.push({"date": formatDate.parse(formatDate(new Date())), "amount": 0});
+        }
+
+    }
+
 }
 
 var yAxisDOM;
@@ -91,60 +136,106 @@ var highFilter = 3;
 var oldLow = 0;
 var oldHigh = 0;
 
-function setXaxis(val)
-{
-    value = val.toUpperCase();
-    updateVisualization();
+function setXaxis(val) {
+
+    if (value != val) {
+        value = val;
+
+        if (values != data[value].data) {
+            values = [];
+
+            // reset path
+            if (lineDOM == null) {
+                // create lineDOM
+                lineDOM = svg.append("path")
+                    .attr("class", "line");
+            }
+            else {
+                // remove line
+                lineDOM.attr("d", null);
+            }
+
+            // move points offscreen
+            svg.selectAll("circle").data(values, function (d) {
+                    return d.date
+                })
+                .exit()
+                .transition()
+                .duration(500)
+                .attr("cy", function (d) {
+                    return -200;
+                })
+                .remove()
+                .each("end", function () {
+                    updateVisualization();
+                });
+        }
+    }
 
 }
 
-function initSlider() {
-    var slider = $("#slider").slider({min: min, max: max, value: [min, max], focus: true});
+function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+}
 
+function initSlider() {
+
+    var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+
+    var diffDays = Math.round(Math.abs((min.getTime() - max.getTime()) / (oneDay)));
+
+    $("#mindate").text(dateRender(lowFilter));
+    $("#maxdate").text(dateRender(highFilter));
+
+    slider = $("#slider").slider({min: 0, max: diffDays, value: [0, diffDays], focus: true, formatter: sliderFormat});
     slider.on('slideStop', function (inp) {
         oldLow = lowFilter;
         oldHigh = highFilter;
 
-        lowFilter = inp.value[0];
-        highFilter = inp.value[1];
+        lowFilter = addDays(min, inp.value[0]);
+        highFilter = addDays(min, inp.value[1]);
+
+        $("#mindate").text(dateRender(lowFilter));
+        $("#maxdate").text(dateRender(highFilter));
         updateVisualization();
     });
 }
 
+function sliderFormat(inp1) {
+    return dateRender(addDays(min, inp1[0])) + " - " + dateRender(addDays(min, inp1[1]));
+}
 
-var value = "GOALS";
+var value = 0;
+var label;
+var values;
 // Render visualization
 function updateVisualization() {
 
-    value;
-    var values = data;
+
+    values = data[value].data;
 
 
     // remove values outside range boundries
     values = values.filter(function (d) {
-        var year = formatDate(d.YEAR);
-        return (lowFilter <= year && year <= highFilter);
+        var date = new Date(d.date);
+        return (lowFilter <= date && date <= highFilter);
     });
-
 
 
     // create tip
     if (tip == null) {
         tip = d3.tip().attr('class', 'd3-tip').html(function (d) {
-                return d.EDITION + "<br>" + $("#ranking-type option:selected").html() + " " + d[value];
+                return d.amount + " "+ data[value].suffix + "<br><br> klik voor meer info";
             })
             .offset([-10, 0]);
         svg.call(tip);
     }
 
-    // create ranges/scales/axis
-    var yearRange = d3.extent(values, function (d) {
-        return d.YEAR;
-    });
-
 
     var yRange = d3.extent(values, function (d) {
-        return d[value];
+        return d.amount;
     });
 
     var upperBound = yRange[1] + (yRange[1] / 100 * 10);
@@ -158,7 +249,7 @@ function updateVisualization() {
         .range([height, 0]);
 
     x = d3.time.scale()
-        .domain([yearRange[0], yearRange[1]])
+        .domain([lowFilter, highFilter])
         .range([7, width]);
 
     var yAxis = d3.svg.axis()
@@ -183,48 +274,48 @@ function updateVisualization() {
 
     // REMOVE points
     svg.selectAll("circle").data(values, function (d) {
-        return d.EDITION
-    }).exit()
+            return d.date
+        })
+        .exit()
         .transition()
         .duration(500)
         .attr("cx", function (d) {
-            if (formatDate(d.YEAR) > highFilter)
-                return width;
-            return 0;
-        })
-        .attr("cy", function (d) {
-            return y(d[value]);
+            if (new Date(d.date) > highFilter)
+                return width + 200;
+            return -200;
         })
         .remove();
 
     // CREATE points
     svg.selectAll("circle").data(values, function (d) {
-            return d.EDITION
+            return d.date
         })
         .enter()
         .append("circle")
         .attr("cx", function (d) {
-            if (formatDate(d.YEAR) > oldHigh) {
-                return width;
-            }
-            return 0;
+            if (isNaN(x(d.date)))
+                return 0;
+            return x(d.date);
         })
         .attr("r", 6)
         .attr("cy", function (d) {
-            return y(d[value])
+            return -500;
         })
         .attr("class", "tooltip-circle")
-        .on("click", showEdition)
         .on("mouseover", function (d) {
             d3.select(this)
                 .transition()
                 .duration(100)
                 .attr("r", 12)
                 .attr("cx", function (d) {
-                    return x(d.YEAR);
+                    if (isNaN(x(d.date)))
+                        return 0;
+                    return x(d.date);
                 })
                 .attr("cy", function (d) {
-                    return y(d[value])
+                    if (isNaN(y(d.amount)))
+                        return 0;
+                    return y(d.amount);
                 });
             tip.show(d);
         })
@@ -234,36 +325,42 @@ function updateVisualization() {
                 .duration(100)
                 .attr("r", 6)
                 .attr("cx", function (d) {
-                    return x(d.YEAR);
+                    if (isNaN(x(d.date)))
+                        return 0;
+                    return x(d.date);
                 })
                 .attr("cy", function (d) {
-                    return y(d[value])
+                    if (isNaN(y(d.amount)))
+                        return 0;
+                    return y(d.amount);
                 });
             tip.hide(d);
         })
-        .transition()
-        .duration(800)
-        .attr("cx", function (d) {
-            return x(d.YEAR);
-        });
+        .on("click", data[value].info);
+
 
     // UPDATE points
     svg.selectAll("circle").data(values, function (d) {
-            return d.EDITION
+            return d.date
         })
         .transition()
-        .duration(800)
+        .duration(500)
         .attr("cx", function (d) {
-            return x(d.YEAR);
+            if (isNaN(x(d.date)))
+                return 0;
+            return x(d.date);
         })
         .attr("cy", function (d) {
-            return y(d[value])
-        }).each("end", function () {
-        drawLine(values)
-    });
+            if (isNaN(y(d.amount)))
+                return 0;
+            return y(d.amount);
+        })
+        .each("end", function () {
+            drawLine(values)
+        });
 
     // don't update axis if no value is in range
-    if(values.length == 0)
+    if (values.length == 0)
         return;
 
     if (yAxisDOM == null) {
@@ -272,7 +369,7 @@ function updateVisualization() {
     }
     yAxisDOM
         .transition()
-        .duration(800)
+        .duration(500)
         .call(yAxis);
 
     if (xAxisDOM == null) {
@@ -280,14 +377,15 @@ function updateVisualization() {
             .attr("class", "axis x-axis")
             .attr("transform", "translate(0," + height + ")")
 
-        svg.append("text")
+        label = svg.append("text")
             .attr("x", width / 2 - 40)
             .attr("y", 30)
-            .html("Aantal logins");
+            .html("");
     }
+    label.html(data[value].name);
     xAxisDOM
         .transition()
-        .duration(800)
+        .duration(500)
         .call(xAxis);
 
 
@@ -298,10 +396,10 @@ function drawLine(values) {
     // create line structure
     line = d3.svg.line()
         .x(function (d) {
-            return x(d.YEAR);
+            return x(d.date);
         })
         .y(function (d) {
-            return y(d[value]);
+            return y(d.amount);
         })
         .interpolate("linear");
 
@@ -321,24 +419,12 @@ function drawLine(values) {
 
 }
 
-// Show details for a specific FIFA World Cup
-function showEdition(d) {
+function wishinfo(d)
+{
+    alert("ToDo");
+}
 
-
-    if ($("#title").text() == d.EDITION) {
-        $("#info").toggleClass("hidden")
-    }
-    else
-        $("#info").removeClass("hidden");
-
-    $("#title").text(d.EDITION);
-    $("#winner").text(d.WINNER);
-    $("#year").text(formatDate(d.YEAR));
-    $("#goals").text(d.GOALS);
-    $("#avgGoals").text(d.AVERAGE_GOALS);
-    $("#matches").text(d.MATCHES);
-    $("#teams").text(d.TEAMS);
-    $("#avgAttendance").text(d.AVERAGE_ATTENDANCE);
-    $("#location").text(d.LOCATION);
-
+function userinfo(d)
+{
+    alert("ToDo");
 }

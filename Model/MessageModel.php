@@ -15,7 +15,11 @@ class messageModel
 
     public function getInbox($search, $page)
     {
+        return $this->getbox($search, $page, "inbox");
+    }
 
+    private function getbox($search, $page, $folder)
+    {
         $this->page = $page;
         $this->page--;
 
@@ -25,74 +29,42 @@ class messageModel
         $offset = $this->page * $this->size;
 
 
-        $res = DATABASE::query_safe("SELECT IF((SELECT count(*) FROM `inbox` WHERE `user_Email` = ? AND  `folder_name` = 'inbox' )>$offset,true,false) as 'res'", array($_SESSION["user"]->email));
-        if ($res[0]["res"] == false)
+        $res = DATABASE::query_safe("SELECT count(*) as res FROM `inbox` WHERE `user_Email` = ? AND  `folder_name` = ?", array($_SESSION["user"]->email, $folder));
+        if ($res[0]["res"] <= $offset)
             $this->page = 0;
 
+        $this->pages = ceil($res[0]["res"] / $this->size);
         $offset = $this->page * $this->size;
-        $res = DATABASE::query_safe("SELECT * FROM `inbox` WHERE `user_Email` = ? AND  folder_name = 'inbox' order by `Date` Desc", array($_SESSION["user"]->email));
 
-        $mess = $this->getMessages($res, $search);
-        $mess = array_chunk($mess, $this->size);
-        $this->pages = count($mess);
+        if ($search != "") {
+            $res = DATABASE::query_safe("SELECT * , `inbox`.`Id` as 'inbId' FROM `inbox` left join `message` on
+`inbox`.`message_Id`= `message`.`Id`  WHERE `user_Email` = ? AND  folder_name = ? order by `Date` Desc", array($_SESSION["user"]->email, $folder));
 
-        if(empty($mess[$this->page]))
-            return null;
+            $mess = $this->getMessages($res, $search);
+            $mess = array_chunk($mess, $this->size);
+            $this->pages = count($mess);
 
-        return $mess[$this->page];
+            if (empty($mess[$this->page]))
+                return null;
+
+            return $mess[$this->page];
+        } else {
+            $res = DATABASE::query_safe("SELECT *, `inbox`.`Id` as 'inbId' FROM `inbox` left join `message` on
+`inbox`.`message_Id`= `message`.`Id` WHERE `user_Email` = ? AND  folder_name = ? order by `Date` Desc Limit $offset, $this->size", array($_SESSION["user"]->email, $folder));
+            $mess = $this->getMessages($res, $search);
+            return $mess;
+        }
     }
 
     public function getOutbox($search, $page)
     {
-        $this->page = $page;
-        $this->page--;
+        return $this->getbox($search, $page, "outbox");
 
-        if ($this->page < 0)
-            $this->page = 0;
-
-        $offset = $this->page * $this->size;
-
-        $res = DATABASE::query_safe("SELECT IF((SELECT count(*) FROM `inbox` WHERE `user_Email` = ? AND  `folder_name` = 'outbox' )>$offset,true,false) as 'res'", array($_SESSION["user"]->email));
-        if ($res[0]["res"] == false)
-            $this->page = 0;
-        $offset = $this->page * $this->size;
-
-        $res = DATABASE::query_safe("SELECT * FROM `inbox` WHERE `user_Email` = ? AND  folder_name = 'outbox' order by `Date` Desc  ", array($_SESSION["user"]->email));
-        $mess = $this->getMessages($res, $search);
-        $mess = array_chunk($mess, $this->size);
-        $this->pages = count($mess);
-
-        if(empty($mess[$this->page]))
-            return null;
-
-        return $mess[$this->page];
     }
 
     public function getTrash($search, $page)
     {
-        $this->page = $page;
-        $this->page--;
-
-        if ($this->page < 0)
-            $this->page = 0;
-
-        $offset = $this->page * $this->size;
-
-        $res = DATABASE::query_safe("SELECT IF((SELECT count(*) FROM `inbox` WHERE `user_Email` = ? AND  `folder_name` = 'trash' )>$offset,true,false) as 'res'", array($_SESSION["user"]->email));
-        if ($res[0]["res"] == false)
-            $this->page = 0;
-        $offset = $this->page * $this->size;
-
-
-        $res = DATABASE::query_safe("SELECT * FROM `inbox` WHERE `user_Email` = ? AND  folder_name = 'trash' order by `Date` Desc ", array($_SESSION["user"]->email));
-        $mess = $this->getMessages($res, $search);
-        $mess = array_chunk($mess, $this->size);
-        $this->pages = count($mess);
-
-        if(empty($mess[$this->page]))
-            return null;
-
-        return $mess[$this->page];
+        return $this->getbox($search, $page, "trash");
     }
 
     public function isValidPageInbox()
@@ -117,14 +89,12 @@ class messageModel
         setlocale(LC_TIME, 'Dutch');
         $User = new User();
         foreach ($dbres as $row) {
-            $mess = DATABASE::query_safe("SELECT * FROM `message` WHERE `Id` = ?", array($row["message_Id"]));
-            $mess = $mess[0];
 
             $mesmodel = new Message();
             $mesmodel->date = strftime("%#d %B %Y", strtotime($row["Date"]));
             $mesmodel->isopened = $row["IsOpend"];
-            $mesmodel->title = $mess["Subject"];
-            $mesmodel->content = substr($mess["Message"], 0, 100);
+            $mesmodel->title = $row["Subject"];
+            $mesmodel->content = substr($row["Message"], 0, 100);
 
             $pieces = explode("\n", $mesmodel->content);
 
@@ -136,18 +106,20 @@ class messageModel
                 $mesmodel->content .= $pieces[2];
             }
 
-            $mesmodel->receiver = $User->getUser($mess["user_Receiver"])["DisplayName"];
-            if ($mesmodel->content != $mess["Message"])
+            $mesmodel->content = htmlspecialcharsWithNL($mesmodel->content);
+
+            $mesmodel->receiver = $User->getUser($row["user_Receiver"])["DisplayName"];
+            if ($mesmodel->content != $row["Message"])
                 $mesmodel->content .= "...";
 
-            $mesmodel->id = $row["Id"];
+            $mesmodel->id = $row["inbId"];
             $mesmodel->adminSender = false;
 
-            if (isset($mess["moderator_Sender"])) {
+            if (isset($row["moderator_Sender"])) {
                 $mesmodel->adminSender = true;
-                $mesmodel->sender = $mess["moderator_Sender"];
+                $mesmodel->sender = $row["moderator_Sender"];
             } else {
-                $mesmodel->sender = $User->getUser($mess["user_Sender"])["DisplayName"];
+                $mesmodel->sender = $User->getUser($row["user_Sender"])["DisplayName"];
             }
 
             $links = DATABASE::query_safe("SELECT * FROM `messageLink` WHERE `message_Id` = ?", array($row["message_Id"]));
@@ -162,7 +134,7 @@ class messageModel
             }
 
             if ($search != "") {
-                if (strrpos(strtolower($mess["Message"]), strtolower($search)) !== false
+                if (strrpos(strtolower($row["Message"]), strtolower($search)) !== false
                     || strrpos(strtolower($mesmodel->receiver), strtolower($search)) !== false
                     || strrpos(strtolower($mesmodel->sender), strtolower($search)) !== false
                     || strrpos(strtolower($mesmodel->title), strtolower($search)) !== false
@@ -193,6 +165,7 @@ class messageModel
         $mesmodel->isopened = $res["IsOpend"];
         $mesmodel->title = $mess["Subject"];
         $mesmodel->content = $mess["Message"];
+        $mesmodel->content = htmlspecialcharsWithNL($mesmodel->content);
         $mesmodel->folder = $res["folder_Name"];
         $mesmodel->receiver = $User->getUser($mess["user_Receiver"])["DisplayName"];
 
@@ -280,6 +253,7 @@ class messageModel
     public function sendMessage($me, $recipient, $title, $message)
     {
 
+
         // DATABASE
         $user = new User();
         $pdo = DATABASE::getPDO();
@@ -287,7 +261,7 @@ class messageModel
         $itemNR = null;
         // TODO: Check if me equals admin
         if ($user->getUser($me) !== false) {
-            DATABASE::transaction_action_safe($pdo, "INSERT INTO `message` (`Subject`, `Message`, `user_Sender`, `user_Receiver`) VALUES ( ?, ?, ?, ?)", array($title, nl2br($message), $me, $recipient));
+            DATABASE::transaction_action_safe($pdo, "INSERT INTO `message` (`Subject`, `Message`, `user_Sender`, `user_Receiver`) VALUES ( ?, ?, ?, ?)", array($title, $message, $me, $recipient));
             $itemNR = $pdo->lastInsertId();
             DATABASE::transaction_action_safe($pdo, "INSERT INTO `inbox` ( `folder_Name`, `message_Id`, `user_Email`) VALUES ('outbox', ?, ?)", array($itemNR, $me));
             // insert into outbox
@@ -310,5 +284,9 @@ class messageModel
         $mail->message = "Dit bericht is verstuurd via " . $_SERVER["SERVER_NAME"] . ": \nReageren kan via de website. Mailtjes naar dit emailadress worden niet gezien.\n\n" . $message;
         $mail->sendMail();
 
+        return $itemNR;
+
     }
+
+
 }

@@ -11,10 +11,14 @@ include_once("Model/MessageLink.php");
 include_once("Model/WishRepository.php");
 include_once("Model/TalentRepository.php");
 include_once("Model/Quote.php");
+include_once("Model/Graph.php");
 
 include_once("Controller/WishController.class.php");
 include_once("Controller/TalentController.class.php");
 include_once("Controller/AccountController.class.php");
+include_once("Controller/ProfileController.class.php");
+include_once("Controller/AdminWishController.class.php");
+include_once("Controller/ProfileCheckController.class.php");
 include_once("Controller/ErrorController.class.php");
 include_once("Controller/AdminController.class.php");
 include_once("Controller/MailController.class.php");

@@ -49,6 +49,7 @@ class User
         $res = $res[0];
         return $res["Email"];
     }
+
     public function validateUsername($username)
     {
         $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
@@ -71,8 +72,7 @@ class User
         $res = Database::query("SELECT `DisplayName` FROM `user`  WHERE `ValidationHash` IS NULL;");
 
         $ret = [];
-        foreach($res as $val)
-        {
+        foreach ($res as $val) {
             $ret[] = $val["DisplayName"];
         }
         return $ret;
@@ -145,14 +145,14 @@ class User
         $array["username"] = strtolower(trim($array["username"]));
         $array["name"] = strtolower(trim($array["name"]));
         $array["surname"] = trim($array["surname"]);
-        $array["address"] =  strtolower(trim($array["address"]));
+        $array["address"] = strtolower(trim($array["address"]));
         $array["postalcode"] = strtoupper(trim($array["postalcode"]));
         $array["country"] = strtolower(trim($array["country"]));
         $array["city"] = strtolower(trim($array["city"]));
         $array["dob"] = trim($array["dob"]);
         $array["initial"] = strtoupper(trim($array["initial"]));
         $array["gender"] = strtolower(trim($array["gender"]));
-
+        $array["initial"] = trim($array["initial"], '.');
         $array["username"] = strtolower(filter_var($array["username"], FILTER_SANITIZE_EMAIL));
 
         if (!$this->validPass($array["password"])) {
@@ -167,20 +167,16 @@ class User
             return "Dit emailadress heeft al een account.";
         }
 
-        $d = DateTime::createFromFormat('d-m-Y', $array["dob"]);
-        if (($d && $d->format('d-m-Y') == $array["dob"]) === false)
-            return "invalide geboortedatum";
-
-        if ($array["gender"] != "male" && $array["gender"] != "female" && $array["gender"] != "other")
-            return "gender is verkeerd gekozen?";
-
-        $array["initial"] = trim($array["initial"], '.');
 
         $displayname = $this->createDislay($array);
-//    || Empty($array["address"])
         $array["postalcode"] = preg_replace('/\s+/', '', $array["postalcode"]);
-//    || Empty($array["country"])
-//    || Empty($array["city"])
+
+
+        if ($this->validateUser($array) === false) {
+            return "Validatie mislukt. check uw gegevens. Voor interactieve validatie, zet uw javascipt aan.";
+        }
+
+        $d = DateTime::createFromFormat('d-m-Y', $array["dob"]);
 
         // SQL
         $hashed = password_hash($array["password"], PASSWORD_DEFAULT);
@@ -202,10 +198,74 @@ class User
         return true;
     }
 
+    public function validateUser($array)
+    {
+//        var_dump($array["dob"]);
+        $array["username"] = strtolower(trim($array["username"]));
+        $array["name"] = strtolower(trim($array["name"]));
+        $array["surname"] = trim($array["surname"]);
+        $array["address"] = strtolower(trim($array["address"]));
+        $array["postalcode"] = strtoupper(trim($array["postalcode"]));
+        $array["country"] = strtolower(trim($array["country"]));
+        $array["city"] = strtolower(trim($array["city"]));
+        $array["dob"] = trim($array["dob"]);
+        $array["initial"] = strtoupper(trim($array["initial"]));
+        $array["gender"] = strtolower(trim($array["gender"]));
+
+        // USERNAME
+        // valid email
+        // NAME
+        if (preg_match("/^[a-zA-Z][A-Za-z\\- ]+$/", $array["name"]) == false)
+            return false;
+
+
+        // SURNAME
+        //[a-zA-Z][a-zA-Z ]+$
+        if (preg_match("/^[a-zA-Z][A-Za-z\\- ]+$/", $array["surname"]) == false)
+            return false;
+
+        // ADDRESS
+        if (preg_match("/^[a-zA-Z][A-Za-z0-9\\- ]+$/", $array["address"]) == false)
+            return false;
+
+        // POSTALCODE
+        //data-validation-regexp="^[0-9]{4}[\s]{0,1}[a-zA-z]{2}"
+        if (preg_match("/^[0-9]{4}[\s]{0,1}[a-zA-z]{2}/", $array["postalcode"]) == false)
+            return false;
+
+        // COUNTRY
+        //[a-zA-Z][a-zA-Z ]+$
+        if (preg_match("/^[a-zA-Z][a-zA-Z ]+$/", $array["country"]) == false)
+            return false;
+
+        // CITY
+        //[a-zA-Z][a-zA-Z ]+$
+        if (preg_match("/^[a-zA-Z][a-zA-Z ]+$/", $array["city"]) == false)
+            return false;
+
+        // INITIALS
+        // data-validation-regexp="^([a-zA-Z\.]+)$"
+        if (preg_match("/^([a-zA-Z\.]+)$/", $array["initial"]) == false)
+            return false;
+
+        // DOB
+
+        $d = DateTime::createFromFormat('d-m-Y', $array["dob"]);
+        if (($d && $d->format('d-m-Y') == $array["dob"]) === false)
+            return false;
+
+        // GENDER
+        if ($array["gender"] != "male" && $array["gender"] != "female" && $array["gender"] != "other")
+            return false;
+
+        return true;
+
+    }
+
     public function createDislay($arr)
     {
-        $arr["initial"] = trim($arr["initial"], '.');
-        $name = $arr["initial"] . ". " . $arr["surname"];
+        $arr["initial"] = strtoupper(trim($arr["initial"], '.'));
+        $name = $arr["initial"] . ". " . ucfirst($arr["surname"]);
 
         // first try
         $res = Database::query_safe("SELECT count(*) AS Counter FROM `user` WHERE DisplayName LIKE ? ", array($name));
@@ -214,6 +274,7 @@ class User
             return $name;
         return $name . $res["Counter"];
     }
+
 
     public function newHash($username)
     {
@@ -353,6 +414,133 @@ class User
             Webshop";
         return true;
 
+    }
+
+    public function checkPassword($password)
+    {
+        $result = Database::query_safe("SELECT password from user where email = ?", array($this->email));
+        $result = $result[0];
+        return password_verify($password, $result["password"]);
+    }
+
+    public function updateUser($arr)
+    {
+        if (Empty($arr["email"])
+            || Empty($arr["name"])
+            || Empty($arr["surname"])
+            || Empty($arr["address"])
+            || Empty($arr["postalcode"])
+            || Empty($arr["country"])
+            || Empty($arr["city"])
+            || Empty($arr["dob"])
+            || Empty($arr["initials"])
+            || Empty($arr["gender"])
+        ) {
+            return "Niet alles is ingevuld.";
+        }
+
+        $arr["username"] = strtolower(trim($arr["email"]));
+        $arr["name"] = strtolower(trim($arr["name"]));
+        $arr["surname"] = ucfirst(trim($arr["surname"]));
+        $arr["address"] = strtolower(trim($arr["address"]));
+        $arr["postalcode"] = strtoupper(trim($arr["postalcode"]));
+        $arr["country"] = strtolower(trim($arr["country"]));
+        $arr["city"] = strtolower(trim($arr["city"]));
+        $arr["dob"] = trim($arr["dob"]);
+        $arr["initial"] = strtoupper(trim($arr["initials"]));
+        $arr["initial"] = trim($arr["initial"], '.');
+        $arr["gender"] = strtolower(trim($arr["gender"]));
+
+        if ($this->validateUser($arr) === false) {
+            return "Validatie mislukt. check uw gegevens. Voor interactieve validatie, zet uw javascipt aan.";
+        }
+        $d = DateTime::createFromFormat('d-m-Y', $arr["dob"]);
+
+        if (!(strtolower($this->initials) == strtolower($_POST["initials"]) && strtolower($this->surname) == strtolower($_POST["surname"]))) {
+
+        $newname = array("initial" => $arr["initial"], "surname" => $arr["surname"]);
+        $newdisplay = $this->createDislay($newname);
+        }
+        else{
+            $newdisplay = $this->displayName;
+        }
+
+        Database::query_safe("UPDATE user SET `name`=?, `Surname`=?, `Address`=?,`postalcode`=?,`country`=?,`city`=?,`Dob`=?,`initials`=?,`gender`=?,`handicap`=?,`DisplayName`=?  WHERE Email=?", Array($arr["name"], $arr["surname"], $arr["address"], $arr["postalcode"], $arr["country"], $arr["city"], $d->format('Y-m-d'), $arr["initial"], $arr["gender"], $arr["handicap"],$newdisplay, $arr["username"]));
+//        Database::query_safe("UPDATE user SET `name`=?, `Surname`=? WHERE Email=?", Array($arr["name"],$arr["surname"],$arr["email"]));
+
+        ;
+
+        $this->name = $arr["name"];
+        $this->surname = $arr["surname"];
+        $this->address = $arr["address"];
+        $this->handicap = $arr["handicap"];
+        $this->postalcode = $arr["postalcode"];
+        $this->dob = $arr["dob"];
+        $this->country = $arr["country"];
+        $this->city = $arr["city"];
+        $this->gender = $arr["gender"];
+        $this->initials = $arr["initial"];
+        $this->displayName = $newdisplay;
+    }
+
+    public function deleteUser($username)
+    {
+        Database::query_safe("UPDATE user SET `isactive`=0 WHERE email=?", array($username));
+
+
+    }
+
+    public function undeletekUser($username)
+    {
+        Database::query_safe("UPDATE user SET `isactive`=1 WHERE email=?", array($username));
+    }
+
+    public function blockUser($username)
+    {
+        Database::query_safe("INSERT INTO adminBlock (`IsBlocked`, `Reason`, `moderator_Username`, `user_Email`) VALUES (1, 'xxxxx', 'Admin', ?)", array($username));
+
+
+    }
+
+    public function unblockUser($username)
+    {
+        Database::query_safe("INSERT INTO adminBlock (`IsBlocked`, `Reason`, `moderator_Username`, `user_Email`) VALUES (0, 'xxxxx', 'Admin', ?)", array($username));
+
+    }
+
+    public function getBlockStatus($username)
+    {
+        // query om alle blocks van een user te zien
+        $result = Database::query_safe("SELECT Block_Id,BlockDate,user_Email,IsBlocked as IsBlocked
+from adminBlock
+ where user_Email = ?
+              order by BlockDate asc", array($username));
+        $result = $result[0];
+        return $result;
+    }
+
+    public function getLastBlockStatus($username)
+    {
+        // query om de laatste block van een user te zien
+        $result = Database::query_safe("SELECT Block_Id,BlockDate,user_Email,IsBlocked as IsBlocked
+from adminBlock
+where BlockDate =
+        (select
+max(adminBlock.BlockDate) AS max_date
+              FROM adminBlock
+              where user_Email = ?)
+              order by BlockDate asc", array($username));
+        $result = $result[0];
+        return $result;
+    }
+
+    public function getAllBlocks($user)
+    {
+        $result = Database::query_safe("SELECT Block_Id ,BlockDate as bdate,IsBlocked as isblocked
+              from adminBlock
+              where user_Email = ?
+              order by Block_Id desc", array($user));
+        return $result;
     }
 
 }

@@ -3,16 +3,16 @@
 
     <div class="col-xs-12 col-md-6">
         <div class="btn-group chart" role="group" aria-label="...">
-            <button type="button" onclick="setXaxis('goals');" class="btn btn-default">Logins</button>
-            <button type="button" onclick="setXaxis('average_goals');" class="btn btn-default">Gebruikers</button>
-            <button type="button" onclick="setXaxis('matches');" class="btn btn-default">Wensen</button>
-            <button type="button" onclick="setXaxis('AVERAGE_ATTENDANCE');" class="btn btn-default">Meldingen</button>
+            <button type="button" onclick="setXaxis(1);" class="btn btn-default">Gebruikers</button>
+            <button type="button" onclick="setXaxis(0);" class="btn btn-default">Wensen</button>
+            <span class="filter info"> <input class="slider" id="slider" type="text" class="span2"
+                                                            value=""/> </span>
+
         </div>
+
+
         <div id="chart-area"></div>
-        <p> Note: Dit is nog data van een oude opgave van me. Deze wordt nog verbeterd. <br> Dit is gebruikt als
-            placeholder.
-            <br> - Marius
-        </p>
+       <p> Datum bereik: <span id="mindate">2013-1-1</span> - <span id="maxdate">2013-1-1</span> </p>
     </div>
     <div class="col-md-1"></div>
     <div class="col-xs-12 col-md-5 col-md-offset-1 toppad">
@@ -27,4 +27,6 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.14/d3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.6.7/d3-tip.min.js"></script>
+<script src="js/queue.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/6.0.16/bootstrap-slider.min.js"></script>
 <script src="/JS/adminchart.js"></script>

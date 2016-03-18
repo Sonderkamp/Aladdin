@@ -58,7 +58,10 @@
         $controller->guaranteeLogin($page);
     }
 
-
+    function htmlspecialcharsWithNL($string)
+    {
+        return nl2br(htmlspecialchars($string));
+    }
     /**
      * Renders template, passing in values.
      */
@@ -69,14 +72,16 @@
         {
             // extract variables into local scope
             $smarty = new Smarty();
-            $smarty->assign($values);
+            $quote = new Quote();
+
+            $smarty->assign($values, $quote);
 
             if(!empty($_SESSION["user"]))
                 $smarty->assign("user", $_SESSION["user"]);
 
 
             // render header
-            $smarty->display("View/header.php");
+            $smarty->display("View/header.tpl");
 
             // render template
             $smarty->display("View/$template");
@@ -84,7 +89,7 @@
             // render footer
 //            $quote = new Quote();
 //            $value["Quote"] = $quote->getQuote();
-            $smarty->display("View/footer.php");
+            $smarty->display("View/footer.tpl");
         }
         // else err
         else
