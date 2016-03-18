@@ -467,7 +467,7 @@ class User
         {
             $arr["handicap"] = 0;
         }
-        
+
        Database::query_safe("UPDATE user SET `Name`=?, `Surname`=?, `Address`=?,`Postalcode`=?,`Country`=?,`City`=?,`Dob`=?,`Initials`=?,`Gender`=?,`Handicap`=?,`DisplayName`=?  WHERE Email=?", Array($arr["name"], $arr["surname"], $arr["address"], $arr["postalcode"], $arr["country"], $arr["city"], $d->format('Y-m-d'), $arr["initial"], $arr["gender"], $arr["handicap"],$newdisplay, $arr["username"]));
 //        Database::query_safe("UPDATE user SET `name`=?, `Surname`=? WHERE Email=?", Array($arr["name"],$arr["surname"],$arr["email"]));
 
