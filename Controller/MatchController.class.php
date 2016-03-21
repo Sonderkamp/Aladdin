@@ -36,12 +36,13 @@ class MatchController
     }
 
     public function open_match_view(){
-        $allTalentsOfUser = $this->talenRepository->getUserTalents();
+        $allTalentsOfUser = $this->talenRepository->getSelectedUserTalents($_SESSION["user"]->email);
 
+        $possibleMatches = $this->wishRepository->get_all_wishes_with_tag("student");
+        echo count($possibleMatches);
+//        print_r($possibleMatches);
 
-        $this->wishRepository->get_all_wishes_with_tag("boer");
-
-        render("match_view.tpl", ["currentPage"=> "match"]);
+        render("match_view.tpl", ["currentPage"=> "match", "possibleMatches" => $possibleMatches]);
     }
 
 

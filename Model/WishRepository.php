@@ -757,9 +757,10 @@ AND ab.Block_Id = test.blockid) AS isblock
         return $allWishId;
     }
 
+
     public function get_all_wishes_with_tag($tag)
     {
-        $sql = "SELECT `Id` FROM `talent` WHERE `Name` = ?";
+        $sql = "SELECT `Id` FROM `talent` WHERE `Name` = ? join `talent_has_wish` on talent.Id = talent_has_wish.talent_Id";
         $array = array($tag);
         $result = Database::query_safe($sql, $array);
 
@@ -769,12 +770,6 @@ AND ab.Block_Id = test.blockid) AS isblock
         $array1 = array($id);
         $result1 = Database::query_safe($sql1, $array1);
 
-
-//        $allWishes = array();
-//        foreach ($result1 as $item) {
-//            $allWishes[] = $item["wish_Id"];
-//        }
-
         $string = '(';
         foreach ($result1 as $item) {
             $string .= $item["wish_Id"] . ',';
@@ -782,10 +777,33 @@ AND ab.Block_Id = test.blockid) AS isblock
         $value = substr($string, 0, -1);
         $value .= ')';
 
-        $sql2 = "SELECT * FROM `wish` WHERE `Id` IN $value";
-        $allWishesWithTag = Database::query($sql2);
+        $sql2 = "SELECT * FROM `wishContent` WHERE `wish_Id` IN $value";
+        $result2 = Database::query($sql2);
 
-        return $allWishesWithTag;
+        $wishArray = array();
+        foreach ($result2 as $item) {
+            $title = $item["Title"];
+            $content = $item["Content"];
+            $temp = new Wish("","",$title,"",$content,"","","","");
+            $wishArray[] = $temp;
+        }
+
+        return $wishArray;
+    }
+
+    public function getWishv2(Wish $wish)
+    {
+        $query = "SELECT * FROM `wishContent` WHERE `wish_Id` = ? ORDER BY `Date` desc limit 1";
+        $array = array($wish->getId());
+        $result = Database::query_safe($query, $array);
+
+        $id = $result[0]["wish_Id"];
+        $title = $result[0]["Title"];
+        $content = $result[0]["Content"];
+        $contentDate = $result[0]["Date"];
+
+        $wish = new Wish($id, "", $title, "", $content, "", "", $contentDate, "");
+        return $wish;
     }
 
 

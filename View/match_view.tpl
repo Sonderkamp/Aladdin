@@ -30,25 +30,16 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th>Plaats</th>
-                    <th>Onderwerp</th>
-                    <th>Omschrijving</th>
-                    <th>Status</th>
-                    <th class="smallColumn"></th>
-                    {if $currentPage == "mywishes"}
-                        <th class="smallColumn"></th>
-                    {/if}
+                    <th>Wens</th>
+                    <th>Beschrijving</th>
                 </tr>
                 </thead>
                 <tbody>
-                {if isset($matches)}
-                    {foreach from=$wishes item=wish}
+                {if isset($possibleMatches)}
+                    {foreach from=$possibleMatches item=wish}
                         <tr>
-                            <td>{htmlspecialcharsWithNL($wish -> user -> displayName)}</td>
-                            <td>{htmlspecialcharsWithNL($wish -> user -> city)}</td>
-                            <td>{htmlspecialcharsWithNL($wish -> title)}</td>
-                            <td>{htmlspecialcharsWithNL($wish -> content)}</td>
-                            <td>{htmlspecialcharsWithNL($wish -> status)}</td>
+                            <td>{htmlspecialcharsWithNL($wish -> getTitle())}</td>
+                            <td>{htmlspecialcharsWithNL($wish -> getContent())}</td>
                             <td>
                                 <form method="post">
                                     <button class="btn btn-default"

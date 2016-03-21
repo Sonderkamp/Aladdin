@@ -26,14 +26,12 @@ class TalentRepository
     public function getAllTalents($value)
     {
         $result = null;
-        if ($value === false)
-        {
+        if ($value === false) {
             $result = Database::query
             ("SELECT *
           FROM `talent`
           ORDER BY `talent`.`Name` ASC");
-        } else
-        {
+        } else {
             $value -= 1;
             $value *= 10;
             $result = Database::query
@@ -483,4 +481,5 @@ where tu.user_Email = ?", array($user));
 
         return $result;
     }
+
 }
