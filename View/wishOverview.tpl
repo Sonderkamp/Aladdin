@@ -19,6 +19,8 @@
                             href="/wishes/action=incompletedwishes">Onvervulde wensen</a></li>
                 <li {if $currentPage == "completedwishes"} class="active" {/if}><a
                             href="/wishes/action=completedwishes">Vervulde wensen</a></li>
+                <li {if $currentPage == "match"} class="active" {/if}><a
+                            href="/match/action=open_match_view">Mogelijke matches</a></li>
             </ul>
 
         </div>
