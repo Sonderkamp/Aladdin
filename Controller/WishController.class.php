@@ -333,7 +333,7 @@ class WishController {
     }
 
     function gethashtags($text) {
-        //Match the hashtags
+        //Match the hashtags 
         preg_match_all('/(^|[^a-z0-9_])#([a-z0-9_]+)/i', $text, $matchedHashtags);
         $hashtag = '';
         // For each hashtag, strip all characters but alpha numeric
