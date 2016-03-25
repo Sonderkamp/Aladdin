@@ -32,8 +32,7 @@ class TalentRepository
             ("SELECT *
           FROM `talent`
           ORDER BY `talent`.`Name` ASC");
-        } else
-        {
+        } else{
             $value -= 1;
             $value *= 10;
             $result = Database::query
@@ -48,19 +47,25 @@ class TalentRepository
 
         for ($i = 0; $i < count($result); $i++) {
 
-            $returnArray[$i] = new Talent(
+             $talent = new Talent(
                 $result[$i]["Id"],
                 $result[$i]["Name"],
                 $result[$i]["CreationDate"],
                 $result[$i]["AcceptanceDate"],
                 $result[$i]["IsRejected"],
                 $result[$i]["moderator_Username"],
-                $result[$i]["user_Email"]
+                $result[$i]["user_Email"],
+                $result[$i]["synonym_of"]
             );
+
+            if(!empty($talent->synonym_of)){
+                $talent->synonym_name = $this->getTalentById($talent->synonym_of)->name;
+            }
+            
+            $returnArray[$i] = $talent;
         }
 
         return $returnArray;
-
     }
 
     public function getAcceptedTalents()
@@ -85,7 +90,8 @@ class TalentRepository
                 $result[$i]["AcceptanceDate"],
                 $result[$i]["IsRejected"],
                 $result[$i]["moderator_Username"],
-                $result[$i]["user_Email"]
+                $result[$i]["user_Email"],
+                $result[$i]["synonym_of"]
             );
         }
 
@@ -101,7 +107,8 @@ class TalentRepository
           `talent`.`AcceptanceDate`,
           `talent`.`IsRejected`,
           `talent`.`moderator_Username`,
-          `talent`.`user_Email`
+          `talent`.`user_Email`,
+          `talent`.`synonym_of`
           FROM `talent`
           WHERE `talent`.`Id` NOT IN
               (SELECT `talent_Id`
@@ -125,7 +132,8 @@ class TalentRepository
                 $result[$i]["AcceptanceDate"],
                 $result[$i]["IsRejected"],
                 $result[$i]["moderator_Username"],
-                $result[$i]["user_Email"]
+                $result[$i]["user_Email"],
+                $result[$i]["synonym_of"]
             );
         }
 
@@ -143,7 +151,8 @@ class TalentRepository
           `talent`.`AcceptanceDate`,
           `talent`.`IsRejected`,
           `talent`.`moderator_Username`,
-          `talent`.`user_Email`
+          `talent`.`user_Email`,
+          `talent`.`synonym_of`
           FROM `talent`
           WHERE `talent`.`Id` NOT IN
               (SELECT `talent_Id`
@@ -168,7 +177,8 @@ class TalentRepository
                 $result[$i]["AcceptanceDate"],
                 $result[$i]["IsRejected"],
                 $result[$i]["moderator_Username"],
-                $result[$i]["user_Email"]
+                $result[$i]["user_Email"],
+                $result[$i]["synonym_of"]
             );
         }
 
@@ -184,7 +194,8 @@ class TalentRepository
           `talent`.`AcceptanceDate`,
           `talent`.`IsRejected`,
           `talent`.`moderator_Username`,
-          `talent`.`user_Email`
+          `talent`.`user_Email`,
+          `talent`.`synonym_of`
           FROM `talent`
           LEFT JOIN `talent_has_user` ON `talent`.`Id` = `talent_has_user`.`talent_Id`
           WHERE `talent`.`Id` = ?
@@ -198,7 +209,8 @@ class TalentRepository
             $result[0]["AcceptanceDate"],
             $result[0]["IsRejected"],
             $result[0]["moderator_Username"],
-            $result[0]["user_Email"]
+            $result[0]["user_Email"],
+            $result[0]["synonym_of"]
         );
 
         return $talent;
@@ -215,7 +227,8 @@ class TalentRepository
           `talent`.`AcceptanceDate`,
           `talent`.`IsRejected`,
           `talent`.`moderator_Username`,
-          `talent`.`user_Email`
+          `talent`.`user_Email`,
+          `talent`.`synonym_of`
           FROM `talent`
           JOIN `talent_has_user` ON `talent`.`Id` = `talent_has_user`.`talent_Id`
           JOIN `user` ON `talent_has_user`.`user_Email` = `user`.`Email`
@@ -235,7 +248,8 @@ class TalentRepository
                 $result[$i]["AcceptanceDate"],
                 $result[$i]["IsRejected"],
                 $result[$i]["moderator_Username"],
-                $result[$i]["user_Email"]
+                $result[$i]["user_Email"],
+                $result[$i]["synonym_of"]
             );
         }
 
@@ -251,7 +265,8 @@ class TalentRepository
           `talent`.`AcceptanceDate`,
           `talent`.`IsRejected`,
           `talent`.`moderator_Username`,
-          `talent`.`user_Email`
+          `talent`.`user_Email`,
+          `talent`.`synonym_of`
           FROM `talent`
           JOIN `talent_has_user` ON `talent`.`Id` = `talent_has_user`.`talent_Id`
           JOIN `user` ON `talent_has_user`.`user_Email` = `user`.`Email`
@@ -270,7 +285,8 @@ class TalentRepository
                 $result[$i]["AcceptanceDate"],
                 $result[$i]["IsRejected"],
                 $result[$i]["moderator_Username"],
-                $result[$i]["user_Email"]
+                $result[$i]["user_Email"],
+                $result[$i]["synonym_of"]
             );
         }
 
@@ -288,7 +304,8 @@ class TalentRepository
           `talent`.`AcceptanceDate`,
           `talent`.`IsRejected`,
           `talent`.`moderator_Username`,
-          `talent`.`user_Email`
+          `talent`.`user_Email`,
+          `talent`.`synonym_of`
           FROM `talent`
           WHERE `talent`.`AcceptanceDate` IS NULL
           AND `talent`.`user_Email` = ?
@@ -309,7 +326,8 @@ class TalentRepository
                 $result[$i]["AcceptanceDate"],
                 $result[$i]["IsRejected"],
                 $result[$i]["moderator_Username"],
-                $result[$i]["user_Email"]
+                $result[$i]["user_Email"],
+                $result[$i]["synonym_of"]
             );
         }
 
@@ -325,7 +343,8 @@ class TalentRepository
           `talent`.`AcceptanceDate`,
           `talent`.`IsRejected`,
           `talent`.`moderator_Username`,
-          `talent`.`user_Email`
+          `talent`.`user_Email`,
+          `talent`.`synonym_of`
           FROM `talent`
           WHERE `talent`.`AcceptanceDate` IS NULL
           AND `talent`.`IsRejected` IS NULL
@@ -343,7 +362,8 @@ class TalentRepository
                 $result[$i]["AcceptanceDate"],
                 $result[$i]["IsRejected"],
                 $result[$i]["moderator_Username"],
-                $result[$i]["user_Email"]
+                $result[$i]["user_Email"],
+                $result[$i]["synonym_of"]
             );
         }
 
@@ -477,9 +497,9 @@ class TalentRepository
     {
         $result = Database::query_safe
         ("select Name as name
-from talent as t
-inner join talent_has_user as tu on t.Id = tu.talent_Id
-where tu.user_Email = ?", array($user));
+          from talent as t
+          inner join talent_has_user as tu on t.Id = tu.talent_Id
+          where tu.user_Email = ?", array($user));
 
         return $result;
     }
