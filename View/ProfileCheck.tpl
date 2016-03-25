@@ -94,7 +94,7 @@
                 <thead>
                 <tr>
                     <th>Titel</th>
-                    <th width="1%">Status</th>
+                    <th>Status</th>
                     <th width="1%">Wens</th>
                 </tr>
                 </thead>
@@ -104,7 +104,8 @@
                     <td>{$wish.status}</td>
                 <td>
                     <form method="post">
-                    <button type="submit"  formaction="/Wishes/wish_id={$wish.wishid}"><span class="glyphicon glyphicon-eye-open"></span></button>
+                    <button type="submit"  formaction="/Wishes/wish_id={$wish.wishid}"
+                            value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}" name="page"><span class="glyphicon glyphicon-eye-open"></span></button>
                     </form>
 
                 </td>

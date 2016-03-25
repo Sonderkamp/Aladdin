@@ -86,7 +86,7 @@ class ProfileCheckController
     private function renderProfilePage($user)
     {
 
-        render("profilecheck.php", ["title" => "Profiel", "cuser" => $this->getUserCheck($user), "blockstatus" => $this->getLastBlockStatus($user),"wishes" => $this->getWishes($user),"talents" => $this->getTalents($user),"blocks" => $this->getBlocks($user)]);
+        render("profilecheck.tpl", ["title" => "Profiel", "cuser" => $this->getUserCheck($user), "blockstatus" => $this->getLastBlockStatus($user),"wishes" => $this->getWishes($user),"talents" => $this->getTalents($user),"blocks" => $this->getBlocks($user)]);
         exit();
     }
 
