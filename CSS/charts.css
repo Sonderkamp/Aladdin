@@ -48,7 +48,7 @@
     stroke-width: 1.5px;
 }
 
-.tooltip-circle {
+.tooltip-circle, .bar {
     fill: #80cdc1;
     cursor: pointer;
 }
@@ -73,6 +73,7 @@
     background: rgba(0, 0, 0, 0.8);
     color: #fff;
     border-radius: 2px;
+    z-index: 10000;
 }
 
 /* Creates a small triangle extender for the tooltip */
