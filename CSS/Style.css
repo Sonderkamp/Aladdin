@@ -263,8 +263,13 @@ body{
 
 body
 {
-    overflow: hidden;
+    /*overflow: hidden; */
+    /* Hoihoi, Dit doen we dus niet globaal hea. Omdat andere objecten inheritten van hun parents, is de kans dat er iets breekt groot. */
+    /* Tip voor volgende keer: */
+    /* Geef je container een klasse mee, en zet daar die overflow hidden op :) */
+    /* - Marius */
 }
+
 #slide-panel {
     width:300px;
     height: 87vh;
