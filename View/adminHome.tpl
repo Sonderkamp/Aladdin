@@ -31,11 +31,11 @@
             </tr>
             <tr>
                 <td>Kinderen</td>
-                <td  id="Kind"></td>
+                <td id="Kind"></td>
             </tr>
             <tr>
                 <td>Ouderen</td>
-                <td  id="Ouderen"></td>
+                <td id="Ouderen"></td>
             </tr>
             </tbody>
         </table>
@@ -71,15 +71,24 @@
                 <p>TODO </p>
             </div>
             <div class="tab-pane fade" id="tab3">
-                <p>Word map</p>
+                <input type="checkbox" value="Yes" checked onclick="toggleLines()"> Matches
+
+
+                <div id="map"></div>
             </div>
         </div>
     </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.14/d3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.6.7/d3-tip.min.js"></script>
-<script src="js/queue.min.js"></script>
+<script src="/JS/queue.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/6.0.16/bootstrap-slider.min.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+<script src="/JS/topojson.v1.min.js"></script>
+<script src="/JS/arc.js"></script>
+<script src="/JS/countryToCode.js"></script>
+<script src="/JS/colorbrewer.js"></script>
 <script src="/JS/userchart.js"></script>
 <script src="/JS/userdetailchart.js"></script>
+<script src="/JS/matchmap.js"></script>
 <script src="/JS/main.js"></script>

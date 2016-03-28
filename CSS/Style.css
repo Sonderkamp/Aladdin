@@ -195,6 +195,10 @@ body {
     padding-left: 20%;
 }
 
+.smallpadleft {
+    padding-left: 40px;
+}
+
 .subcategory {
     padding: 10px;
     color: #666666;
@@ -266,13 +270,15 @@ body
     height: 87vh;
     margin-top:-20px;
     padding:10px;
-    background: #1D91C0;;
+    background: #1D91C0;
     right:-300px;
     float: right;
     max-width: 500px;
     z-index: 1;
     position: absolute;
 }
+
+
 #content
 {
     height: 500px;

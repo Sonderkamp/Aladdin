@@ -137,7 +137,7 @@ userchart.prototype.loadData =
                         "name": "Gebruikers op leeftijd",
                         "suffix": "gebruikers"
                     }];
-                
+
                 vis.setUser();
             });
     };
@@ -557,7 +557,6 @@ userchart.prototype.drawBar = function (i) {
 
 
     // CREATE
-    console.log(vis.values);
 
 
     vis.svg.selectAll("rect").data(vis.values, function (d) {

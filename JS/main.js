@@ -4,8 +4,8 @@
 
 var wish = new userchart();
 var details = new detailchart();
+var matchmap = new matchmap();
 var prevdate = "";
-
 
 
 function newUsers() {
@@ -21,10 +21,15 @@ function perAge() {
 
 }
 
+function toggleLines()
+{
+    matchmap.showlines = !matchmap.showlines;
+    matchmap.zoomed();
+}
+
 
 function userinfo(d) {
 
-    console.log(d);
     var panel = $('#slide-panel');
 
     if (d != null) {
@@ -48,8 +53,7 @@ function userinfo(d) {
             data.forEach(function (d) {
                 d.value = +d.value;
             });
-
-            console.log(data);
+            
 
             details.updateVisualization(data, d.date);
 

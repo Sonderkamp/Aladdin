@@ -64,7 +64,6 @@ detailchart.prototype.updateVisualization = function (dataset, date) {
 
     var olddata = dataset;
     dataset  = pie(dataset);
-    console.log(dataset);
     //Set up groups
     vis.arcs = vis.svg.selectAll("g.arc")
         .data(dataset)
@@ -86,7 +85,7 @@ detailchart.prototype.updateVisualization = function (dataset, date) {
         })
         .attr("d", arc)
         .on("mouseover", vis.tip.show)
-        .on("mouseout", vis.tip.hide)
+        .on("mouseout", vis.tip.hide);
 
 
     this.setText(olddata, date);
@@ -104,7 +103,6 @@ detailchart.prototype.setText = function (dataset, date) {
 
     dataset.forEach(function (d) {
         $("#" + d.name.split(" ")[0]).text(d.value);
-        console.log(d.name.split(" ")[0]);
     });
 
 }
