@@ -19,15 +19,21 @@ class AdminController
             if (!empty($_GET["csv"])) {
 
                 $val = new Graph();
-                switch($_GET["csv"])
-                {
-                    case "users":
-                        $val->getUsers();
+                switch ($_GET["csv"]) {
+                    case "usersMonth":
+                        $val->getUsersMonth();
                         exit();
-                    case "wishes":
-                        $val->getWishes();
+                    case "cats":
+                        $val->getCats();
                         exit();
-                        break;
+                    case
+                        "age":
+                        $val->getAge();
+                        exit();
+                    case
+                    "monthly":
+                        $val->getCatsMonth($_GET["month"]);
+                        exit();
                 }
 
 

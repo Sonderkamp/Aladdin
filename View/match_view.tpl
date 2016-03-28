@@ -43,7 +43,7 @@
                             <td>
                                 <form method="post">
                                     <button class="btn btn-default"
-                                            formaction="/Wishes/wish_id={$wish->id}"
+                                            formaction="/Wishes/wish_id={$wish->getId()}"
                                             value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
                                             type="submit"
                                             name="page">
@@ -54,7 +54,7 @@
                             {if $currentPage == "mywishes"}
                                 <td>
                                     <form action="/Wishes/action=open_edit_wish" method="get">
-                                        <button name="editwishbtn" value="{$wish -> id}" type="sumbit"
+                                        <button name="editwishbtn" value="{$wish -> getId()}" type="sumbit"
                                                 class="btn btn-inbox" data-toggle="modal">
                                             <span class="glyphicon glyphicon-edit"></span>
                                         </button>

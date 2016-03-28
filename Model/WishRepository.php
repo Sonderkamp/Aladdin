@@ -758,33 +758,66 @@ AND ab.Block_Id = test.blockid) AS isblock
     }
 
 
-    public function get_all_wishes_with_tag($tag)
+    public function getAllWishesWithTag($tag)
     {
-        $sql = "SELECT `Id` FROM `talent` WHERE `Name` = ? join `talent_has_wish` on talent.Id = talent_has_wish.talent_Id";
-        $array = array($tag);
-        $result = Database::query_safe($sql, $array);
-
-        $id = $result[0]["Id"];
-
-        $sql1 = "SELECT `wish_Id` FROM `talent_has_wish` WHERE `talent_Id`=?";
-        $array1 = array($id);
-        $result1 = Database::query_safe($sql1, $array1);
-
-        $string = '(';
-        foreach ($result1 as $item) {
-            $string .= $item["wish_Id"] . ',';
+        $intArray = array();
+        $id = "(";
+        foreach ($tag as $item) {
+            if ($item instanceof Talent) {
+                $id .= $item->getId() . ',';
+            }
         }
+        $value = substr($id, 0, -1);
+        $value .= ')';
+
+        $sql = "SELECT wish_Id FROM `talent_has_wish` where talent_id in $value";
+        $result = Database::query($sql);
+
+        $string = "(";
+        foreach ($result as $item) {
+            $string .= $item["wish_Id"] . ",";
+        }
+
         $value = substr($string, 0, -1);
         $value .= ')';
 
-        $sql2 = "SELECT * FROM `wishContent` WHERE `wish_Id` IN $value";
-        $result2 = Database::query($sql2);
+        // TODO: not todo, only testing
+//        $sql2 = "SELECT * FROM `wishContent` WHERE `wish_Id` IN $value";
+//        $result2 = Database::query($sql2);
+
+//        print_r($result2);
+
+//        $wishArray = array();
+//        foreach ($result2 as $item) {
+//            $title = $item["Title"];
+//            $content = $item["Content"];
+//            $id = $item["wish_Id"];
+//            $temp = new Wish($id, "", $title, "", $content, "", "", "", "");
+//            $wishArray[] = $temp;
+//        }
+
+//        return $wishArray;
+        // END TOTO:
+
+
+        $result = Database::query
+        ("SELECT *
+          FROM wish AS w
+          JOIN (SELECT wish_Id, MAX(wishContent.Date) AS max_date
+              FROM wishContent
+              GROUP BY wish_Id) AS wcMax
+              ON w.Id = wcMax.wish_Id
+          JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
+          AND w.Status != 'Geweigerd'
+          WHERE wc.wish_Id in $value
+          ORDER BY max_date DESC");
 
         $wishArray = array();
-        foreach ($result2 as $item) {
+        foreach ($result as $item) {
             $title = $item["Title"];
             $content = $item["Content"];
-            $temp = new Wish("","",$title,"",$content,"","","","");
+            $id = $item["wish_Id"];
+            $temp = new Wish($id, "", $title, "", $content, "", "", "", "");
             $wishArray[] = $temp;
         }
 

@@ -2,6 +2,7 @@
 
     <h2>{$title}</h2>
 
+
     <div class="col-xs-12 col-sm-7 col-md-7">
         <p>
 
