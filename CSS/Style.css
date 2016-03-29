@@ -270,10 +270,14 @@ body
     /* - Marius */
 }
 
+.noflow{
+    overflow: hidden;
+    position: relative;
+}
+
 #slide-panel {
     width:300px;
-    height: 87vh;
-    margin-top:-20px;
+    height: 100vh;
     padding:10px;
     background: #1D91C0;
     right:-300px;
