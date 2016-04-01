@@ -49,6 +49,9 @@ matchmap = function (_parentElement, _data) {
         {"from": 'Den Bosch, nl', "to": 'Boston, us', "strength": 2},
         {"from": 'Den Bosch, nl', "to": 'Amsterdam, nl', "strength": 8},
         {"from": 'Den Bosch, nl', "to": 'Rosmalen, nl', "strength": 8},
+        {"from": 'Amsterdam, nl', "to": 'Groesbeek, nl', "strength": 8},
+        {"from": 'Amsterdam, nl', "to": 'leeuwarden, nl', "strength": 8},
+        {"from": 'Zeeland, nl', "to": 'hoofddorp, nl', "strength": 8},
         {"from": 'Den Bosch, nl', "to": 'london, uk', "strength": 1},
         {"from": 'london, uk', "to": 'bath, uk', "strength": 1}
     ];
@@ -168,11 +171,11 @@ matchmap.prototype.call = function () {
         while (d.strength >= 1) {
             var nd = JSON.parse(JSON.stringify(d));
 
-            nd.from_lat += ((Math.random() - Math.random()) / 5);
-            nd.from_lon += ((Math.random() - Math.random()) / 5);
+            nd.from_lat += ((Math.random() - Math.random()) / 30);
+            nd.from_lon += ((Math.random() - Math.random()) / 30);
 
-            nd.to_lat += ((Math.random() - Math.random()) / 5);
-            nd.to_lon += ((Math.random() - Math.random()) / 5);
+            nd.to_lat += ((Math.random() - Math.random()) / 30);
+            nd.to_lon += ((Math.random() - Math.random()) / 30);
             vis.newd.push(nd);
             d.strength--;
         }
