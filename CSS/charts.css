@@ -15,10 +15,8 @@
     background-image: none;
     background-color: #457B9D;
 }
-
-.slider {
-    margin-left: 50px;
-    margin-top: -60px;
+.slide-object{
+    padding-left: 20px;
 }
 
 .slider-handle {
@@ -50,7 +48,7 @@
     stroke-width: 1.5px;
 }
 
-.tooltip-circle {
+.tooltip-circle, .bar {
     fill: #80cdc1;
     cursor: pointer;
 }
@@ -75,6 +73,7 @@
     background: rgba(0, 0, 0, 0.8);
     color: #fff;
     border-radius: 2px;
+    z-index: 10000;
 }
 
 /* Creates a small triangle extender for the tooltip */
@@ -96,3 +95,4 @@
     top: 100%;
     left: 0;
 }
+

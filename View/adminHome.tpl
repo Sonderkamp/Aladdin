@@ -1,32 +1,94 @@
+<div id="slide-panel">
+    <button class="btn btn-default" onclick="userinfo(null)">Terug</button>
+    <br><br>
+    <article id="content">
+         <span class="h4" id="detailText">
+             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
+        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+        laborum.
+        </span>
+
+        <div id="detailchart">
+        </div>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Categorie</th>
+                <th>Aantal</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Handicap</td>
+                <td id="Handicap"></td>
+            </tr>
+            <tr>
+                <td>Volwassen</td>
+                <td id="Volwassen"></td>
+            </tr>
+            <tr>
+                <td>Kinderen</td>
+                <td id="Kind"></td>
+            </tr>
+            <tr>
+                <td>Ouderen</td>
+                <td id="Ouderen"></td>
+            </tr>
+            </tbody>
+        </table>
+
+
+    </article>
+</div>
 <div class="container">
     <h1>{$title}</h1>
 
-    <div class="col-xs-12 col-md-6">
-        <div class="btn-group chart" role="group" aria-label="...">
-            <button type="button" onclick="setXaxis(1);" class="btn btn-default">Gebruikers</button>
-            <button type="button" onclick="setXaxis(0);" class="btn btn-default">Wensen</button>
-            <span class="filter info"> <input class="slider" id="slider" type="text" class="span2"
-                                                            value=""/> </span>
-
-        </div>
-
-
-        <div id="chart-area"></div>
-       <p> Datum bereik: <span id="mindate">2013-1-1</span> - <span id="maxdate">2013-1-1</span> </p>
+    <div class="col-xs-2">
+        <ul class="nav nav-pills nav-stacked">
+            <li class="active"><a href="#tab1" data-toggle="tab">Gebruiker</a></li>
+            <li><a href="#tab2" data-toggle="tab">Wensen</a></li>
+            <li><a href="#tab3" data-toggle="tab">Matches</a></li>
+        </ul>
     </div>
-    <div class="col-md-1"></div>
-    <div class="col-xs-12 col-md-5 col-md-offset-1 toppad">
-        <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut malesuada faucibus ornare. Sed gravida et lacus et
-            feugiat. Donec ullamcorper facilisis ultrices. Donec elementum finibus odio. Nulla in vestibulum augue. Integer
-            vehicula accumsan auctor. Vivamus porta eget sapien non suscipit. Curabitur pretium mattis accumsan. Class
-            aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec quam dolor,
-            dignissim sit amet commodo a, pulvinar ac massa. Sed bibendum gravida lorem non pretium. Fusce ac placerat nisi,
-            sed mattis est. Phasellus rhoncus eros imperdiet, varius urna non, malesuada lacus. Aenean id justo condimentum,
-            laoreet lorem ac, sodales elit. Nulla dapibus lobortis suscipit.</p>
+    <div class="col-xs-10">
+        <div class="tab-content">
+            <div class="tab-pane fade in active" id="tab1">
+                <div class="btn-group chart" role="group" aria-label="...">
+                    <button type="button" onclick="newUsers();" class="btn btn-default">Nieuwe Gebruikers</button>
+                    <button type="button" onclick="perCat();" class="btn btn-default">Categorie</button>
+                    <button type="button" onclick="perAge();" class="btn btn-default">Leeftijd</button>
+
+                </div>
+
+                <div id="chart-area"></div>
+                <p><span id="dateinfo">Datum bereik: 2013-1-1 - 2013-1-1</span>  <span id="slideObject"
+                                                                                       class="slide-object">
+            </div>
+            <div class="tab-pane fade" id="tab2">
+                <p>TODO </p>
+            </div>
+            <div class="tab-pane fade" id="tab3">
+                <input type="checkbox" value="Yes" checked onclick="toggleLines()"> Matches
+
+
+                <div id="map"></div>
+            </div>
+        </div>
     </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.14/d3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.6.7/d3-tip.min.js"></script>
-<script src="js/queue.min.js"></script>
+<script src="/JS/queue.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/6.0.16/bootstrap-slider.min.js"></script>
-<script src="/JS/adminchart.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+<script src="/JS/topojson.v1.min.js"></script>
+<script src="/JS/arc.js"></script>
+<script src="/JS/countryToCode.js"></script>
+<script src="/JS/colorbrewer.js"></script>
+<script src="/JS/userchart.js"></script>
+<script src="/JS/userdetailchart.js"></script>
+<script src="/JS/matchmap.js"></script>
+<script src="/JS/main.js"></script>

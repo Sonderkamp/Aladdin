@@ -3,6 +3,10 @@ h3 {
     color: #1D91C0;
 }
 
+.h4{
+    color: white;
+}
+
 .btn-default {
     background-color: #FDAE61;
     color: whitesmoke;
@@ -191,6 +195,10 @@ body {
     padding-left: 20%;
 }
 
+.smallpadleft {
+    padding-left: 40px;
+}
+
 .subcategory {
     padding: 10px;
     color: #666666;
@@ -249,4 +257,38 @@ a:hover {
 
 body{
     background-color: rgba(253, 174, 97, 0.11);
+}
+
+
+
+body
+{
+    overflow: hidden;
+}
+#slide-panel {
+    width:300px;
+    height: 87vh;
+    margin-top:-20px;
+    padding:10px;
+    background: #1D91C0;
+    right:-300px;
+    float: right;
+    max-width: 500px;
+    z-index: 1;
+    position: absolute;
+}
+
+
+#content
+{
+    height: 500px;
+    width: 100%;
+    float: right;
+    padding-right: 5%;
+    z-index: -1;
+    color: white;
+}
+
+.slider.slider-horizontal{
+    width:500px;
 }
