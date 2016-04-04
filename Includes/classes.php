@@ -1,5 +1,6 @@
 <?php
 
+include_once("Model/Admin.php");
 include_once("Model/User.php");
 include_once("Model/Database.php");
 include_once("Model/Email.php");

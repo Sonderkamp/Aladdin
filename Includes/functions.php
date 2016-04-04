@@ -58,6 +58,12 @@
         $controller->guaranteeLogin($page);
     }
 
+function guaranteeAdmin($page)
+{
+    $controller = new AdminController();
+    $controller->guaranteeAdmin($page);
+}
+
     function htmlspecialcharsWithNL($string)
     {
         return nl2br(htmlspecialchars($string));
@@ -78,6 +84,9 @@
 
             if(!empty($_SESSION["user"]))
                 $smarty->assign("user", $_SESSION["user"]);
+
+            if(!empty($_SESSION["admin"]))
+                $smarty->assign("admin", $_SESSION["admin"]);
 
 
             // render header
