@@ -138,6 +138,7 @@ class User
             || Empty($array["dob"])
             || Empty($array["initial"])
             || Empty($array["gender"])
+            || !isset($array["handicap"])
         ) {
             return "Niet alles is ingevuld.";
         }
@@ -178,9 +179,11 @@ class User
 
         $d = DateTime::createFromFormat('d-m-Y', $array["dob"]);
 
+
         // SQL
         $hashed = password_hash($array["password"], PASSWORD_DEFAULT);
         $this->token = bin2hex(openssl_random_pseudo_bytes(16));
+
 
         if (Database::query_safe("INSERT INTO `user` (`Email`, `Password`, `Name`,
             `Surname`, `RecoveryHash`, `RecoveryDate`,
@@ -457,19 +460,16 @@ class User
 
         if (!(strtolower($this->initials) == strtolower($arr["initial"]) && strtolower($this->surname) == strtolower($arr["surname"]))) {
 
-        $newname = array("initial" => $arr["initial"], "surname" => $arr["surname"]);
-        $newdisplay = $this->createDislay($newname);
-        }
-        else{
+            $newname = array("initial" => $arr["initial"], "surname" => $arr["surname"]);
+            $newdisplay = $this->createDislay($newname);
+        } else {
             $newdisplay = $this->displayName;
         }
-        if ($arr["handicap"] != 1)
-        {
+        if ($arr["handicap"] != 1) {
             $arr["handicap"] = 0;
         }
 
-       Database::query_safe("UPDATE user SET `Name`=?, `Surname`=?, `Address`=?,`Postalcode`=?,`Country`=?,`City`=?,`Dob`=?,`Initials`=?,`Gender`=?,`Handicap`=?,`DisplayName`=?  WHERE Email=?", Array($arr["name"], $arr["surname"], $arr["address"], $arr["postalcode"], $arr["country"], $arr["city"], $d->format('Y-m-d'), $arr["initial"], $arr["gender"], $arr["handicap"],$newdisplay, $arr["username"]));
-//        Database::query_safe("UPDATE user SET `name`=?, `Surname`=? WHERE Email=?", Array($arr["name"],$arr["surname"],$arr["email"]));
+        Database::query_safe("UPDATE user SET `Name`=?, `Surname`=?, `Address`=?,`Postalcode`=?,`Country`=?,`City`=?,`Dob`=?,`Initials`=?,`Gender`=?,`Handicap`=?,`DisplayName`=?  WHERE Email=?", Array($arr["name"], $arr["surname"], $arr["address"], $arr["postalcode"], $arr["country"], $arr["city"], $d->format('Y-m-d'), $arr["initial"], $arr["gender"], $arr["handicap"], $newdisplay, $arr["username"]));//        Database::query_safe("UPDATE user SET `name`=?, `Surname`=? WHERE Email=?", Array($arr["name"],$arr["surname"],$arr["email"]));
 
         ;
 
