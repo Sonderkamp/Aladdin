@@ -781,23 +781,16 @@ AND ab.Block_Id = test.blockid) AS isblock
         $value = substr($string, 0, -1);
         $value .= ')';
 
-        // TODO: not todo, only testing
-//        $sql2 = "SELECT * FROM `wishContent` WHERE `wish_Id` IN $value";
-//        $result2 = Database::query($sql2);
+        $myWishes = $this->getMyWishes();
+        $myWishId = "(";
+        foreach ($myWishes as $item) {
+            if($item instanceof Wish){
+                $myWishId .= $item->getId() . ",";
+            }
+        }
 
-//        print_r($result2);
-
-//        $wishArray = array();
-//        foreach ($result2 as $item) {
-//            $title = $item["Title"];
-//            $content = $item["Content"];
-//            $id = $item["wish_Id"];
-//            $temp = new Wish($id, "", $title, "", $content, "", "", "", "");
-//            $wishArray[] = $temp;
-//        }
-
-//        return $wishArray;
-        // END TOTO:
+        $value2 = substr($myWishId, 0, -1);
+        $value2 .= ')';
 
 
         $result = Database::query
@@ -809,7 +802,7 @@ AND ab.Block_Id = test.blockid) AS isblock
               ON w.Id = wcMax.wish_Id
           JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
           AND w.Status != 'Geweigerd'
-          WHERE wc.wish_Id in $value
+          WHERE wc.wish_Id in $value and wc.wish_Id NOT IN $value2
           ORDER BY max_date DESC");
 
         $wishArray = array();
