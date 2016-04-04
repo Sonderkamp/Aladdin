@@ -176,6 +176,7 @@ matchmap.prototype.call = function () {
 
             nd.to_lat += ((Math.random() - Math.random()) / 30);
             nd.to_lon += ((Math.random() - Math.random()) / 30);
+
             vis.newd.push(nd);
             d.strength--;
         }

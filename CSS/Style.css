@@ -263,6 +263,14 @@ body{
 
 body
 {
+<<<<<<< HEAD
+    overflow: hidden;
+}
+#slide-panel {
+    width:300px;
+    height: 87vh;
+    margin-top:-20px;
+=======
     /*overflow: hidden; */
     /* Hoihoi, Dit doen we dus niet globaal hea. Omdat andere objecten inheritten van hun parents, is de kans dat er iets breekt groot. */
     /* Tip voor volgende keer: */
@@ -279,6 +287,7 @@ body
 #slide-panel {
     width:300px;
     height: 100vh;
+>>>>>>> cb0e1711b0aef6afb088a45a4a9ad8ced873c513
     padding:10px;
     background: #1D91C0;
     right:-300px;

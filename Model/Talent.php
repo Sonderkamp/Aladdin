@@ -19,4 +19,14 @@ class Talent
         $this -> moderator_username = $moderator_username;
         $this -> user_email = $user_email;
     }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
 }
