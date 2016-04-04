@@ -9,10 +9,8 @@
 class WishRepository
 {
 
-    private $talentRepository,
-            $email,
-            $maxContentLength = 50,
-            $WISH_LIMIT = 100;
+    private $talentRepository, $email, $maxContentLength = 50;
+    public $WISH_LIMIT = 3;
 
     public function __construct() {
         $this->talentRepository = new TalentRepository();
@@ -301,16 +299,20 @@ class WishRepository
 
         $this->email = $email;
 
-        $query = "select count(*) as counter from `wish` where `user` = ? and `status` != ? and 'status' != ?";
-        $array = array($email, "Vervuld", "Geweigerd");
-
-        $result = Database::query_safe($query, $array);
-        $amountWishes = $result[0]["counter"];
+        $amountWishes = $this->getWishAmount($email);
 
         $wishLimit = $this->WISH_LIMIT;
         if ($amountWishes >= $wishLimit)
             return false;
         return true;
+    }
+
+    public function getWishAmount($email){
+        $query = "select count(*) as counter from `wish` where `user` = ? and `status` != ? and 'status' != ?";
+        $array = array($email, "Vervuld", "Geweigerd");
+        $result = Database::query_safe($query, $array);
+
+        return $result[0]["counter"];
     }
 
 

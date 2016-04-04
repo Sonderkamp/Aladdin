@@ -58,6 +58,11 @@
         $controller->guaranteeLogin($page);
     }
 
+    function guaranteeProfile(){
+        $controller = new DashboardController();
+        $controller->guaranteeProfile();
+    }
+
     function htmlspecialcharsWithNL($string)
     {
         return nl2br(htmlspecialchars($string));

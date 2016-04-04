@@ -216,6 +216,15 @@ a:hover {
     padding-top: 30px;
 }
 
+.wishContent textarea{
+    overflow-y: scroll;
+    height: 150px;
+}
+
+.summit-container{
+    min-height: 200px;
+}
+
 .form-control::-webkit-input-placeholder { color: #1D91C0; }
 .form-control:-moz-placeholder { color: #1D91C0; }
 .form-control::-moz-placeholder { color: #1D91C0; }

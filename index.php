@@ -20,6 +20,9 @@ switch ($page) {
     case "adminwish":
         (new AdminWishController())->run();
         break;
+    case "dashboard":
+        (new DashboardController())->run();
+        break;
     case "wishes":
         (new WishController())->run();
         break;
