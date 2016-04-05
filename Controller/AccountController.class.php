@@ -274,10 +274,10 @@ class AccountController
             $arr["dob"] = $_POST["dob"];
             $arr["initial"] = $_POST["initial"];
             $arr["gender"] = $_POST["gender"];
-            if (!Empty($_POST["handicap"]))
-                $arr["handicap"] = true;
+            if (isset($_POST["handicap"]))
+                $arr["handicap"] = 1;
             else
-                $arr["handicap"] = false;
+                $arr["handicap"] = 0;
 
 
             $userModel = new User();

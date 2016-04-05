@@ -128,9 +128,9 @@ matchmap.prototype.getAddress = function (search, next) {
 
                 })
             }
-            // ====== Decode the error status ======
+            // ====== catch error ======
             else {
-                // === if we were sending the requests to fast, try this one again and increase the delay
+                // === increase delay if over query limit ===
                 if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
                     nextAddress--;
                     delay++;
@@ -176,6 +176,7 @@ matchmap.prototype.call = function () {
 
             nd.to_lat += ((Math.random() - Math.random()) / 30);
             nd.to_lon += ((Math.random() - Math.random()) / 30);
+
             vis.newd.push(nd);
             d.strength--;
         }

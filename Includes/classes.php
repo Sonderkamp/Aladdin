@@ -1,5 +1,6 @@
 <?php
 
+include_once("Model/Admin.php");
 include_once("Model/User.php");
 include_once("Model/Database.php");
 include_once("Model/Email.php");
@@ -23,5 +24,7 @@ include_once("Controller/ErrorController.class.php");
 include_once("Controller/AdminController.class.php");
 include_once("Controller/MailController.class.php");
 include_once("Controller/HomeController.class.php");
+include_once("Controller/MatchController.class.php");
+
 
 

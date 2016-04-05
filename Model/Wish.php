@@ -36,7 +36,31 @@ class Wish {
         $this->newestDate = $newestDate;
         $this->contentDate = $contentDate;
         $this->status = $status;
+    }
 
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    public function setContent($content)
+    {
+        $this->content = $content;
     }
 
 }

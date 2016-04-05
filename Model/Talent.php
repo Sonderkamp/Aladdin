@@ -24,4 +24,14 @@ class Talent
     public function setSynonymName($name){
         $this->synonym_name = $name;
     }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
 }

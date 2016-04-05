@@ -11,36 +11,36 @@
         laborum.
         </span>
 
-            <div id="detailchart">
-            </div>
 
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Categorie</th>
-                    <th>Aantal</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Handicap</td>
-                    <td id="Handicap"></td>
-                </tr>
-                <tr>
-                    <td>Volwassen</td>
-                    <td id="Volwassen"></td>
-                </tr>
-                <tr>
-                    <td>Kinderen</td>
-                    <td id="Kind"></td>
-                </tr>
-                <tr>
-                    <td>Ouderen</td>
-                    <td id="Ouderen"></td>
-                </tr>
-                </tbody>
-            </table>
+        <div id="detailchart">
+        </div>
 
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Categorie</th>
+                <th>Aantal</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Handicap</td>
+                <td id="Handicap"></td>
+            </tr>
+            <tr>
+                <td>Volwassen</td>
+                <td id="Volwassen"></td>
+            </tr>
+            <tr>
+                <td>Kinderen</td>
+                <td id="Kind"></td>
+            </tr>
+            <tr>
+                <td>Ouderen</td>
+                <td id="Ouderen"></td>
+            </tr>
+            </tbody>
+        </table>
 
         </article>
     </div>
@@ -50,8 +50,7 @@
         <div class="col-xs-2">
             <ul class="nav nav-pills nav-stacked">
                 <li class="active"><a href="#tab1" data-toggle="tab">Gebruiker</a></li>
-                <li><a href="#tab2" data-toggle="tab">Wensen</a></li>
-                <li><a href="#tab3" data-toggle="tab">Matches</a></li>
+                <li><a href="#tab2" data-toggle="tab">Matches</a></li>
             </ul>
         </div>
         <div class="col-xs-10">
@@ -68,10 +67,8 @@
                     <p><span id="dateinfo">Datum bereik: 2013-1-1 - 2013-1-1</span>  <span id="slideObject"
                                                                                            class="slide-object">
                 </div>
+
                 <div class="tab-pane fade" id="tab2">
-                    <p>TODO </p>
-                </div>
-                <div class="tab-pane fade" id="tab3">
                     <input type="checkbox" value="Yes" checked onclick="toggleLines()"> Matches
 
 
