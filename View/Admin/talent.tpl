@@ -70,7 +70,7 @@
                                                 </li>
                                             {else}
                                                 <li>
-                                                    <a href="/talents/admin_a={$current_all_talents_number - 1}" aria-label="Previous">
+                                                    <a href="/talents/action=admin/admin_a={$current_all_talents_number - 1}" aria-label="Previous">
                                                         <span aria-hidden="true">&laquo;</span>
                                                     </a>
                                                 </li>
@@ -83,7 +83,7 @@
                                                     </li>
                                                 {else}
                                                     <li>
-                                                        <a href="/talents/admin_a={$number}">{$number}</a>
+                                                        <a href="/talents/action=admin/admin_a={$number}">{$number}</a>
                                                     </li>
                                                 {/if}
                                             {/for}
@@ -96,7 +96,7 @@
                                                 </li>
                                             {else}
                                                 <li>
-                                                    <a href="/talents/admin_a={$current_all_talents_number + 1}" aria-label="Next">
+                                                    <a href="/talents/action=admin/admin_a={$current_all_talents_number + 1}" aria-label="Next">
                                                         <span aria-hidden="true">&raquo;</span>
                                                     </a>
                                                 </li>
@@ -112,7 +112,7 @@
                                                 </li>
                                             {else}
                                                 <li>
-                                                    <a href="/talents/admin_a={$current_all_talents_number - 1}" aria-label="Previous">
+                                                    <a href="/talents/action=admin/admin_a={$current_all_talents_number - 1}" aria-label="Previous">
                                                         <span aria-hidden="true">&laquo;</span>
                                                     </a>
                                                 </li>
@@ -123,7 +123,7 @@
                                                 </li>
                                             {else}
                                                 <li>
-                                                    <a href="/talents/admin_a=1">1</a>
+                                                    <a href="/talents/action=admin/admin_a=1">1</a>
                                                 </li>
                                             {/if}
                                             {if $current_all_talents_number < 4}
@@ -134,7 +134,7 @@
                                                         </li>
                                                     {else}
                                                         <li>
-                                                            <a href="/talents/admin_a={$number}">{$number}</a>
+                                                            <a href="/talents/action=admin/admin_a={$number}">{$number}</a>
                                                         </li>
                                                     {/if}
                                                 {/for}
@@ -152,7 +152,7 @@
                                                         </li>
                                                     {else}
                                                         <li>
-                                                            <a href="/talents/admin_a={$number}">{$number}</a>
+                                                            <a href="/talents/action=admin/admin_a={$number}">{$number}</a>
                                                         </li>
                                                     {/if}
                                                 {/for}
@@ -167,7 +167,7 @@
                                                         </li>
                                                     {else}
                                                         <li>
-                                                            <a href="/talents/admin_a={$number}">{$number}</a>
+                                                            <a href="/talents/action=admin/admin_a={$number}">{$number}</a>
                                                         </li>
                                                     {/if}
                                                 {/for}
@@ -181,7 +181,7 @@
                                                 </li>
                                             {else}
                                                 <li>
-                                                    <a href="/talents/admin_a={$all_talent_number}">
+                                                    <a href="/talents/action=admin/admin_a={$all_talent_number}">
                                                         <span aria-hidden="true">{$all_talent_number}</span>
                                                     </a>
                                                 </li>
@@ -194,7 +194,7 @@
                                                 </li>
                                             {else}
                                                 <li>
-                                                    <a href="/talents/admin_a={$current_all_talents_number + 1}" aria-label="Next">
+                                                    <a href="/talents/action=admin/admin_a={$current_all_talents_number + 1}" aria-label="Next">
                                                         <span aria-hidden="true">&raquo;</span>
                                                     </a>
                                                 </li>
@@ -252,7 +252,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Het talent {$talent->name} aanpassen</h4>
             </div>
-            <form action="/talents" method="post">
+            <form action="/talents/action=admin" method="post">
                 <div class="modal-body">
                     <div class="form-group">
                         <p>
@@ -289,7 +289,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Wilt u het talentaanvraag {$talent->name} afwijzen?</h4>
             </div>
-            <form action="/talents" method="post">
+            <form action="/talents/action=admin" method="post">
                 <div class="modal-body">
 
                     <div class="form-group">
@@ -329,7 +329,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default infoLeft" data-dismiss="modal">Sluiten</button>
-                <form action="/talents" method="post">
+                <form action="/talents/action=admin" method="post">
                 <input type="hidden" value="{$talent->id}" name="accept_id"/>
                     <button type="submit" name="submit" class="btn btn-add info">
                         <span class="glyphicon glyphicon-ok"></span> Accepteren
