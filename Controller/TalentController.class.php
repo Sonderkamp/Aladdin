@@ -27,11 +27,6 @@ class TalentController
 
     public function run()
     {
-        if(!empty($_SESSION["TalentAdmin"])){
-            $_SESSION["TalentAdmin"] = null;
-            $this->runAdmin();
-        }
-
         $this->checkGet();
         $this->checkPost();
         $this->checkSessions();
@@ -115,13 +110,6 @@ class TalentController
     private function checkGet()
     {
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
-
-            if (!Empty($_GET["action"])) {
-                if ($_GET["action"] == "admin") {
-                    $this->runAdmin();
-                }
-            }
-
             if (!Empty($_GET["p"])) {
                 if($_GET["p"] == "m"){
                     $this->page = $_GET["p"];
@@ -218,112 +206,6 @@ class TalentController
         }
         if(!Empty($_SESSION["err_talent"])){
             $this->talent_error = $_SESSION["err_talent"];
-        }
-    }
-
-    public function runAdmin()
-    {
-        $this->checkAdminPost();
-        $this->checkAdminGet();
-        $this->checkAdminSession();
-
-        render("Admin/talent.tpl",
-            ["title" => "Talenten beheer",
-            "all_talents" => $this->all_talents,
-            "all_talent_number" => $this->all_talents_number,
-            "current_all_talents_number" => $this->current_all_talents_number,
-            "unaccepted_talents" => $this->unaccepted_talents]);
-        exit(0);
-    }
-
-    private function checkAdminSession()
-    {
-        if(!Empty($_SESSION["talent_admin"])){
-            if($this->all_talents_number > 1){
-                $this->current_all_talents_number = $_SESSION["talent_admin"];
-                $this->all_talents = $this->talent_repository->getAllTalents($_SESSION["talent_admin"]);
-            } else{
-                $_SESSION["talent_admin"] = $this->all_talents_number;
-            }
-        }
-    }
-
-    private function checkAdminGet()
-    {
-        if (!Empty($_GET["admin_a"])) {
-            if($_GET["admin_a"] > 0 & $_GET["admin_a"] <= $this->all_talents_number) {
-                $this->all_talents = $this->talent_repository->getAllTalents($_GET["admin_a"]);
-                $this->current_all_talents_number = $_GET["admin_a"];
-                $_SESSION["talent_admin"] = $this->current_all_talents_number;
-            } else{
-                $this->all_talents = $this->talent_repository->getAllTalents(1);
-                $this->current_all_talents_number = 1;
-                $_SESSION["talent_admin"] = $this->current_all_talents_number;
-            }
-        } else {
-            $this->all_talents = $this->talent_repository->getAllTalents(1);
-            $this->current_all_talents_number = 1;
-        }
-    }
-
-    private function checkAdminPost()
-    {
-        if (!Empty($_POST["admin_talent_name"]) && !Empty($_POST["admin_talent_id"])) {
-
-            if(strlen($_POST["admin_talent_name"]) > 0 && strlen($_POST["admin_talent_name"]) <= 45){
-                $correct = true;
-                foreach($this->talent_repository->getAllTalentsName() as $name_of_talent){
-                    if(strtolower($name_of_talent) == strtolower($_POST["admin_talent_name"])){
-                        //De ingevoegde naam is al toegevoegd, aangevraagd of geweigerd.
-                        $correct = false;
-                        break;
-                    }
-                }
-                if($correct == true){
-                    if(!preg_match('/[^a-z\s]/i', $_POST["admin_talent_name"])) {
-                        $this->talent_repository->updateTalentName($_POST["admin_talent_name"], $_POST["admin_talent_id"]);
-                    } else{
-                        //Er mogen alleen letters en spaties worden gebruikt in het talent!
-                    }
-                }
-            }
-
-            $_SESSION["TalentAdmin"] = "set";
-
-            header("HTTP/1.1 303 See Other");
-            header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-            exit(0);
-        }
-
-        if(!Empty($_POST["deny_message"]) && !Empty($_POST["deny_id"])){
-            $this->talent_repository->rejectTalent($_POST["deny_id"]);
-
-            $talent = $this->talent_repository->getTalentById($_POST["deny_id"]);
-
-            $message_id = $this->message_model->sendMessage("Admin", $talent->user_email, "Het talent '" . $talent->name . "' is afgewezen", $_POST["deny_message"]);
-            $this->message_model->setLink("", "Talent", $message_id);
-
-            $_SESSION["TalentAdmin"] = "set";
-
-            header("HTTP/1.1 303 See Other");
-            header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-            exit(0);
-        }
-
-        if(!Empty($_POST["accept_id"])){
-            $this->talent_repository->acceptTalent($_POST["accept_id"]);
-
-            $talent = $this->talent_repository->getTalentById($_POST["accept_id"]);
-            $this->talent_repository->addTalentToUser2($_POST["accept_id"],$talent->user_email);
-
-            $message_id = $this->message_model->sendMessage("Admin", $talent->user_email, "Het talent '" . $talent->name . "' is geaccepteerd", "Het talent '" . $talent->name . "' is geaccepteerd, omdat het voldoet aan de algemene voorwaarden. Het talent is toegevoegt aan 'mijn talenten'.");
-            $this->message_model->setLink("", "Talent", $message_id);
-
-            $_SESSION["TalentAdmin"] = "set";
-
-            header("HTTP/1.1 303 See Other");
-            header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-            exit(0);
         }
     }
 }

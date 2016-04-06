@@ -29,6 +29,9 @@ switch ($page) {
     case "talents":
         (new TalentController())->run();
         break;
+    case "admintalents":
+        (new AdminTalentController())->run();
+        break;
     case "profilecheck":
         (new ProfileCheckController())->run();
         break;
