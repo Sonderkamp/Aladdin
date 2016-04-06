@@ -24,5 +24,7 @@ include_once("Controller/ErrorController.class.php");
 include_once("Controller/AdminController.class.php");
 include_once("Controller/MailController.class.php");
 include_once("Controller/HomeController.class.php");
+include_once("Controller/MatchController.class.php");
+
 
 

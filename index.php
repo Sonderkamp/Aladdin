@@ -38,6 +38,9 @@ switch ($page) {
     case "about":
         (new HomeController())->run();
         break;
+    case "match":
+        (new MatchController())->run();
+        break;
     default:
         apologize("Sorry. Pagina bestaat niet");
         break;

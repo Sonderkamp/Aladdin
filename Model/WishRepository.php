@@ -10,17 +10,19 @@ class WishRepository
 {
 
     private $talentRepository,
-            $email,
-            $maxContentLength = 50,
-            $WISH_LIMIT = 100;
+        $email,
+        $maxContentLength = 50,
+        $WISH_LIMIT = 100;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->talentRepository = new TalentRepository();
     }
 
-    private function checkWishContent($string){
-        if(strlen($string) > $this->maxContentLength){
-            $returnString = substr($string , 0, $this->maxContentLength);
+    private function checkWishContent($string)
+    {
+        if (strlen($string) > $this->maxContentLength) {
+            $returnString = substr($string, 0, $this->maxContentLength);
             $returnString = $returnString . '...';
             return $returnString;
         }
@@ -69,7 +71,8 @@ class WishRepository
         return $returnArray;
     }
 
-    private function getUser($email) {
+    private function getUser($email)
+    {
         $result = Database::query_safe("SELECT * FROM user WHERE user.Email = ?", array($email));
 
 
@@ -272,14 +275,16 @@ class WishRepository
         }
     }
 
-    public function deleteAllWishTalents($wishid) {
+    public function deleteAllWishTalents($wishid)
+    {
         $query = "DELETE from `talent_has_wish` WHERE `wish_Id` = ?";
         $value = array($wishid);
 
         Database::query_safe($query, $value);
     }
 
-    public function addTalentToWish($talent, $wishId) {
+    public function addTalentToWish($talent, $wishId)
+    {
         $query = "SELECT `Id` as talentId FROM `talent` WHERE `Name`=?";
         $array = array($talent);
         $result = Database::query_safe($query, $array);
@@ -321,7 +326,8 @@ class WishRepository
 //     * @return Wish
 //     */
 
-    public function getRequestedWishes($wishPage) {
+    public function getRequestedWishes($wishPage)
+    {
 
         switch ($wishPage) {
             case 'requested':
@@ -564,7 +570,7 @@ AND ab.Block_Id = test.blockid) AS isblock
         Database::query_safe("UPDATE wishContent SET `IsAccepted`=1  WHERE Date =?", array($mdate));
         Database::query_safe("UPDATE wishContent SET `moderator_username`='Admin'  WHERE Date =?", array($mdate));
 
-        $currentstatus = Database::query_safe("SELECT status as status from wish where id =?",array($id));
+        $currentstatus = Database::query_safe("SELECT status as status from wish where id =?", array($id));
 
         if (($currentstatus[0]["status"] == 'Aangemaakt')) {
             Database::query_safe("UPDATE wish SET `Status`='Gepubliseerd'  WHERE id=?", array($id));
@@ -638,7 +644,7 @@ AND ab.BlockDate = test.abmax_date
 AND ab.Block_Id = test.blockid) AS isblock
               ON u.Email = isblock.User_Email
               where w.User =?
-              ORDER BY max_date asc",array($user));
+              ORDER BY max_date asc", array($user));
 
         return $result;
     }
@@ -736,18 +742,94 @@ AND ab.Block_Id = test.blockid) AS isblock
         return $result;
     }
 
-    public function getAllWishesByEmail($email){
+    public function getAllWishesByEmail($email)
+    {
         $query = "SELECT * FROM `wish` WHERE `user` = ?";
         $array = array($email);
         $result = Database::query_safe($query, $array);
 
 
         $allWishId = array();
-        foreach($result as $item){
+        foreach ($result as $item) {
             $allWishId[] = $item["Id"];
         }
 
         return $allWishId;
+    }
+
+
+    public function getAllWishesWithTag($tag)
+    {
+        $intArray = array();
+        $id = "(";
+        foreach ($tag as $item) {
+            if ($item instanceof Talent) {
+                $id .= $item->getId() . ',';
+            }
+        }
+        $value = substr($id, 0, -1);
+        $value .= ')';
+
+        $sql = "SELECT wish_Id FROM `talent_has_wish` where talent_id in $value";
+        $result = Database::query($sql);
+
+        $string = "(";
+        foreach ($result as $item) {
+            $string .= $item["wish_Id"] . ",";
+        }
+
+        $value = substr($string, 0, -1);
+        $value .= ')';
+
+        $myWishes = $this->getMyWishes();
+        $myWishId = "(";
+        foreach ($myWishes as $item) {
+            if($item instanceof Wish){
+                $myWishId .= $item->getId() . ",";
+            }
+        }
+
+        $value2 = substr($myWishId, 0, -1);
+        $value2 .= ')';
+
+
+        $result = Database::query
+        ("SELECT *
+          FROM wish AS w
+          JOIN (SELECT wish_Id, MAX(wishContent.Date) AS max_date
+              FROM wishContent
+              GROUP BY wish_Id) AS wcMax
+              ON w.Id = wcMax.wish_Id
+          JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
+          AND w.Status != 'Geweigerd'
+          WHERE wc.wish_Id in $value and wc.wish_Id NOT IN $value2
+          ORDER BY max_date DESC");
+
+        $wishArray = array();
+        foreach ($result as $item) {
+            $title = $item["Title"];
+            $content = $item["Content"];
+            $id = $item["wish_Id"];
+            $temp = new Wish($id, "", $title, "", $content, "", "", "", "");
+            $wishArray[] = $temp;
+        }
+
+        return $wishArray;
+    }
+
+    public function getWishv2(Wish $wish)
+    {
+        $query = "SELECT * FROM `wishContent` WHERE `wish_Id` = ? ORDER BY `Date` desc limit 1";
+        $array = array($wish->getId());
+        $result = Database::query_safe($query, $array);
+
+        $id = $result[0]["wish_Id"];
+        $title = $result[0]["Title"];
+        $content = $result[0]["Content"];
+        $contentDate = $result[0]["Date"];
+
+        $wish = new Wish($id, "", $title, "", $content, "", "", $contentDate, "");
+        return $wish;
     }
 
 

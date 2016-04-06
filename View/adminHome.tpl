@@ -11,36 +11,36 @@
         laborum.
         </span>
 
-            <div id="detailchart">
-            </div>
 
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Categorie</th>
-                    <th>Aantal</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Handicap</td>
-                    <td id="Handicap"></td>
-                </tr>
-                <tr>
-                    <td>Volwassen</td>
-                    <td id="Volwassen"></td>
-                </tr>
-                <tr>
-                    <td>Kinderen</td>
-                    <td id="Kind"></td>
-                </tr>
-                <tr>
-                    <td>Ouderen</td>
-                    <td id="Ouderen"></td>
-                </tr>
-                </tbody>
-            </table>
+        <div id="detailchart">
+        </div>
 
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Categorie</th>
+                <th>Aantal</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Handicap</td>
+                <td id="Handicap"></td>
+            </tr>
+            <tr>
+                <td>Volwassen</td>
+                <td id="Volwassen"></td>
+            </tr>
+            <tr>
+                <td>Kinderen</td>
+                <td id="Kind"></td>
+            </tr>
+            <tr>
+                <td>Ouderen</td>
+                <td id="Ouderen"></td>
+            </tr>
+            </tbody>
+        </table>
 
         </article>
     </div>
