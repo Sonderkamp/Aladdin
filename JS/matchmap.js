@@ -18,13 +18,15 @@ matchmap = function (_parentElement, _data) {
         .attr("height", this.height + this.margin.top + this.margin.bottom)
 
 
-    this.svg.append("rect")
+    this.total = this.svg.append("g");
+
+        this.total.append("rect")
         .attr("width", this.width + this.margin.left + this.margin.right)
         .attr("height", this.height + this.margin.top + this.margin.bottom)
         .attr("x", 0)
         .attr("y", 0);
 
-    this.svg = this.svg.append("g")
+    this.svg = this.total.append("g")
         .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
 
     this.projection = d3.geo.mercator()
@@ -34,7 +36,6 @@ matchmap = function (_parentElement, _data) {
         .projection(this.projection);
 
     this.count = 0;
-
 
 
     this.zoom = d3.behavior.zoom()
@@ -253,7 +254,7 @@ matchmap.prototype.updateVisualization = function () {
                 .style("stroke-width", 0.4)
                 .style("stroke", "#FFFFFF");
 
-            vis.svg
+            vis.total
                 .call(vis.zoom)
                 .call(vis.zoom.event);
 
@@ -272,10 +273,8 @@ matchmap.prototype.zoomed = function () {
     map.svg.selectAll("path")
         .attr("d", map.path);
 
-    if(map.showlines)
-    {
-        if(map.pathArcs == null)
-        {
+    if (map.showlines) {
+        if (map.pathArcs == null) {
             map.pathArcs = map.lines.selectAll(".arc")
                 .data(map.links);
 
@@ -292,7 +291,7 @@ matchmap.prototype.zoomed = function () {
             .style("stroke", "#FFFFFF");
 
     }
-    else{
+    else {
         map.pathArcs.remove();
         map.pathArcs = null;
     }
