@@ -8,7 +8,7 @@
  */
 class AdminTalentController
 {
-    private $message_model, $page, $all_talents, $unaccepted_talents, $current_all_talents_number, $all_talents_number, $talent_repository;
+    private $message_model, $page, $talents, $all_talents, $unaccepted_talents, $current_all_talents_number, $all_talents_number, $talent_repository;
 
     public function __construct()
     {
@@ -18,6 +18,7 @@ class AdminTalentController
         $this->talent_repository = new TalentRepository();
         $this->message_model = new MessageModel();
 
+        $this->talents = $this->talent_repository->getAllTalents(false);
         $this->all_talents_number = ceil($this->talent_repository->checkNumberOfAllTalents()/10);
         $this->unaccepted_talents = $this->talent_repository->getAllRequestedTalents();
     }
@@ -33,7 +34,8 @@ class AdminTalentController
                 "all_talents" => $this->all_talents,
                 "all_talent_number" => $this->all_talents_number,
                 "current_all_talents_number" => $this->current_all_talents_number,
-                "unaccepted_talents" => $this->unaccepted_talents]);
+                "unaccepted_talents" => $this->unaccepted_talents,
+                "talents" => $this->talents]);
         exit(0);
     }
 

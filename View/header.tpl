@@ -77,7 +77,7 @@
                             <li><a href="/admin">Statistiek</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="/AdminWish">Wens beheer</a></li>
-                            <li><a href="/">Talent Beheer</a></li>
+                            <li><a href="/AdminTalents">Talent Beheer</a></li>
                             <li role="separator" class="divider">
                             <li><a href="/Admin/action=logout">Log uit als {$admin->username}</a></li>
                         </ul>
