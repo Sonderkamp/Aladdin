@@ -89,7 +89,7 @@ input[type="checkbox"]:checked:after, .checkbox input[type="checkbox"]:checked:a
 
 
 body {
-    background-color: white;
+    background-color: whitesmoke;
     font-family: 'PT Sans', sans-serif;
     margin-bottom: 60px;
 }
@@ -135,6 +135,7 @@ body {
     border-radius: 0 6px 6px 6px;
 }
 
+
 .dropdown-submenu:hover > .dropdown-menu {
     display: block;
 }
@@ -173,14 +174,13 @@ body {
     color: white;
 }
 .dropdown{
-    padding-right: 50px;
+
 }
 
 .navbar-nav>li>.dropdown-menu {
     margin-top: 0;
     border-top-right-radius: 0;
     border-top-left-radius: 0;
-    margin-right: 50px;
 }
 .addbutton {
     display: block;
@@ -254,12 +254,6 @@ a:hover {
     max-width: 300px;
     margin: auto;
 }
-
-/*body{*/
-    /*background-color: rgba(253, 174, 97, 0.11);*/
-/*}*/
-
-
 
 body
 {

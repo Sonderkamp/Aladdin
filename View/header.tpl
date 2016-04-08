@@ -59,8 +59,17 @@
             <ul class="nav navbar-nav navbar-left">
                 <li><a href="/about/action=home"> <span class="glyphicon glyphicon glyphicon-home"></span> Over Aladdin</a>
                 </li>
+                {if isset($user)}
+                    <li><a href="/wishes"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
+                    <li><a href="/Inbox"> <span class="glyphicon glyphicon glyphicon-envelope"></span> Berichten</a>
+                    </li>
+                    <li><a href="/Talents"> <span class="glyphicon glyphicon-align-justify"></span> Talenten</a></li>
+                {/if}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+
                 {if isset($admin)}
-                    <li class="dropdown">
+                    <li class="dropdown dropdown-admin">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">
                             <span class="glyphicon glyphicon-eye-open"></span> Administrator<span class="caret"></span></a>
@@ -75,16 +84,6 @@
                     </li>
                 {/if}
                 {if isset($user)}
-                    <li><a href="/wishes"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
-                    <li><a href="/Inbox"> <span class="glyphicon glyphicon glyphicon-envelope"></span> Berichten</a>
-                    </li>
-                    <li><a href="/Talents"> <span class="glyphicon glyphicon-align-justify"></span> Talenten</a></li>
-                {/if}
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-
-
-                {if isset($user)}
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
@@ -97,6 +96,7 @@
                 {else}
                     <li><a href="/account/action=login">Log in</a></li>
                 {/if}
+
 
             </ul>
         </div><!-- /.navbar-collapse -->
