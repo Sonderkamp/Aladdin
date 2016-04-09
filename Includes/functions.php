@@ -75,9 +75,6 @@ function render($template, $values = [])
         $smarty->assign($values, $quote);
 
         if (!empty($_SESSION["user"])) {
-            if ((new User)->isBlocked($_SESSION["user"]->email)) {
-                (new AccountController())->logout();
-            }
             $smarty->assign("user", $_SESSION["user"]);
         }
 
