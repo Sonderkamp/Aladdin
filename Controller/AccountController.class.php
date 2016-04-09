@@ -207,6 +207,12 @@ class AccountController
                 // htmlspecialchar
                 $userModel = new User();
                 if ($userModel->validate(htmlspecialchars($_POST["username"]), htmlspecialchars($_POST["password"]))) {
+
+                    if ($userModel->isBlocked($_POST["username"]) !== false) {
+                        $_SESSION["user"] = null;
+                        $this->loginError("gebruiker is geblokkeerd. Reden: " . htmlspecialcharsWithNL($userModel->isBlocked($_POST["username"])));
+                        exit();
+                    }
                     if (!empty($_SESSION["Redirect"])) {
                         redirect($_SESSION["Redirect"]);
                         $_SESSION["Redirect"] = null;
@@ -310,16 +316,14 @@ class AccountController
     }
 
 
-
     private function manage()
     {
         //        // todo: render user-manage screen
         //        echo $_SESSION["user"]->email;
 
         render("account.tpl", ["title" => "account"]);
-         exit();
-     }
-
+        exit();
+    }
 
 
     /**
@@ -329,16 +333,16 @@ class AccountController
 
     private function logout()
     {
-        // unset any session variables?
-        $_SESSION = [];
-        // expire cookie
-        if (!empty($_COOKIE[session_name()])) {
-            setcookie(session_name(), "", time() - 42000);
-        }
-
-        // destroy session
-        session_destroy();
-
+//        // unset any session variables?
+//        $_SESSION = [];
+//        // expire cookie
+//        if (!empty($_COOKIE[session_name()])) {
+//            setcookie(session_name(), "", time() - 42000);
+//        }
+//
+//        // destroy session
+//        session_destroy();
+        $_SESSION["user"] = null;
         // redirect to main page
         redirect("/");
     }
