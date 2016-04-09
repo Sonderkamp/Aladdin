@@ -331,7 +331,7 @@ class AccountController
      * http://us.php.net/manual/en/function.session-destroy.php.
      */
 
-    private function logout()
+    public function logout()
     {
 //        // unset any session variables?
 //        $_SESSION = [];
