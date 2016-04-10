@@ -1,6 +1,11 @@
 <?php
 include_once("Includes/config.php");
 
+if (!empty($_SESSION["user"])) {
+    if ((new User)->isBlocked($_SESSION["user"]->email)) {
+        (new AccountController())->logout();
+    }
+}
 
 if (Empty($_GET["page"])) {
     (new HomeController())->run();
