@@ -75,12 +75,20 @@ userchart.prototype.loadData =
                     d.amount = +d.amount;
                 });
 
+                var thismonth = false;
                 users.forEach(function (d) {
                     // Convert string to 'date object'
                     d.date = vis.formatDateUser.parse(d.date);
+                    if (d.date.getMonth() == new Date().getMonth()) {
+                        thismonth = true;
+                    }
                     // Convert numeric values to 'numbers'
                     d.amount = +d.amount;
                 });
+
+                if (!thismonth) {
+                    userchart.prototype.addtoday(users);
+                }
 
                 age.forEach(function (d) {
                     // Convert string to 'date object'
@@ -175,9 +183,7 @@ userchart.prototype.setAge = function () {
 
 userchart.prototype.addtoday = function (data) {
 
-    if (this.formatDate(data.data[data.data.length - 1].date) != this.formatDate(new Date())) {
-        data.data.push({"date": this.formatDate.parse(this.formatDate(new Date())), "amount": 0});
-    }
+    data.push({"date": new Date(), "amount": 0});
 
 };
 
@@ -269,11 +275,11 @@ userchart.prototype.updateVisualizationNewUser = function () {
 
 
     // create tip
-        vis.tip = d3.tip().attr('class', 'd3-tip').html(function (d) {
-                return d.amount + " " + vis.data[0].suffix + "<br><br> klik voor meer info";
-            })
-            .offset([-10, 0]);
-        vis.svg.call(vis.tip);
+    vis.tip = d3.tip().attr('class', 'd3-tip').html(function (d) {
+            return d.amount + " " + vis.data[0].suffix + "<br><br> klik voor meer info";
+        })
+        .offset([-10, 0]);
+    vis.svg.call(vis.tip);
 
 
     var yRange = d3.extent(this.values, function (d) {
@@ -661,7 +667,6 @@ userchart.prototype.drawLine = function (values) {
 
 
 };
-
 
 
 Date.prototype.dateAdd = function (size, value) {
