@@ -463,11 +463,28 @@ class TalentRepository
     public function updateTalent($name, $isRejected, $synonym, $id)
     {
         if (!preg_match('/[^a-z\s]/i', $name)) {
-            Database::query_safe
-            ("UPDATE `talent` 
-              SET `Name`=?,`IsRejected`=?,`synonym_of`=? 
-              WHERE `Id`=?",
-                Array($name, $isRejected, $synonym, $id));
+            $reject = $this->getTalentById($id)->is_rejected;
+            if($reject == $isRejected) {
+                Database::query_safe
+                ("UPDATE `talent` 
+                  SET `Name`=?,`IsRejected`=?,`synonym_of`=? 
+                  WHERE `Id`=?",
+                    Array($name, $isRejected, $synonym, $id));
+            } else {
+                if($isRejected == 1) {
+                    Database::query_safe
+                    ("UPDATE `talent` 
+                      SET `Name`=?,`IsRejected`=?,`AcceptanceDate`=CURRENT_TIMESTAMP,`synonym_of`=? 
+                      WHERE `Id`=?",
+                        Array($name, $isRejected, $synonym, $id));
+                } else {
+                    Database::query_safe
+                    ("UPDATE `talent` 
+                      SET `Name`=?,`IsRejected`=?,`AcceptanceDate`=NULL,`synonym_of`=? 
+                      WHERE `Id`=?",
+                        Array($name, $isRejected, $synonym, $id));
+                }
+            }
         }
     }
 

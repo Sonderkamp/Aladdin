@@ -71,6 +71,7 @@ class AdminTalentController
 
     private function checkPost()
     {
+        // TODO: acceptance date
         if (!Empty($_POST["admin_talent_id"])) {
 
             $correct = true;
