@@ -20,12 +20,16 @@ detailchart = function (_parentElement, _data) {
 
 };
 
+detailchart.prototype.removeVis = function () {
+    var vis = this;
+    if (vis.arcs != null)
+        vis.arcs.remove();
+};
 
 // Render visualization
 detailchart.prototype.updateVisualization = function (dataset, date) {
 
     var vis = this;
-
     //Width and height
     //var dataset = [ {"value" : 5, "cat" : "elder"}, {"value" : 5, "cat" : "young"}, {"value" : 5, "cat" : "parent"},  ];
 
@@ -63,7 +67,7 @@ detailchart.prototype.updateVisualization = function (dataset, date) {
     var color = d3.scale.category10();
 
     var olddata = dataset;
-    dataset  = pie(dataset);
+    dataset = pie(dataset);
     //Set up groups
     vis.arcs = vis.svg.selectAll("g.arc")
         .data(dataset)
@@ -75,7 +79,6 @@ detailchart.prototype.updateVisualization = function (dataset, date) {
             vis.tip.show
         })
         .on("mouseout", vis.tip.hide);
-
 
 
     //Draw arc paths
