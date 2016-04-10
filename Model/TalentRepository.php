@@ -467,22 +467,22 @@ class TalentRepository
             if($reject == $isRejected) {
                 Database::query_safe
                 ("UPDATE `talent` 
-                  SET `Name`=?,`IsRejected`=?,`synonym_of`=? 
+                  SET `Name`=?,`synonym_of`=? 
                   WHERE `Id`=?",
-                    Array($name, $isRejected, $synonym, $id));
+                    Array($name, $synonym, $id));
             } else {
                 if($isRejected == 1) {
                     Database::query_safe
                     ("UPDATE `talent` 
-                      SET `Name`=?,`IsRejected`=?,`AcceptanceDate`=CURRENT_TIMESTAMP,`synonym_of`=? 
+                      SET `Name`=?,`IsRejected`=?,`moderator_Username`=?,`AcceptanceDate`=CURRENT_TIMESTAMP,`synonym_of`=? 
                       WHERE `Id`=?",
-                        Array($name, $isRejected, $synonym, $id));
+                        Array($name, $isRejected, $_SESSION["admin"]->username, $synonym, $id));
                 } else {
                     Database::query_safe
                     ("UPDATE `talent` 
-                      SET `Name`=?,`IsRejected`=?,`AcceptanceDate`=NULL,`synonym_of`=? 
+                      SET `Name`=?,`IsRejected`=?,`moderator_Username`=?,`AcceptanceDate`=NULL,`synonym_of`=? 
                       WHERE `Id`=?",
-                        Array($name, $isRejected, $synonym, $id));
+                        Array($name, $isRejected, $_SESSION["admin"]->username, $synonym, $id));
                 }
             }
         }

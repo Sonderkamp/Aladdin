@@ -71,7 +71,7 @@ class AdminTalentController
 
     private function checkPost()
     {
-        if (!Empty($_POST["admin_talent_id"])) {
+        if (!Empty($_POST["admin_talent_id"]) && !Empty($this->talent_repository->getTalentById($_POST["admin_talent_id"])->moderator_username)) {
 
             $correct = true;
             if(!Isset($_POST["admin_talent_name"])) {
