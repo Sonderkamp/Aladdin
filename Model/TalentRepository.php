@@ -495,7 +495,7 @@ class TalentRepository
           SET `IsRejected`=?,
           `moderator_Username`=?
           WHERE Id = ?",
-            Array(0, "Admin", $id));
+            Array(0, $_SESSION["admin"]->username, $id));
     }
 
     public function acceptTalent($id)
@@ -507,7 +507,7 @@ class TalentRepository
           `moderator_Username`=?
           WHERE `Id`=?
         ",
-            Array(1, "Admin", $id));
+            Array(1, $_SESSION["admin"]->username, $id));
     }
 
     public function getSelectedUserTalents($user)

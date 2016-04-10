@@ -48,9 +48,11 @@
                                         <td class="col-xs-3 col-sm-3 col-md-3 col-lg-3">-</td>
                                     {/if}
                                     <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                                        <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', $talent->name)}">
-                                            <span class="glyphicon glyphicon-edit"></span>
-                                        </button>
+                                        {if !Empty($talent->moderator_username)}
+                                            <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', $talent->name)}">
+                                                <span class="glyphicon glyphicon-edit"></span>
+                                            </button>
+                                        {/if}
                                     </td>
                                 </tr>
                             {/foreach}
@@ -244,62 +246,64 @@
 
 <!-- Modal Edit-->
 {foreach from=$all_talents item=talent}
-<div id="myModal{preg_replace('/\s+/', '', $talent->name)}" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Het talent {$talent->name} aanpassen</h4>
-            </div>
-            <form action="/admintalents" method="post">
-                <input type="hidden" name="admin_talent_id" value="{$talent->id}">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label class="control-label col-sm-3" for="name">Nieuwe naam:</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="name" placeholder="Naam" name="admin_talent_name" value="{$talent->name}">
-                        </div>
+    {if !Empty($talent->moderator_username)}
+        <div id="myModal{preg_replace('/\s+/', '', $talent->name)}" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Het talent {$talent->name} aanpassen</h4>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3" for="synonym">Synoniem van:</label>
-                        <div class="col-sm-9">
-                            <select class="form-control" id="synonym" placeholder="Synoniem van" name="admin_talent_synonym">
-                                <option value="-1">Geen</option>
-                                {foreach from=$talents item=talent2}
-                                    {if $talent->id != $talent2->id}
-                                        {if $talent2->id == $talent->synonym_of}
-                                            <option selected="selected" value="{$talent2->id}">{$talent2->name}</option>
+                    <form action="/admintalents" method="post">
+                        <input type="hidden" name="admin_talent_id" value="{$talent->id}">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" for="name">Nieuwe naam:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="name" placeholder="Naam" name="admin_talent_name" value="{$talent->name}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" for="synonym">Synoniem van:</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" id="synonym" placeholder="Synoniem van" name="admin_talent_synonym">
+                                        <option value="-1">Geen</option>
+                                        {foreach from=$talents item=talent2}
+                                            {if $talent->id != $talent2->id}
+                                                {if $talent2->id == $talent->synonym_of}
+                                                    <option selected="selected" value="{$talent2->id}">{$talent2->name}</option>
+                                                {else}
+                                                    <option value="{$talent2->id}">{$talent2->name}</option>
+                                                {/if}
+                                            {/if}
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-9">
+                                    <div class="checkbox">
+                                        {if $talent->is_rejected == true}
+                                            <label><input type="checkbox" checked="checked" name="admin_talent_is_rejected"> Is geaccepteerd</label>
                                         {else}
-                                            <option value="{$talent2->id}">{$talent2->name}</option>
+                                            <label><input type="checkbox" name="admin_talent_is_rejected"> Is geaccepteerd</label>
                                         {/if}
-                                    {/if}
-                                {/foreach}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-9">
-                            <div class="checkbox">
-                                {if $talent->is_rejected == true}
-                                    <label><input type="checkbox" checked="checked" name="admin_talent_is_rejected"> Is geaccepteerd</label>
-                                {else}
-                                    <label><input type="checkbox" name="admin_talent_is_rejected"> Is geaccepteerd</label>
-                                {/if}
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default infoLeft" data-dismiss="modal">Sluiten</button>
+                            <button type="submit" name="submit" class="btn btn-inbox info">
+                                <span class="glyphicon glyphicon-edit"></span> Aanpassen
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default infoLeft" data-dismiss="modal">Sluiten</button>
-                    <button type="submit" name="submit" class="btn btn-inbox info">
-                        <span class="glyphicon glyphicon-edit"></span> Aanpassen
-                    </button>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
-</div>
+    {/if}
 {/foreach}
 
 <!-- Modal deny request-->
