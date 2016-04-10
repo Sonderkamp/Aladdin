@@ -522,10 +522,22 @@ from adminBlock
         return $result;
     }
 
+    public function isBlocked($username)
+    {
+
+        if (Database::query_safe("SELECT count(*) as count  from `adminBlock` where `user_Email` = ?", array($username))[0]["count"] == 0)
+            return false;
+
+        $status = Database::query_safe("SELECT *  from `adminBlock` where `user_Email` = ? order by BlockDate DESC", array($username))[0];
+        if ($status["IsBlocked"] == 1)
+            return $status["Reason"];
+        return false;
+    }
+
     public function getLastBlockStatus($username)
     {
         // query om de laatste block van een user te zien
-        $result = Database::query_safe("SELECT Block_Id,BlockDate,user_Email,IsBlocked as IsBlocked
+        $result = Database::query_safe("SELECT Block_Id,BlockDate,Reason, user_Email,IsBlocked as IsBlocked
 from adminBlock
 where BlockDate =
         (select
