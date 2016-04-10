@@ -255,10 +255,6 @@ a:hover {
     margin: auto;
 }
 
-
-
-
-
 body
 {
     /*overflow: hidden; */
@@ -299,4 +295,8 @@ body
 
 .slider.slider-horizontal{
     width:500px;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: floralwhite;
 }
