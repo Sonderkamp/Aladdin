@@ -73,7 +73,7 @@ class TalentRepository
         ("SELECT *
           FROM `talent`
           WHERE `AcceptanceDate` IS NOT NULL
-          AND `IsRejected` IS NOT FALSE
+          AND `IsRejected` = 1
           AND `IsRejected` IS NOT NULL
           AND `moderator_Username` IS NOT NULL
           ORDER BY `talent`.`Name` ASC");
@@ -114,7 +114,7 @@ class TalentRepository
               FROM `talent_has_user`
               WHERE `talent_has_user`.`user_Email` = ?)
           AND `talent`.`AcceptanceDate` IS NOT NULL
-          AND `talent`.`IsRejected` IS NOT FALSE
+          AND `talent`.`IsRejected` = 1
           AND `talent`.`IsRejected` IS NOT NULL
           AND `talent`.`moderator_Username` IS NOT NULL
           ORDER BY `talent`.`Name` ASC",
@@ -158,7 +158,7 @@ class TalentRepository
               FROM `talent_has_user`
               WHERE `talent_has_user`.`user_Email` = ?)
           AND `talent`.`AcceptanceDate` IS NOT NULL
-          AND `talent`.`IsRejected` IS NOT FALSE
+          AND `talent`.`IsRejected` = 1
           AND `talent`.`IsRejected` IS NOT NULL
           AND `talent`.`moderator_Username` IS NOT NULL
           ORDER BY `talent`.`Name` ASC
@@ -232,6 +232,7 @@ class TalentRepository
           JOIN `talent_has_user` ON `talent`.`Id` = `talent_has_user`.`talent_Id`
           JOIN `user` ON `talent_has_user`.`user_Email` = `user`.`Email`
           WHERE `user`.`Email` = ?
+          AND `talent`.`IsRejected` = 1
           ORDER BY `talent`.`Name` ASC
           LIMIT $value,10",
             array($_SESSION["user"]->email));
@@ -437,7 +438,7 @@ class TalentRepository
               FROM `talent_has_user`
               WHERE `talent_has_user`.`user_Email` = ?)
           AND `talent`.`AcceptanceDate` IS NOT NULL
-          AND `talent`.`IsRejected` IS NOT FALSE
+          AND `talent`.`IsRejected` = 1
           AND `talent`.`IsRejected` IS NOT NULL
           AND `talent`.`moderator_Username` IS NOT NULL
           ORDER BY `talent`.`Name` ASC",
@@ -459,14 +460,14 @@ class TalentRepository
         return $result[0]["Number_of_talents"];
     }
 
-    public function updateTalentName($name, $id)
+    public function updateTalent($name, $isRejected, $synonym, $id)
     {
         if (!preg_match('/[^a-z\s]/i', $name)) {
             Database::query_safe
-            ("UPDATE `talent`
-              SET `Name`=?
+            ("UPDATE `talent` 
+              SET `Name`=?,`IsRejected`=?,`synonym_of`=? 
               WHERE `Id`=?",
-                Array($name, $id));
+                Array($name, $isRejected, $synonym, $id));
         }
     }
 

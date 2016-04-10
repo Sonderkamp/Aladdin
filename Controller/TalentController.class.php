@@ -8,7 +8,7 @@
  */
 class TalentController
 {
-    private $message_model, $page, $all_talents, $unaccepted_talents, $current_all_talents_number, $all_talents_number, $talents, $talents_user, $talent_repository, $talent_numbers, $current_talent_number, $user_talents_number, $current_user_talent_number, $talent_name, $talent_error, $requested_talents, $requested_talents_number, $current_requested_talent_number;
+    private $message_model, $page, $unaccepted_talents, $all_talents_number, $talents, $talents_user, $talent_repository, $talent_numbers, $current_talent_number, $user_talents_number, $current_user_talent_number, $talent_name, $talent_error, $requested_talents, $requested_talents_number, $current_requested_talent_number;
 
     public function __construct()
     {

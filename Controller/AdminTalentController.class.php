@@ -71,23 +71,35 @@ class AdminTalentController
 
     private function checkPost()
     {
-        if (!Empty($_POST["admin_talent_name"]) && !Empty($_POST["admin_talent_id"])) {
+        if (!Empty($_POST["admin_talent_id"])) {
 
-            if(strlen($_POST["admin_talent_name"]) > 0 && strlen($_POST["admin_talent_name"]) <= 45){
-                $correct = true;
-                foreach($this->talent_repository->getAllTalentsName() as $name_of_talent){
-                    if(strtolower($name_of_talent) == strtolower($_POST["admin_talent_name"])){
-                        //De ingevoegde naam is al toegevoegd, aangevraagd of geweigerd.
-                        $correct = false;
-                        break;
+            $correct = true;
+            if(!Isset($_POST["admin_talent_name"])) {
+                $name = $this->talent_repository->getTalentById($_POST["admin_talent_id"])->name;
+            } else{
+                $name = $_POST["admin_talent_name"];
+                if($name != $this->talent_repository->getTalentById($_POST["admin_talent_id"])->name) {
+                    if(strlen($name) > 0 && strlen($name) <= 45){
+                        foreach($this->talent_repository->getAllTalentsName() as $name_of_talent){
+                            if(strtolower($name_of_talent) == strtolower($name)){
+                                //De ingevoegde naam is al toegevoegd, aangevraagd of geweigerd.
+                                $correct = false;
+                                break;
+                            }
+                        }
                     }
                 }
-                if($correct == true){
-                    if(!preg_match('/[^a-z\s]/i', $_POST["admin_talent_name"])) {
-                        $this->talent_repository->updateTalentName($_POST["admin_talent_name"], $_POST["admin_talent_id"]);
-                    } else{
-                        //Er mogen alleen letters en spaties worden gebruikt in het talent!
-                    }
+            }
+            if($correct == true){
+                if(isset($_POST["admin_talent_is_rejected"])){
+                    $accepted = 1;
+                } else {
+                    $accepted = 0;
+                }
+                if(!preg_match('/[^a-z\s]/i', $name)) {
+                    $this->talent_repository->updateTalent($name, $accepted, $this->checkSynonym(),$_POST["admin_talent_id"]);
+                } else{
+                    //Er mogen alleen letters en spaties worden gebruikt in het talent!
                 }
             }
 
@@ -121,6 +133,14 @@ class AdminTalentController
             header("HTTP/1.1 303 See Other");
             header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
             exit(0);
+        }
+    }
+
+    private function checkSynonym(){
+        if(!empty($_POST["admin_talent_synonym"]) && $_POST["admin_talent_synonym"] != "-1"){
+            return $_POST["admin_talent_synonym"];
+        } else {
+            return null;
         }
     }
 }

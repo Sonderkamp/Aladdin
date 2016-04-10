@@ -265,7 +265,7 @@
                         <label class="control-label col-sm-3" for="synonym">Synoniem van:</label>
                         <div class="col-sm-9">
                             <select class="form-control" id="synonym" placeholder="Synoniem van" name="admin_talent_synonym">
-                                <option>Geen</option>
+                                <option value="-1">Geen</option>
                                 {foreach from=$talents item=talent2}
                                     {if $talent->id != $talent2->id}
                                         {if $talent2->id == $talent->synonym_of}
