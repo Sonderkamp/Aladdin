@@ -526,7 +526,7 @@ AND ab.Block_Id = test.blockid) AS isblock
             JOIN (SELECT wish_Id as wishid, MAX(wishContent.Date) AS max_date
               FROM wishContent
               where moderator_username is not null
-            AND isaccepted = 1 GROUP BY wish_Id ) AS wccMax
+            AND isaccepted = 0 GROUP BY wish_Id ) AS wccMax
             WHERE status = 'Geweigerd'
             AND wc.moderator_username is not null
             AND wc.isaccepted = 0
@@ -554,7 +554,7 @@ AND ab.Block_Id = test.blockid) AS isblock
             JOIN (SELECT wish_Id as wishid, MAX(wishContent.Date) AS max_date
               FROM wishContent
               where moderator_username is not null
-            AND isaccepted = 1 GROUP BY wish_Id ) AS wccMax
+            AND isaccepted = 0 GROUP BY wish_Id ) AS wccMax
             WHERE status = 'Verwijderd'
             AND u.IsActive =1
             AND wc.Date = wccMax.max_date
