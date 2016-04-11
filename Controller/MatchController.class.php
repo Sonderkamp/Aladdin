@@ -35,14 +35,14 @@ class MatchController
         }
     }
 
-    public function open_match_view(){
+    public function open_match_view()
+    {
 
         $userTalents = $this->talenRepository->getUserTalents();
         $possibleMatches = $this->wishRepository->getAllWishesWithTag($userTalents);
 
-        render("match_view.tpl", ["currentPage"=> "match", "possibleMatches" => $possibleMatches]);
+        render("match_view.tpl", ["currentPage" => "match", "possibleMatches" => $possibleMatches]);
     }
-
 
 
 }
