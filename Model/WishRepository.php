@@ -778,25 +778,24 @@ AND ab.Block_Id = test.blockid) AS isblock
             foreach ($result as $item) {
                 $string .= $item["wish_Id"] . ",";
             }
-        }
+            $value = substr($string, 0, -1);
+            $value .= ')';
 
-        $value = substr($string, 0, -1);
-        $value .= ')';
 
-        $myWishes = $this->getMyWishes();
-        $myWishId = "(";
-        foreach ($myWishes as $item) {
-            if ($item instanceof Wish) {
-                $myWishId .= $item->getId() . ",";
+            $myWishes = $this->getMyWishes();
+            $myWishId = "(";
+            foreach ($myWishes as $item) {
+                if ($item instanceof Wish) {
+                    $myWishId .= $item->getId() . ",";
+                }
             }
-        }
 
-        $value2 = substr($myWishId, 0, -1);
-        $value2 .= ')';
+            $value2 = substr($myWishId, 0, -1);
+            $value2 .= ')';
 
 
-        $result = Database::query
-        ("SELECT *
+            $result = Database::query
+            ("SELECT *
           FROM wish AS w
           JOIN (SELECT wish_Id, MAX(wishContent.Date) AS max_date
               FROM wishContent
@@ -808,18 +807,18 @@ AND ab.Block_Id = test.blockid) AS isblock
             AND (w.Status = 'Gepubliseerd' OR w.status='Match gevonden') AND wc.Date = wcMax.max_date
           ORDER BY max_date DESC");
 
-        if (!empty($result)) {
-            $wishArray = array();
-            foreach ($result as $item) {
-                $title = $item["Title"];
-                $content = $item["Content"];
-                $id = $item["wish_Id"];
-                $temp = new Wish($id, "", $title, "", $content, "", "", "", "");
-                $wishArray[] = $temp;
+            if (!empty($result)) {
+                $wishArray = array();
+                foreach ($result as $item) {
+                    $title = $item["Title"];
+                    $content = $item["Content"];
+                    $id = $item["wish_Id"];
+                    $temp = new Wish($id, "", $title, "", $content, "", "", "", "");
+                    $wishArray[] = $temp;
+                }
+                return $wishArray;
             }
-            return $wishArray;
         }
-
     }
 
     public function getWishv2(Wish $wish)
