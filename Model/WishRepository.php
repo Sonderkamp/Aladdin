@@ -125,6 +125,7 @@ class WishRepository
           JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
           WHERE w.User = ?
           AND w.Status != 'Geweigerd'
+          AND w.Status != 'Verwijderd'
           ORDER BY max_date DESC"
             , array($user));
 
@@ -585,7 +586,7 @@ AND ab.Block_Id = test.blockid) AS isblock
         Database::query_safe("UPDATE wish SET `Status`='Geweigerd'  WHERE id=?", array($id));
     }
 
-    public function AdminDeleteWish($id, $mdate)
+    public function AdminDeleteWish($id, $mdate = null)
     {
         Database::query_safe("UPDATE wishContent SET `IsAccepted`=0  WHERE wish_id=?", array($id));
         Database::query_safe("UPDATE wishContent SET `moderator_username`='Admin'  WHERE wish_id=?", array($id));

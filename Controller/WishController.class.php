@@ -51,6 +51,9 @@ class WishController {
                 case "editwish":
                     $this->edit_wish();
                     break;
+                case "remove":
+                    $this->remove();
+                    break;
                 case "go_back":
                     $this->go_back();
                     break;
@@ -330,6 +333,14 @@ class WishController {
     private
     function go_back() {
         $this->getMyWishes();
+    }
+
+    private function remove(){
+        $id =  $_GET["wishID"];
+        if(isset($id)){
+        $this->wishRepository->AdminDeleteWish($id);
+        }
+        $this->go_back();
     }
 
     function gethashtags($text) {

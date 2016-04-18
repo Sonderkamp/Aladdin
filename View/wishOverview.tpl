@@ -63,6 +63,7 @@
                     <th>Status</th>
                     <th class="smallColumn"></th>
                     {if $currentPage == "mywishes"}<th class="smallColumn"></th>{/if}
+                    {if $currentPage == "mywishes"}<th class="smallColumn"></th>{/if}
                 </tr>
                 </thead>
                 <tbody>
@@ -93,7 +94,15 @@
                                 </button>
                             </form>
                         </td>
+
+                        <td>
+                            <a class="btn btn-danger" href="/Wishes/action=remove/wishID={$wish->id}">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
+                        </td>
                         {/if}
+
+
                     </tr>
                 {/foreach}
                 </tbody>
