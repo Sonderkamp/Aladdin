@@ -12,7 +12,8 @@ class WishRepository
     private $talentRepository,
         $email,
         $maxContentLength = 50,
-        $WISH_LIMIT = 100;
+        $WISH_LIMIT = 100,
+        $MINIMUM_TALENTS = 3;
 
     public function __construct()
     {
@@ -307,14 +308,26 @@ class WishRepository
 
         $this->email = $email;
 
-        $query = "select count(*) as counter from `wish` where `user` = ? and `status` != ? and 'status' != ?";
-        $array = array($email, "Vervuld", "Geweigerd");
+        $query = "select count(*) as counter from `wish` where `user` = ? and `status` != ? and `status` != ? and `status` != ? ";
+        $array = array($email, "Vervuld", "Geweigerd", "Verwijderd");
 
         $result = Database::query_safe($query, $array);
         $amountWishes = $result[0]["counter"];
 
         $wishLimit = $this->WISH_LIMIT;
-        if ($amountWishes >= $wishLimit)
+
+        // count talents
+        $myTalents = $this->talentRepository->getUserTalents();
+        $amountOfTalents = 0;
+        foreach($myTalents as $item){
+            if($item instanceof Talent){
+                if($item->is_rejected == 1){
+                    $amountOfTalents++;
+                }
+            }
+        }
+
+        if ($amountWishes >= $wishLimit || $amountOfTalents < $this->MINIMUM_TALENTS)
             return false;
         return true;
     }

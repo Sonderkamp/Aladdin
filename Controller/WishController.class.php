@@ -12,6 +12,7 @@ class WishController {
         $completedWishes,
         $incompletedWishes,
         $wishRepository,
+        $talentRepository,
         $title,
         $description,
         $tag,
@@ -21,6 +22,7 @@ class WishController {
 
     public function __construct() {
         $this->wishRepository = new WishRepository();
+        $this->talentRepository = new TalentRepository();
     }
 
     public function run() {
@@ -94,7 +96,6 @@ class WishController {
      */
     private function getMyWishes() {
         $mywishes = $this->wishRepository->getMyWishes();
-
         $canAddWish = $this->wishRepository->canAddWish($_SESSION["user"]->email);
 
         render("wishOverview.tpl",
