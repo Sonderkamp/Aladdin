@@ -784,8 +784,16 @@ AND ab.Block_Id = test.blockid) AS isblock
         $value = substr($id, 0, -1);
         $value .= ')';
 
+        $rest = substr($value, -2, 1);
+
+        if($rest == ","){
+            $value = substr($id, 0, -2);
+            $value .= ')';
+        }
+
         $sql = "SELECT wish_Id FROM `talent_has_wish` where talent_id in $value";
         $result = Database::query($sql);
+
 
         if (!empty($result)) {
             $string = "(";
