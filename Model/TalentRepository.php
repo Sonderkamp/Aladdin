@@ -556,6 +556,9 @@ class TalentRepository
         return $returnArray;
     }
 
+    // zorgt ervoor dat je een query kunt maken met een IN, zoals: where IN $list
+    // bij het aanroepen van inCreator() geef je een lijst mee met bijvoorbeeld Id's
+    // deze return dan tussen () de waardes gevolgd door een komma
     public function inCreator($array)
     {
         $string = "(";
