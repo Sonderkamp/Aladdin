@@ -12,7 +12,8 @@ class WishRepository
     private $talentRepository,
         $email,
         $maxContentLength = 50,
-        $WISH_LIMIT = 100;
+        $WISH_LIMIT = 100,
+        $MINIMUM_TALENTS = 3;
 
     public function __construct()
     {
@@ -125,6 +126,7 @@ class WishRepository
           JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
           WHERE w.User = ?
           AND w.Status != 'Geweigerd'
+          AND w.Status != 'Verwijderd'
           ORDER BY max_date DESC"
             , array($user));
 
@@ -306,14 +308,26 @@ class WishRepository
 
         $this->email = $email;
 
-        $query = "select count(*) as counter from `wish` where `user` = ? and `status` != ? and 'status' != ?";
-        $array = array($email, "Vervuld", "Geweigerd");
+        $query = "select count(*) as counter from `wish` where `user` = ? and `status` != ? and `status` != ? and `status` != ? ";
+        $array = array($email, "Vervuld", "Geweigerd", "Verwijderd");
 
         $result = Database::query_safe($query, $array);
         $amountWishes = $result[0]["counter"];
 
         $wishLimit = $this->WISH_LIMIT;
-        if ($amountWishes >= $wishLimit)
+
+        // count talents
+        $myTalents = $this->talentRepository->getUserTalents();
+        $amountOfTalents = 0;
+        foreach($myTalents as $item){
+            if($item instanceof Talent){
+                if($item->is_rejected == 1){
+                    $amountOfTalents++;
+                }
+            }
+        }
+
+        if ($amountWishes >= $wishLimit || $amountOfTalents < $this->MINIMUM_TALENTS)
             return false;
         return true;
     }
@@ -585,7 +599,7 @@ AND ab.Block_Id = test.blockid) AS isblock
         Database::query_safe("UPDATE wish SET `Status`='Geweigerd'  WHERE id=?", array($id));
     }
 
-    public function AdminDeleteWish($id, $mdate)
+    public function AdminDeleteWish($id, $mdate = null)
     {
         Database::query_safe("UPDATE wishContent SET `IsAccepted`=0  WHERE wish_id=?", array($id));
         Database::query_safe("UPDATE wishContent SET `moderator_username`='Admin'  WHERE wish_id=?", array($id));
@@ -770,8 +784,16 @@ AND ab.Block_Id = test.blockid) AS isblock
         $value = substr($id, 0, -1);
         $value .= ')';
 
+        $rest = substr($value, -2, 1);
+
+        if($rest == ","){
+            $value = substr($id, 0, -2);
+            $value .= ')';
+        }
+
         $sql = "SELECT wish_Id FROM `talent_has_wish` where talent_id in $value";
         $result = Database::query($sql);
+
 
         if (!empty($result)) {
             $string = "(";

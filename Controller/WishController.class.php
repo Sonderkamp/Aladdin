@@ -12,6 +12,7 @@ class WishController {
         $completedWishes,
         $incompletedWishes,
         $wishRepository,
+        $talentRepository,
         $title,
         $description,
         $tag,
@@ -21,6 +22,7 @@ class WishController {
 
     public function __construct() {
         $this->wishRepository = new WishRepository();
+        $this->talentRepository = new TalentRepository();
     }
 
     public function run() {
@@ -50,6 +52,9 @@ class WishController {
                     break;
                 case "editwish":
                     $this->edit_wish();
+                    break;
+                case "remove":
+                    $this->remove();
                     break;
                 case "go_back":
                     $this->go_back();
@@ -91,7 +96,6 @@ class WishController {
      */
     private function getMyWishes() {
         $mywishes = $this->wishRepository->getMyWishes();
-
         $canAddWish = $this->wishRepository->canAddWish($_SESSION["user"]->email);
 
         render("wishOverview.tpl",
@@ -330,6 +334,14 @@ class WishController {
     private
     function go_back() {
         $this->getMyWishes();
+    }
+
+    private function remove(){
+        $id =  $_GET["wishID"];
+        if(isset($id)){
+        $this->wishRepository->AdminDeleteWish($id);
+        }
+        $this->go_back();
     }
 
     function gethashtags($text) {

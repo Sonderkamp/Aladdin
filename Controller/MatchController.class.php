@@ -37,9 +37,12 @@ class MatchController
 
     public function open_match_view()
     {
-
         $userTalents = $this->talenRepository->getUserTalents();
-        $possibleMatches = $this->wishRepository->getAllWishesWithTag($userTalents);
+
+        $synonmys = $this->talenRepository->getSynonymsOfTalents($userTalents);
+        $allTalents = array_merge($userTalents,$synonmys);
+
+        $possibleMatches = $this->wishRepository->getAllWishesWithTag($allTalents);
 
         render("match_view.tpl", ["currentPage" => "match", "possibleMatches" => $possibleMatches]);
     }

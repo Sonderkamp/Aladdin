@@ -46,7 +46,7 @@ class TalentRepository
 
         for ($i = 0; $i < count($result); $i++) {
 
-             $talent = new Talent(
+            $talent = new Talent(
                 $result[$i]["Id"],
                 $result[$i]["Name"],
                 $result[$i]["CreationDate"],
@@ -57,10 +57,10 @@ class TalentRepository
                 $result[$i]["synonym_of"]
             );
 
-            if(!empty($talent->synonym_of)){
+            if (!empty($talent->synonym_of)) {
                 $talent->synonym_name = $this->getTalentById($talent->synonym_of)->name;
             }
-            
+
             $returnArray[$i] = $talent;
         }
 
@@ -464,14 +464,14 @@ class TalentRepository
     {
         if (!preg_match('/[^a-z\s]/i', $name)) {
             $reject = $this->getTalentById($id)->is_rejected;
-            if($reject == $isRejected) {
+            if ($reject == $isRejected) {
                 Database::query_safe
                 ("UPDATE `talent` 
                   SET `Name`=?,`synonym_of`=? 
                   WHERE `Id`=?",
                     Array($name, $synonym, $id));
             } else {
-                if($isRejected == 1) {
+                if ($isRejected == 1) {
                     Database::query_safe
                     ("UPDATE `talent` 
                       SET `Name`=?,`IsRejected`=?,`moderator_Username`=?,`AcceptanceDate`=CURRENT_TIMESTAMP,`synonym_of`=? 
@@ -519,6 +519,58 @@ class TalentRepository
           where tu.user_Email = ?", array($user));
 
         return $result;
+    }
+
+    public function getSynonymsOfTalents($talent)
+    {
+        $synoymID = array();
+        
+        foreach ($talent as $item) {
+            if ($item instanceof Talent) {
+                $synoymID[] = $item->synonym_of;
+            }
+        }
+
+        $talents = $this->inCreator($synoymID);
+        $result = Database::query("select * from talent where Id IN $talents");
+        return $this->createTalentObject($result);
+    }
+
+    public function createTalentObject($result){
+        $returnArray = array();
+
+        for ($i = 0; $i < count($result); $i++) {
+
+            $returnArray[$i] = new Talent(
+                $result[$i]["Id"],
+                $result[$i]["Name"],
+                $result[$i]["CreationDate"],
+                $result[$i]["AcceptanceDate"],
+                $result[$i]["IsRejected"],
+                $result[$i]["moderator_Username"],
+                $result[$i]["user_Email"],
+                $result[$i]["synonym_of"]
+            );
+        }
+
+        return $returnArray;
+    }
+
+    // zorgt ervoor dat je een query kunt maken met een IN, zoals: where IN $list
+    // bij het aanroepen van inCreator() geef je een lijst mee met bijvoorbeeld Id's
+    // deze return dan tussen () de waardes gevolgd door een komma
+    public function inCreator($array)
+    {
+        $string = "(";
+        foreach ($array as $item) {
+            if ($item != null) {
+                $string .= $item . ",";
+            }
+        }
+        $value = substr($string, 0, -1);
+        $value .= ')';
+
+        return $value;
     }
 
 }
