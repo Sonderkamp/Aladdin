@@ -14,7 +14,6 @@ class AdminUserController
     public function __construct()
     {
         $this->reportRepository = new ReportRepository();
-        $_SESSION["current"] = "unhandled";
     }
 
     public function run()

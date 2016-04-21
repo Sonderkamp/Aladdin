@@ -27,9 +27,8 @@ class ReportRepository
                 $query = "SELECT * FROM reportedusers";
                 break;
             case "new":
-                $status = "aangevraagd";
                 $query = "SELECT * FROM reportedusers WHERE reportStatus_Status = ?";
-                $parameters = array($status);
+                $parameters = array("aangevraagd");
                 break;
             case "single":
                 if (isset($id)) {
@@ -37,9 +36,8 @@ class ReportRepository
                 }
                 break;
             case "handled":
-                $status = "aangevraagd";
                 $query = "SELECT * FROM reportedusers WHERE reportStatus_Status != ? ORDER BY CreationDate DESC";
-                $parameters = array($status);
+                $parameters = array("aangevraagd");
                 break;
 
         }
@@ -51,31 +49,6 @@ class ReportRepository
         }
 
         return $this->create($result);
-
-//        if ($type === "all") {
-//            $query = "SELECT * FROM reportedusers";
-//        }
-//
-//        if ($type === "new") {
-//            $status = "aangevraagd";
-//            $query = "SELECT * FROM reportedusers WHERE reportStatus_Status = ?";
-//            $parameters = array($status);
-//        }
-//
-//        if ($type === "single") {
-//            if (isset($id)) {
-//                $query = "SELECT * FROM reportedusers WHERE Id = $id";
-//            }
-//        }
-//
-//        if ($type === "handled") {
-//            $status = "aangevraagd";
-//            $query = "SELECT * FROM reportedusers WHERE reportStatus_Status != ? ORDER BY CreationDate DESC";
-//            $parameters = array($status);
-//        }
-
-//        $result = Database::querys($query);
-
     }
 
 
@@ -120,7 +93,6 @@ class ReportRepository
             $report = new Report($reporter, $reported, $status, $wishID, $message, $date, $id);
             $reports[] = $report;
         }
-
 
         return $reports;
     }

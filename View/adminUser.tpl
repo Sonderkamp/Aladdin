@@ -35,7 +35,7 @@
                     {foreach from=$reports item=report}
                         <tr>
                             <td>{htmlspecialcharsWithNL($report -> getReporter())}</td>
-                            <td>{htmlspecialcharsWithNL($report -> getMessage())}</td>
+                            <td>{htmlspecialcharsWithNL($report -> getMessage()|substr:0:20)}</td>
                             <td>{htmlspecialcharsWithNL($report -> getReported())}</td>
                             <td>{htmlspecialcharsWithNL($report -> getStatus())}</td>
                             <td>{htmlspecialcharsWithNL($report -> getDate())}</td>
