@@ -6,7 +6,8 @@
  * Date: 25-Feb-16
  * Time: 15:08
  */
-class WishController {
+class WishController
+{
 
     public
         $completedWishes,
@@ -20,12 +21,14 @@ class WishController {
         $wishContentId,
         $currentPage;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->wishRepository = new WishRepository();
         $this->talentRepository = new TalentRepository();
     }
 
-    public function run() {
+    public function run()
+    {
         guaranteeLogin("/Wishes");
         if (isset($_GET["action"])) {
             switch (strtolower($_GET["action"])) {
@@ -84,7 +87,8 @@ class WishController {
         }
     }
 
-    private function searchWish($key) {
+    private function searchWish($key)
+    {
         //Werkt als de sql versie geupdate wordt.
         $searchReturn = $this->wishRepository->searchWish($key);
         render("wishOverview.tpl", ["title" => "Wensen overzicht", "wishes" => $searchReturn]);
@@ -94,7 +98,8 @@ class WishController {
     /**
      * Gets all wishes where wish.user == current user
      */
-    private function getMyWishes() {
+    private function getMyWishes()
+    {
         $mywishes = $this->wishRepository->getMyWishes();
         $canAddWish = $this->wishRepository->canAddWish($_SESSION["user"]->email);
 
@@ -105,7 +110,8 @@ class WishController {
     /**
      * Gets all wishes where wish.status == "vervuld"
      */
-    private function getCompletedWishes() {
+    private function getCompletedWishes()
+    {
         $completedWishes = $this->wishRepository->getCompletedWishes();
 
         $canAddWish = $this->wishRepository->canAddWish($_SESSION["user"]->email);
@@ -116,7 +122,8 @@ class WishController {
     /**
      * Gets all wishes where wish.status != "vervuld"
      */
-    private function getIncompletedWishes() {
+    private function getIncompletedWishes()
+    {
         $incompletedWishes = $this->wishRepository->getIncompletedWishes();
 
         $canAddWish = $this->wishRepository->canAddWish($_SESSION["user"]->email);
@@ -125,7 +132,8 @@ class WishController {
     }
 
 
-    private function open_wish_view($open) {
+    private function open_wish_view($open)
+    {
         if ($open) {
             // Check if users has 3 wishes, true if wishes are [<] 3
             $canAddWish = $this->wishRepository->canAddWish($_SESSION["user"]->email);
@@ -159,7 +167,8 @@ class WishController {
         }
     }
 
-    function prepend($string, $chunk) {
+    function prepend($string, $chunk)
+    {
         if (!empty($chunk) && isset($chunk)) {
             return $string . $chunk;
         } else {
@@ -168,7 +177,8 @@ class WishController {
     }
 
     private
-    function add_wish() {
+    function add_wish()
+    {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // boolean if user has less than 3 wishes
@@ -217,12 +227,14 @@ class WishController {
             // send the array to the repository to add to the database
             $this->wishRepository->addWish($newWish);
 
+            $this->currentPage = "mywishes";
             $this->go_back();
         }
     }
 
 
-    private function getSpecificwish($id, $previousPage) {
+    private function getSpecificwish($id, $previousPage)
+    {
 
         $selectedWish = $this->wishRepository->getWish($id);
 
@@ -234,11 +246,13 @@ class WishController {
         }
     }
 
-    private function requestMatch($id) {
+    private function requestMatch($id)
+    {
         apologize($id);
     }
 
-    private function edit_wish() {
+    private function edit_wish()
+    {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $title = $_POST["title"];
             $description = $_POST["description"];
@@ -267,7 +281,7 @@ class WishController {
             }
             if (!Empty($tag)) {
                 $this->tag = $tag;
-                if(strlen($this->gethashtags($this->tag)) == 0){
+                if (strlen($this->gethashtags($this->tag)) == 0) {
                     $validTag = false;
                 }
             } else {
@@ -332,19 +346,23 @@ class WishController {
 
 
     private
-    function go_back() {
+    function go_back()
+    {
         $this->getMyWishes();
     }
 
-    private function remove(){
-        $id =  $_GET["wishID"];
-        if(isset($id)){
-        $this->wishRepository->AdminDeleteWish($id);
+    private function remove()
+    {
+        $id = $_GET["wishID"];
+        if (isset($id)) {
+            $this->wishRepository->AdminDeleteWish($id);
         }
+        $this->currentPage = "mywishes";
         $this->go_back();
     }
 
-    function gethashtags($text) {
+    function gethashtags($text)
+    {
         //Match the hashtags
         preg_match_all('/(^|[^a-z0-9_])#([a-z0-9_]+)/i', $text, $matchedHashtags);
         $hashtag = '';
