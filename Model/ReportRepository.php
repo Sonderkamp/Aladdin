@@ -11,7 +11,7 @@ class ReportRepository
 
     public function add(Report $report)
     {
-        $sql = "INSERT INTO `reportedusers` (`user_Reporter`,`user_Reported`, `reportStatus_status`, `moderator_Username`, `wish_Id`, `message_Id`) 
+        $sql = "INSERT INTO `reportedusers` (`user_Reporter`,`user_Reported`, `reportStatus_status`, `moderator_Username`, `wish_Id`, `Message`) 
                 VALUES (?,?,?,?,?,?)";
 
         $parameters = array($report->getReporter(), $report->getReported(),

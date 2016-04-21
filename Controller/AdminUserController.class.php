@@ -14,6 +14,7 @@ class AdminUserController
     public function __construct()
     {
         $this->reportRepository = new ReportRepository();
+        $_SESSION["current"] = "unhandled";
     }
 
     public function run()
@@ -23,10 +24,13 @@ class AdminUserController
             switch (strtolower($_GET["action"])) {
                 case "home":
                 case "unhandled":
-                    $this->home();
+                    $this->unhandledReports();
                     break;
                 case "handled":
                     $this->handledReports();
+                    break;
+                case "check":
+                    $this->check();
                     break;
                 case "block":
                     $this->block();
@@ -35,26 +39,30 @@ class AdminUserController
                     $this->delete();
                     break;
                 default:
-                    apologize("404 not found, Go back to my wishes");
+                    apologize("404 not found");
                     break;
             }
         } else {
-            $this->home();
+            $this->unhandledReports();
         }
     }
 
-    public function home()
+    public function unhandledReports()
     {
-        $current = "home";
+        $this->setCurrent("unhandled");
         $report = $this->reportRepository->get("new");
-        render("adminUser.tpl", ["reports" => $report, "current" => $current]);
+        render("adminUser.tpl", ["reports" => $report, "current" => $this->getCurrent()]);
     }
 
     public function handledReports()
     {
-        $current = "handled";
+        $this->setCurrent("handled");
         $report = $this->reportRepository->get("handled");
-        render("adminUser.tpl", ["reports" => $report, "current" => $current]);
+        render("adminUser.tpl", ["reports" => $report, "current" => $this->getCurrent()]);
+    }
+
+    public function check(){
+        $this->unhandledReports();
     }
 
     public function block()
@@ -63,7 +71,7 @@ class AdminUserController
             $id = $_GET["id"];
             $this->reportRepository->block($id);
         }
-        $this->home();
+        $this->back();
     }
 
     public function delete()
@@ -72,7 +80,30 @@ class AdminUserController
             $id = $_GET["id"];
             $this->reportRepository->delete($id);
         }
-        $this->home();
+        $this->back();
     }
+
+    public function back()
+    {
+        switch ($this->getCurrent()) {
+            case "handled":
+                $this->handledReports();
+                break;
+            case "unhandled":
+                $this->unhandledReports();
+                break;
+        }
+    }
+
+    public function setCurrent($page)
+    {
+        $_SESSION["current"] = $page;
+    }
+
+    public function getCurrent()
+    {
+        return $_SESSION["current"];
+    }
+
 
 }

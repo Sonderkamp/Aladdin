@@ -11,21 +11,16 @@ class Report
 
     private $reporter, $reported, $status, $wishID, $message, $moderator, $date, $id;
 
-    public function __construct($reporter, $reported, $status, $wishID, $message, $date = null, $id = null)
+    public function __construct($reporter, $reported, $status, $wishID, $message = null, $date = null, $id = null)
     {
         $this->reporter = $reporter;
         $this->reported = $reported;
         $this->status = $status;
         $this->wishID = $wishID;
-        $this->message = $message;
 
-        if (isset($date)) {
-            $this->date = $date;
-        }
-
-        if (isset($id)) {
-            $this->id = $id;
-        }
+        if (isset($message)) $this->message = $message;
+        if (isset($date)) $this->date = $date;
+        if (isset($id)) $this->id = $id;
     }
 
     public function getMessage()

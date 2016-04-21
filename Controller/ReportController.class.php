@@ -12,11 +12,10 @@ class ReportController
     private $reportRepository, $wishRepository;
 
 
-
     public function __construct()
     {
         $this->reportRepository = new ReportRepository();
-        $this->wishRepository = new WishRepository();   
+        $this->wishRepository = new WishRepository();
     }
 
     public function run()
@@ -35,20 +34,21 @@ class ReportController
 //            $this->open_match_view();
         }
     }
-    
-    public function report(){
-        if(!empty($_GET["wish_id"])){
+
+    public function report()
+    {
+        if (!empty($_GET["wish_id"])) {
             $id = $_GET["wish_id"];
             $reporter = $_SESSION["user"]->email;
             $reported = $this->wishRepository->getUserOfWish($id);
             $status = "aangevraagd";
-            
-            $report = new Report($reporter,$reported,$status,$id);
+            $message = "blokkeer message";
+            $report = new Report($reporter, $reported, $status, $id, $message);
             $this->reportRepository->add($report);
-            
-            
         }
+
+        (new WishController())->Run();
     }
-    
-    
+
+
 }

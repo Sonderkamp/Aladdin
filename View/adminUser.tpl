@@ -11,7 +11,7 @@
                 {*rapportages</a></li>*}
                 {if isset($current)}
 
-                    <li {if $current == "home"} class="active" {/if}><a href="AdminUser/action=home" >Nieuwe rapportages</a></li>
+                    <li {if $current == "unhandled"} class="active" {/if}><a href="AdminUser/action=unhandled" >Nieuwe rapportages</a></li>
                     <li {if $current == "handled"} class="active" {/if}><a href="AdminUser/action=handled">Behandelde rapportages</a></li>
                 {/if}
             </ul>
@@ -46,7 +46,7 @@
                                        aria-expanded="false"></span>
                                         Kies</span><span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="/AdminUser/action=/wish_id={$wish->id}">Bekijken</a></li>
+                                        <li><a href="/AdminUser/action=check/id={$report->getId()}">Bekijken</a></li>
                                         <li><a href="/AdminUser/action=block/id={$report->getId()}">Blokkeren</a></li>
                                         <li><a href="/AdminUser/action=delete/id={$report->getId()}">Verwijderen</a>
                                         </li>
