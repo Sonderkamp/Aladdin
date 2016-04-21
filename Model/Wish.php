@@ -63,6 +63,13 @@ class Wish {
         $this->content = $content;
     }
 
+    public function getUser()
+    {
+        if($this->user instanceof User){
+            return $this->user;
+        }
+    }
+
 }
 
 

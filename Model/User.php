@@ -558,4 +558,9 @@ max(adminBlock.BlockDate) AS max_date
         return $result;
     }
 
+    public function getDisplayName()
+    {
+        return $this->displayName;
+    }
+
 }

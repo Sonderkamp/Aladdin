@@ -29,6 +29,7 @@
             <table class="table">
                 <thead>
                 <tr>
+                    <th>Gebruiker</th>
                     <th>Wens</th>
                     <th>Beschrijving</th>
                 </tr>
@@ -37,6 +38,20 @@
                 {if isset($possibleMatches)}
                     {foreach from=$possibleMatches item=wish}
                         <tr>
+                            <td>
+                                <div class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                           aria-haspopup="true"
+                                           aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
+                                            {htmlspecialcharsWithNL($wish -> getUser() -> getDisplayName())}</span><span
+                                                    class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="/report/action=report/wish_id={$wish->getId()}">Rapporteren</a></li>
+                                        </ul>
+                                </div>
+
+                            </td>
+                            <td>{htmlspecialcharsWithNL($wish -> getUser() -> getDisplayName())}</td>
                             <td>{htmlspecialcharsWithNL($wish -> getTitle())}</td>
                             <td>{htmlspecialcharsWithNL($wish -> getContent())}</td>
                             <td>
@@ -68,3 +83,4 @@
         </div>
     </div>
 </div>
+

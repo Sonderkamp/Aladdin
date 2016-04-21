@@ -828,18 +828,20 @@ AND ab.Block_Id = test.blockid) AS isblock
           WHERE wc.wish_Id in $value and wc.wish_Id NOT IN $value2
             AND (w.Status = 'Gepubliseerd' OR w.status='Match gevonden') AND wc.Date = wcMax.max_date
           ORDER BY max_date DESC");
-
-            if (!empty($result)) {
-                $wishArray = array();
-                foreach ($result as $item) {
-                    $title = $item["Title"];
-                    $content = $item["Content"];
-                    $id = $item["wish_Id"];
-                    $temp = new Wish($id, "", $title, "", $content, "", "", "", "");
-                    $wishArray[] = $temp;
-                }
-                return $wishArray;
-            }
+            
+           return $this->getReturnArray($result);
+//            if (!empty($result)) {
+//                $wishArray = array();
+//                foreach ($result as $item) {
+//                    $user = $item["User"];
+//                    $title = $item["Title"];
+//                    $content = $item["Content"];
+//                    $id = $item["wish_Id"];
+//                    $temp = new Wish($id, $user, $title, "", $content, "", "", "", "");
+//                    $wishArray[] = $temp;
+//                }
+//                return $wishArray;
+//            }
         }
     }
 
@@ -857,6 +859,31 @@ AND ab.Block_Id = test.blockid) AS isblock
         $wish = new Wish($id, "", $title, "", $content, "", "", $contentDate, "");
         return $wish;
     }
+
+    public function inCreator($array)
+    {
+        $string = "(";
+        foreach ($array as $item) {
+            if ($item != null) {
+                $string .= $item . ",";
+            }
+        }
+        $value = substr($string, 0, -1);
+        $value .= ')';
+
+        return $value;
+    }
+
+    public function getUserOfWish($wishID){
+        $sql = "select * from wish where Id = ?";
+        $parameters = array($wishID);
+        $result = Database::query_safe($sql,$parameters);
+        return $result[0]["User"];
+    }
+
+
+
+
 
 
 }
