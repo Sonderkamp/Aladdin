@@ -9,20 +9,21 @@
 class Report
 {
 
-    private $reporter,$reported,$status,$wishID,$message,$moderator, $date, $id;
+    private $reporter, $reported, $status, $wishID, $message, $moderator, $date, $id;
 
-    public function __construct($reporter, $reported, $status, $wishID, $date = null, $id = null)
+    public function __construct($reporter, $reported, $status, $wishID, $message, $date = null, $id = null)
     {
         $this->reporter = $reporter;
         $this->reported = $reported;
         $this->status = $status;
         $this->wishID = $wishID;
+        $this->message = $message;
 
-        if(isset($date)){
+        if (isset($date)) {
             $this->date = $date;
         }
-        
-        if(isset($id)){
+
+        if (isset($id)) {
             $this->id = $id;
         }
     }
@@ -66,7 +67,6 @@ class Report
     {
         return $this->id;
     }
-
 
 
 }

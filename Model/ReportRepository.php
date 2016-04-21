@@ -117,7 +117,7 @@ class ReportRepository
             $wishID = $item["wish_Id"];
             $messageID = $item["message_Id"];
 
-            $report = new Report($reporter, $reported, $status, $wishID, $date, $id);
+            $report = new Report($reporter, $reported, $status, $wishID, $message, $date, $id);
             $reports[] = $report;
         }
 
