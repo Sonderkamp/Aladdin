@@ -31,7 +31,7 @@ class ReportController
                     break;
             }
         } else {
-//            $this->open_match_view();
+            (new WishController())->run();
         }
     }
 
@@ -47,7 +47,7 @@ class ReportController
             $this->reportRepository->add($report);
         }
 
-        (new WishController())->Run();
+        (new WishController())->run();
     }
 
 
