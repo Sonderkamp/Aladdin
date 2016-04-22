@@ -49,6 +49,12 @@ switch ($page) {
     case "match":
         (new MatchController())->run();
         break;
+    case "report":
+        (new ReportController())->run();
+        break;
+    case "adminuser":
+        (new AdminUserController())->run();
+        break;
     default:
         apologize("Sorry. Pagina bestaat niet");
         break;
