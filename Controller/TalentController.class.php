@@ -8,7 +8,7 @@
  */
 class TalentController
 {
-    private $message_model, $page, $unaccepted_talents, $all_talents_number, $talents, $talents_user, $talent_repository, $talent_numbers, $current_talent_number, $user_talents_number, $current_user_talent_number, $talent_name, $talent_error, $requested_talents, $requested_talents_number, $current_requested_talent_number;
+    private $message_model, $page, $unaccepted_talents, $all_talents_number, $talents, $talents_user, $talent_repository, $talent_numbers, $current_talent_number, $user_talents_number, $current_user_talent_number, $talent_name, $talent_error, $talent_warning, $requested_talents, $requested_talents_number, $current_requested_talent_number;
 
     public function __construct()
     {
@@ -44,6 +44,7 @@ class TalentController
                 "current_page" => $this->page,
                 "talent_name" => $this->talent_name,
                 "added_talent_error" => $this->talent_error,
+                "added_talent_warning" => $this->talent_warning,
                 "requested_talents" => $this->requested_talents,
                 "requested_talents_number" => $this->requested_talents_number,
                 "current_requested_talent_number" => $this->current_requested_talent_number]);
@@ -56,10 +57,12 @@ class TalentController
             if (!Empty($_POST["talent_name"])) {
                 if(strlen($_POST["talent_name"]) > 0 && strlen($_POST["talent_name"]) <= 45){
                     $correct = true;
-                    foreach($this->talent_repository->getAllTalentsName() as $name_of_talent){
-                        if(strtolower($name_of_talent) == strtolower($_POST["talent_name"])){
+                    foreach($this->talent_repository->getAllTalents(false) as $talent){
+                        if(strtolower($talent->name) == strtolower($_POST["talent_name"])){
                             $_SESSION["talent_name"] = $_POST["talent_name"];
-                            $_SESSION["err_talent"] = "De ingevoegde naam is al toegevoegd, aangevraagd of geweigerd.";
+                            $_SESSION["err_talent"] = "";
+                            $_SESSION["wrn_talent"] = "De ingevoegde naam is al toegevoegd, aangevraagd of geweigerd. Het talent wordt toegevoegd zodra het nog geaccepteerd word.";
+                            $this->talent_repository->addTalentToUser($talent->id);
                             $correct = false;
                             break;
                         }
@@ -69,13 +72,16 @@ class TalentController
                             $this->talent_repository->addTalent($_POST["talent_name"]);
                             $_SESSION["talent_name"] = "";
                             $_SESSION["err_talent"] = "";
+                            $_SESSION["wrn_talent"] = "";
                         } else{
                             $_SESSION["talent_name"] = $_POST["talent_name"];
+                            $_SESSION["wrn_talent"] = "";
                             $_SESSION["err_talent"] = "Er mogen alleen letters en spaties worden gebruikt in het talent!";
                         }
                     }
                 } else{
                     $_SESSION["talent_name"] = $_POST["talent_name"];
+                    $_SESSION["wrn_talent"] = "";
                     $_SESSION["err_talent"] = "Het tekstbox moet minimaal 1 en maximaal 45 characters bevatten!";
                 }
 
@@ -206,6 +212,9 @@ class TalentController
         }
         if(!Empty($_SESSION["err_talent"])){
             $this->talent_error = $_SESSION["err_talent"];
+        }
+        if(!Empty($_SESSION["wrn_talent"])){
+            $this->talent_warning = $_SESSION["wrn_talent"];
         }
     }
 }
