@@ -221,7 +221,7 @@
                     {elseif !empty($added_talent_warning)}
                         <div class="alert alert-success alert-dismissible" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Warning!</strong> {$added_talent_warning}
+                            <strong>Talent toegevoegd!</strong> {$added_talent_warning}
                         </div>
                     {/if}
                     {if !empty($talent_name)}
