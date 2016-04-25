@@ -17,45 +17,42 @@ class ForbiddenWordRepository
     public function getForbiddenWords($limit = null, $word = null, $search = null) {
 
         $query = "SELECT * FROM `forbiddenwords`";
-
-        if($word != null && $search != null) {
-
-            $query .= " WHERE `Word`=? AND `Word` LIKE ?";
-        } else if($word != null && Empty($search)) {
-
-            $query .= " WHERE `Word`=?";
-        } else if($search != null && Empty($word)) {
-
-            $query .= " WHERE `Word` LIKE ?";
-        }
-
-        $query .= " ORDER BY `Word` ASC";
+        $suffix = " ORDER BY `Word` ASC";
 
         if($limit != null) {
 
             $limit -= 1;
             $limit *= 10;
-            $query .= " LIMIT ".$limit.",10";
+            $suffix .= " LIMIT ".$limit.",10";
         }
 
         if($word != null && $search != null) {
 
-            $result = Database::query_safe($query, array($word,"%".$search."%"));
+            $query .= " WHERE `Word`=? AND `Word` LIKE ?";
+
+            $result = Database::query_safe($query.$suffix, array($word,"%".$search."%"));
 
             return $this->createReturnArray($result);
+
         } else if($word != null && Empty($search)) {
 
-            $result = Database::query_safe($query, array($word));
+            $query .= " WHERE `Word`=?";
+
+            $result = Database::query_safe($query.$suffix, array($word));
 
             return $this->createReturnArray($result, true);
+
         } else if($search != null && Empty($word)) {
 
-            $result = Database::query_safe($query, array("%".$search."%"));
+            $query .= " WHERE `Word` LIKE ?";
+
+            $result = Database::query_safe($query.$suffix, array("%".$search."%"));
 
             return $this->createReturnArray($result);
+            
         } else {
 
-            $result = Database::query($query);
+            $result = Database::query($query.$suffix);
 
             return $this->createReturnArray($result);
         }
