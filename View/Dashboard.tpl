@@ -1,4 +1,11 @@
-<div class="container">
+<script src="/JS/dashboard.js"></script>
+<div class="container" onload="alertOnLoad({$wishAmount},{$talentAmount})">
+    {if $wishAmount < 3 || $talentAmount < 3}
+    <div class="alert alert-warning">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Pas op!</strong> U heeft uw profiel nog niet voltooid. Vul alstublieft minimaal 3 wensen en talenten in.
+    </div>
+    {/if}
     <div class="row">
         <div class="col-md-3">
             <img class="center-block" src="http://placehold.it/168x168" alt="profileImage">
@@ -65,20 +72,8 @@
                     <div class="thumbnail">
                         <div class="caption">
                             <div class="row">
-                                <label class="col-md-2">Adres:</label>
-                                <label>{$smarty.session.user->address}</label>
-                            </div>
-                            <div class="row">
-                                <label class="col-md-2">postcode:</label>
-                                <label>{$smarty.session.user->postalcode}</label>
-                            </div>
-                            <div class="row">
-                                <label class="col-md-2">Land:</label>
-                                <label>{$smarty.session.user->country}</label>
-                            </div>
-                            <div class="row">
-                                <label class="col-md-2">Geboortedatum:</label>
-                                <label>{$smarty.session.user->dob}</label>
+                                <label class="col-md-4">Naam:</label>
+                                <label>{$value->name}</label>
                             </div>
                         </div>
                     </div>

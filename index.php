@@ -29,6 +29,7 @@ switch ($page) {
         (new DashboardController())->run();
         break;
     case "wishes":
+        guaranteeProfile();
         (new WishController())->run();
         break;
     case "inbox":

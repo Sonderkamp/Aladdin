@@ -26,7 +26,12 @@ class DashboardController
     public function guaranteeProfile(){
         if($this->checkAmounts()){
         } else {
-            render("Dashboard.tpl", ["title" => $_SESSION["user"]->displayName , "wishes" => $this->getMyWishes() , "talents" => $this->getMyTalents()]);
+            render("Dashboard.tpl", ["title" => $_SESSION["user"]->displayName ,
+                "wishes" => $this->getMyWishes() ,
+                "talents" => $this->getMyTalents() ,
+                "wishAmount" => $this->getWishAmount() ,
+                "talentAmount" => $this->getTalentAmount()]);
+            exit(0);
         }
     }
 
@@ -38,13 +43,21 @@ class DashboardController
         return $this->talentRepo->getUserTalents();
     }
 
+    private function getWishAmount(){
+        return $this->wishRepo->getWishAmount($_SESSION["user"]->email);
+    }
+
+    private function getTalentAmount(){
+        return $this->talentRepo->checkNumberOfTalentsFromUser();
+    }
+
     private function checkAmounts(){
         if(!empty($_SESSION['user'])) {
-            $wishAmount = $this->wishRepo->getWishAmount($_SESSION["user"]->email);
-            $talentAmount = $this->talentRepo->checkNumberOfTalentsFromUser();
+            $wishAmount = $this->getWishAmount();
+            $talentAmount = $this->getTalentAmount();
 
             //3 wishes and 3 talents are mandatory
-            if($wishAmount = $this->wish_limit && $talentAmount >= $this->talent_limit){
+            if($wishAmount == $this->wish_limit && $talentAmount >= $this->talent_limit){
                 return true;
             } else {
                 return false;
