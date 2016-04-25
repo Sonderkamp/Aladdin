@@ -8,18 +8,21 @@
     <meta name="theme-color" content="#2196F3">
 
     <link rel="stylesheet" href="https://bootswatch.com/paper/bootstrap.min.css">
-    <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/theme-default.min.css" rel="stylesheet" type="text/css"/>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/theme-default.min.css" rel="stylesheet"
+          type="text/css"/>
     <link href='https://fonts.googleapis.com/css?family=PT+Sans|Indie+Flower' rel='stylesheet' type='text/css'>
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/6.0.16/css/bootstrap-slider.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/theme-default.min.css" rel="stylesheet"
+          type="text/css"/>
     <link rel="stylesheet" type="text/css" href="/CSS/Style.css">
-    <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/theme-default.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="/CSS/charts.css">
 
     {if isset($title)}
-    <title>Aladdin: {htmlspecialchars($title)}</title>
+        <title>Aladdin: {htmlspecialchars($title)}</title>
     {else}
-    <title>Aladdin</title>
+        <title>Aladdin</title>
     {/if}
 
 
@@ -29,6 +32,8 @@
 
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/jquery.form-validator.min.js"></script>
 
 <nav class="navbar navbar-default">
@@ -43,63 +48,56 @@
                 <span class="icon-bar"></span>
             </button>
 
-            <a class="navbar-brand pull-left" href="/"><img alt="logo" class="logo" src="/Resources/Images/logo.png"/> </a>
+            <a class="navbar-brand pull-left" href="/"><img alt="logo" class="logo" src="/Resources/Images/logo.png"/>
+            </a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
 
-
             <ul class="nav navbar-nav navbar-left">
-                <li><a href="/about/action=home"> <span class="glyphicon glyphicon glyphicon-home"></span> Over Aladdin</a></li>
-                {if isset($admin)}
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">
-                        <span class="glyphicon glyphicon-eye-open"></span> Administrator<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/admin">Statistieken</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="/">Wens Aanvragen</a></li>
-                        <li><a href="/">Talent aanvragen</a></li>
-                        <li><a href="/">Meldingen</a></li>
-                        <li><a href="/">Berichten Centrum</a></li>
-                        <li role="separator" class="divider">
-                        <li><a href="/">Gebruikers</a></li>
-                    </ul>
+                <li><a href="/about/action=home"> <span class="glyphicon glyphicon glyphicon-home"></span> Over Aladdin</a>
                 </li>
-                {/if}
                 {if isset($user)}
-                <li><a href="/wishes"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
-                <li><a href="/Inbox"> <span class="glyphicon glyphicon glyphicon-envelope"></span> Berichten</a></li>
-                <li><a href="/Talents"> <span class="glyphicon glyphicon-align-justify"></span> Talenten</a></li>
+                    <li><a href="/wishes"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
+                    <li><a href="/Inbox"> <span class="glyphicon glyphicon glyphicon-envelope"></span> Berichten</a>
+                    </li>
+                    <li><a href="/Talents"> <span class="glyphicon glyphicon-align-justify"></span> Talenten</a></li>
                 {/if}
             </ul>
             <ul class="nav navbar-nav navbar-right">
 
-
-                {if isset($user)}
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
-                        {$user->displayName}<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/profile">Mijn profiel</a></li>
-                        <li role="separator" class="divider"></li>
-<!--                        -->
-<!--                        TIJDELIJK OM ADMIN WENS BEHEER MAKELIJKER TE BERIJKEN-->
-
-                        <li><a href="/AdminWish">Wens Beheer</a></li>
-                        <li role="separator" class="divider"></li>
-<!--                        -->
-<!--                        -->
-                        <li><a href="/account/action=logout">Log uit</a></li>
-                    </ul>
-                </li>
-                {else}
-                <li><a href="/account/action=login">Log in</a></li>
+                {if isset($admin)}
+                    <li class="dropdown dropdown-admin">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">
+                            <span class="glyphicon glyphicon-eye-open"></span> Administrator<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/admin">Statistiek</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/AdminWish">Wens beheer</a></li>
+                            <li><a href="/AdminTalents">Talent Beheer</a></li>
+                            <li><a href="/AdminUser">Gebruikersbeheer</a></li>
+                            <li role="separator" class="divider">
+                            <li><a href="/Admin/action=logout">Log uit als {$admin->username}</a></li>
+                        </ul>
+                    </li>
                 {/if}
+                {if isset($user)}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
+                            {$user->displayName}<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/profile">Mijn profiel</a></li>
+                            <li><a href="/account/action=logout">Log uit</a></li>
+                        </ul>
+                    </li>
+                {else}
+                    <li><a href="/account/action=login">Log in</a></li>
+                {/if}
+
 
             </ul>
         </div><!-- /.navbar-collapse -->

@@ -8,11 +8,11 @@
  */
 class TalentController
 {
-    private $message_model, $page, $all_talents, $unaccepted_talents,$current_all_talents_number, $all_talents_number, $talents, $talents_user, $talent_repository, $talent_numbers, $current_talent_number, $user_talents_number, $current_user_talent_number, $talent_name, $talent_error, $requested_talents, $requested_talents_number, $current_requested_talent_number;
+    private $message_model, $page, $unaccepted_talents, $all_talents_number, $talents, $talents_user, $talent_repository, $talent_numbers, $current_talent_number, $user_talents_number, $current_user_talent_number, $talent_name, $talent_error, $talent_warning, $requested_talents, $requested_talents_number, $current_requested_talent_number;
 
     public function __construct()
     {
-        guaranteeLogin("/Talents");
+        guaranteeLogin("/talents");
 
         $this->page = "m";
         $this->talent_repository = new TalentRepository();
@@ -27,10 +27,8 @@ class TalentController
 
     public function run()
     {
-        // if admin
-        // else deze
-        $this->checkPost();
         $this->checkGet();
+        $this->checkPost();
         $this->checkSessions();
 
         render("talentOverview.tpl",
@@ -46,6 +44,7 @@ class TalentController
                 "current_page" => $this->page,
                 "talent_name" => $this->talent_name,
                 "added_talent_error" => $this->talent_error,
+                "added_talent_warning" => $this->talent_warning,
                 "requested_talents" => $this->requested_talents,
                 "requested_talents_number" => $this->requested_talents_number,
                 "current_requested_talent_number" => $this->current_requested_talent_number]);
@@ -58,10 +57,12 @@ class TalentController
             if (!Empty($_POST["talent_name"])) {
                 if(strlen($_POST["talent_name"]) > 0 && strlen($_POST["talent_name"]) <= 45){
                     $correct = true;
-                    foreach($this->talent_repository->getAllTalentsName() as $name_of_talent){
-                        if(strtolower($name_of_talent) == strtolower($_POST["talent_name"])){
+                    foreach($this->talent_repository->getAllTalents(false) as $talent){
+                        if(strtolower($talent->name) == strtolower($_POST["talent_name"])){
                             $_SESSION["talent_name"] = $_POST["talent_name"];
-                            $_SESSION["err_talent"] = "De ingevoegde naam is al toegevoegd, aangevraagd of geweigerd.";
+                            $_SESSION["err_talent"] = "";
+                            $_SESSION["wrn_talent"] = "De ingevoegde naam is al toegevoegd, aangevraagd of geweigerd. Het talent wordt toegevoegd zodra het nog geaccepteerd word.";
+                            $this->talent_repository->addTalentToUser($talent->id);
                             $correct = false;
                             break;
                         }
@@ -71,15 +72,16 @@ class TalentController
                             $this->talent_repository->addTalent($_POST["talent_name"]);
                             $_SESSION["talent_name"] = "";
                             $_SESSION["err_talent"] = "";
-                        }
-                        else{
+                            $_SESSION["wrn_talent"] = "";
+                        } else{
                             $_SESSION["talent_name"] = $_POST["talent_name"];
+                            $_SESSION["wrn_talent"] = "";
                             $_SESSION["err_talent"] = "Er mogen alleen letters en spaties worden gebruikt in het talent!";
                         }
                     }
-                }
-                else{
+                } else{
                     $_SESSION["talent_name"] = $_POST["talent_name"];
+                    $_SESSION["wrn_talent"] = "";
                     $_SESSION["err_talent"] = "Het tekstbox moet minimaal 1 en maximaal 45 characters bevatten!";
                 }
 
@@ -118,16 +120,13 @@ class TalentController
                 if($_GET["p"] == "m"){
                     $this->page = $_GET["p"];
                     $_SESSION["current_talent_page"] = $this->page;
-                }
-                elseif($_GET["p"] == "a"){
+                } elseif($_GET["p"] == "a"){
                     $this->page = $_GET["p"];
                     $_SESSION["current_talent_page"] = $this->page;
-                }
-                elseif($_GET["p"] == "t"){
+                } elseif($_GET["p"] == "t"){
                     $this->page = $_GET["p"];
                     $_SESSION["current_talent_page"] = $this->page;
-                }
-                else{
+                } else{
                     $this->page = "m";
                     $_SESSION["current_talent_page"] = $this->page;
                 }
@@ -138,14 +137,12 @@ class TalentController
                     $this->talents_user = $this->talent_repository->getSelectionUserTalents($_GET["m"]);
                     $this->current_user_talent_number = $_GET["m"];
                     $_SESSION["talent_m"] = $this->current_user_talent_number;
-                }
-                else{
+                } else{
                     $this->talents_user = $this->talent_repository->getSelectionUserTalents(1);
                     $this->current_user_talent_number = 1;
                     $_SESSION["talent_m"] = $this->current_user_talent_number;
                 }
-            }
-            else {
+            } else {
                 $this->talents_user = $this->talent_repository->getSelectionUserTalents(1);
                 $this->current_user_talent_number = 1;
             }
@@ -155,14 +152,12 @@ class TalentController
                     $this->talents = $this->talent_repository->getSelectionTalents($_GET["a"]);
                     $this->current_talent_number = $_GET["a"];
                     $_SESSION["talent_a"] = $this->current_talent_number;
-                }
-                else{
+                } else{
                     $this->talents = $this->talent_repository->getSelectionTalents(1);
                     $this->current_talent_number = 1;
                     $_SESSION["talent_a"] = $this->current_talent_number;
                 }
-            }
-            else {
+            } else {
                 $this->talents = $this->talent_repository->getSelectionTalents(1);
                 $this->current_talent_number = 1;
             }
@@ -172,14 +167,12 @@ class TalentController
                     $this->requested_talents = $this->talent_repository->getRequestedTalents($_GET["t"]);
                     $this->current_requested_talent_number = $_GET["t"];
                     $_SESSION["talent_t"] = $this->current_requested_talent_number;
-                }
-                else{
+                } else{
                     $this->requested_talents = $this->talent_repository->getRequestedTalents(1);
                     $this->current_requested_talent_number = 1;
                     $_SESSION["talent_t"] = $this->current_requested_talent_number;
                 }
-            }
-            else {
+            } else {
                 $this->requested_talents = $this->talent_repository->getRequestedTalents(1);
                 $this->current_requested_talent_number = 1;
             }
@@ -194,8 +187,7 @@ class TalentController
             if($this->user_talents_number > 1){
                 $this->current_user_talent_number = $_SESSION["talent_m"];
                 $this->talents_user = $this->talent_repository->getSelectionUserTalents($_SESSION["talent_m"]);
-            }
-            else{
+            } else{
                 $_SESSION["talent_m"] = $this->user_talents_number;
             }
         }
@@ -203,8 +195,7 @@ class TalentController
             if($this->talent_numbers > 1){
                 $this->current_talent_number = $_SESSION["talent_a"];
                 $this->talents = $this->talent_repository->getSelectionTalents($_SESSION["talent_a"]);
-            }
-            else{
+            } else{
                 $_SESSION["talent_a"] = $this->talent_numbers;
             }
         }
@@ -212,8 +203,7 @@ class TalentController
             if($this->requested_talents_number > 1){
                 $this->current_requested_talent_number = $_SESSION["talent_t"];
                 $this->requested_talents = $this->talent_repository->getRequestedTalents($_SESSION["talent_t"]);
-            }
-            else{
+            } else{
                 $_SESSION["talent_t"] = $this->requested_talents_number;
             }
         }
@@ -223,109 +213,8 @@ class TalentController
         if(!Empty($_SESSION["err_talent"])){
             $this->talent_error = $_SESSION["err_talent"];
         }
-    }
-
-    public function runAdmin()
-    {
-        $this->checkAdminPost();
-        $this->checkAdminGet();
-        $this->checkAdminSession();
-
-        render("Admin/talent.tpl",
-            ["title" => "Talenten",
-            "all_talents" => $this->all_talents,
-            "all_talent_number" => $this->all_talents_number,
-            "current_all_talents_number" => $this->current_all_talents_number,
-            "unaccepted_talents" => $this->unaccepted_talents]);
-        exit(0);
-    }
-
-    private function checkAdminSession()
-    {
-        if(!Empty($_SESSION["talent_admin"])){
-            if($this->all_talents_number > 1){
-                $this->current_all_talents_number = $_SESSION["talent_admin"];
-                $this->all_talents = $this->talent_repository->getAllTalents($_SESSION["talent_admin"]);
-            }
-            else{
-                $_SESSION["talent_admin"] = $this->all_talents_number;
-            }
-        }
-    }
-
-    private function checkAdminGet()
-    {
-        if (!Empty($_GET["admin_a"])) {
-            if($_GET["admin_a"] > 0 & $_GET["admin_a"] <= $this->all_talents_number) {
-                $this->all_talents = $this->talent_repository->getAllTalents($_GET["admin_a"]);
-                $this->current_all_talents_number = $_GET["admin_a"];
-                $_SESSION["talent_admin"] = $this->current_all_talents_number;
-            }
-            else{
-                $this->all_talents = $this->talent_repository->getAllTalents(1);
-                $this->current_all_talents_number = 1;
-                $_SESSION["talent_admin"] = $this->current_all_talents_number;
-            }
-        }
-        else {
-            $this->all_talents = $this->talent_repository->getAllTalents(1);
-            $this->current_all_talents_number = 1;
-        }
-    }
-
-    private function checkAdminPost()
-    {
-        if (!Empty($_POST["admin_talent_name"]) && !Empty($_POST["admin_talent_id"])) {
-
-            if(strlen($_POST["admin_talent_name"]) > 0 && strlen($_POST["admin_talent_name"]) <= 45){
-                $correct = true;
-                foreach($this->talent_repository->getAllTalentsName() as $name_of_talent){
-                    if(strtolower($name_of_talent) == strtolower($_POST["admin_talent_name"])){
-                        //De ingevoegde naam is al toegevoegd, aangevraagd of geweigerd.
-                        $correct = false;
-                        break;
-                    }
-                }
-                if($correct == true){
-                    if(!preg_match('/[^a-z\s]/i', $_POST["admin_talent_name"])) {
-                        $this->talent_repository->updateTalentName($_POST["admin_talent_name"], $_POST["admin_talent_id"]);
-                    }
-                    else{
-                        //Er mogen alleen letters en spaties worden gebruikt in het talent!
-                    }
-                }
-            }
-
-            header("HTTP/1.1 303 See Other");
-            header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-            exit(0);
-        }
-
-        if(!Empty($_POST["deny_message"]) && !Empty($_POST["deny_id"])){
-            $this->talent_repository->rejectTalent($_POST["deny_id"]);
-
-            $talent = $this->talent_repository->getTalentById($_POST["deny_id"]);
-
-            $message_id = $this->message_model->sendMessage("Admin", $talent->user_email, "Het talent '" . $talent->name . "' is afgewezen", $_POST["deny_message"]);
-            $this->message_model->setLink("", "Talent", $message_id);
-
-            header("HTTP/1.1 303 See Other");
-            header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-            exit(0);
-        }
-
-        if(!Empty($_POST["accept_id"])){
-            $this->talent_repository->acceptTalent($_POST["accept_id"]);
-
-            $talent = $this->talent_repository->getTalentById($_POST["accept_id"]);
-            $this->talent_repository->addTalentToUser2($_POST["accept_id"],$talent->user_email);
-
-            $message_id = $this->message_model->sendMessage("Admin", $talent->user_email, "Het talent '" . $talent->name . "' is geaccepteerd", "Het talent '" . $talent->name . "' is geaccepteerd, omdat het voldoet aan de algemene voorwaarden. Het talent is toegevoegt aan 'mijn talenten'.");
-            $this->message_model->setLink("", "Talent", $message_id);
-
-            header("HTTP/1.1 303 See Other");
-            header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-            exit(0);
+        if(!Empty($_SESSION["wrn_talent"])){
+            $this->talent_warning = $_SESSION["wrn_talent"];
         }
     }
 }

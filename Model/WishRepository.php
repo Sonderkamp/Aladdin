@@ -10,15 +10,17 @@ class WishRepository
 {
 
     private $talentRepository, $email, $maxContentLength = 50;
-    public $WISH_LIMIT = 3;
+    public $WISH_LIMIT = 3 , $MINIMUM_TALENTS = 3;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->talentRepository = new TalentRepository();
     }
 
-    private function checkWishContent($string){
-        if(strlen($string) > $this->maxContentLength){
-            $returnString = substr($string , 0, $this->maxContentLength);
+    private function checkWishContent($string)
+    {
+        if (strlen($string) > $this->maxContentLength) {
+            $returnString = substr($string, 0, $this->maxContentLength);
             $returnString = $returnString . '...';
             return $returnString;
         }
@@ -67,7 +69,8 @@ class WishRepository
         return $returnArray;
     }
 
-    private function getUser($email) {
+    private function getUser($email)
+    {
         $result = Database::query_safe("SELECT * FROM user WHERE user.Email = ?", array($email));
 
 
@@ -120,6 +123,7 @@ class WishRepository
           JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
           WHERE w.User = ?
           AND w.Status != 'Geweigerd'
+          AND w.Status != 'Verwijderd'
           ORDER BY max_date DESC"
             , array($user));
 
@@ -270,14 +274,16 @@ class WishRepository
         }
     }
 
-    public function deleteAllWishTalents($wishid) {
+    public function deleteAllWishTalents($wishid)
+    {
         $query = "DELETE from `talent_has_wish` WHERE `wish_Id` = ?";
         $value = array($wishid);
 
         Database::query_safe($query, $value);
     }
 
-    public function addTalentToWish($talent, $wishId) {
+    public function addTalentToWish($talent, $wishId)
+    {
         $query = "SELECT `Id` as talentId FROM `talent` WHERE `Name`=?";
         $array = array($talent);
         $result = Database::query_safe($query, $array);
@@ -302,7 +308,19 @@ class WishRepository
         $amountWishes = $this->getWishAmount($email);
 
         $wishLimit = $this->WISH_LIMIT;
-        if ($amountWishes >= $wishLimit)
+
+        // count talents
+        $myTalents = $this->talentRepository->getUserTalents();
+        $amountOfTalents = 0;
+        foreach($myTalents as $item){
+            if($item instanceof Talent){
+                if($item->is_rejected == 1){
+                    $amountOfTalents++;
+                }
+            }
+        }
+
+        if ($amountWishes >= $wishLimit || $amountOfTalents < $this->MINIMUM_TALENTS)
             return false;
         return true;
     }
@@ -323,7 +341,8 @@ class WishRepository
 //     * @return Wish
 //     */
 
-    public function getRequestedWishes($wishPage) {
+    public function getRequestedWishes($wishPage)
+    {
 
         switch ($wishPage) {
             case 'requested':
@@ -394,8 +413,8 @@ AND ab.Block_Id = test.blockid) AS isblock
             select u.DisplayName as display,
               u.Address as address,
               u.Postalcode as postalcode,
-              u.Country as country,
-              u.City as city,
+              u.Country as ucountry,
+              u.City as ucity,
             w.User as user,
              wc.wish_Id as wishid,
              w.Status as status,
@@ -423,8 +442,8 @@ AND ab.Block_Id = test.blockid) AS isblock
             select u.DisplayName as display,
               u.Address as address,
               u.Postalcode as postalcode,
-              u.Country as country,
-              u.City as city,
+              u.Country as ucountry,
+              u.City as ucity,
             w.User as user,
              wc.wish_Id as wishid,
              w.Status as status,
@@ -451,8 +470,8 @@ AND ab.Block_Id = test.blockid) AS isblock
             select u.DisplayName as display,
               u.Address as address,
               u.Postalcode as postalcode,
-              u.Country as country,
-              u.City as city,
+              u.Country as ucountry,
+              u.City as ucity,
             w.User as user,
              wc.wish_Id as wishid,
              w.Status as status,
@@ -479,8 +498,8 @@ AND ab.Block_Id = test.blockid) AS isblock
             select u.DisplayName as display,
               u.Address as address,
               u.Postalcode as postalcode,
-              u.Country as country,
-              u.City as city,
+              u.Country as ucountry,
+              u.City as ucity,
             w.User as user,
              wc.wish_Id as wishid,
              w.Status as status,
@@ -507,8 +526,8 @@ AND ab.Block_Id = test.blockid) AS isblock
             select u.DisplayName as display,
               u.Address as address,
               u.Postalcode as postalcode,
-              u.Country as country,
-              u.City as city,
+              u.Country as ucountry,
+              u.City as ucity,
             w.User as user,
              wc.wish_Id as wishid,
              w.Status as status,
@@ -522,7 +541,7 @@ AND ab.Block_Id = test.blockid) AS isblock
             JOIN (SELECT wish_Id as wishid, MAX(wishContent.Date) AS max_date
               FROM wishContent
               where moderator_username is not null
-            AND isaccepted = 1 GROUP BY wish_Id ) AS wccMax
+            AND isaccepted = 0 GROUP BY wish_Id ) AS wccMax
             WHERE status = 'Geweigerd'
             AND wc.moderator_username is not null
             AND wc.isaccepted = 0
@@ -535,8 +554,8 @@ AND ab.Block_Id = test.blockid) AS isblock
             select u.DisplayName as display,
               u.Address as address,
               u.Postalcode as postalcode,
-              u.Country as country,
-              u.City as city,
+              u.Country as ucountry,
+              u.City as ucity,
             w.User as user,
              wc.wish_Id as wishid,
              w.Status as status,
@@ -550,7 +569,7 @@ AND ab.Block_Id = test.blockid) AS isblock
             JOIN (SELECT wish_Id as wishid, MAX(wishContent.Date) AS max_date
               FROM wishContent
               where moderator_username is not null
-            AND isaccepted = 1 GROUP BY wish_Id ) AS wccMax
+            AND isaccepted = 0 GROUP BY wish_Id ) AS wccMax
             WHERE status = 'Verwijderd'
             AND u.IsActive =1
             AND wc.Date = wccMax.max_date
@@ -566,7 +585,7 @@ AND ab.Block_Id = test.blockid) AS isblock
         Database::query_safe("UPDATE wishContent SET `IsAccepted`=1  WHERE Date =?", array($mdate));
         Database::query_safe("UPDATE wishContent SET `moderator_username`='Admin'  WHERE Date =?", array($mdate));
 
-        $currentstatus = Database::query_safe("SELECT status as status from wish where id =?",array($id));
+        $currentstatus = Database::query_safe("SELECT status as status from wish where id =?", array($id));
 
         if (($currentstatus[0]["status"] == 'Aangemaakt')) {
             Database::query_safe("UPDATE wish SET `Status`='Gepubliseerd'  WHERE id=?", array($id));
@@ -581,7 +600,7 @@ AND ab.Block_Id = test.blockid) AS isblock
         Database::query_safe("UPDATE wish SET `Status`='Geweigerd'  WHERE id=?", array($id));
     }
 
-    public function AdminDeleteWish($id, $mdate)
+    public function AdminDeleteWish($id, $mdate = null)
     {
         Database::query_safe("UPDATE wishContent SET `IsAccepted`=0  WHERE wish_id=?", array($id));
         Database::query_safe("UPDATE wishContent SET `moderator_username`='Admin'  WHERE wish_id=?", array($id));
@@ -640,7 +659,7 @@ AND ab.BlockDate = test.abmax_date
 AND ab.Block_Id = test.blockid) AS isblock
               ON u.Email = isblock.User_Email
               where w.User =?
-              ORDER BY max_date asc",array($user));
+              ORDER BY max_date asc", array($user));
 
         return $result;
     }
@@ -738,19 +757,134 @@ AND ab.Block_Id = test.blockid) AS isblock
         return $result;
     }
 
-    public function getAllWishesByEmail($email){
+    public function getAllWishesByEmail($email)
+    {
         $query = "SELECT * FROM `wish` WHERE `user` = ?";
         $array = array($email);
         $result = Database::query_safe($query, $array);
 
 
         $allWishId = array();
-        foreach($result as $item){
+        foreach ($result as $item) {
             $allWishId[] = $item["Id"];
         }
 
         return $allWishId;
     }
+
+
+    public function getAllWishesWithTag($tag)
+    {
+        $intArray = array();
+        $id = "(";
+        foreach ($tag as $item) {
+            if ($item instanceof Talent) {
+                $id .= $item->getId() . ',';
+            }
+        }
+        $value = substr($id, 0, -1);
+        $value .= ')';
+
+        $rest = substr($value, -2, 1);
+
+        if($rest == ","){
+            $value = substr($id, 0, -2);
+            $value .= ')';
+        }
+
+        $sql = "SELECT wish_Id FROM `talent_has_wish` where talent_id in $value";
+        $result = Database::query($sql);
+
+
+        if (!empty($result)) {
+            $string = "(";
+            foreach ($result as $item) {
+                $string .= $item["wish_Id"] . ",";
+            }
+            $value = substr($string, 0, -1);
+            $value .= ')';
+
+
+            $myWishes = $this->getMyWishes();
+            $myWishId = "(";
+            foreach ($myWishes as $item) {
+                if ($item instanceof Wish) {
+                    $myWishId .= $item->getId() . ",";
+                }
+            }
+
+            $value2 = substr($myWishId, 0, -1);
+            $value2 .= ')';
+
+
+            $result = Database::query
+            ("SELECT *
+          FROM wish AS w
+          JOIN (SELECT wish_Id, MAX(wishContent.Date) AS max_date
+              FROM wishContent
+              where IsAccepted = 1 AND moderator_username is not null
+              GROUP BY wish_Id) AS wcMax
+              ON w.Id = wcMax.wish_Id
+          JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id
+          WHERE wc.wish_Id in $value and wc.wish_Id NOT IN $value2
+            AND (w.Status = 'Gepubliseerd' OR w.status='Match gevonden') AND wc.Date = wcMax.max_date
+          ORDER BY max_date DESC");
+            
+           return $this->getReturnArray($result);
+//            if (!empty($result)) {
+//                $wishArray = array();
+//                foreach ($result as $item) {
+//                    $user = $item["User"];
+//                    $title = $item["Title"];
+//                    $content = $item["Content"];
+//                    $id = $item["wish_Id"];
+//                    $temp = new Wish($id, $user, $title, "", $content, "", "", "", "");
+//                    $wishArray[] = $temp;
+//                }
+//                return $wishArray;
+//            }
+        }
+    }
+
+    public function getWishv2(Wish $wish)
+    {
+        $query = "SELECT * FROM `wishContent` WHERE `wish_Id` = ? ORDER BY `Date` desc limit 1";
+        $array = array($wish->getId());
+        $result = Database::query_safe($query, $array);
+
+        $id = $result[0]["wish_Id"];
+        $title = $result[0]["Title"];
+        $content = $result[0]["Content"];
+        $contentDate = $result[0]["Date"];
+
+        $wish = new Wish($id, "", $title, "", $content, "", "", $contentDate, "");
+        return $wish;
+    }
+
+    public function inCreator($array)
+    {
+        $string = "(";
+        foreach ($array as $item) {
+            if ($item != null) {
+                $string .= $item . ",";
+            }
+        }
+        $value = substr($string, 0, -1);
+        $value .= ')';
+
+        return $value;
+    }
+
+    public function getUserOfWish($wishID){
+        $sql = "select * from wish where Id = ?";
+        $parameters = array($wishID);
+        $result = Database::query_safe($sql,$parameters);
+        return $result[0]["User"];
+    }
+
+
+
+
 
 
 }

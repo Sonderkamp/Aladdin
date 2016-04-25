@@ -10,7 +10,7 @@
 
         <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2">
             <h5>Wensen overzicht</h5>
-            <hr/>
+            {*<hr/>*}
 
             <ul class="nav nav-pills nav-stacked">
                 <li {if $currentPage == "mywishes"} class="active" {/if}><a href="/wishes/action=mywishes">Mijn
@@ -19,6 +19,8 @@
                             href="/wishes/action=incompletedwishes">Onvervulde wensen</a></li>
                 <li {if $currentPage == "completedwishes"} class="active" {/if}><a
                             href="/wishes/action=completedwishes">Vervulde wensen</a></li>
+                <li {if $currentPage == "match"} class="active" {/if}><a
+                            href="/match/action=open_match_view">Mogelijke matches</a></li>
             </ul>
 
         </div>
@@ -60,13 +62,35 @@
                     <th>Omschrijving</th>
                     <th>Status</th>
                     <th class="smallColumn"></th>
-                    {if $currentPage == "mywishes"}<th class="smallColumn"></th>{/if}
+                    {if $currentPage == "mywishes"}
+                        <th class="smallColumn"></th>
+                    {/if}
+                    {if $currentPage == "mywishes"}
+                        <th class="smallColumn"></th>
+                    {/if}
                 </tr>
                 </thead>
                 <tbody>
                 {foreach from=$wishes item=wish}
                     <tr>
-                        <td>{htmlspecialcharsWithNL($wish -> user -> displayName)}</td>
+                        <td>
+                            <div class="dropdown">
+                                {if $currentPage == "mywishes"}
+                                    {htmlspecialcharsWithNL($wish -> user -> displayName)}
+                                {else}
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                       aria-haspopup="true"
+                                       aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
+                                        {htmlspecialcharsWithNL($wish -> user -> displayName)}</span><span
+                                                class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/report/action=report/wish_id={$wish->id}">Rapporteren</a></li>
+                                    </ul>
+                                {/if}
+                            </div>
+
+                        </td>
+                        {*<td>{htmlspecialcharsWithNL($wish -> user -> displayName)}</td>*}
                         <td>{htmlspecialcharsWithNL($wish -> user -> city)}</td>
                         <td>{htmlspecialcharsWithNL($wish -> title)}</td>
                         <td>{htmlspecialcharsWithNL($wish -> content)}</td>
@@ -83,15 +107,22 @@
                             </form>
                         </td>
                         {if $currentPage == "mywishes"}
-                        <td>
-                            <form action="/Wishes/action=open_edit_wish" method="get">
-                                <button name="editwishbtn" value="{$wish -> id}" type="sumbit"
-                                        class="btn btn-inbox" data-toggle="modal">
-                                    <span class="glyphicon glyphicon-edit"></span>
-                                </button>
-                            </form>
-                        </td>
+                            <td>
+                                <form action="/Wishes/action=open_edit_wish" method="get">
+                                    <button name="editwishbtn" value="{$wish -> id}" type="sumbit"
+                                            class="btn btn-inbox" data-toggle="modal">
+                                        <span class="glyphicon glyphicon-edit"></span>
+                                    </button>
+                                </form>
+                            </td>
+                            <td>
+                                <a class="btn btn-danger" href="/Wishes/action=remove/wishID={$wish->id}">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+                            </td>
                         {/if}
+
+
                     </tr>
                 {/foreach}
                 </tbody>

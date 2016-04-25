@@ -138,6 +138,7 @@ class User
             || Empty($array["dob"])
             || Empty($array["initial"])
             || Empty($array["gender"])
+            || !isset($array["handicap"])
         ) {
             return "Niet alles is ingevuld.";
         }
@@ -178,9 +179,11 @@ class User
 
         $d = DateTime::createFromFormat('d-m-Y', $array["dob"]);
 
+
         // SQL
         $hashed = password_hash($array["password"], PASSWORD_DEFAULT);
         $this->token = bin2hex(openssl_random_pseudo_bytes(16));
+
 
         if (Database::query_safe("INSERT INTO `user` (`Email`, `Password`, `Name`,
             `Surname`, `RecoveryHash`, `RecoveryDate`,
@@ -448,7 +451,6 @@ class User
         $arr["city"] = strtolower(trim($arr["city"]));
         $arr["dob"] = trim($arr["dob"]);
         $arr["initial"] = strtoupper(trim($arr["initials"]));
-        $arr["initial"] = trim($arr["initial"], '.');
         $arr["gender"] = strtolower(trim($arr["gender"]));
 
         if ($this->validateUser($arr) === false) {
@@ -456,17 +458,18 @@ class User
         }
         $d = DateTime::createFromFormat('d-m-Y', $arr["dob"]);
 
-        if (!(strtolower($this->initials) == strtolower($_POST["initials"]) && strtolower($this->surname) == strtolower($_POST["surname"]))) {
+        if (!(strtolower($this->initials) == strtolower($arr["initial"]) && strtolower($this->surname) == strtolower($arr["surname"]))) {
 
-        $newname = array("initial" => $arr["initial"], "surname" => $arr["surname"]);
-        $newdisplay = $this->createDislay($newname);
-        }
-        else{
+            $newname = array("initial" => $arr["initial"], "surname" => $arr["surname"]);
+            $newdisplay = $this->createDislay($newname);
+        } else {
             $newdisplay = $this->displayName;
         }
+        if ($arr["handicap"] != 1) {
+            $arr["handicap"] = 0;
+        }
 
-        Database::query_safe("UPDATE user SET `name`=?, `Surname`=?, `Address`=?,`postalcode`=?,`country`=?,`city`=?,`Dob`=?,`initials`=?,`gender`=?,`handicap`=?,`DisplayName`=?  WHERE Email=?", Array($arr["name"], $arr["surname"], $arr["address"], $arr["postalcode"], $arr["country"], $arr["city"], $d->format('Y-m-d'), $arr["initial"], $arr["gender"], $arr["handicap"],$newdisplay, $arr["username"]));
-//        Database::query_safe("UPDATE user SET `name`=?, `Surname`=? WHERE Email=?", Array($arr["name"],$arr["surname"],$arr["email"]));
+        Database::query_safe("UPDATE user SET `Name`=?, `Surname`=?, `Address`=?,`Postalcode`=?,`Country`=?,`City`=?,`Dob`=?,`Initials`=?,`Gender`=?,`Handicap`=?,`DisplayName`=?  WHERE Email=?", Array($arr["name"], $arr["surname"], $arr["address"], $arr["postalcode"], $arr["country"], $arr["city"], $d->format('Y-m-d'), $arr["initial"], $arr["gender"], $arr["handicap"], $newdisplay, $arr["username"]));//        Database::query_safe("UPDATE user SET `name`=?, `Surname`=? WHERE Email=?", Array($arr["name"],$arr["surname"],$arr["email"]));
 
         ;
 
@@ -519,10 +522,22 @@ from adminBlock
         return $result;
     }
 
+    public function isBlocked($username)
+    {
+
+        if (Database::query_safe("SELECT count(*) as count  from `adminBlock` where `user_Email` = ?", array($username))[0]["count"] == 0)
+            return false;
+
+        $status = Database::query_safe("SELECT *  from `adminBlock` where `user_Email` = ? order by BlockDate DESC", array($username))[0];
+        if ($status["IsBlocked"] == 1)
+            return $status["Reason"];
+        return false;
+    }
+
     public function getLastBlockStatus($username)
     {
         // query om de laatste block van een user te zien
-        $result = Database::query_safe("SELECT Block_Id,BlockDate,user_Email,IsBlocked as IsBlocked
+        $result = Database::query_safe("SELECT Block_Id,BlockDate,Reason, user_Email,IsBlocked as IsBlocked
 from adminBlock
 where BlockDate =
         (select
@@ -541,6 +556,11 @@ max(adminBlock.BlockDate) AS max_date
               where user_Email = ?
               order by Block_Id desc", array($user));
         return $result;
+    }
+
+    public function getDisplayName()
+    {
+        return $this->displayName;
     }
 
 }

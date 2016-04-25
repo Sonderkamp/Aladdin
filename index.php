@@ -1,6 +1,11 @@
 <?php
 include_once("Includes/config.php");
 
+if (!empty($_SESSION["user"])) {
+    if ((new User)->isBlocked($_SESSION["user"]->email)) {
+        (new AccountController())->logout();
+    }
+}
 
 if (Empty($_GET["page"])) {
     (new HomeController())->run();
@@ -32,6 +37,9 @@ switch ($page) {
     case "talents":
         (new TalentController())->run();
         break;
+    case "admintalents":
+        (new AdminTalentController())->run();
+        break;
     case "profilecheck":
         (new ProfileCheckController())->run();
         break;
@@ -40,6 +48,15 @@ switch ($page) {
         break;
     case "about":
         (new HomeController())->run();
+        break;
+    case "match":
+        (new MatchController())->run();
+        break;
+    case "report":
+        (new ReportController())->run();
+        break;
+    case "adminuser":
+        (new AdminUserController())->run();
         break;
     default:
         apologize("Sorry. Pagina bestaat niet");

@@ -3,6 +3,10 @@ h3 {
     color: #1D91C0;
 }
 
+.h4{
+    color: white;
+}
+
 .btn-default {
     background-color: #FDAE61;
     color: whitesmoke;
@@ -85,7 +89,7 @@ input[type="checkbox"]:checked:after, .checkbox input[type="checkbox"]:checked:a
 
 
 body {
-    background-color: white;
+    background-color: whitesmoke;
     font-family: 'PT Sans', sans-serif;
     margin-bottom: 60px;
 }
@@ -131,6 +135,7 @@ body {
     border-radius: 0 6px 6px 6px;
 }
 
+
 .dropdown-submenu:hover > .dropdown-menu {
     display: block;
 }
@@ -169,14 +174,13 @@ body {
     color: white;
 }
 .dropdown{
-    padding-right: 50px;
+
 }
 
 .navbar-nav>li>.dropdown-menu {
     margin-top: 0;
     border-top-right-radius: 0;
     border-top-left-radius: 0;
-    margin-right: 50px;
 }
 .addbutton {
     display: block;
@@ -189,6 +193,10 @@ body {
 
 .padleft {
     padding-left: 20%;
+}
+
+.smallpadleft {
+    padding-left: 40px;
 }
 
 .subcategory {
@@ -249,4 +257,55 @@ a:hover {
     .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover {
         color: lightgrey;
     }
+}
+
+.homebuttons>a>img{
+    max-width: 300px;
+    margin: auto;
+}
+
+body
+{
+    /*overflow: hidden; */
+    /* Hoihoi, Dit doen we dus niet globaal hea. Omdat andere objecten inheritten van hun parents, is de kans dat er iets breekt groot. */
+    /* Tip voor volgende keer: */
+    /* Geef je container een klasse mee, en zet daar die overflow hidden op :) */
+    /* - Marius */
+}
+
+.noflow{
+    overflow: hidden;
+    position: relative;
+    min-height: 700px;
+}
+
+#slide-panel {
+    width:300px;
+    height: 100vh;
+    padding:10px;
+    background: #1D91C0;
+    right:-300px;
+    float: right;
+    max-width: 500px;
+    z-index: 1;
+    position: absolute;
+}
+
+
+#content
+{
+    height: 500px;
+    width: 100%;
+    float: right;
+    padding-right: 5%;
+    z-index: -1;
+    color: white;
+}
+
+.slider.slider-horizontal{
+    width:500px;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: floralwhite;
 }
