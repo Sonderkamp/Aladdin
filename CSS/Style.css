@@ -300,3 +300,7 @@ body
 .navbar-default .navbar-toggle .icon-bar {
     background-color: floralwhite;
 }
+
+.alert-success {
+    background-color: #7FCDBB;
+}
