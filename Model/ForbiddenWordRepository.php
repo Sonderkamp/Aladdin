@@ -113,7 +113,7 @@ class ForbiddenWordRepository
     }
 
     // True als hij niet fout is, False als het woord niet goedgekeurt is
-    public function checkWord($word) {
+    public function isValid($word) {
 
         return Empty($this->getForbiddenWords(null,strtolower($word)));
     }
