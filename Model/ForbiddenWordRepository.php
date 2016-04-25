@@ -64,7 +64,7 @@ class ForbiddenWordRepository
     public function updateForbiddenWord($old_word, $new_word) {
 
         Database::query_safe("UPDATE `forbiddenwords` SET `Word`=? WHERE `Word`=?",
-            array($new_word, $old_word));
+            array(strtolower($new_word), $old_word));
     }
 
     public function deleteForbiddenWord($word) {
@@ -73,6 +73,7 @@ class ForbiddenWordRepository
             array($word));
     }
 
+    // Dit is alleen tellen voor de pagination
     public function countForbiddenWords($search = null) {
 
         $query = "SELECT COUNT(*) AS `number` FROM `forbiddenwords`";
@@ -109,5 +110,11 @@ class ForbiddenWordRepository
         } else {
             return null;
         }
+    }
+
+    // True als hij niet fout is, False als het woord niet goedgekeurt is
+    public function checkWord($word) {
+
+        return Empty($this->getForbiddenWords(null,strtolower($word)));
     }
 }
