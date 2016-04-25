@@ -34,7 +34,7 @@ class ForbiddenWordController
         exit(0);
     }
 
-    public function checkPost() {
+    private function checkPost() {
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -42,24 +42,9 @@ class ForbiddenWordController
 
                 $forbidden_word = htmlentities(trim($_POST["add_forbidden_word"]),ENT_QUOTES);
 
-                foreach ($this->forbidden_word_repository->getForbiddenWords() as $word) {
+                $success = $this->checkWordForAdding($forbidden_word);
 
-                    if(strtolower($word) == strtolower($forbidden_word)) {
-
-                        $success = false;
-                        $_SESSION["forbidden_words_error"] = 'Het woord "'.$forbidden_word.'" bestaat al!';
-
-                        break;
-                    }
-                }
-
-                if(strlen($forbidden_word) > 150) {
-
-                    $success = false;
-                    $_SESSION["forbidden_words_error"] .= ' Het woord "'.$forbidden_word.'" is '.(strlen($forbidden_word) - 150).' karakters te lang! Het woord mag maar 150 lang zijn!';
-                }
-
-                if(!isset($success)) {
+                if($success != false) {
 
                     $this->forbidden_word_repository->createForbiddenWord($forbidden_word);
                     $_SESSION["forbidden_words_success"] = 'Het woord "'.$forbidden_word.'" is succesvol toegevoegd!';
@@ -94,28 +79,14 @@ class ForbiddenWordController
                 $forbidden_word_new = htmlentities(trim($_POST["edit_forbidden_word_new"]),ENT_QUOTES);
                 $forbidden_word_old = htmlentities(trim($_POST["edit_forbidden_word_old"]),ENT_QUOTES);
 
-                foreach ($this->forbidden_word_repository->getForbiddenWords() as $word) {
+                $success = $this->checkWordForAdding($forbidden_word_new);
 
-                    if(strtolower($word) == strtolower($forbidden_word_new)) {
-
-                        $success = false;
-                        $_SESSION["forbidden_words_error"] = 'Het woord "'.$forbidden_word_new.'" bestaat al!';
-
-                        break;
-                    }
-                }
-
-                if(strlen($forbidden_word_new) > 150) {
-
-                    $success = false;
-                    $_SESSION["forbidden_words_error"] .= ' Het woord "'.$forbidden_word_new.'" is '.(strlen($forbidden_word_new) - 150).' karakters te lang! Het woord mag maar 150 lang zijn!';
-                }
-
-                if(!isset($success)) {
+                if($success != false) {
 
                     $this->forbidden_word_repository->updateForbiddenWord($forbidden_word_old,$forbidden_word_new);
                     $_SESSION["forbidden_words_success"] = 'Het woord "'.$forbidden_word_old.'" is succesvol gewijzigd naar "'.$forbidden_word_new.'"!';
                 } else {
+
                     $_SESSION["forbidden_words_error"] .= ' Het woord "'.$forbidden_word_old.'" blijft ongewijzigd!';
                 }
 
@@ -141,7 +112,7 @@ class ForbiddenWordController
         }
     }
 
-    public function checkGet() {
+    private function checkGet() {
 
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
@@ -179,7 +150,7 @@ class ForbiddenWordController
         }
     }
 
-    public function checkSession() {
+    private function checkSession() {
 
         if(!Empty($_SESSION["forbidden_words_error"])) {
 
@@ -197,5 +168,29 @@ class ForbiddenWordController
 
             $_SESSION["forbidden_words_pagination"] = "on";
         }
+    }
+
+    private function checkWordForAdding($forbidden_word) {
+
+        $success = "";
+
+        foreach ($this->forbidden_word_repository->getForbiddenWords() as $word) {
+
+            if(strtolower($word) == strtolower($forbidden_word)) {
+
+                $success = false;
+                $_SESSION["forbidden_words_error"] = 'Het woord "'.$forbidden_word.'" bestaat al!';
+
+                break;
+            }
+        }
+
+        if(strlen($forbidden_word) > 150) {
+
+            $success = false;
+            $_SESSION["forbidden_words_error"] .= ' Het woord "'.$forbidden_word.'" is '.(strlen($forbidden_word) - 150).' karakters te lang! Het woord mag maar 150 lang zijn!';
+        }
+
+        return $success;
     }
 }
