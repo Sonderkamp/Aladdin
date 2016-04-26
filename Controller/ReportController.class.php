@@ -45,9 +45,7 @@ class ReportController
             $message = "blokkeer message";
             $report = new Report($reporter, $reported, $status, $id, $message);
             $this->reportRepository->add($report);
-        }
-
-        (new WishController())->run();
+        }   
     }
 
 
