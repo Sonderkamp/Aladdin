@@ -3,7 +3,10 @@
     {if $wishAmount < 3 || $talentAmount < 3}
     <div class="alert alert-warning">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        <strong>Pas op!</strong> U heeft uw profiel nog niet voltooid. Vul alstublieft minimaal 3 wensen en talenten in.
+        <strong>Pas op!</strong> U heeft uw profiel nog niet voltooid.
+        Vul alstublieft nog {$errorString}
+        {*{if $wishAmount != 3}{$wishAmount} wens {if $wishAmount > 1}en{/if} in {if $talentAmount < 3}en vul{/if}{else}.*}
+        {*{/if}{if $talentAmount < 3} {$talentAmount} talent{if $talentAmount > 1}en{/if} in.{/if}*}
     </div>
     {/if}
     <div class="row">
@@ -40,19 +43,20 @@
                     <div class="thumbnail">
                         <div class="caption">
                             <div class="row">
-                                <h4>{$value->title}</h4>
+                                <label class="col-md-4">Title:</label>
+                                <label>{$value->title}</label>
                             </div>
                             <div class="row">
-                                <label class="col-md-2">Omschrijving</label>
-                                <textarea class="col-md-10 wishcontent">{$value->content}</textarea>
+                                <label class="col-md-4">Status:</label>
+                                <label>{$value->status}</label>
                             </div>
                             <div class="row">
-                                <label class="col-md-2">Land:</label>
-                                <label>{$smarty.session.user->country}</label>
-                            </div>
-                            <div class="row">
-                                <label class="col-md-2">Geboortedatum:</label>
-                                <label>{$smarty.session.user->dob}</label>
+                                <div class="container">
+                                    <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#wishcontent">Omschrijving</button>
+                                    <div id="wishcontent" class="collapse">
+                                        <strong>Omschrijving:</strong> {$value->content}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

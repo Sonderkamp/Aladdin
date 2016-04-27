@@ -13,9 +13,8 @@ class DashboardController
     public function __construct(){
         $this->wishRepo = new WishRepository();
         $this->talentRepo = new TalentRepository();
-
         $this->wish_limit = $this->wishRepo->WISH_LIMIT;
-        $this->talent_limit = 3;
+        $this->talent_limit = $this->talentRepo->TALENT_MINIMUM;
     }
 
     public function run(){
@@ -26,13 +25,45 @@ class DashboardController
     public function guaranteeProfile(){
         if($this->checkAmounts()){
         } else {
+            $wishAmount = $this->wish_limit - $this->getWishAmount();
+            $talentAmount = $this->talent_limit - $this->getTalentAmount();
+
             render("Dashboard.tpl", ["title" => $_SESSION["user"]->displayName ,
                 "wishes" => $this->getMyWishes() ,
                 "talents" => $this->getMyTalents() ,
-                "wishAmount" => $this->getWishAmount() ,
-                "talentAmount" => $this->getTalentAmount()]);
+                "wishAmount" => $wishAmount ,
+                "talentAmount" => $talentAmount ,
+                "errorString" => $this->generateErrorSentence($wishAmount , $talentAmount)]);
             exit(0);
         }
+    }
+
+    private function generateErrorSentence($wishAmount , $talentAmount){
+        $str = "";
+
+        if($wishAmount < $this->wish_limit){
+            $str .= $wishAmount;
+            if($wishAmount > 1){
+                $str .= " wensen in";
+            } else {
+                $str .= " wens in";
+            }
+        }
+
+        if($wishAmount < $this->wish_limit && $talentAmount < $this->talent_limit){
+            $str .= " en vul ";
+        }
+        
+        if($talentAmount < $this->talent_limit){
+            $str .= $talentAmount;
+            if($talentAmount > 1){
+                $str .= " talenten in";
+            } else {
+                $str .= " talent in";
+            }
+        }
+
+        return $str;
     }
 
     private function getMyWishes(){
