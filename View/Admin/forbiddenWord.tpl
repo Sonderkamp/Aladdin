@@ -57,12 +57,12 @@
                     <tr>
                         <td class="col-xs-10 col-sm-10 col-md-10 col-lg-10">{htmlentities(trim($word),ENT_QUOTES)}</td>
                         <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                            <button type="button" class="btn btn-inbox btn-small" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', $word)}Edit">
+                            <button type="button" class="btn btn-inbox btn-small" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}Edit">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </button>
                         </td>
                         <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                            <button type="button" class="btn btn-danger btn-small" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', $word)}Remove">
+                            <button type="button" class="btn btn-danger btn-small" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}Remove">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </button>
                         </td>
@@ -234,7 +234,7 @@
 
 <!-- Modal remove word-->
 {foreach from=$forbidden_words item=word}
-    <div id="myModal{preg_replace('/\s+/', '', $word)}Remove" class="modal fade" role="dialog">
+    <div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}Remove" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
@@ -246,7 +246,7 @@
                     <button type="button" class="btn btn-default infoLeft" data-dismiss="modal">Sluiten</button>
 
                     <form action="/forbiddenwords" method="post">
-                        <input type="hidden" value="{$word}" name="remove_forbidden_word">
+                        <input type="hidden" value="{htmlentities(trim($word),ENT_QUOTES)}" name="remove_forbidden_word">
 
                         <button type="submit" class="btn btn-danger btn-small">
                             <span class="glyphicon glyphicon-trash"></span> verwijderen
@@ -260,7 +260,7 @@
 
 <!-- Modal edit word-->
 {foreach from=$forbidden_words item=word}
-    <div id="myModal{preg_replace('/\s+/', '', $word)}Edit" class="modal fade" role="dialog">
+    <div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}Edit" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
@@ -272,9 +272,9 @@
                 <form action="/forbiddenwords" method="post">
                     <div class="modal-body">
                         <div class="form-group row">
-                            <label for="edit{preg_replace('/\s+/', '', $word)}" class="col-sm-2 form-control-label">Verboden woord</label>
+                            <label for="edit{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}" class="col-sm-2 form-control-label">Verboden woord</label>
                             <div class="col-sm-10">
-                                <input type="text" name="edit_forbidden_word_new" class="form-control" id="edit{preg_replace('/\s+/', '', $word)}" placeholder="Verboden woord" value="{$word}">
+                                <input type="text" name="edit_forbidden_word_new" class="form-control" id="edit{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}" placeholder="Verboden woord" value="{htmlentities(trim($word),ENT_QUOTES)}">
                                 <small class="text-muted">Dit is het verboden woord. Als dit woord voorkomt in een aanvraag bij wens of talent word deze aanvraag automatisch verwijderd.</small>
                             </div>
                         </div>
@@ -282,7 +282,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default infoLeft" data-dismiss="modal">Sluiten</button>
 
-                        <input type="hidden" value="{$word}" name="edit_forbidden_word_old">
+                        <input type="hidden" value="{htmlentities(trim($word),ENT_QUOTES)}" name="edit_forbidden_word_old">
 
                         <button type="submit" class="btn btn-inbox btn-small">
                             <span class="glyphicon glyphicon-edit"></span> wijzigen
