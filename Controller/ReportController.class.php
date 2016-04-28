@@ -37,15 +37,17 @@ class ReportController
 
     public function report()
     {
-        if (!empty($_GET["wish_id"])) {
-            $id = $_GET["wish_id"];
+        if (!empty($_POST["wish_id"])) {
+            $id = $_POST["wish_id"];
             $reporter = $_SESSION["user"]->email;
             $reported = $this->wishRepository->getUserOfWish($id);
             $status = "aangevraagd";
-            $message = "blokkeer message";
+            $message = $_POST["report_message"];
             $report = new Report($reporter, $reported, $status, $id, $message);
             $this->reportRepository->add($report);
-        }   
+        }
+
+        (new WishController())->run();
     }
 
 

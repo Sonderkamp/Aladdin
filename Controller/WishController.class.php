@@ -14,6 +14,7 @@ class WishController
         $incompletedWishes,
         $wishRepository,
         $talentRepository,
+        $userRepostitory,
         $title,
         $description,
         $tag,
@@ -25,6 +26,7 @@ class WishController
     {
         $this->wishRepository = new WishRepository();
         $this->talentRepository = new TalentRepository();
+        $this->userRepostitory = new UserRepository();
     }
 
     public function run()
@@ -102,7 +104,7 @@ class WishController
     {
         $mywishes = $this->wishRepository->getMyWishes();
         $canAddWish = $this->wishRepository->canAddWish($_SESSION["user"]->email);
-
+        
         render("wishOverview.tpl",
             ["title" => "Wensen overzicht", "wishes" => $mywishes, "canAddWish" => $canAddWish, "currentPage" => $this->currentPage]);
     }
@@ -127,8 +129,13 @@ class WishController
         $incompletedWishes = $this->wishRepository->getIncompletedWishes();
 
         $canAddWish = $this->wishRepository->canAddWish($_SESSION["user"]->email);
+
+        $user = $this->userRepostitory->getUser($_SESSION["user"]->email);
+        $displayName = $user->getDisplayName();
+        
         render("wishOverview.tpl",
-            ["title" => "Vervulde wensen overzicht", "wishes" => $incompletedWishes, "canAddWish" => $canAddWish, "currentPage" => $this->currentPage]);
+            ["title" => "Vervulde wensen overzicht", "wishes" => $incompletedWishes, "canAddWish" => $canAddWish, 
+                "currentPage" => $this->currentPage, "displayName" => $displayName]);
     }
 
 

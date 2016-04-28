@@ -574,4 +574,10 @@ max(adminBlock.BlockDate) AS max_date
         return $this->displayName;
     }
 
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+
 }
