@@ -1,6 +1,6 @@
 <video autoplay id="bgvid" loop muted poster="/Resources/Images/Coverr-flowers.jpg">
+    <source src="/Resources/Images/Coverr-flowers.webm" type="video/webm">
     <source src="/Resources/Images/Coverr-flowers.mp4" type="video/mp4">
-    <!--<source src="http://mariusdv.nl/CS171/clip2.mp4" type="video/mp4">-->
 </video>
 
 <div class="jumbotron" id="main-hero">

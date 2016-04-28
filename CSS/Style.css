@@ -397,7 +397,6 @@ video {
     height: auto;
     z-index: -100;
     transform: translate(-50%, -50%);
-    background-color: black;
 
     -webkit-filter: grayscale(10%);
     -moz-filter: grayscale(10%);
