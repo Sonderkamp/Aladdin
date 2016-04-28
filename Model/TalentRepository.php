@@ -8,6 +8,9 @@
  */
 class TalentRepository
 {
+
+    public $TALENT_MINIMUM = 3;
+
     public function getAllTalentsName()
     {
         $result = Database::query

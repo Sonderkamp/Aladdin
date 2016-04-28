@@ -25,7 +25,11 @@ switch ($page) {
     case "adminwish":
         (new AdminWishController())->run();
         break;
+    case "dashboard":
+        (new DashboardController())->run();
+        break;
     case "wishes":
+//        guaranteeProfile();
         (new WishController())->run();
         break;
     case "inbox":

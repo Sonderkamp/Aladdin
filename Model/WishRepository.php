@@ -9,11 +9,8 @@
 class WishRepository
 {
 
-    private $talentRepository,
-        $email,
-        $maxContentLength = 50,
-        $WISH_LIMIT = 100,
-        $MINIMUM_TALENTS = 3;
+    private $talentRepository, $email, $maxContentLength = 50;
+    public $WISH_LIMIT = 3 , $MINIMUM_TALENTS = 3;
 
     public function __construct()
     {
@@ -125,7 +122,6 @@ class WishRepository
               ON w.Id = wcMax.wish_Id
           JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
           WHERE w.User = ?
-          AND w.Status != 'Geweigerd'
           AND w.Status != 'Verwijderd'
           ORDER BY max_date DESC"
             , array($user));
@@ -308,11 +304,7 @@ class WishRepository
 
         $this->email = $email;
 
-        $query = "select count(*) as counter from `wish` where `user` = ? and `status` != ? and `status` != ? and `status` != ? ";
-        $array = array($email, "Vervuld", "Geweigerd", "Verwijderd");
-
-        $result = Database::query_safe($query, $array);
-        $amountWishes = $result[0]["counter"];
+        $amountWishes = $this->getWishAmount($email);
 
         $wishLimit = $this->WISH_LIMIT;
 
@@ -330,6 +322,14 @@ class WishRepository
         if ($amountWishes >= $wishLimit || $amountOfTalents < $this->MINIMUM_TALENTS)
             return false;
         return true;
+    }
+
+    public function getWishAmount($email){
+        $query = "select count(*) as counter from `wish` where `user` = ? and `status` != ? and `status` != ? and `status` != ?";
+        $array = array($email, "Vervuld", "Geweigerd" , "Verwijderd");
+        $result = Database::query_safe($query, $array);
+
+        return $result[0]["counter"];
     }
 
 
