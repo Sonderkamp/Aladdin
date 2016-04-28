@@ -8,7 +8,7 @@
  */
 class ForbiddenWordController
 {
-    private $forbidden_word_repository, $forbidden_words, $error_message, $success_message, $number_of_words, $current_number_of_words, $pagination;
+    private $forbidden_word_repository, $forbidden_words, $error_message, $success_message, $number_of_words, $current_number_of_words;
 
     public function __construct() {
 
@@ -44,7 +44,7 @@ class ForbiddenWordController
 
                 $success = $this->checkWordForAdding($forbidden_word);
 
-                if($success != false) {
+                if(Empty($success)) {
 
                     $this->forbidden_word_repository->createForbiddenWord($forbidden_word);
                     $_SESSION["forbidden_words_success"] = 'Het woord "'.$forbidden_word.'" is succesvol toegevoegd!';
