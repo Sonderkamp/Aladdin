@@ -103,14 +103,6 @@
                                             <table class="table table-user-information">
                                                 <tbody>
                                                 <tr>
-                                                    <td>initialen:</td>
-                                                    <td><input type="text" name="initials" value="{$user->initials}"
-                                                               required data-validation="custom"
-                                                               data-validation-regexp="^([a-zA-Z\.]+)$"
-                                                               data-validation-error-msg="Initialen mogen alleen letters en punten bevatten.">
-                                                    </td>
-                                                </tr>
-                                                <tr>
                                                     <td>Voornaam:</td>
                                                     <td><input type="text" name="name" value="{$user->name}"
                                                                data-validation="custom"
@@ -127,18 +119,20 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
+                                                    <td>initialen:</td>
+                                                    <td><input type="text" name="initials" value="{$user->initials}"
+                                                               required data-validation="custom"
+                                                               data-validation-regexp="^([a-zA-Z\.]+)$"
+                                                               data-validation-error-msg="Initialen mogen alleen letters en punten bevatten.">
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
                                                     <td>Adress:</td>
                                                     <td><input type="text" name="address" value="{$user->address}"
                                                                required data-validation="alphanumeric"
                                                                data-validation-allowing="-_ "
                                                                data-validation-error-msg="Straat en huisnummer kan alleen letters, nummers, spaties en streepjes(-_) bevatten">
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Land:</td>
-                                                    <td><input type="text" name="country" value="{$user->country}"
-                                                               required data-validation="country"
-                                                               data-validation-error-msg="invalide land gekozen.">
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -160,6 +154,13 @@
 
                                                 </tr>
                                                 <tr>
+                                                    <td>Land:</td>
+                                                    <td><input type="text" name="country" value="{$user->country}"
+                                                               required data-validation="country"
+                                                               data-validation-error-msg="invalide land gekozen.">
+                                                    </td>
+                                                </tr>
+                                                <tr>
                                                     <td>Geboortedatum:</td>
                                                     <td><input type="text" data-validation="birthdate"
                                                                value="{$user->dob|date_format:"%d-%m-%Y"}"
@@ -168,7 +169,6 @@
                                                                data-validation-error-msg="invalide datum."
                                                                data-validation-help="dd-mm-yyyy">
                                                     </td>
-
                                                 </tr>
                                                 <tr>
                                                     <td>Geslacht:</td>
@@ -242,7 +242,7 @@
                                             <tbody>
                                             <tr>
                                                 <td>Naam:</td>
-                                                <td>{$user->name}</td>
+                                                <td>{$user->name} {$user->surname}</td>
                                             </tr>
                                             <tr>
                                                 <td>E-Mail</td>
