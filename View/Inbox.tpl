@@ -15,13 +15,13 @@
         {assign var="search" value=htmlspecialchars($search)}
     {/if}
 
-    {if isset($search) && $search != ""}
-        <h1>{$title} - {$search}</h1>
-    {else}
-        <h1>{$title}</h1>
-    {/if}
-    <h3>{$folder}</h3>
+    <h3>{$title}</h3>
 
+    {if isset($search) && $search != ""}
+        <h4>{$folder} - {$search}</h4>
+    {else}
+        <h4>{$folder}</h4>
+    {/if}
 
     <div class="col-sm-3">
         <a href="/Inbox/p={$page[0]}/action=new" class="btn btn-default" style="width:100%">Nieuw Bericht</a><br>

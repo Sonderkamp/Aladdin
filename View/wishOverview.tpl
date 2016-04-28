@@ -7,9 +7,9 @@
 
 <div class="container">
     <div class="row">
-
+        <h3>Wensen overzicht</h3>
         <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2">
-            <h5>Wensen overzicht</h5>
+
             {*<hr/>*}
 
             <ul class="nav nav-pills nav-stacked">
@@ -51,94 +51,133 @@
                  </a>
                 </span>
             </div>
+            <br>
+            {foreach from=$wishes item=wish}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+
+                        <a href="/Wishes/wish_id={$wish->id}" class="h3">{htmlspecialcharsWithNL($wish -> title)}</a>
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="row">
 
 
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Gebruiker</th>
-                    <th>Plaats</th>
-                    <th>Onderwerp</th>
-                    <th>Omschrijving</th>
-                    <th>Status</th>
-                    <th class="smallColumn"></th>
-                    {if $currentPage == "mywishes"}
-                        <th class="smallColumn"></th>
-                    {/if}
-                    {if $currentPage == "mywishes"}
-                        <th class="smallColumn"></th>
-                    {/if}
-                </tr>
-                </thead>
-                <tbody>
-                {foreach from=$wishes item=wish}
-                    <tr>
-                        <td>
-                            <div class="dropdown">
-                                {if $currentPage == "mywishes"}
-                                    {htmlspecialcharsWithNL($wish -> user -> displayName)}
-                                {else}
-                                    {if isset($displayName)}
-                                        {if ($wish -> user -> displayName) != $displayName}
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                               aria-haspopup="true"
-                                               aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
-                                                {htmlspecialcharsWithNL($wish -> user -> displayName)}</span><span
-                                                        class="caret"></span></a>
-                                            <ul class="dropdown-menu">
-                                                {*<li><a href="/report/action=report/wish_id={$wish->id}">Rapporteren</a></li>*}
-                                                <li>
-                                                    <a  data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', $wish->id)}">
-                                                        Rapporteren
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                            {else}
-                                            <span class="glyphicon glyphicon-user"></span>
-                                            <a>{$wish -> user -> displayName}</a>
-                                        {/if}
-                                    {/if}
-                                {/if}
+                            <div class="col-xs-9">
+                                <p>{htmlspecialcharsWithNL($wish -> content)}</p>
                             </div>
 
-                        </td>
-                        {*<td>{htmlspecialcharsWithNL($wish -> user -> displayName)}</td>*}
-                        <td>{htmlspecialcharsWithNL($wish -> user -> city)}</td>
-                        <td>{htmlspecialcharsWithNL($wish -> title)}</td>
-                        <td>{htmlspecialcharsWithNL($wish -> content)}</td>
-                        <td>{htmlspecialcharsWithNL($wish -> status)}</td>
-                        <td>
-                            <form method="post">
-                                <button class="btn btn-default"
-                                        formaction="/Wishes/wish_id={$wish->id}"
-                                        value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
-                                        type="submit"
-                                        name="page">
-                                    <span class="glyphicon glyphicon-menu-right"/>
+                            <div class="col-xs-3 right">
+                                <div class="dropdown">
+
+
+                                    {if $currentPage == "mywishes"}
+                                        {htmlspecialcharsWithNL($wish -> user -> displayName)}
+                                    {else}
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                           aria-haspopup="true"
+                                           aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
+                                            {htmlspecialcharsWithNL($wish -> user -> displayName)}</span><span
+                                                    class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a data-toggle="modal"
+                                                   data-target="#myModal{preg_replace('/\s+/', '', $wish->id)}">
+                                                    Rapporteren
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    {/if}
+
+                                    {*<<<<<<< HEAD*}
+                                    {*<table class="table">*}
+                                    {*<thead>*}
+                                    {*<tr>*}
+                                    {*<th>Gebruiker</th>*}
+                                    {*<th>Plaats</th>*}
+                                    {*<th>Onderwerp</th>*}
+                                    {*<th>Omschrijving</th>*}
+                                    {*<th>Status</th>*}
+                                    {*<th class="smallColumn"></th>*}
+                                    {*{if $currentPage == "mywishes"}*}
+                                    {*<th class="smallColumn"></th>*}
+                                    {*{/if}*}
+                                    {*{if $currentPage == "mywishes"}*}
+                                    {*<th class="smallColumn"></th>*}
+                                    {*{/if}*}
+                                    {*</tr>*}
+                                    {*</thead>*}
+                                    {*<tbody>*}
+                                    {*{foreach from=$wishes item=wish}*}
+                                    {*<tr>*}
+                                    {*<td>*}
+                                    {*<div class="dropdown">*}
+                                    {*{if $currentPage == "mywishes"}*}
+                                    {*{htmlspecialcharsWithNL($wish -> user -> displayName)}*}
+                                    {*{else}*}
+                                    {*{if isset($displayName)}*}
+                                    {*{if ($wish -> user -> displayName) != $displayName}*}
+                                    {*<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"*}
+                                    {*aria-haspopup="true"*}
+                                    {*aria-expanded="false"><span class="glyphicon glyphicon-user"></span>*}
+                                    {*{htmlspecialcharsWithNL($wish -> user -> displayName)}</span><span*}
+                                    {*class="caret"></span></a>*}
+                                    {*<ul class="dropdown-menu">*}
+                                    {*<li><a href="/report/action=report/wish_id={$wish->id}">Rapporteren</a></li>*}
+                                    {*<li>*}
+                                    {*<a  data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', $wish->id)}">*}
+                                    {*Rapporteren*}
+                                    {*</a>*}
+                                    {*</li>*}
+                                    {*</ul>*}
+                                    {*{else}*}
+                                    {*<span class="glyphicon glyphicon-user"></span>*}
+                                    {*<a>{$wish -> user -> displayName}</a>*}
+                                    {*{/if}*}
+                                    {*{/if}*}
+                                    {*{/if}*}
+                                    {*=======*}
+
+                                </div>
+
+                                Stad: <b>{htmlspecialcharsWithNL($wish -> user -> city)}</b><br>
+                                Status: <b>{htmlspecialcharsWithNL($wish -> status)}</b>
+                                {*>>>>>>> 51bb407f7dcf7e94ab4f6ce4c7ea5ccbde90894b*}
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="panel-footer right">
+
+                        {if $currentPage == "mywishes"}
+                            <form class='noPadding infoLeft' action="/Wishes/action=open_edit_wish"
+                                  method="get">
+                                <button name="editwishbtn" value="{$wish -> id}" type="sumbit"
+                                        class="btn btn-inbox" data-toggle="modal">
+                                    <span class="glyphicon glyphicon-edit"></span>
                                 </button>
                             </form>
-                        </td>
-                        {if $currentPage == "mywishes"}
-                            <td>
-                                <form action="/Wishes/action=open_edit_wish" method="get">
-                                    <button name="editwishbtn" value="{$wish -> id}" type="sumbit"
-                                            class="btn btn-inbox" data-toggle="modal">
-                                        <span class="glyphicon glyphicon-edit"></span>
-                                    </button>
-                                </form>
-                            </td>
-                            <td>
-                                <a class="btn btn-danger" href="/Wishes/action=remove/wishID={$wish->id}">
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                </a>
-                            </td>
+                            <a class="btn btn-danger infoLeft margLeft" href="/Wishes/action=remove/wishID={$wish->id}">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
                         {/if}
 
+                        <form class='noPadding' method="post">
+                            <button class="btn btn-default"
+                                    formaction="/Wishes/wish_id={$wish->id}"
+                                    value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
+                                    type="submit"
+                                    name="page">
+                                <span class="glyphicon glyphicon-menu-right"/>
+                            </button>
+                        </form>
 
-                    </tr>
-                {/foreach}
-                </tbody>
-            </table>
+                    </div>
+
+
+                </div>
+            {/foreach}
+
         </div>
     </div>
 </div>
@@ -151,7 +190,9 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Rapporteren van gebruiker <span class="glyphicon glyphicon-user"></span>{htmlspecialcharsWithNL($wish -> user -> displayName)}</h4>
+                    <h4 class="modal-title">Rapporteren van gebruiker <span
+                                class="glyphicon glyphicon-user"></span>{htmlspecialcharsWithNL($wish -> user -> displayName)}
+                    </h4>
                 </div>
                 <form action="/report/action=report" method="post">
                     <div class="modal-body">
@@ -163,7 +204,9 @@
                             </div>
                             <div class="col-xs-9">
                                 <input type="hidden" value="{$wish->id}" name="wish_id"/>
-                                <input type="text" class="form-control" placeholder="Reden dat u {{htmlspecialcharsWithNL($wish -> user -> displayName)}} wilt rappoteren" name="report_message">
+                                <input type="text" class="form-control"
+                                       placeholder="Reden dat u {{htmlspecialcharsWithNL($wish -> user -> displayName)}} wilt rappoteren"
+                                       name="report_message">
                             </div>
                             </p>
                             <br>
