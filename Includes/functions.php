@@ -56,6 +56,11 @@ function guaranteeAdmin($page)
     $controller->guaranteeAdmin($page);
 }
 
+function guaranteeProfile(){
+    $controller = new DashboardController();
+    $controller->guaranteeProfile();
+}
+
 function htmlspecialcharsWithNL($string)
 {
     return nl2br(htmlspecialchars($string));
@@ -70,18 +75,19 @@ function render($template, $values = [])
     if (file_exists("View/$template")) {
         // extract variables into local scope
         $smarty = new Smarty();
-        $quote = new Quote();
 
-        $smarty->assign($values, $quote);
+        $smarty->assign($values);
 
         if (!empty($_SESSION["user"])) {
             $smarty->assign("user", $_SESSION["user"]);
         }
 
-
-        if (!empty($_SESSION["admin"]))
+        if (!empty($_SESSION["admin"])){
             $smarty->assign("admin", $_SESSION["admin"]);
+        }
 
+        $quote = new Quote();
+        $_SESSION["quote"] = $quote->getQuote();
 
         // render header
         $smarty->display("View/header.tpl");
@@ -90,9 +96,8 @@ function render($template, $values = [])
         $smarty->display("View/$template");
 
         // render footer
-//            $quote = new Quote();
-//            $value["Quote"] = $quote->getQuote();
         $smarty->display("View/footer.tpl");
+
     } // else err
     else {
         trigger_error("Invalid template: $template", E_USER_ERROR);

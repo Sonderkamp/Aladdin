@@ -17,6 +17,10 @@ h3 {
     background-color: brown;
 }
 
+.btn-dashboard {
+    float: right;
+}
+
 .btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
     background-color: whitesmoke;
 }
@@ -264,6 +268,31 @@ a:hover {
 
 .form-control:-ms-input-placeholder {
     color: brown;
+}
+
+.wishContent textarea {
+    overflow-y: scroll;
+    height: 150px;
+}
+
+.summit-container {
+    min-height: 200px;
+}
+
+.form-control::-webkit-input-placeholder {
+    color: #1D91C0;
+}
+
+.form-control:-moz-placeholder {
+    color: #1D91C0;
+}
+
+.form-control::-moz-placeholder {
+    color: #1D91C0;
+}
+
+.form-control:-ms-input-placeholder {
+    color: #1D91C0;
 }
 
 .adminMessage {

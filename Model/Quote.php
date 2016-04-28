@@ -10,7 +10,7 @@ class Quote
 {
     public $source, $content;
 
-    public function __construct()
+    public function getQuote()
     {
         //TODO read quote shown and eliminate these from pool
         $result = Database::query("SELECT * FROM quote");
@@ -19,5 +19,7 @@ class Quote
 
         $this->content = $result[$random]["QuoteContent"];
         $this->source = $result[$random]["Source"];
+
+        return $this;
     }
 }
