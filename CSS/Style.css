@@ -202,9 +202,14 @@ body {
     color: white;
 }
 
-
-.margLeft{
+.margLeft {
     margin-left: 10px;
+}
+
+.form-success {
+    background-color: #70C170 !important;
+    border: #9AB99A 1px solid !important;
+    color: white;
 }
 
 .navbar-nav > li > .dropdown-menu {
@@ -234,7 +239,6 @@ body {
     padding: 10px;
     color: #666666;
 }
-
 
 a:hover {
     text-decoration: none !important;
