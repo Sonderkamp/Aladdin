@@ -86,9 +86,8 @@
 
                                 </div>
 
-
-                                Stad: {htmlspecialcharsWithNL($wish -> user -> city)}<br>
-                                {htmlspecialcharsWithNL($wish -> status)}
+                                Stad: <b>{htmlspecialcharsWithNL($wish -> user -> city)}</b><br>
+                                Status: <b>{htmlspecialcharsWithNL($wish -> status)}</b>
                             </div>
 
                         </div>
