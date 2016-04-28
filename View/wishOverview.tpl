@@ -51,82 +51,76 @@
                  </a>
                 </span>
             </div>
+            <br>
+            {foreach from=$wishes item=wish}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="noMargin">{htmlspecialcharsWithNL($wish -> title)}</h3>
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="row">
 
 
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Gebruiker</th>
-                    <th>Plaats</th>
-                    <th>Onderwerp</th>
-                    <th>Omschrijving</th>
-                    <th>Status</th>
-                    <th class="smallColumn"></th>
-                    {if $currentPage == "mywishes"}
-                        <th class="smallColumn"></th>
-                    {/if}
-                    {if $currentPage == "mywishes"}
-                        <th class="smallColumn"></th>
-                    {/if}
-                </tr>
-                </thead>
-                <tbody>
-                {foreach from=$wishes item=wish}
-                    <tr>
-                        <td>
-                            <div class="dropdown">
-                                {if $currentPage == "mywishes"}
-                                    {htmlspecialcharsWithNL($wish -> user -> displayName)}
-                                {else}
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                       aria-haspopup="true"
-                                       aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
-                                        {htmlspecialcharsWithNL($wish -> user -> displayName)}</span><span
-                                                class="caret"></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="/report/action=report/wish_id={$wish->id}">Rapporteren</a></li>
-                                    </ul>
-                                {/if}
+                            <div class="col-xs-9">
+                                <p>{htmlspecialcharsWithNL($wish -> content)}</p>
                             </div>
 
-                        </td>
-                        {*<td>{htmlspecialcharsWithNL($wish -> user -> displayName)}</td>*}
-                        <td>{htmlspecialcharsWithNL($wish -> user -> city)}</td>
-                        <td>{htmlspecialcharsWithNL($wish -> title)}</td>
-                        <td>{htmlspecialcharsWithNL($wish -> content)}</td>
-                        <td>{htmlspecialcharsWithNL($wish -> status)}</td>
-                        <td>
-                            <form method="post">
-                                <button class="btn btn-default"
-                                        formaction="/Wishes/wish_id={$wish->id}"
-                                        value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
-                                        type="submit"
-                                        name="page">
-                                    <span class="glyphicon glyphicon-menu-right"/>
+                            <div class="col-xs-3 right">
+                                <div class="dropdown">
+
+
+                                    {if $currentPage == "mywishes"}
+                                        {htmlspecialcharsWithNL($wish -> user -> displayName)}
+                                    {else}
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                           aria-haspopup="true"
+                                           aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
+                                            {htmlspecialcharsWithNL($wish -> user -> displayName)}</span><span
+                                                    class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="/report/action=report/wish_id={$wish->id}">Rapporteren</a></li>
+                                        </ul>
+                                    {/if}
+
+
+                                </div>
+
+
+                                Stad: {htmlspecialcharsWithNL($wish -> user -> city)}<br>
+                                {htmlspecialcharsWithNL($wish -> status)}
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+
+                        <form class='noPadding' method="post">
+                            <button class="btn btn-default"
+                                    formaction="/Wishes/wish_id={$wish->id}"
+                                    value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
+                                    type="submit"
+                                    name="page">
+                                <span class="glyphicon glyphicon-menu-right"/>
+                            </button>
+                        </form>
+                        {if $currentPage == "mywishes"}
+                            <form class='noPadding' action="/Wishes/action=open_edit_wish" method="get">
+                                <button name="editwishbtn" value="{$wish -> id}" type="sumbit"
+                                        class="btn btn-inbox" data-toggle="modal">
+                                    <span class="glyphicon glyphicon-edit"></span>
                                 </button>
                             </form>
-                        </td>
-                        {if $currentPage == "mywishes"}
-                            <td>
-                                <form action="/Wishes/action=open_edit_wish" method="get">
-                                    <button name="editwishbtn" value="{$wish -> id}" type="sumbit"
-                                            class="btn btn-inbox" data-toggle="modal">
-                                        <span class="glyphicon glyphicon-edit"></span>
-                                    </button>
-                                </form>
-                            </td>
-                            <td>
-                                <a class="btn btn-danger" href="/Wishes/action=remove/wishID={$wish->id}">
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                </a>
-                            </td>
+                            <a class="btn btn-danger info" href="/Wishes/action=remove/wishID={$wish->id}">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
                         {/if}
+                    </div>
 
 
-                    </tr>
-                {/foreach}
-                </tbody>
-            </table>
+                </div>
+            {/foreach}
+
         </div>
     </div>
 </div>

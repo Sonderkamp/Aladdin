@@ -322,6 +322,14 @@ a:hover {
     margin: auto;
 }
 
+.noMargin {
+    margin: 0px;
+}
+
+.right {
+    text-align: right;
+}
+
 body {
     /*overflow: hidden; */
     /* Hoihoi, Dit doen we dus niet globaal hea. Omdat andere objecten inheritten van hun parents, is de kans dat er iets breekt groot. */

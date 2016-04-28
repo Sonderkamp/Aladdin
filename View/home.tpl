@@ -10,7 +10,7 @@
         <div class="col-md-12">
 
             <h1>Aladdin</h1>
-            <h4><em>Aladdin in 1 zin</em></h4>
+            <h4><em>Wat is jouw hartenwens?</em></h4>
             <br><br><br>
             <blockquote>
                 <p>
