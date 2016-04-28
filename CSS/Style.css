@@ -388,6 +388,7 @@ blockquote footer, blockquote small, blockquote .small {
 }
 
 video {
+
     position: fixed;
     top: 40%;
     left: 50%;
@@ -402,6 +403,12 @@ video {
     -moz-filter: grayscale(10%);
     -ms-filter: grayscale(10%);
     filter: grayscale(10%);
+
+    background-image: url("/Resources/Images/beach.jpg");
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 #main-hero {
