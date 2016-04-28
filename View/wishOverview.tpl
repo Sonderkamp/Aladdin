@@ -7,9 +7,9 @@
 
 <div class="container">
     <div class="row">
-
+        <h3>Wensen overzicht</h3>
         <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2">
-            <h5>Wensen overzicht</h5>
+
             {*<hr/>*}
 
             <ul class="nav nav-pills nav-stacked">

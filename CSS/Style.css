@@ -1,68 +1,84 @@
 
 h3 {
-    color: #1D91C0;
+    color: brown;
 }
 
-.h4{
+.h4 {
     color: white;
 }
 
 .btn-default {
-    background-color: #FDAE61;
+    background-color: brown;
     color: whitesmoke;
+}
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+    color: #ffffff;
+    background-color: brown;
 }
 
 .btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
     background-color: whitesmoke;
 }
 
-.buttongroup{
+.buttongroup {
     margin-bottom: 10px;
 }
-.buttongrid{
+
+.buttongrid {
     border-top: 1px solid gray;
 }
-.btn-inbox:focus,.btn-inbox:active,.btn-inbox:visited {
+
+.btn-inbox:focus, .btn-inbox:active, .btn-inbox:visited {
     color: white;
 }
-.logo{
+
+.logo {
     margin-top: -27px;
     margin-left: -10px;
     height: 75px;
 }
+
 a {
-    color: #1D91C0;
+    color: brown;
     text-decoration: none;
 }
+
 a:hover {
     color: #E63946;
     text-decoration: none;
 }
 
-.white{
+.white {
     background-color: white;
 }
-.title{
+
+.title {
     font-size: 25px;
 }
 
-.info{
+.info {
     float: right;
 }
 
-.infoLeft{
+.infoLeft {
     float: left;
 }
 
-.navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>li>a:focus {
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
     color: white;
+}
+
+.navbar-collapse {
+    padding-bottom: 3px;
+    padding-top: 3px;
 }
 
 input[type="radio"]:before, .radio input[type="radio"]:before, .radio-inline input[type="radio"]:before {
     position: absolute;
     left: 0;
     top: -3px;
-    background-color: #1D91C0;
+    background-color: brown;
     -webkit-transform: scale(0);
     -ms-transform: scale(0);
     -o-transform: scale(0);
@@ -70,12 +86,12 @@ input[type="radio"]:before, .radio input[type="radio"]:before, .radio-inline inp
 }
 
 input[type="radio"]:checked:after, .radio input[type="radio"]:checked:after, .radio-inline input[type="radio"]:checked:after {
-    border-color: #1D91C0;
+    border-color: brown;
 }
 
 input[type="checkbox"]:checked:after, .checkbox input[type="checkbox"]:checked:after, .checkbox-inline input[type="checkbox"]:checked:after {
-    background-color: #1D91C0;
-    border-color: #1D91C0;
+    background-color: brown;
+    border-color: brown;
 }
 
 .navbar-default .navbar-nav > li > a {
@@ -83,15 +99,18 @@ input[type="checkbox"]:checked:after, .checkbox input[type="checkbox"]:checked:a
 }
 
 .navbar {
-    background-color: #1D91C0;
+    background-color: brown;
     heigth: 10px;
 }
 
-
 body {
-    background-color: whitesmoke;
+    background-color: white;
     font-family: 'PT Sans', sans-serif;
     margin-bottom: 60px;
+}
+
+.container-fluid {
+    border-bottom: 15px solid #BF5F5F;
 }
 
 .quote, .source {
@@ -104,6 +123,10 @@ body {
 
 }
 
+.btn-primary {
+    background-color: #5bc0de;
+}
+
 .source {
     font-family: 'PT Sans', sans-serif;
     margin-top: -20px;
@@ -113,8 +136,9 @@ body {
 }
 
 .footer {
-    background-color: #1D91C0;
+    background-color: brown;
     text-align: center;
+    padding: 3px;
 }
 
 .header {
@@ -134,7 +158,6 @@ body {
     -moz-border-radius: 0 6px 6px;
     border-radius: 0 6px 6px 6px;
 }
-
 
 .dropdown-submenu:hover > .dropdown-menu {
     display: block;
@@ -169,19 +192,22 @@ body {
     -moz-border-radius: 6px 0 6px 6px;
     border-radius: 6px 0 6px 6px;
 }
-.btn-inbox{
-    background-color: #7FCDBB;
+
+.btn-inbox {
+    background-color: #AD8282;
     color: white;
 }
-.dropdown{
+
+.dropdown {
 
 }
 
-.navbar-nav>li>.dropdown-menu {
+.navbar-nav > li > .dropdown-menu {
     margin-top: 0;
     border-top-right-radius: 0;
     border-top-left-radius: 0;
 }
+
 .addbutton {
     display: block;
     width: 100%;
@@ -224,19 +250,31 @@ a:hover {
     padding-top: 30px;
 }
 
-.form-control::-webkit-input-placeholder { color: #1D91C0; }
-.form-control:-moz-placeholder { color: #1D91C0; }
-.form-control::-moz-placeholder { color: #1D91C0; }
-.form-control:-ms-input-placeholder { color: #1D91C0; }
+.form-control::-webkit-input-placeholder {
+    color: brown;
+}
 
-.adminMessage{
+.form-control:-moz-placeholder {
+    color: brown;
+}
+
+.form-control::-moz-placeholder {
+    color: brown;
+}
+
+.form-control:-ms-input-placeholder {
+    color: brown;
+}
+
+.adminMessage {
     background-color: #E0F3F8;
 }
-.message{
+
+.message {
     min-height: 300px;
 }
-.noPadding
-{
+
+.noPadding {
     display: inline;
 }
 
@@ -250,13 +288,12 @@ a:hover {
     }
 }
 
-.homebuttons>a>img{
+.homebuttons > a > img {
     max-width: 300px;
     margin: auto;
 }
 
-body
-{
+body {
     /*overflow: hidden; */
     /* Hoihoi, Dit doen we dus niet globaal hea. Omdat andere objecten inheritten van hun parents, is de kans dat er iets breekt groot. */
     /* Tip voor volgende keer: */
@@ -264,27 +301,33 @@ body
     /* - Marius */
 }
 
-.noflow{
+.noflow {
     overflow: hidden;
     position: relative;
     min-height: 700px;
 }
 
 #slide-panel {
-    width:300px;
+    width: 300px;
     height: 100vh;
-    padding:10px;
-    background: #1D91C0;
-    right:-300px;
+    padding: 10px;
+    background: brown;
+    right: -300px;
     float: right;
     max-width: 500px;
     z-index: 1;
     position: absolute;
 }
 
+.whiteText {
+    color: white;
+}
 
-#content
-{
+blockquote footer, blockquote small, blockquote .small {
+    color: #151313;
+}
+
+#content {
     height: 500px;
     width: 100%;
     float: right;
@@ -293,10 +336,52 @@ body
     color: white;
 }
 
-.slider.slider-horizontal{
-    width:500px;
+.slider.slider-horizontal {
+    width: 500px;
 }
 
 .navbar-default .navbar-toggle .icon-bar {
     background-color: floralwhite;
+}
+
+video {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    transform: translate(-50%, -50%);
+    background-color: black;
+
+    -webkit-filter: grayscale(10%);
+    -moz-filter: grayscale(10%);
+    -ms-filter: grayscale(10%);
+    filter: grayscale(10%);
+}
+
+#main-hero {
+
+    background-color: transparent;
+    color: white;
+    min-height: 65vh;
+}
+
+#main-hero h1, #main-hero .h1 {
+    color: white;
+}
+
+#main-hero h4, #main-hero .h4 {
+    color: white;
+}
+
+blockquote footer, blockquote small, blockquote .small {
+    color: white;
+}
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+    background-color: brown;
+    border-color: brown;
 }
