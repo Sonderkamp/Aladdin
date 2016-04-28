@@ -39,8 +39,8 @@ class DashboardController
     }
 
     private function generateErrorSentence($wishAmount , $talentAmount){
+        $prefix = "<strong>Pas op!</strong> U heeft uw profiel nog niet voltooid. Vul alstublieft nog ";
         $str = "";
-
         if($wishAmount < $this->wish_limit){
             $str .= $wishAmount;
             if($wishAmount > 1){
@@ -50,11 +50,14 @@ class DashboardController
             }
         }
 
-        if($wishAmount < $this->wish_limit && $talentAmount < $this->talent_limit){
-            $str .= " en vul ";
-        }
         
         if($talentAmount < $this->talent_limit){
+
+            if($str != "")
+            {
+                $str .= " en vul ";
+            }
+
             $str .= $talentAmount;
             if($talentAmount > 1){
                 $str .= " talenten in";
@@ -63,7 +66,7 @@ class DashboardController
             }
         }
 
-        return $str;
+        return $prefix . $str;
     }
 
     private function getMyWishes(){
@@ -88,7 +91,7 @@ class DashboardController
             $talentAmount = $this->getTalentAmount();
 
             //3 wishes and 3 talents are mandatory
-            if($wishAmount == $this->wish_limit && $talentAmount >= $this->talent_limit){
+            if($wishAmount >= $this->wish_limit && $talentAmount >= $this->talent_limit){
                 return true;
             } else {
                 return false;

@@ -325,8 +325,8 @@ class WishRepository
     }
 
     public function getWishAmount($email){
-        $query = "select count(*) as counter from `wish` where `user` = ? and `status` != ? and 'status' != ?";
-        $array = array($email, "Vervuld", "Geweigerd");
+        $query = "select count(*) as counter from `wish` where `user` = ? and `status` != ? and `status` != ? and `status` != ?";
+        $array = array($email, "Vervuld", "Geweigerd" , "Verwijderd");
         $result = Database::query_safe($query, $array);
 
         return $result[0]["counter"];
