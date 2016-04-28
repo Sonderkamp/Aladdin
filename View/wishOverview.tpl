@@ -55,7 +55,8 @@
             {foreach from=$wishes item=wish}
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="noMargin">{htmlspecialcharsWithNL($wish -> title)}</h3>
+
+                        <a href="/Wishes/wish_id={$wish->id}" class="h3">{htmlspecialcharsWithNL($wish -> title)}</a>
                     </div>
                     <div class="panel-body">
 
@@ -92,7 +93,20 @@
 
                         </div>
                     </div>
-                    <div class="panel-footer">
+                    <div class="panel-footer right">
+
+                        {if $currentPage == "mywishes"}
+                            <form class='noPadding infoLeft' action="/Wishes/action=open_edit_wish"
+                                  method="get">
+                                <button name="editwishbtn" value="{$wish -> id}" type="sumbit"
+                                        class="btn btn-inbox" data-toggle="modal">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </button>
+                            </form>
+                            <a class="btn btn-danger infoLeft margLeft" href="/Wishes/action=remove/wishID={$wish->id}">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
+                        {/if}
 
                         <form class='noPadding' method="post">
                             <button class="btn btn-default"
@@ -103,17 +117,7 @@
                                 <span class="glyphicon glyphicon-menu-right"/>
                             </button>
                         </form>
-                        {if $currentPage == "mywishes"}
-                            <form class='noPadding' action="/Wishes/action=open_edit_wish" method="get">
-                                <button name="editwishbtn" value="{$wish -> id}" type="sumbit"
-                                        class="btn btn-inbox" data-toggle="modal">
-                                    <span class="glyphicon glyphicon-edit"></span>
-                                </button>
-                            </form>
-                            <a class="btn btn-danger info" href="/Wishes/action=remove/wishID={$wish->id}">
-                                <span class="glyphicon glyphicon-trash"></span>
-                            </a>
-                        {/if}
+
                     </div>
 
 

@@ -1,5 +1,5 @@
 
-h3 {
+h3 .h3 {
     color: brown;
 }
 
@@ -202,8 +202,9 @@ body {
     color: white;
 }
 
-.dropdown {
 
+.margLeft{
+    margin-left: 10px;
 }
 
 .navbar-nav > li > .dropdown-menu {
@@ -233,6 +234,7 @@ body {
     padding: 10px;
     color: #666666;
 }
+
 
 a:hover {
     text-decoration: none !important;
