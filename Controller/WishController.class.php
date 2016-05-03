@@ -30,25 +30,29 @@ class WishController
     public function run()
     {
         guaranteeLogin("/Wishes");
+
         if (isset($_GET["action"])) {
             switch (strtolower($_GET["action"])) {
                 case "mywishes":
+                    guaranteeProfile();
                     $this->currentPage = "mywishes";
                     $this->getMyWishes();
                     break;
                 case "incompletedwishes":
+                    guaranteeProfile();
                     $this->currentPage = "incompletedwishes";
                     $this->getIncompletedWishes();
                     break;
                 case "completedwishes":
+                    guaranteeProfile();
                     $this->currentPage = "completedwishes";
                     $this->getCompletedWishes();
                     break;
-                case "open_wish":
-                    $this->open_wish_view(true);
-                    break;
                 case "open_edit_wish":
                     $this->open_wish_view(false);
+                    break;
+                case "open_wish":
+                    $this->open_wish_view(true);
                     break;
                 case "addwish":
                     $this->add_wish();
@@ -67,7 +71,7 @@ class WishController
                     break;
             }
         } else if (isset($_GET["wish_id"])) {
-
+            guaranteeProfile();
             if (isset($_POST["page"])) {
                 $this->getSpecificWish($_GET["wish_id"], $_POST["page"]);
             } else {
@@ -80,8 +84,10 @@ class WishController
 //            $this->searchWish($_GET["search_key"]);
 //        }
         else if (isset($_POST["match/wish_id"])) {
+            guaranteeProfile();
             $this->requestMatch($_POST["match/wish_id"]);
         } else {
+            guaranteeProfile();
             $this->currentPage = "mywishes";
             $this->getMyWishes();
         }
@@ -345,9 +351,9 @@ class WishController
     }
 
 
-    private
-    function go_back()
+    private function go_back()
     {
+        guaranteeProfile();
         $this->getMyWishes();
     }
 

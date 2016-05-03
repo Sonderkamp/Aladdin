@@ -1,11 +1,9 @@
 <script src="/JS/dashboard.js"></script>
-<div class="container" onload="alertOnLoad({$wishAmount},{$talentAmount})">
-    {if $wishAmount < 3 || $talentAmount < 3}
+<div class="container">
+    {if isset($errorString)}
     <div class="alert alert-warning">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         {$errorString}
-        {*{if $wishAmount != 3}{$wishAmount} wens {if $wishAmount > 1}en{/if} in {if $talentAmount < 3}en vul{/if}{else}.*}
-        {*{/if}{if $talentAmount < 3} {$talentAmount} talent{if $talentAmount > 1}en{/if} in.{/if}*}
     </div>
     {/if}
     <div class="row">
@@ -35,11 +33,11 @@
     </div>
 
     <div class="summit-container">
-        <h3>Mijn wensen</h3>
+        <h3 class="col-xs-12">Mijn wensen</h3>
             {if isset($wishes)}
                 {foreach from=$wishes item=$value}
                 <div class="col-md-4">
-                    <div class="thumbnail">
+                    <div class="thumbnail large-caption">
                         <div class="caption">
                             <div class="row">
                                 <label class="col-md-4">Title:</label>
@@ -51,7 +49,7 @@
                             </div>
                             <div class="row">
                                 <button type="button" class="btn btn-info btn-dashboard" data-toggle="collapse" data-target="#wishcontent{$value->id}">Omschrijving</button>
-                                <div id="wishcontent{$value->id}" class="collapse">
+                                <div id="wishcontent{$value->id}" class="collapse collapse-button">
                                     <strong>Omschrijving:</strong> {htmlspecialchars($value->content)}
                                 </div>
                             </div>
@@ -59,6 +57,21 @@
                     </div>
                 </div>
                 {/foreach}
+                {if $wishCheck}
+                <div class="col-md-4">
+                    <div class="thumbnail large-caption">
+                        <div class="caption">
+                            <div class="row">
+                                <h4 class="col-md-12">Nieuwe Wens</h4>
+                                <a href="/Wishes/action=open_wish" class="btn btn-info btn-dashboard">
+                                   Voeg wens toe
+                                   <span class="glyphicon glyphicon-plus btn-dashboard btn-text"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {/if}
                 {else}
                 <div class="center-block text-center"><p>Je hebt geen wensen<br>
                     <a href="/">Voeg wensen toe</a></p></div>
@@ -66,7 +79,7 @@
     </div>
 
     <div class="summit-container">
-        <h3>Mijn talenten</h3>
+        <h3 class="col-xs-12">Mijn talenten</h3>
         {if isset($talents)}
             {foreach from=$talents item=$value}
                 <div class="col-md-4">
@@ -80,6 +93,21 @@
                     </div>
                 </div>
             {/foreach}
+            {if $talentCheck}
+                <div class="col-md-4">
+                    <div class="thumbnail large-caption">
+                        <div class="caption">
+                            <div class="row">
+                                <h4 class="col-md-12">Nieuw talent</h4>
+                                <a href="/Wishes/action=open_wish" class="btn btn-info btn-dashboard">
+                                    Voeg talent toe
+                                    <span class="glyphicon glyphicon-plus btn-dashboard btn-text"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {/if}
         {else}
             <div class="center-block text-center"><p>Je hebt geen wensen<br>
                     <a href="/">Voeg wensen toe</a></p></div>

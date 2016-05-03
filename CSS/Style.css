@@ -19,6 +19,16 @@ h3 .h3 {
 
 .btn-dashboard {
     float: right;
+    margin: 10px 10px 5px 5px;
+}
+
+.btn-text{
+    margin: 5px;
+    text-align: center;
+}
+
+.large-caption{
+    min-height: 150px;
 }
 
 .btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
