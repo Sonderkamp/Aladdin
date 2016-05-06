@@ -27,6 +27,15 @@ h3 .h3 {
     text-align: center;
 }
 
+.dashboard-row{
+    margin-bottom: 50px;
+}
+
+.dashboard-header{
+    margin-top: 0;
+    color: #BF5F5F;
+}
+
 .large-caption{
     min-height: 150px;
 }

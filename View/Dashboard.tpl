@@ -1,43 +1,54 @@
 <script src="/JS/dashboard.js"></script>
 <div class="container">
     {if isset($errorString)}
-    <div class="alert alert-warning">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        {$errorString}
-    </div>
-    {/if}
-    <div class="row">
-        <div class="col-md-3">
-            <img class="center-block" src="http://placehold.it/168x168" alt="profileImage">
+        <div class="alert alert-warning">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            {$errorString}
         </div>
+    {/if}
+    <div class="row dashboard-row">
 
-        <div class="col-md-9">
-            <h3>Informatie van {htmlspecialchars($smarty.session.user->name)}</h3>
+        <div class="col-xs-6">
+            <h3 class="dashboard-header">Informatie van {htmlspecialchars($smarty.session.user->name)}</h3>
             <div class="row">
-                <label class="col-md-2">Adres:</label>
+                <label class="col-md-4 col-xs-4">Adres:</label>
                 <label>{htmlspecialchars($smarty.session.user->address)}</label>
             </div>
             <div class="row">
-                <label class="col-md-2">postcode:</label>
+                <label class="col-md-4 col-xs-4">postcode:</label>
                 <label>{htmlspecialchars($smarty.session.user->postalcode)}</label>
             </div>
             <div class="row">
-                <label class="col-md-2">Land:</label>
+                <label class="col-md-4 col-xs-4">Land:</label>
                 <label>{htmlspecialchars($smarty.session.user->country)}</label>
             </div>
             <div class="row">
-                <label class="col-md-2">Geboortedatum:</label>
+                <label class="col-md-4">Geboortedatum:</label>
                 <label>{htmlspecialchars($smarty.session.user->dob)}</label>
+            </div>
+        </div>
+
+        <div class="col-xs-6">
+            <div class="btn-text">
+                <h4 class="dashboard-header">Weet u niet waarvoor u moet wensen?</h4>
+                <a href="/" class="btn btn-info">
+                    Vul de vragenlijst in!
+                </a>
             </div>
         </div>
     </div>
 
-    <div class="summit-container">
-        <h3 class="col-xs-12">Mijn wensen</h3>
-            {if isset($wishes)}
-                {foreach from=$wishes item=$value}
-                <div class="col-md-4">
-                    <div class="thumbnail large-caption">
+    <div class="row">
+        <h3 class="col-xs-6 col-sm-4 col-md-12 dashboard-header">Mijn wensen</h3>
+        <a href="/Wishes/action=open_wish" class="btn btn-info col-xs-1 visible-sm visible-xs">
+            <span class="glyphicon glyphicon-plus"></span>
+        </a>
+    </div>
+    <div class="row dashboard-row">
+        {if isset($wishes)}
+            {foreach from=$wishes item=$value}
+                <div class="col-sm-4">
+                    <div class="thumbnail">
                         <div class="caption">
                             <div class="row">
                                 <label class="col-md-4">Title:</label>
@@ -48,7 +59,9 @@
                                 <label>{$value->status}</label>
                             </div>
                             <div class="row">
-                                <button type="button" class="btn btn-info btn-dashboard" data-toggle="collapse" data-target="#wishcontent{$value->id}">Omschrijving</button>
+                                <button type="button" class="btn btn-info btn-dashboard" data-toggle="collapse"
+                                        data-target="#wishcontent{$value->id}">Omschrijving
+                                </button>
                                 <div id="wishcontent{$value->id}" class="collapse collapse-button">
                                     <strong>Omschrijving:</strong> {htmlspecialchars($value->content)}
                                 </div>
@@ -56,30 +69,34 @@
                         </div>
                     </div>
                 </div>
-                {/foreach}
-                {if $wishCheck}
-                <div class="col-md-4">
+            {/foreach}
+            {if $wishCheck}
+                <div class="col-md-4 hidden-sm hidden-xs">
                     <div class="thumbnail large-caption">
                         <div class="caption">
                             <div class="row">
                                 <h4 class="col-md-12">Nieuwe Wens</h4>
                                 <a href="/Wishes/action=open_wish" class="btn btn-info btn-dashboard">
-                                   Voeg wens toe
-                                   <span class="glyphicon glyphicon-plus btn-dashboard btn-text"></span>
+                                    Voeg wens toe
+                                    <span class="glyphicon glyphicon-plus btn-dashboard btn-text"></span>
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
-                {/if}
-                {else}
-                <div class="center-block text-center"><p>Je hebt geen wensen<br>
-                    <a href="/">Voeg wensen toe</a></p></div>
             {/if}
+        {else}
+            <div class="center-block text-center"><p>Je hebt geen wensen<br>
+                    <a href="/">Voeg wensen toe</a></p></div>
+        {/if}
     </div>
-
-    <div class="summit-container">
-        <h3 class="col-xs-12">Mijn talenten</h3>
+    <div class="row">
+        <h3 class="col-xs-6 col-sm-4 col-md-12 dashboard-header">Mijn talenten</h3>
+        <a href="/Wishes/action=open_wish" class="btn btn-info col-xs-1 visible-sm visible-xs">
+            <span class="glyphicon glyphicon-plus"></span>
+        </a>
+    </div>
+    <div class="row dashboard-row">
         {if isset($talents)}
             {foreach from=$talents item=$value}
                 <div class="col-md-4">
@@ -94,7 +111,7 @@
                 </div>
             {/foreach}
             {if $talentCheck}
-                <div class="col-md-4">
+                <div class="col-md-4 hidden-sm hidden-xs">
                     <div class="thumbnail large-caption">
                         <div class="caption">
                             <div class="row">
