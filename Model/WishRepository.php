@@ -69,7 +69,7 @@ class WishRepository
         return $returnArray;
     }
 
-    private function getUser($email)
+    public function getUser($email)
     {
         $result = Database::query_safe("SELECT * FROM user WHERE user.Email = ?", array($email));
 
