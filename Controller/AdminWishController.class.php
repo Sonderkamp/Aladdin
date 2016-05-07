@@ -11,7 +11,6 @@ class AdminWishController
     private $page;
     public function __construct()
     {
-        guaranteeLogin("/AdminWish");
 
         if (!isset($this->page))
         {
@@ -21,7 +20,7 @@ class AdminWishController
     }
     public function run()
     {
-        guaranteeLogin("/AdminWish");
+        guaranteeAdmin("/AdminWish");
         if (isset($_GET["action"])) {
             switch (strtolower($_GET["action"])) {
                 case "requested":

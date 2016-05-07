@@ -19,7 +19,7 @@ class AdminUserController
 
     public function run()
     {
-        guaranteeLogin("/Wishes");
+        guaranteeAdmin("/Wishes");
         if (isset($_GET["action"])) {
             switch (strtolower($_GET["action"])) {
                 case "home":
