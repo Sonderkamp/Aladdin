@@ -1,4 +1,6 @@
-
+p, span{
+    font-size: 120%;
+}
 h3 .h3 {
     color: brown;
 }
