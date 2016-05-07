@@ -27,21 +27,32 @@ class DashboardController
         } else {
             $wishAmount = $this->wish_limit - $this->getWishAmount();
             $talentAmount = $this->talent_limit - $this->getTalentAmount();
+            $wishCheck = false;
+            $talentCheck = false;
+
+            if($wishAmount <= $this->wish_limit){
+                $wishCheck = true;
+            }
+
+            if($talentAmount <= $this->talent_limit){
+                $talentCheck = true;
+            }
 
             render("Dashboard.tpl", ["title" => $_SESSION["user"]->displayName ,
                 "wishes" => $this->getMyWishes() ,
                 "talents" => $this->getMyTalents() ,
-                "wishAmount" => $wishAmount ,
-                "talentAmount" => $talentAmount ,
+                "wishCheck" => $wishCheck ,
+                "talentCheck" => $talentCheck ,
                 "errorString" => $this->generateErrorSentence($wishAmount , $talentAmount)]);
             exit(0);
         }
     }
 
+
     private function generateErrorSentence($wishAmount , $talentAmount){
         $prefix = "<strong>Pas op!</strong> U heeft uw profiel nog niet voltooid. Vul alstublieft nog ";
         $str = "";
-        if($wishAmount < $this->wish_limit){
+        if($wishAmount <= $this->wish_limit){
             $str .= $wishAmount;
             if($wishAmount > 1){
                 $str .= " wensen in";
@@ -51,7 +62,7 @@ class DashboardController
         }
 
         
-        if($talentAmount < $this->talent_limit){
+        if($talentAmount <= $this->talent_limit){
 
             if($str != "")
             {

@@ -309,19 +309,25 @@ class WishRepository
         $wishLimit = $this->WISH_LIMIT;
 
         // count talents
-        $myTalents = $this->talentRepository->getUserTalents();
-        $amountOfTalents = 0;
-        foreach($myTalents as $item){
-            if($item instanceof Talent){
-                if($item->is_rejected == 1){
-                    $amountOfTalents++;
-                }
-            }
-        }
+//        $myTalents = $this->talentRepository->getUserTalents();
+//        $amountOfTalents = 0;
+//        foreach($myTalents as $item){
+//            if($item instanceof Talent){
+//                if($item->is_rejected == 1){
+//                    $amountOfTalents++;
+//                }
+//            }
+//        }
 
-        if ($amountWishes >= $wishLimit || $amountOfTalents < $this->MINIMUM_TALENTS)
+//        if ($amountWishes >= $wishLimit || $amountOfTalents < $this->MINIMUM_TALENTS)
+//            return false;
+//        return true;
+
+        if($amountWishes >= $wishLimit){
             return false;
-        return true;
+        } else {
+            return true;
+        }
     }
 
     public function getWishAmount($email){
