@@ -71,14 +71,25 @@
                                 <form action="/profile/action=changepw" method="post"><p>
                                         <br>
                                         <input type="hidden" readonly="true" name="username" value="{$user->email}">
+                                        {literal}
                                     <p>
-                                        Oud wachtwoord: <input type="password" name="pwo" value="">
+                                        Oud wachtwoord: <input type="password" name="pwo" required
+                                                               required data-validation="custom"
+                                                               data-validation-regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\W]{8,}$"
+                                                               data-validation-error-msg="het wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter en een nummer bevatten.">
                                     <p>
-                                        Nieuw wachtwoord: <input type="password" name="password1" value="">
+                                        Nieuw wachtwoord:<input type="password" name="password1" required
+                                                                required data-validation="custom"
+                                                                data-validation-regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\W]{8,}$"
+                                                                data-validation-error-msg="het wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter en een nummer bevatten.">
                                     <p>
-                                        Nieuw wachtwoord: <input type="password" name="password2" value="">
+                                        Nieuw wachtwoord: <input type="password" name="password2" required
+                                                                 required data-validation="custom"
+                                                                 data-validation-regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\W]{8,}$"
+                                                                 data-validation-error-msg="het wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter en een nummer bevatten.">
 
                                     <p>
+                                        {/literal}
 
                                     <p>
                                         <br>
@@ -104,17 +115,18 @@
                                                 <tbody>
                                                 <tr>
                                                     <td>Voornaam:</td>
-                                                    <td><input type="text" name="name" value="{$user->name}"
-                                                               data-validation="custom"
-                                                               data-validation-regexp="^([a-zA-Z\- ]+)$"
-                                                               data-validation-error-msg="Geen valide voornaam ingevuld.">
+                                                    <td>
+                                                        <input type="text" name="name" data-validation="custom"
+                                                               data-validation-regexp="^([a-zA-Z][A-Za-z\- ]+)$"
+                                                               data-validation-error-msg="Geen valide voornaam ingevuld."
+                                                               maxlength="45" value="{$user->name}">
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Achternaam:</td>
                                                     <td><input type="text" name="surname" value="{$user->surname}"
                                                                data-validation="custom"
-                                                               data-validation-regexp="^([a-zA-Z\- ]+)$"
+                                                               data-validation-regexp="^([a-zA-Z][A-Za-z\- ]+)$"
                                                                data-validation-error-msg="Geen valide achternaam ingevuld.">
                                                     </td>
                                                 </tr>
@@ -124,33 +136,39 @@
                                                                required data-validation="custom"
                                                                data-validation-regexp="^([a-zA-Z\.]+)$"
                                                                data-validation-error-msg="Initialen mogen alleen letters en punten bevatten.">
+
                                                     </td>
                                                 </tr>
 
                                                 <tr>
                                                     <td>Adress:</td>
-                                                    <td><input type="text" name="address" value="{$user->address}"
-                                                               required data-validation="alphanumeric"
-                                                               data-validation-allowing="-_ "
-                                                               data-validation-error-msg="Straat en huisnummer kan alleen letters, nummers, spaties en streepjes(-_) bevatten">
+                                                    <td>
+                                                        <input type="text" name="address" data-validation="custom"
+                                                               data-validation-regexp="^([a-zA-Z][A-Za-z0-9\- ]+)$"
+                                                               data-validation-error-msg="Straat en huisnummer kan alleen letters, nummers, spaties en streepjes(-) bevatten"
+                                                               maxlength="255" value="{$user->address}">
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Postcode:</td>
-                                                    <td><input type="text" name="postalcode"
-                                                               value="{$user->postalcode}" required
-                                                               data-validation="custom"
-                                                               data-validation-regexp="(^[0-9][0-9][0-9][0-9][aA-zZ][aA-zZ]$)|(^[0-9][0-9][0-9][0-9][\s][aA-zZ][aA-zZ]$)"
-                                                               data-validation-error-msg="invalide postcode gegeven">
+                                                    <td>
+
+                                                        <input type="text" name="postalcode" required
+                                                               data-validation="custom" value="{$user->postalcode}"
+                                                                {literal}
+                                                               data-validation-regexp="^[0-9]{4}[\s]{0,1}[a-zA-z]{2}"
+                                                               data-validation-error-msg="invalide postcode gegeven"
+                                                               maxlength="6">
+                                                        {/literal}
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Plaats:</td>
-                                                    <td><input type="text" name="city" value="{$user->city}" required
-                                                               required data-validation="alphanumeric"
-                                                               data-validation-allowing="-_ "
-                                                               data-validation-error-msg="Straat en huisnummer kan alleen letters, spaties en streepjes(-_) bevatten">
-                                                    </td>
+                                                    <td>Stad:</td>
+                                                    <td><input type="text" name="city" required data-validation="custom"
+                                                               data-validation-regexp="^[a-zA-Z][a-zA-Z ]+$"
+                                                               data-validation-error-msg="Stad kan alleen letters en spaties bevatten"
+                                                               maxlength="255"
+                                                               value="{$user->city}"></td>
 
                                                 </tr>
                                                 <tr>
