@@ -45,9 +45,11 @@
 
     <div class="row">
         <h3 class="col-xs-6 col-sm-4 col-md-12 dashboard-header">Mijn wensen</h3>
+        {if $wishCheck}
         <a href="/Wishes/action=open_wish" class="btn btn-info col-xs-1 visible-sm visible-xs">
             <span class="glyphicon glyphicon-plus"></span>
         </a>
+        {/if}
     </div>
     <div class="row dashboard-row">
         {if isset($wishes)}
@@ -103,21 +105,19 @@
     </div>
     <div class="row dashboard-row">
         {if isset($talents)}
-            {if $talentCheck}
-                <div class="col-md-4 hidden-sm hidden-xs">
-                    <div class="thumbnail">
-                        <div class="caption">
-                            <div class="row">
-                                <h4 class="col-md-12">Nieuw talent</h4>
-                                <a href="/Wishes/action=open_wish" class="btn btn-info btn-dashboard">
-                                    Voeg talent toe
-                                    <span class="glyphicon glyphicon-plus btn-dashboard btn-text"></span>
-                                </a>
-                            </div>
+            <div class="col-md-4 hidden-sm hidden-xs">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <div class="row">
+                            <h4 class="col-md-12">Nieuw talent</h4>
+                            <a href="/Wishes/action=open_wish" class="btn btn-info btn-dashboard">
+                                Voeg talent toe
+                                <span class="glyphicon glyphicon-plus btn-dashboard btn-text"></span>
+                            </a>
                         </div>
                     </div>
                 </div>
-            {/if}
+            </div>
             {foreach from=$talents item=$value}
                 <div class="col-md-4">
                     <div class="thumbnail">
