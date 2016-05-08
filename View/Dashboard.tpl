@@ -26,6 +26,11 @@
                 <label class="col-md-4">Geboortedatum:</label>
                 <label>{htmlspecialchars($smarty.session.user->dob)}</label>
             </div>
+            <div class="row">
+                <a href="/profile" class="btn btn-info">
+                    Naar mijn profiel
+                </a>
+            </div>
         </div>
 
         <div class="col-xs-6">
@@ -46,6 +51,21 @@
     </div>
     <div class="row dashboard-row">
         {if isset($wishes)}
+            {if $wishCheck}
+                <div class="col-md-4 hidden-sm hidden-xs">
+                    <div class="thumbnail">
+                        <div class="caption">
+                            <div class="row">
+                                <h4 class="col-md-12">Nieuwe Wens</h4>
+                                <a href="/Wishes/action=open_wish" class="btn btn-info btn-dashboard">
+                                    Voeg wens toe
+                                    <span class="glyphicon glyphicon-plus btn-dashboard btn-text"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {/if}
             {foreach from=$wishes item=$value}
                 <div class="col-sm-4">
                     <div class="thumbnail">
@@ -70,21 +90,6 @@
                     </div>
                 </div>
             {/foreach}
-            {if $wishCheck}
-                <div class="col-md-4 hidden-sm hidden-xs">
-                    <div class="thumbnail large-caption">
-                        <div class="caption">
-                            <div class="row">
-                                <h4 class="col-md-12">Nieuwe Wens</h4>
-                                <a href="/Wishes/action=open_wish" class="btn btn-info btn-dashboard">
-                                    Voeg wens toe
-                                    <span class="glyphicon glyphicon-plus btn-dashboard btn-text"></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {/if}
         {else}
             <div class="center-block text-center"><p>Je hebt geen wensen<br>
                     <a href="/">Voeg wensen toe</a></p></div>
@@ -98,21 +103,9 @@
     </div>
     <div class="row dashboard-row">
         {if isset($talents)}
-            {foreach from=$talents item=$value}
-                <div class="col-md-4">
-                    <div class="thumbnail">
-                        <div class="caption">
-                            <div class="row">
-                                <label class="col-md-4">Naam:</label>
-                                <label>{htmlspecialchars($value->name)}</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {/foreach}
             {if $talentCheck}
                 <div class="col-md-4 hidden-sm hidden-xs">
-                    <div class="thumbnail large-caption">
+                    <div class="thumbnail">
                         <div class="caption">
                             <div class="row">
                                 <h4 class="col-md-12">Nieuw talent</h4>
@@ -125,6 +118,18 @@
                     </div>
                 </div>
             {/if}
+            {foreach from=$talents item=$value}
+                <div class="col-md-4">
+                    <div class="thumbnail">
+                        <div class="caption">
+                            <div class="row">
+                                <label class="col-md-4">Naam:</label>
+                                <label>{htmlspecialchars($value->name)}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {/foreach}
         {else}
             <div class="center-block text-center"><p>Je hebt geen wensen<br>
                     <a href="/">Voeg wensen toe</a></p></div>

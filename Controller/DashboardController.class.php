@@ -76,8 +76,10 @@ class DashboardController
                 $str .= " talent in";
             }
         }
-
-        return $prefix . $str;
+        if(!empty($str)){
+            return $prefix . $str;
+        }
+        return $str;
     }
 
     private function getMyWishes(){
