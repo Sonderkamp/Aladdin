@@ -9,7 +9,7 @@
 class User
 {
     public $email, $isAdmin, $name, $surname, $token, $address,
-        $handicap, $postalcode, $country, $city, $dob, $gender, $displayName, $initials;
+        $handicap, $postalcode, $country, $city, $dob, $gender, $displayName, $initials, $blocked;
 
     public function validate($username, $password)
     {
@@ -578,6 +578,18 @@ max(adminBlock.BlockDate) AS max_date
     {
         return $this->email;
     }
+
+    public function getBlocked()
+    {
+        return $this->blocked;
+    }
+
+    public function setBlocked($blocked)
+    {
+        $this->blocked = $blocked;
+    }
+
+
 
 
 }

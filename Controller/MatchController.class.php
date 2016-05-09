@@ -10,12 +10,13 @@ class MatchController
 {
 
     private $wishRepository;
-    private $talenRepository;
+    private $talenRepository, $reportRepository;
 
     public function __construct()
     {
         $this->wishRepository = new WishRepository();
         $this->talenRepository = new TalentRepository();
+        $this->reportRepository = new ReportRepository();
     }
 
     public function run()
@@ -27,6 +28,7 @@ class MatchController
                     $this->open_match_view();
                     break;
                 default:
+                    echo $_GET["action"];
                     apologize("404 not found, Go back to my wishes");
                     break;
             }
@@ -44,7 +46,41 @@ class MatchController
 
         $possibleMatches = $this->wishRepository->getAllWishesWithTag($allTalents);
 
-        render("match_view.tpl", ["currentPage" => "match", "possibleMatches" => $possibleMatches]);
+        $report = $this->reportRepository->getUsersIHaveReported($_SESSION["user"]->email);
+
+        $displayNames = array();
+        foreach ($report as $item) {
+            if ($item instanceof Report) {
+                $user = $item->getReported();
+                if ($user instanceof User) {
+                    $displayNames[] = $user->getDisplayName();
+                };
+            }
+        }
+
+        $canAddWish = $this->wishRepository->canAddWish($_SESSION["user"]->email);
+        $displayName = $user->getDisplayName();
+
+        $report = $this->reportRepository->getUsersIHaveReported($_SESSION["user"]->email);
+
+        $displayNames = array();
+        foreach ($report as $item) {
+            if ($item instanceof Report) {
+                $user = $item->getReported();
+                if ($user instanceof User) {
+                    $displayNames[] = $user->getDisplayName();
+                };
+            }
+        }
+
+        $_SESSION["current"] = "match";
+
+        render("wishOverview.tpl",
+            ["title" => "Vervulde wensen overzicht", "wishes" => $possibleMatches,
+                "canAddWish" => $canAddWish, "currentPage" => "match","displayName" => $displayName,"reported" => $displayNames]);
+
+
+//        render("match_view.tpl", ["currentPage" => "match", "possibleMatches" => $possibleMatches,"reported" => $displayNames]);
     }
 
 

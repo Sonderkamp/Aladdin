@@ -51,6 +51,18 @@ class AdminUserController
     {
         $this->setCurrent("unhandled");
         $report = $this->reportRepository->get("new");
+
+        foreach ($report as $item) {
+            if ($item instanceof Report) {
+                $user = $item->getReported();
+                if ($user instanceof User) {
+                    if($this->userRepository->isBlocked($user->getEmail())){
+                        $user->setBlocked(true);
+                    }
+                };
+            }
+        }
+
         render("adminUser.tpl", ["reports" => $report, "current" => $this->getCurrent()]);
     }
 
@@ -61,7 +73,8 @@ class AdminUserController
         render("adminUser.tpl", ["reports" => $report, "current" => $this->getCurrent()]);
     }
 
-    public function check(){
+    public function check()
+    {
         $this->unhandledReports();
     }
 
@@ -73,9 +86,9 @@ class AdminUserController
 
             $reported = $this->reportRepository->get("single", $id);
             $reported = $reported[0];
-            if($reported instanceof Report){
+            if ($reported instanceof Report) {
                 $reported = $reported->getReported();
-                if($reported instanceof User){
+                if ($reported instanceof User) {
                     $displayName = $reported->getDisplayName();
                     $email = $this->userRepository->getUser($displayName)->getEmail();
                     $this->userRepository->blockUser($email);
@@ -105,6 +118,7 @@ class AdminUserController
                 break;
         }
     }
+
 
     public function setCurrent($page)
     {

@@ -103,5 +103,13 @@ class ReportRepository
         return $reports;
     }
 
+    public function getUsersIHaveReported($email){
+        $sql = "SELECT * FROM `reportedusers` WHERE `user_Reporter` = ?";
+        $parameters = array($email);
 
+        $result = Database::query_safe($sql,$parameters);
+        
+        return $this->create($result);
+    }
+    
 }
