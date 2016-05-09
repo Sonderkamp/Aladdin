@@ -36,37 +36,38 @@ class WishRepository
      */
     private function getReturnArray($queryResult)
     {
+        if(!empty($queryResult)) {
+            $returnArray = array();
 
-        $returnArray = array();
+            for ($i = 0; $i < count($queryResult); $i++) {
 
-        for ($i = 0; $i < count($queryResult); $i++) {
+                if (!isset($queryResult[$i]["max_date"])) {
+                    $queryResult[$i]["max_date"] = null;
+                }
 
-            if (!isset($queryResult[$i]["max_date"])) {
-                $queryResult[$i]["max_date"] = null;
+                $queryResult[$i]["Content"] = $this->checkWishContent($queryResult[$i]["Content"]);
+
+                $newUser = $this->getUser($queryResult[$i]["User"]);
+                $completed = false;
+                if ($queryResult[$i]["Status"] == "Vervuld") {
+                    $completed = true;
+                }
+
+                $returnArray[$i] = new Wish(
+                    $queryResult[$i]["Id"],
+                    $newUser,
+                    $queryResult[$i]["Title"],
+                    $completed,
+                    $queryResult[$i]["Content"],
+                    $queryResult[$i]["IsAccepted"],
+                    $queryResult[$i]["max_date"],
+                    $queryResult[$i]["Date"],
+                    $queryResult[$i]["Status"]
+                );
             }
 
-            $queryResult[$i]["Content"] = $this->checkWishContent($queryResult[$i]["Content"]);
-
-            $newUser = $this->getUser($queryResult[$i]["User"]);
-            $completed = false;
-            if ($queryResult[$i]["Status"] == "Vervuld") {
-                $completed = true;
-            }
-
-            $returnArray[$i] = new Wish(
-                $queryResult[$i]["Id"],
-                $newUser,
-                $queryResult[$i]["Title"],
-                $completed,
-                $queryResult[$i]["Content"],
-                $queryResult[$i]["IsAccepted"],
-                $queryResult[$i]["max_date"],
-                $queryResult[$i]["Date"],
-                $queryResult[$i]["Status"]
-            );
+            return $returnArray;
         }
-
-        return $returnArray;
     }
 
     public function getUser($email)

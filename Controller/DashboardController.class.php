@@ -61,7 +61,7 @@ class DashboardController
     {
         $prefix = "<strong>Pas op!</strong> U heeft uw profiel nog niet voltooid. Vul alstublieft nog ";
         $str = "";
-        if ($wishAmount <= $this->wish_limit) {
+        if ($wishAmount <= $this->wish_limit && $wishAmount >= 0) {
             $str .= $wishAmount;
             if ($wishAmount > 1) {
                 $str .= " wensen in";
@@ -71,7 +71,7 @@ class DashboardController
         }
 
 
-        if ($talentAmount <= $this->talent_limit) {
+        if ($talentAmount <= $this->talent_limit && $talentAmount >= 0) {
 
             if ($str != "") {
                 $str .= " en vul ";

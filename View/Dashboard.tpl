@@ -94,12 +94,12 @@
             {/foreach}
         {else}
             <div class="center-block text-center"><p>Je hebt geen wensen<br>
-                    <a href="/">Voeg wensen toe</a></p></div>
+                    <a href="/Wishes/action=open_wish">Voeg wensen toe</a></p></div>
         {/if}
     </div>
     <div class="row">
         <h3 class="col-xs-6 col-sm-4 col-md-12 dashboard-header">Mijn talenten</h3>
-        <a href="/Wishes/action=open_wish" class="btn btn-info col-xs-1 visible-sm visible-xs">
+        <a href="/Talents/p=t" class="btn btn-info col-xs-1 visible-sm visible-xs">
             <span class="glyphicon glyphicon-plus"></span>
         </a>
     </div>
@@ -110,7 +110,7 @@
                     <div class="caption">
                         <div class="row">
                             <h4 class="col-md-12">Nieuw talent</h4>
-                            <a href="/Wishes/action=open_wish" class="btn btn-info btn-dashboard">
+                            <a href="/Talents/p=t" class="btn btn-info btn-dashboard">
                                 Voeg talent toe
                                 <span class="glyphicon glyphicon-plus btn-dashboard btn-text"></span>
                             </a>
@@ -132,7 +132,7 @@
             {/foreach}
         {else}
             <div class="center-block text-center"><p>Je hebt geen wensen<br>
-                    <a href="/">Voeg wensen toe</a></p></div>
+                    <a href="/Talents/p=t">Voeg talenten toe</a></p></div>
         {/if}
     </div>
 </div>
