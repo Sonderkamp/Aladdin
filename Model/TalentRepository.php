@@ -519,7 +519,7 @@ class TalentRepository
         ("select Name as name
           from talent as t
           inner join talent_has_user as tu on t.Id = tu.talent_Id
-          where tu.user_Email = ?", array($user));
+          where tu.user_Email = ? and t.IsRejected = ?", array($user, 1));
 
         return $result;
     }
@@ -527,7 +527,7 @@ class TalentRepository
     public function getSynonymsOfTalents($talent)
     {
         $synoymID = array();
-        
+
         foreach ($talent as $item) {
             if ($item instanceof Talent) {
                 $synoymID[] = $item->synonym_of;
@@ -535,11 +535,12 @@ class TalentRepository
         }
 
         $talents = $this->inCreator($synoymID);
-        $result = Database::query("select * from talent where Id IN $talents");
+        $result = Database::query("select * from talent where Id IN $talents AND t.IsRejected = 1");
         return $this->createTalentObject($result);
     }
 
-    public function createTalentObject($result){
+    public function createTalentObject($result)
+    {
         $returnArray = array();
 
         for ($i = 0; $i < count($result); $i++) {
