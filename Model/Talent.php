@@ -8,9 +8,9 @@
  */
 class Talent
 {
-    public $id, $name, $creation_date, $acceptance_date, $is_rejected, $moderator_username, $user_email;
+    public $id, $name, $creation_date, $acceptance_date, $is_rejected, $moderator_username, $user_email, $synonyms;
 
-    public function __construct($id, $name, $creation_date, $acceptance_date, $is_rejected, $moderator_username, $user_email) {
+    public function __construct($id, $name, $creation_date, $acceptance_date, $is_rejected, $moderator_username, $user_email, $synonyms) {
         $this->id = $id;
         $this->name = $name;
         $this->creation_date = $creation_date;
@@ -18,11 +18,7 @@ class Talent
         $this->is_rejected = $is_rejected;
         $this->moderator_username = $moderator_username;
         $this->user_email = $user_email;
-    }
-
-    public function getName()
-    {
-        return $this->name;
+        $this->synonyms = $synonyms;
     }
 
     public function getId()

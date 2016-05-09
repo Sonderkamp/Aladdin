@@ -301,10 +301,10 @@
                     <div class="modal-body">
                         <form action="admintalents" method="post">
                             <fieldset class="form-group col-xs-5">
-                                <label for="exampleSelect2">Geen synoniem</label>
+                                <label for="exampleSelect2">Wel synoniem</label>
                                 <select multiple class="form-control" id="exampleSelect2">
-                                    {foreach from=$talents item=talent}
-                                        <option value="{htmlentities(trim($talent->id),ENT_QUOTES)}">{htmlentities(trim($talent->name),ENT_QUOTES)}</option>
+                                    {foreach from=$talent->synonyms item=synonym}
+                                        <option value="{htmlentities(trim($synonym),ENT_QUOTES)}">{$synonym}</option>
                                     {/foreach}
                                 </select>
                             </fieldset>
@@ -318,10 +318,10 @@
                                 </button>
                             </div>
                             <fieldset class="form-group col-xs-5">
-                                <label for="exampleSelect2">Wel synoniem</label>
+                                <label for="exampleSelect2">Geen synoniem</label>
                                 <select multiple class="form-control" id="exampleSelect2">
-                                    {foreach from=$talents item=talent}
-                                        <option value="{htmlentities(trim($talent->id),ENT_QUOTES)}">{htmlentities(trim($talent->name),ENT_QUOTES)}</option>
+                                    {foreach from=$talents item=talent2}
+                                        <option value="{htmlentities(trim($talent2->id),ENT_QUOTES)}">{htmlentities(trim($talent2->name),ENT_QUOTES)}</option>
                                     {/foreach}
                                 </select>
                             </fieldset>

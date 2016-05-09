@@ -220,7 +220,7 @@ class TalentController
                 foreach ($this->talent_repository->getTalents() as $talent) {
                     if (strtolower($talent->name) == strtolower($new_talent)) {
 
-                        $_SESSION["wrn_talent"] = "Het talent " . $new_talent . " al toegevoegd, aangevraagd of geweigerd. Het talent wordt toegevoegd zodra het nog geaccepteerd word.";
+                        $_SESSION["wrn_talent"] = "Het talent " . $new_talent . " is al toegevoegd, aangevraagd of geweigerd. Indien het talent is geweigerd wordt deze toegevoegd zodra het nog geaccepteerd word.";
 
                         $this->talent_repository->addTalentToUser($talent->id);
                         $correct = false;
