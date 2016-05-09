@@ -470,3 +470,11 @@ blockquote footer, blockquote small, blockquote .small {
     background-color: brown;
     border-color: brown;
 }
+
+.list-arrows {
+    padding-top: 50px;
+}
+
+.small-margin-bottom {
+    margin-bottom: 5px;
+}

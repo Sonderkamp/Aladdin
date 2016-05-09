@@ -21,32 +21,34 @@
                                 <th>Alle talenten</th>
                                 <th>Is geaccepteerd</th>
                                 <th>Gecheckt door</th>
-                                <th>Synoniem van</th>
+                                <th></th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {foreach from=$all_talents item=talent}
                                 <tr>
-                                    <td class="col-xs-3 col-sm-3 col-md-3 col-lg-3">{htmlentities(trim($talent->name),ENT_QUOTES)}</td>
+                                    <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">{htmlentities(trim($talent->name),ENT_QUOTES)}</td>
                                     {if !Empty(htmlentities(trim($talent->moderator_username),ENT_QUOTES))}
-                                        <td class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                        <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                             {if htmlentities(trim($talent->is_rejected),ENT_QUOTES) == true}
                                                 Ja
                                             {else}
                                                 Nee
                                             {/if}
                                         </td>
-                                        <td class="col-xs-3 col-sm-3 col-md-3 col-lg-3">{htmlentities(trim($talent->moderator_username),ENT_QUOTES)}</td>
+                                        <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">{htmlentities(trim($talent->moderator_username),ENT_QUOTES)}</td>
                                     {else}
-                                        <td class="col-xs-3 col-sm-3 col-md-3 col-lg-3">-</td>
-                                        <td class="col-xs-3 col-sm-3 col-md-3 col-lg-3">-</td>
+                                        <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">-</td>
+                                        <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">-</td>
                                     {/if}
-                                    {if !Empty(htmlentities(trim($talent->synonym_name),ENT_QUOTES))}
-                                        <td class="col-xs-3 col-sm-3 col-md-3 col-lg-3">{htmlentities(trim($talent->synonym_name),ENT_QUOTES)}</td>
-                                    {else}
-                                        <td class="col-xs-3 col-sm-3 col-md-3 col-lg-3">-</td>
-                                    {/if}
+                                    <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                        {if !Empty(htmlentities(trim($talent->moderator_username),ENT_QUOTES))}
+                                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}synonym">
+                                                <span class="glyphicon glyphicon-wrench"></span>
+                                            </button>
+                                        {/if}
+                                    </td>
                                     <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
                                         {if !Empty(htmlentities(trim($talent->moderator_username),ENT_QUOTES))}
                                             <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}">
@@ -265,23 +267,6 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-3" for="synonym">Synoniem van:</label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" id="synonym" placeholder="Synoniem van" name="admin_talent_synonym">
-                                        <option value="-1">Geen</option>
-                                        {foreach from=$talents item=talent2}
-                                            {if htmlentities(trim($talent->id),ENT_QUOTES) != htmlentities(trim($talent2->id),ENT_QUOTES)}
-                                                {if htmlentities(trim($talent2->id),ENT_QUOTES) == htmlentities(trim($talent->synonym_of),ENT_QUOTES)}
-                                                    <option selected="selected" value="{htmlentities(trim($talent2->id),ENT_QUOTES)}">{htmlentities(trim($talent2->name),ENT_QUOTES)}</option>
-                                                {else}
-                                                    <option value="{htmlentities(trim($talent2->id),ENT_QUOTES)}">{htmlentities(trim($talent2->name),ENT_QUOTES)}</option>
-                                                {/if}
-                                            {/if}
-                                        {/foreach}
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <div class="col-sm-offset-3 col-sm-9">
                                     <div class="checkbox">
                                         {if htmlentities(trim($talent->is_rejected),ENT_QUOTES) == true}
@@ -300,6 +285,51 @@
                             </button>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal synonym-->
+        <div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}synonym" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Synoniemen beheren van "{htmlentities(trim($talent->name),ENT_QUOTES)}"</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="admintalents" method="post">
+                            <fieldset class="form-group col-xs-5">
+                                <label for="exampleSelect2">Geen synoniem</label>
+                                <select multiple class="form-control" id="exampleSelect2">
+                                    {foreach from=$talents item=talent}
+                                        <option value="{htmlentities(trim($talent->id),ENT_QUOTES)}">{htmlentities(trim($talent->name),ENT_QUOTES)}</option>
+                                    {/foreach}
+                                </select>
+                            </fieldset>
+                            <div class="list-arrows col-xs-2 text-center">
+                                <button name="add_synonym_button" class="btn btn-default btn-sm move-left small-margin-bottom" value="remove">
+                                    <span class="glyphicon glyphicon-chevron-left"></span>
+                                </button>
+
+                                <button name="remove_synonym_button" class="btn btn-default btn-sm move-right" value="add">
+                                    <span class="glyphicon glyphicon-chevron-right"></span>
+                                </button>
+                            </div>
+                            <fieldset class="form-group col-xs-5">
+                                <label for="exampleSelect2">Wel synoniem</label>
+                                <select multiple class="form-control" id="exampleSelect2">
+                                    {foreach from=$talents item=talent}
+                                        <option value="{htmlentities(trim($talent->id),ENT_QUOTES)}">{htmlentities(trim($talent->name),ENT_QUOTES)}</option>
+                                    {/foreach}
+                                </select>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default infoLeft" data-dismiss="modal">Sluiten</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -367,3 +397,4 @@
     </div>
 </div>
 {/foreach}
+

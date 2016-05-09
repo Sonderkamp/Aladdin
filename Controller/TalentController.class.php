@@ -55,10 +55,15 @@ class TalentController
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-            if (!Empty($_POST["talent_name"])) {
+            if (Isset($_POST["talent_name"])) {
 
-                $this->addTalent($_POST["talent_name"]);
+                if (!Empty($_POST["talent_name"])) {
 
+                    $this->addTalent($_POST["talent_name"]);
+                } else {
+
+                    $_SESSION["err_talent"] = "Vul a.u.b. een waarde in!";
+                }
 
                 $_SESSION["current_talent_page"] = "t";
 

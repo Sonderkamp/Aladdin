@@ -116,7 +116,7 @@ class AdminTalentController
 
                 if(!preg_match('/[^a-z\s]/i', $name)) {
 
-                    $this->talent_repository->updateTalent($name, $accepted, $this->checkSynonym(), $_POST["admin_talent_id"]);
+                    $this->talent_repository->updateTalent($name, $accepted, $_POST["admin_talent_id"]);
                 } else{
 
                     //Er mogen alleen letters en spaties worden gebruikt in het talent!
@@ -132,7 +132,7 @@ class AdminTalentController
 
             $talent = $this->talent_repository->getTalents(null,null,null,$_POST["deny_id"]);
 
-            $this->talent_repository->updateTalent($talent->name,0,$talent->synonym_of,$_POST["deny_id"]);
+            $this->talent_repository->updateTalent($talent->name,0,$_POST["deny_id"]);
 
             $message_id = $this->message_model->sendMessage("Admin", $talent->user_email, "Het talent '" . $talent->name . "' is afgewezen", $_POST["deny_message"]);
             $this->message_model->setLink("", "Talent", $message_id);
@@ -146,7 +146,7 @@ class AdminTalentController
             
             $talent = $this->talent_repository->getTalents(null,null,null,$_POST["accept_id"]);
             
-            $this->talent_repository->updateTalent($talent->name,1,$talent->synonym_of,$_POST["accept_id"]);
+            $this->talent_repository->updateTalent($talent->name,1,$_POST["accept_id"]);
 
             $this->talent_repository->addTalentToUser($_POST["accept_id"],$talent->user_email);
 
@@ -159,14 +159,14 @@ class AdminTalentController
         }
     }
 
-    private function checkSynonym(){
-
-        if(!empty($_POST["admin_talent_synonym"]) && $_POST["admin_talent_synonym"] != "-1"){
-
-            return $_POST["admin_talent_synonym"];
-        } else {
-
-            return null;
-        }
-    }
+//    private function checkSynonym(){
+//
+//        if(!empty($_POST["admin_talent_synonym"]) && $_POST["admin_talent_synonym"] != "-1"){
+//
+//            return $_POST["admin_talent_synonym"];
+//        } else {
+//
+//            return null;
+//        }
+//    }
 }

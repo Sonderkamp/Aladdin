@@ -49,8 +49,7 @@ class TalentRepository
           `talent`.`AcceptanceDate`,
           `talent`.`IsRejected`,
           `talent`.`moderator_Username`,
-          `talent`.`user_Email`,
-          `talent`.`synonym_of` 
+          `talent`.`user_Email`
           FROM `talent`";
         $suffix = " ORDER BY `talent`.`Name` ASC";
 
@@ -159,7 +158,7 @@ class TalentRepository
     }
 
     // Update
-    public function updateTalent($name, $isRejected, $synonym, $id)
+    public function updateTalent($name, $isRejected, $id)
     {
         if (!preg_match('/[^a-z\s]/i', $name)) {
 
@@ -167,16 +166,16 @@ class TalentRepository
 
                 Database::query_safe("
                   UPDATE `talent`
-                  SET `Name`=?,`IsRejected`=?,`moderator_Username`=?,`AcceptanceDate`=CURRENT_TIMESTAMP,`synonym_of`=?
+                  SET `Name`=?,`IsRejected`=?,`moderator_Username`=?,`AcceptanceDate`=CURRENT_TIMESTAMP
                   WHERE `Id`=?",
-                    Array($name, $isRejected, $_SESSION["admin"]->username, $synonym, $id));
+                    Array($name, $isRejected, $_SESSION["admin"]->username, $id));
             } else {
 
                 Database::query_safe("
                   UPDATE `talent`
-                  SET `Name`=?,`IsRejected`=?,`moderator_Username`=?,`AcceptanceDate`=NULL,`synonym_of`=?
+                  SET `Name`=?,`IsRejected`=?,`moderator_Username`=?,`AcceptanceDate`=NULL
                   WHERE `Id`=?",
-                    Array($name, $isRejected, $_SESSION["admin"]->username, $synonym, $id));
+                    Array($name, $isRejected, $_SESSION["admin"]->username, $id));
             }
 
         }
@@ -206,8 +205,7 @@ class TalentRepository
                 $result[$i]["AcceptanceDate"],
                 $result[$i]["IsRejected"],
                 $result[$i]["moderator_Username"],
-                $result[$i]["user_Email"],
-                $result[$i]["synonym_of"]
+                $result[$i]["user_Email"]
             );
         }
 
@@ -223,8 +221,7 @@ class TalentRepository
             $result[0]["AcceptanceDate"],
             $result[0]["IsRejected"],
             $result[0]["moderator_Username"],
-            $result[0]["user_Email"],
-            $result[0]["synonym_of"]
+            $result[0]["user_Email"]
         );
 
         return $talent;

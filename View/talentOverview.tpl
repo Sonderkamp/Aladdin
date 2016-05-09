@@ -149,10 +149,8 @@
                                                             <td class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{htmlentities(trim($talent->name),ENT_QUOTES)}</td>
                                                             <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
                                                                 <form action="/talents" method="post">
-                                                                    <input type="hidden" name="add_id"
-                                                                           value="{htmlentities(trim($talent->id),ENT_QUOTES)}"/>
-                                                                    <button type="submit" name="submit"
-                                                                            class="btn btn-add btn-sm">
+                                                                    <input type="hidden" name="add_id" value="{htmlentities(trim($talent->id),ENT_QUOTES)}"/>
+                                                                    <button type="submit" name="submit" class="btn btn-add btn-sm">
                                                                         <span class="glyphicon glyphicon-ok"></span>
                                                                     </button>
                                                                 </form>
@@ -239,21 +237,12 @@
                                                                 </div>
                                                             {/if}
                                                             {if !empty($talent_name)}
-                                                                <form class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
-                                                                      action="/talents" method="post">
+                                                                <form class="col-xs-12 col-sm-12 col-md-12 col-lg-12" action="/talents" method="post">
                                                                     <div class="form-group row">
-                                                                        <label for="name"
-                                                                               class="col-sm-2 form-control-label">Naam
-                                                                            talent</label>
+                                                                        <label for="name" class="col-sm-2 form-control-label">Naam talent</label>
                                                                         <div class="col-sm-10">
-                                                                            <input type="text" name="talent_name"
-                                                                                   class="form-control" id="name"
-                                                                                   placeholder="Naam"
-                                                                                   value="{$talent_name}">
-                                                                            <small class="text-muted">Dit is de naam van
-                                                                                het talent. Deze naam moet voldoen aan
-                                                                                de algemene voorwaarden.
-                                                                            </small>
+                                                                            <input type="text" name="talent_name" class="form-control" id="name" placeholder="Naam" value="{$talent_name}">
+                                                                            <small class="text-muted">Dit is de naam van het talent. Deze naam moet voldoen aan de algemene voorwaarden.</small>
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group row">
@@ -268,17 +257,10 @@
                                                                 <form class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
                                                                       action="/talents" method="post">
                                                                     <div class="form-group row">
-                                                                        <label for="name"
-                                                                               class="col-sm-2 form-control-label">Naam
-                                                                            talent</label>
+                                                                        <label for="name" class="col-sm-2 form-control-label">Naam talent</label>
                                                                         <div class="col-sm-10">
-                                                                            <input type="text" name="talent_name"
-                                                                                   class="form-control" id="name"
-                                                                                   placeholder="Naam">
-                                                                            <small class="text-muted">Dit is de naam van
-                                                                                het talent. Deze naam moet voldoen aan
-                                                                                de algemene voorwaarden.
-                                                                            </small>
+                                                                            <input type="text" name="talent_name" class="form-control" id="name" placeholder="Naam">
+                                                                            <small class="text-muted">Dit is de naam van het talent. Deze naam moet voldoen aan de algemene voorwaarden.</small>
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group row">
