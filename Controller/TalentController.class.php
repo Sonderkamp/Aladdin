@@ -8,7 +8,7 @@
  */
 class TalentController
 {
-    private $message_model, $page, $unaccepted_talents, $all_talents_number, $talents, $talents_user, $talent_repository, $talent_numbers, $current_talent_number, $user_talents_number, $current_user_talent_number, $talent_name, $talent_error, $talent_warning, $requested_talents, $requested_talents_number, $current_requested_talent_number;
+    private $message_model, $page, $talents, $talents_user, $talent_repository, $talent_numbers, $current_talent_number, $user_talents_number, $current_user_talent_number, $talent_name, $talent_error, $talent_warning, $requested_talents, $requested_talents_number, $current_requested_talent_number;
 
     public function __construct()
     {
@@ -18,11 +18,9 @@ class TalentController
         $this->talent_repository = new TalentRepository();
         $this->message_model = new MessageModel();
 
-        $this->all_talents_number = ceil($this->talent_repository->checkNumberOfAllTalents()/10);
-        $this->user_talents_number = ceil($this->talent_repository->checkNumberOfTalentsFromUser()/10);
-        $this->talent_numbers = ceil($this->talent_repository->checkNumberOfTalents()/10);
-        $this->requested_talents_number = ceil($this->talent_repository->checkNumberOfRequestedTalents()/10);
-        $this->unaccepted_talents = $this->talent_repository->getAllRequestedTalents();
+        $this->user_talents_number = ceil($this->talent_repository->getNumberOfTalents(true)/10);
+        $this->talent_numbers = ceil($this->talent_repository->getNumberOfTalents(null,true)/10);
+        $this->requested_talents_number = ceil($this->talent_repository->getNumberOfTalents(null,null,true)/10);
     }
 
     public function run()
@@ -35,7 +33,7 @@ class TalentController
             ["title" => "Talenten",
                 "talents" => $this->talents,
                 "user_talents" => $this->talents_user,
-                "number_of_talents" => $this->talent_repository->checkNumberOfTalentsFromUser(),
+                "number_of_talents" => $this->talent_repository->getNumberOfTalents(true),
                 "talent_error" => "set",
                 "user_talents_number" => $this->user_talents_number,
                 "current_user_talent_number" => $this->current_user_talent_number,
@@ -57,7 +55,7 @@ class TalentController
             if (!Empty($_POST["talent_name"])) {
                 if(strlen($_POST["talent_name"]) > 0 && strlen($_POST["talent_name"]) <= 45){
                     $correct = true;
-                    foreach($this->talent_repository->getAllTalents(false) as $talent){
+                    foreach($this->talent_repository->getTalents() as $talent){
                         if(strtolower($talent->name) == strtolower($_POST["talent_name"])){
                             $_SESSION["talent_name"] = $_POST["talent_name"];
                             $_SESSION["err_talent"] = "";
@@ -134,46 +132,46 @@ class TalentController
 
             if (!Empty($_GET["m"])) {
                 if($_GET["m"] > 0 & $_GET["m"] <= $this->user_talents_number) {
-                    $this->talents_user = $this->talent_repository->getSelectionUserTalents($_GET["m"]);
+                    $this->talents_user = $this->talent_repository->getTalents($_GET["m"],null,null,null,true);
                     $this->current_user_talent_number = $_GET["m"];
                     $_SESSION["talent_m"] = $this->current_user_talent_number;
                 } else{
-                    $this->talents_user = $this->talent_repository->getSelectionUserTalents(1);
+                    $this->talents_user = $this->talent_repository->getTalents(1,null,null,null,true);
                     $this->current_user_talent_number = 1;
                     $_SESSION["talent_m"] = $this->current_user_talent_number;
                 }
             } else {
-                $this->talents_user = $this->talent_repository->getSelectionUserTalents(1);
+                $this->talents_user = $this->talent_repository->getTalents(1,null,null,null,true);
                 $this->current_user_talent_number = 1;
             }
 
             if (!Empty($_GET["a"])) {
                 if($_GET["a"] > 0 & $_GET["a"] <= $this->talent_numbers) {
-                    $this->talents = $this->talent_repository->getSelectionTalents($_GET["a"]);
+                    $this->talents = $this->talent_repository->getTalents($_GET["a"],null,true);
                     $this->current_talent_number = $_GET["a"];
                     $_SESSION["talent_a"] = $this->current_talent_number;
                 } else{
-                    $this->talents = $this->talent_repository->getSelectionTalents(1);
+                    $this->talents = $this->talent_repository->getTalents(1,null,true);
                     $this->current_talent_number = 1;
                     $_SESSION["talent_a"] = $this->current_talent_number;
                 }
             } else {
-                $this->talents = $this->talent_repository->getSelectionTalents(1);
+                $this->talents = $this->talent_repository->getTalents(1,null,true);
                 $this->current_talent_number = 1;
             }
 
             if (!Empty($_GET["t"])) {
                 if($_GET["t"] > 0 & $_GET["t"] <= $this->requested_talents_number) {
-                    $this->requested_talents = $this->talent_repository->getRequestedTalents($_GET["t"]);
+                    $this->requested_talents = $this->talent_repository->getTalents($_GET["t"],null,null,null,null,true);
                     $this->current_requested_talent_number = $_GET["t"];
                     $_SESSION["talent_t"] = $this->current_requested_talent_number;
                 } else{
-                    $this->requested_talents = $this->talent_repository->getRequestedTalents(1);
+                    $this->requested_talents = $this->talent_repository->getTalents(1,null,null,null,null,true);
                     $this->current_requested_talent_number = 1;
                     $_SESSION["talent_t"] = $this->current_requested_talent_number;
                 }
             } else {
-                $this->requested_talents = $this->talent_repository->getRequestedTalents(1);
+                $this->requested_talents = $this->talent_repository->getTalents(1,null,null,null,null,true);
                 $this->current_requested_talent_number = 1;
             }
         }
@@ -186,7 +184,7 @@ class TalentController
         if(!Empty($_SESSION["talent_m"])){
             if($this->user_talents_number > 1){
                 $this->current_user_talent_number = $_SESSION["talent_m"];
-                $this->talents_user = $this->talent_repository->getSelectionUserTalents($_SESSION["talent_m"]);
+                $this->talents_user = $this->talent_repository->getTalents($_SESSION["talent_m"],null,null,null,true);
             } else{
                 $_SESSION["talent_m"] = $this->user_talents_number;
             }
@@ -194,7 +192,7 @@ class TalentController
         if(!Empty($_SESSION["talent_a"])){
             if($this->talent_numbers > 1){
                 $this->current_talent_number = $_SESSION["talent_a"];
-                $this->talents = $this->talent_repository->getSelectionTalents($_SESSION["talent_a"]);
+                $this->talents = $this->talent_repository->getTalents($_SESSION["talent_a"],null,true);
             } else{
                 $_SESSION["talent_a"] = $this->talent_numbers;
             }
@@ -202,7 +200,7 @@ class TalentController
         if(!Empty($_SESSION["talent_t"])){
             if($this->requested_talents_number > 1){
                 $this->current_requested_talent_number = $_SESSION["talent_t"];
-                $this->requested_talents = $this->talent_repository->getRequestedTalents($_SESSION["talent_t"]);
+                $this->requested_talents = $this->talent_repository->getTalents($_SESSION["talent_t"],null,null,null,null,true);
             } else{
                 $_SESSION["talent_t"] = $this->requested_talents_number;
             }

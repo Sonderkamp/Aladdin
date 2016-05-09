@@ -28,28 +28,28 @@
                         <tbody>
                             {foreach from=$all_talents item=talent}
                                 <tr>
-                                    <td class="col-xs-3 col-sm-3 col-md-3 col-lg-3">{$talent->name}</td>
-                                    {if !Empty($talent->moderator_username)}
+                                    <td class="col-xs-3 col-sm-3 col-md-3 col-lg-3">{htmlentities(trim($talent->name),ENT_QUOTES)}</td>
+                                    {if !Empty(htmlentities(trim($talent->moderator_username),ENT_QUOTES))}
                                         <td class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                            {if $talent->is_rejected == true}
+                                            {if htmlentities(trim($talent->is_rejected),ENT_QUOTES) == true}
                                                 Ja
                                             {else}
                                                 Nee
                                             {/if}
                                         </td>
-                                        <td class="col-xs-3 col-sm-3 col-md-3 col-lg-3">{$talent->moderator_username}</td>
+                                        <td class="col-xs-3 col-sm-3 col-md-3 col-lg-3">{htmlentities(trim($talent->moderator_username),ENT_QUOTES)}</td>
                                     {else}
                                         <td class="col-xs-3 col-sm-3 col-md-3 col-lg-3">-</td>
                                         <td class="col-xs-3 col-sm-3 col-md-3 col-lg-3">-</td>
                                     {/if}
-                                    {if !Empty($talent->synonym_name)}
-                                        <td class="col-xs-3 col-sm-3 col-md-3 col-lg-3">{$talent->synonym_name}</td>
+                                    {if !Empty(htmlentities(trim($talent->synonym_name),ENT_QUOTES))}
+                                        <td class="col-xs-3 col-sm-3 col-md-3 col-lg-3">{htmlentities(trim($talent->synonym_name),ENT_QUOTES)}</td>
                                     {else}
                                         <td class="col-xs-3 col-sm-3 col-md-3 col-lg-3">-</td>
                                     {/if}
                                     <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                                        {if !Empty($talent->moderator_username)}
-                                            <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', $talent->name)}">
+                                        {if !Empty(htmlentities(trim($talent->moderator_username),ENT_QUOTES))}
+                                            <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}">
                                                 <span class="glyphicon glyphicon-edit"></span>
                                             </button>
                                         {/if}
@@ -224,12 +224,12 @@
                             <tr>
                                 <td class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{$talent -> name}</td>
                                 <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                                    <button type="button" class="btn btn-add btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', $talent->name)}accept">
+                                    <button type="button" class="btn btn-add btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}accept">
                                         <span class="glyphicon glyphicon-ok"></span>
                                     </button>
                                 </td>
                                 <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                                    <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', $talent->name)}deny">
+                                    <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}deny">
                                         <span class="glyphicon glyphicon-remove"></span>
                                     </button>
                                 </td>
@@ -246,22 +246,22 @@
 
 <!-- Modal Edit-->
 {foreach from=$all_talents item=talent}
-    {if !Empty($talent->moderator_username)}
-        <div id="myModal{preg_replace('/\s+/', '', $talent->name)}" class="modal fade" role="dialog">
+    {if !Empty(htmlentities(trim($talent->moderator_username),ENT_QUOTES))}
+        <div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}" class="modal fade" role="dialog">
             <div class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Het talent {$talent->name} aanpassen</h4>
+                        <h4 class="modal-title">Het talent {htmlentities(trim($talent->name),ENT_QUOTES)} aanpassen</h4>
                     </div>
                     <form action="/admintalents" method="post">
-                        <input type="hidden" name="admin_talent_id" value="{$talent->id}">
+                        <input type="hidden" name="admin_talent_id" value="{htmlentities(trim($talent->id),ENT_QUOTES)}">
                         <div class="modal-body">
                             <div class="form-group">
                                 <label class="control-label col-sm-3" for="name">Nieuwe naam:</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="name" placeholder="Naam" name="admin_talent_name" value="{$talent->name}">
+                                    <input type="text" class="form-control" id="name" placeholder="Naam" name="admin_talent_name" value="{htmlentities(trim($talent->name),ENT_QUOTES)}">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -270,11 +270,11 @@
                                     <select class="form-control" id="synonym" placeholder="Synoniem van" name="admin_talent_synonym">
                                         <option value="-1">Geen</option>
                                         {foreach from=$talents item=talent2}
-                                            {if $talent->id != $talent2->id}
-                                                {if $talent2->id == $talent->synonym_of}
-                                                    <option selected="selected" value="{$talent2->id}">{$talent2->name}</option>
+                                            {if htmlentities(trim($talent->id),ENT_QUOTES) != htmlentities(trim($talent2->id),ENT_QUOTES)}
+                                                {if htmlentities(trim($talent2->id),ENT_QUOTES) == htmlentities(trim($talent->synonym_of),ENT_QUOTES)}
+                                                    <option selected="selected" value="{htmlentities(trim($talent2->id),ENT_QUOTES)}">{htmlentities(trim($talent2->name),ENT_QUOTES)}</option>
                                                 {else}
-                                                    <option value="{$talent2->id}">{$talent2->name}</option>
+                                                    <option value="{htmlentities(trim($talent2->id),ENT_QUOTES)}">{htmlentities(trim($talent2->name),ENT_QUOTES)}</option>
                                                 {/if}
                                             {/if}
                                         {/foreach}
@@ -284,7 +284,7 @@
                             <div class="form-group">
                                 <div class="col-sm-offset-3 col-sm-9">
                                     <div class="checkbox">
-                                        {if $talent->is_rejected == true}
+                                        {if htmlentities(trim($talent->is_rejected),ENT_QUOTES) == true}
                                             <label><input type="checkbox" checked="checked" name="admin_talent_is_rejected"> Is geaccepteerd</label>
                                         {else}
                                             <label><input type="checkbox" name="admin_talent_is_rejected"> Is geaccepteerd</label>
@@ -308,13 +308,13 @@
 
 <!-- Modal deny request-->
 {foreach from=$unaccepted_talents item=talent}
-<div id="myModal{preg_replace('/\s+/', '', $talent->name)}deny" class="modal fade" role="dialog">
+<div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}deny" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Wilt u het talentaanvraag {$talent->name} afwijzen?</h4>
+                <h4 class="modal-title">Wilt u het talentaanvraag {htmlentities(trim($talent->name),ENT_QUOTES)} afwijzen?</h4>
             </div>
             <form action="/admintalents" method="post">
                 <div class="modal-body">
@@ -325,7 +325,7 @@
                                 Rede afwijzing:
                             </div>
                             <div class="col-xs-9">
-                                <input type="hidden" value="{$talent->id}" name="deny_id"/>
+                                <input type="hidden" value="{htmlentities(trim($talent->id),ENT_QUOTES)}" name="deny_id"/>
                                 <input type="text" class="form-control" placeholder="Rede afwijzing" name="deny_message">
                             </div>
                         </p>
@@ -346,18 +346,18 @@
 
 <!-- Modal accept request-->
 {foreach from=$unaccepted_talents item=talent}
-<div id="myModal{preg_replace('/\s+/', '', $talent->name)}accept" class="modal fade" role="dialog">
+<div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}accept" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Wilt u het talentaanvraag {$talent->name} accepteren?</h4>
+                <h4 class="modal-title">Wilt u het talentaanvraag {htmlentities(trim($talent->name),ENT_QUOTES)} accepteren?</h4>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default infoLeft" data-dismiss="modal">Sluiten</button>
                 <form action="/admintalents" method="post">
-                <input type="hidden" value="{$talent->id}" name="accept_id"/>
+                <input type="hidden" value="{htmlentities(trim($talent->id),ENT_QUOTES)}" name="accept_id"/>
                     <button type="submit" name="submit" class="btn btn-add info">
                         <span class="glyphicon glyphicon-ok"></span> Accepteren
                     </button>

@@ -37,7 +37,7 @@ class MatchController
 
     public function open_match_view()
     {
-        $userTalents = $this->talenRepository->getUserTalents();
+        $userTalents = $this->talenRepository->getTalents(null,null,null,null,true);
 
         $synonmys = $this->talenRepository->getSynonymsOfTalents($userTalents);
         $allTalents = array_merge($userTalents,$synonmys);

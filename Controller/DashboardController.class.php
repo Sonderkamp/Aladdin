@@ -85,7 +85,7 @@ class DashboardController
     }
 
     private function getMyTalents(){
-        return $this->talentRepo->getUserTalents();
+        return $this->talentRepo->getTalents(null,null,null,null,true);
     }
 
     private function getWishAmount(){
@@ -93,7 +93,7 @@ class DashboardController
     }
 
     private function getTalentAmount(){
-        return $this->talentRepo->checkNumberOfTalentsFromUser();
+        return $this->talentRepo->getNumberOfTalents(true);
     }
 
     private function checkAmounts(){

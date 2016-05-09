@@ -67,7 +67,7 @@
                                                 {else}
                                                     <button type="button" class="btn btn-inbox btn-sm"
                                                             data-toggle="modal"
-                                                            data-target="#myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->name),ENT_QUOTES))}">
+                                                            data-target="#myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}">
                                                         <span class="glyphicon glyphicon-remove"></span>
                                                     </button>
                                                 {/if}
@@ -364,7 +364,7 @@
 
                                     <!-- Modal Remove-->
                                     {foreach from=$user_talents item=talent}
-                                    <div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->name),ENT_QUOTES))}" class="modal fade"
+                                    <div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}" class="modal fade"
                                          role="dialog">
                                         <div class="modal-dialog">\
                                             <!-- Modal content-->
