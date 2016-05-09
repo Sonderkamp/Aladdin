@@ -72,6 +72,29 @@
                                        maxlength="254">
                             </td>
                         </tr>
+                        <tr>
+
+                            <td>Wachtwoord:</td>
+                            <td>
+                            {literal}
+                                 <input type="password" name="password1" required
+                                                              required data-validation="custom"
+                                                              data-validation-regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\W]{8,}$"
+                                                              data-validation-error-msg="het wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter en een nummer bevatten.">
+                            {/literal}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Herhaal wachtwoord:</td>
+                            <td>
+                             {literal}
+                                 <input type="password" name="password2" required data-validation="confirmation"
+                                                                    data-validation-confirm="password1"
+                                                                    data-validation-error-msg="wachtwoorden komen niet overeen.">
+
+                            {/literal}
+                            </td>
+                        </tr>
 
                         <tr>
                             <td>Voornaam:</td>
@@ -92,7 +115,7 @@
                         </tr>
                         <tr>
                             <td>initialen:</td>
-                            <td><input type="text" name="initials"
+                            <td><input type="text" name="initial"
                                        required data-validation="custom"
                                        data-validation-regexp="^([a-zA-Z\.]+)$"
                                        data-validation-error-msg="Initialen mogen alleen letters en punten bevatten.">
