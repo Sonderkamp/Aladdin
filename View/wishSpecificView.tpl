@@ -21,9 +21,9 @@
 
             {if isset($previousPage)}
                 <li>
-                    <button class="btn btn-default button-color-green">
-                        <a href="http://{$previousPage}">Go Back</a>
-                    </button>
+                    <a href="http://{$previousPage}" class="btn btn-default button-color-green noPadding">
+                        Go Back
+                    </a>
                 </li>
             {/if}
 

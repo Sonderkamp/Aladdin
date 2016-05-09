@@ -78,6 +78,17 @@ class User
         return $ret;
     }
 
+    public function getAllMatchedDislaynames($user)
+    {
+        $res = Database::query_safe("select `Email`, `DisplayName` from user where Email = ANY (SELECT DISTINCT IF(`user_Receiver` = ? ,`user_Sender`,`user_Receiver`) FROM `message` WHERE `user_Sender` = ? OR `user_Receiver` = ?)", array($user->email, $user->email, $user->email));
+
+        $ret = [];
+        foreach ($res as $val) {
+            $ret[] = $val["DisplayName"];
+        }
+        return $ret;
+    }
+
     public function getUser($username)
     {
         $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
@@ -562,5 +573,11 @@ max(adminBlock.BlockDate) AS max_date
     {
         return $this->displayName;
     }
+
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
 
 }

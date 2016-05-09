@@ -46,14 +46,14 @@ class MailController
                         $this->renderInbox();
                     }
 
-                    $message = $this->messageModel->getMessage($_POST["reply"]);
+                    $message = $this->messageModel->getMessage($_POST["reply"], $_SESSION["user"]->email);
                     if ($message === false) {
                         $this->error = "Bericht bestaat niet.";
                         $this->renderInbox();
                     }
 
                     $user = new User();
-                    $names = $user->getAllDislaynames();
+                    $names = $user->getAllMatchedDislaynames($_SESSION["user"]);
                     if (($key = array_search($_SESSION["user"]->displayName, $names)) !== false) {
                         unset($names[$key]);
                     }
@@ -110,7 +110,7 @@ class MailController
                     case "new":
                         // get all DisplayNames
                         $user = new User();
-                        $names = $user->getAllDislaynames();
+                        $names = $user->getAllMatchedDislaynames($_SESSION["user"]);
                         if (($key = array_search($_SESSION["user"]->displayName, $names)) !== false) {
                             unset($names[$key]);
                         }

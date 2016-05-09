@@ -9,6 +9,13 @@
 class ReportRepository
 {
 
+    private $userRepository;
+
+    public function __construct()
+    {
+        $this->userRepository = new UserRepository();
+    }
+
     public function add(Report $report)
     {
         $sql = "INSERT INTO `reportedusers` (`user_Reporter`,`user_Reported`, `reportStatus_status`, `moderator_Username`, `wish_Id`, `Message`) VALUES (?,?,?,?,?,?)";
@@ -81,7 +88,9 @@ class ReportRepository
             $message = $item["Message"];
             $date = $item["CreationDate"];
             $reporter = $item["user_Reporter"];
+            $reporter = $this->userRepository->getUser($reporter);
             $reported = $item["user_Reported"];
+            $reported = $this->userRepository->getUser($reported);
             $status = $item["reportStatus_Status"];
             $moderator = $item["moderator_Username"];
             $wishID = $item["wish_Id"];

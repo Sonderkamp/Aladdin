@@ -310,8 +310,14 @@ class AccountController
 
 
         } else {
-            render("register.tpl", ["title" => "register"]);
+
+            if (empty($_GET["type"])) {
+                render("register.tpl", ["title" => "register"]);
+                exit();
+            }
+            render("register.tpl", ["title" => "register", "type" => $_GET["type"]]);
             exit();
+
         }
     }
 

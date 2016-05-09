@@ -4,117 +4,323 @@
 <!-- * Date: 7-Mar-16-->
 <!-- * Time: 12:42-->
 <!-- */-->
-
 <div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="profile-usertitle">
+                <div class="text-center">
+                    <b>{$user->displayName}</b>
+                </div>
+                <div class="text-center">
+                    {$user->email}
+                </div>
+            </div>
+            <br>
+        </div>
+        <div class="col-sm-9">
+            {if isset($errorc)}
+                <div id="err">
+                    <div class="form-error">Error: {htmlspecialchars($errorc)}</div>
+                </div>
+            {else}
+                <div id="err">
+                </div>
+            {/if}
+            {if isset($error)}
+                <div id="err2">
+                    <div class="form-error">Error: {htmlspecialchars($error)}</div>
+                </div>
+            {else}
+                <div id="err2">
+                </div>
+            {/if}
 
+            {if isset($success)}
+                <div id="suc">
+                    <div class="form-error form-success">{htmlspecialchars($success)}</div>
+                </div>
+            {else}
+                <div id="suc">
+                </div>
+            {/if}
 
-    <body>
-    <div class=" col-xs-12 col-lg-2">
-
-
+        </div>
     </div>
-    <div class="col-lg-4 ">
-        <h5>Mijn gegevens</h5>
+    <div class="row">
+        <div class="col-sm-3">
+            <ul class="nav nav-pills nav-stacked">
+                <li class="active">
+                    <a href="#tab1" data-toggle="tab"> <i class="glyphicon glyphicon-user"></i> Overzicht</a>
+                </li>
+                <li><a href="#tab2" data-toggle="tab"><i class="glyphicon glyphicon-edit"></i> Bewerken</a></li>
+                <li><a href="#tab3" data-toggle="tab"><i class="glyphicon glyphicon-option-horizontal"></i>
+                        Wachtwoord</a>
+                </li>
+            </ul>
 
-        <form action="/profile/action=change" method="post"><p>
-                Email: <input name="email" type="text" readonly="true" style="background-color: transparent ; border-color: transparent"
-                              value="{$user->email}">
-            <br><br>
-            <p>
-                initialen: <input type="text" name="initials" value="{$user->initials}" required data-validation="custom" data-validation-regexp="^([a-zA-Z\.]+)$"
-                                  data-validation-error-msg="Initialen mogen alleen letters en punten bevatten.">
-            <p>
-                Voornaam: <input type="text" name="name" value="{$user->name}"  data-validation="custom" data-validation-regexp="^([a-zA-Z\- ]+)$" data-validation-error-msg="Geen valide voornaam ingevuld.">
-            <p>
-                Achternaam: <input type="text" name="surname" value="{$user->surname}"  data-validation="custom" data-validation-regexp="^([a-zA-Z\- ]+)$"
-                                   data-validation-error-msg="Geen valide achternaam ingevuld.">
-            <p>
-                Adress: <input type="text" name="address" value="{$user->address}"  required data-validation="alphanumeric"
-                               data-validation-allowing="-_ "
-                               data-validation-error-msg="Straat en huisnummer kan alleen letters, nummers, spaties en streepjes(-_) bevatten">
-            <p>
-                Land: <input type="text" name="country" value="{$user->country}" required  data-validation="country"
-                             data-validation-error-msg="invalide land gekozen.">
-            <p>
+        </div>
+        <div class="col-sm-9">
+            <div class="profile-content">
+                <div class="panel">
+                    <div class="tab-content">
+                        <div class="tab-pane fade" id="tab3">
+                            <div class="panel-heading text-center">
+                                <h3 class="panel-title">Wachtwoord</h3>
+                            </div>
+                            <div class="panel-body text-center">
+                                <form action="/profile/action=changepw" method="post"><p>
+                                        <br>
+                                        <input type="hidden" readonly="true" name="username" value="{$user->email}">
+                                        {literal}
+                                    <p>
+                                        Oud wachtwoord: <input type="password" name="pwo" required
+                                                               required data-validation="custom"
+                                                               data-validation-regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\W]{8,}$"
+                                                               data-validation-error-msg="het wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter en een nummer bevatten.">
+                                    <p>
+                                        Nieuw wachtwoord:<input type="password" name="password1" required
+                                                                required data-validation="custom"
+                                                                data-validation-regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\W]{8,}$"
+                                                                data-validation-error-msg="het wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter en een nummer bevatten.">
+                                    <p>
+                                        Nieuw wachtwoord: <input type="password" name="password2" required
+                                                                 required data-validation="custom"
+                                                                 data-validation-regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\W]{8,}$"
+                                                                 data-validation-error-msg="het wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter en een nummer bevatten.">
 
-                Postcode: <input type="text" name="postalcode" value="{$user->postalcode}"  required data-validation="custom"
-                                 data-validation-regexp="(^[0-9][0-9][0-9][0-9][aA-zZ][aA-zZ]$)|(^[0-9][0-9][0-9][0-9][\s][aA-zZ][aA-zZ]$)"
-                                 data-validation-error-msg="invalide postcode gegeven">
-            <p>
-                Plaats: <input type="text" name="city" value="{$user->city}"  required required data-validation="alphanumeric"
-                               data-validation-allowing="-_ "
-                               data-validation-error-msg="Straat en huisnummer kan alleen letters, spaties en streepjes(-_) bevatten">
-            <p>
-                Geboortedatum:  <input type="text" data-validation="birthdate" value="{$user->dob|date_format:"%d-%m-%Y"}"  name="dob" data-validation-format="dd-mm-yyyy"
-                                       required
-                                       data-validation-error-msg="invalide datum." data-validation-help="dd-mm-yyyy">
-            <p>
-                Geslacht:
-                {if $user->gender eq 'male'}
-                <input type='radio' name='gender' value='male' checked> Man
-                <input type='radio' name='gender' value='female'> Vrouw
-                <input type='radio' name='gender' value='other'> Anders
-                {elseif $user->gender eq 'female'}
-                <input type='radio' name='gender' value='male'> Man
-                <input type='radio' name='gender' value='female' checked> Vrouw
-                <input type='radio' name='gender' value='other'> Anders
-                {elseif $user->gender eq 'other'}
-                <input type='radio' name='gender' value='male'> Man
-                <input type='radio' name='gender' value='female'> Vrouw
-                <input type='radio' name='gender' value='other' checked> Anders
-                {else}
-                <input type='radio' name='gender' value='male'> Man
-                <input type='radio' name='gender' value='female'> Vrouw
-                <input type='radio' name='gender' value='other'> Anders
-                {/if}
-            <p>
-                Gehandicapt?: {if $user->handicap}
-                <input type='checkbox' name='handicap' checked>
-                {elseif !$user->handicap}
-                <input type='checkbox' name='handicap'>
-                {/if}
-            <p>
-            {$errorc}
-            <p>
-                <br>
-                <input type="submit" value="wijzig" class="btn btn-default" style="float: right;">
-                <br>
+                                    <p>
+                                        {/literal}
+
+                                    <p>
+                                        <br>
+                                        <input type="submit" value="wijzig" class="btn btn-default"
+                                               style="float: right;">
+                                        <br>
 
 
-        </form>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="tab2">
+                            <div class="panel-heading text-center">
+                                <h3 class="panel-title">Bewerken</h3>
+                            </div>
+                            <div class="panel-body text-center">
+                                <div class="row">
+                                    <div class="col-xs-10 col-xs-offset-1">
+                                        <form action="/profile/action=change" method="post"><p>
+                                                <input name="email" type="hidden" readonly="true"
+                                                       value="{$user->email}">
+                                            <table class="table table-user-information">
+                                                <tbody>
+                                                <tr>
+                                                    <td>Voornaam:</td>
+                                                    <td>
+                                                        <input type="text" name="name" data-validation="custom"
+                                                               data-validation-regexp="^([a-zA-Z][A-Za-z\- ]+)$"
+                                                               data-validation-error-msg="Geen valide voornaam ingevuld."
+                                                               maxlength="45" value="{$user->name}">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Achternaam:</td>
+                                                    <td><input type="text" name="surname" value="{$user->surname}"
+                                                               data-validation="custom"
+                                                               data-validation-regexp="^([a-zA-Z][A-Za-z\- ]+)$"
+                                                               data-validation-error-msg="Geen valide achternaam ingevuld.">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>initialen:</td>
+                                                    <td><input type="text" name="initials" value="{$user->initials}"
+                                                               required data-validation="custom"
+                                                               data-validation-regexp="^([a-zA-Z\.]+)$"
+                                                               data-validation-error-msg="Initialen mogen alleen letters en punten bevatten.">
+
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>Adress:</td>
+                                                    <td>
+                                                        <input type="text" name="address" data-validation="custom"
+                                                               data-validation-regexp="^([a-zA-Z][A-Za-z0-9\- ]+)$"
+                                                               data-validation-error-msg="Straat en huisnummer kan alleen letters, nummers, spaties en streepjes(-) bevatten"
+                                                               maxlength="255" value="{$user->address}">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Postcode:</td>
+                                                    <td>
+
+                                                        <input type="text" name="postalcode" required
+                                                               data-validation="custom" value="{$user->postalcode}"
+                                                                {literal}
+                                                               data-validation-regexp="^[0-9]{4}[\s]{0,1}[a-zA-z]{2}"
+                                                               data-validation-error-msg="invalide postcode gegeven"
+                                                               maxlength="6">
+                                                        {/literal}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Stad:</td>
+                                                    <td><input type="text" name="city" required data-validation="custom"
+                                                               data-validation-regexp="^[a-zA-Z][a-zA-Z ]+$"
+                                                               data-validation-error-msg="Stad kan alleen letters en spaties bevatten"
+                                                               maxlength="255"
+                                                               value="{$user->city}"></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>Land:</td>
+                                                    <td><input type="text" name="country" value="{$user->country}"
+                                                               required data-validation="country"
+                                                               data-validation-error-msg="invalide land gekozen.">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Geboortedatum:</td>
+                                                    <td><input type="text" data-validation="birthdate"
+                                                               value="{$user->dob|date_format:"%d-%m-%Y"}"
+                                                               name="dob" data-validation-format="dd-mm-yyyy"
+                                                               required
+                                                               data-validation-error-msg="invalide datum."
+                                                               data-validation-help="dd-mm-yyyy">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Geslacht:</td>
+                                                    <td>
+                                                        {if $user->gender eq 'male'}
+                                                            <input type='radio' name='gender' value='male' checked>
+                                                            Man
+                                                            <input type='radio' name='gender' value='female'>
+                                                            Vrouw
+                                                            <input type='radio' name='gender' value='other'>
+                                                            Anders
+                                                        {elseif $user->gender eq 'female'}
+                                                            <input type='radio' name='gender' value='male'>
+                                                            Man
+                                                            <input type='radio' name='gender' value='female' checked>
+                                                            Vrouw
+                                                            <input type='radio' name='gender' value='other'>
+                                                            Anders
+                                                        {elseif $user->gender eq 'other'}
+                                                            <input type='radio' name='gender' value='male'>
+                                                            Man
+                                                            <input type='radio' name='gender' value='female'>
+                                                            Vrouw
+                                                            <input type='radio' name='gender' value='other' checked>
+                                                            Anders
+                                                        {else}
+                                                            <input type='radio' name='gender' value='male'>
+                                                            Man
+                                                            <input type='radio' name='gender' value='female'>
+                                                            Vrouw
+                                                            <input type='radio' name='gender' value='other'>
+                                                            Anders
+                                                        {/if}
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>Handicap:</td>
+                                                    <td>{if $user->handicap}
+                                                            <input type='checkbox' name='handicap' checked>
+                                                        {elseif !$user->handicap}
+                                                            <input type='checkbox' name='handicap'>
+                                                        {/if}
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" class="right">
+                                                        <input type="submit" value="wijzig"
+                                                               class="btn btn-default">
+                                                    </td>
 
 
+                                                </tr>
+                                                </tbody>
+                                            </table>
 
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade in active" id="tab1">
+                            <div class="panel-heading text-center">
+                                <h3 class="panel-title">Profiel</h3>
+                            </div>
+                            <div class="panel-body text-center">
+                                <div class="row">
+                                    <div class="col-xs-10 col-xs-offset-1">
+                                        <table class="table table-user-information">
+                                            <tbody>
+                                            <tr>
+                                                <td>Naam:</td>
+                                                <td>{$user->name} {$user->surname}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>E-Mail</td>
+                                                <td>{$user->email}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Initialen</td>
+                                                <td>{$user->initials}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Adress</td>
+                                                <td>{$user->address}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Postcode</td>
+                                                <td>{$user->postalcode}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Plaats</td>
+                                                <td>{$user->city}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Land</td>
+                                                <td>{$user->country}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Geboortedatum</td>
+                                                <td>{$user->dob|date_format:"%d-%m-%Y"}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Geslacht</td>
+                                                {if $user->gender eq 'male'}
+                                                    <td>Man</td>
+                                                {elseif $user->gender eq 'female'}
+                                                    <td>Vrouw</td>
+                                                {elseif $user->gender eq 'other'}
+                                                    <td>-</td>
+                                                {/if}
+                                            </tr>
+                                            <tr>
+                                                <td>Handicap</td>
+                                                {if $user->handicap}
+                                                    <td>Ja</td>
+                                                {else}
+                                                    <td>Nee</td>
+                                                {/if}
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div class="col-lg-1">
 
-</div>
-
-<div class="col-xs-4">
-    <h5>Reset wachtwoord</h5>
-    <form action="/profile/action=changepw" method="post"><p>
-            <br>
-           <input type="hidden" readonly="true" name="username" value="{$user->email}">
-        <p>
-            Oud wachtwoord:   <input type="password" name="pwo" value="">
-        <p>
-            Nieuw wachtwoord: <input type="password" name="password1" value="">
-        <p>
-            Nieuw wachtwoord: <input type="password" name="password2" value="">
-
-        <p>
-        {$error}
-        <p>
-            <br>
-            <input type="submit" value="wijzig" class="btn btn-default" style="float: right;">
-            <br>
-
-
-    </form>
-</div>
-<div class="col-lg-2"></div>
-    </body>
-</div>
 
 <script>
 

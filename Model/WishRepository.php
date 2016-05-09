@@ -9,11 +9,8 @@
 class WishRepository
 {
 
-    private $talentRepository,
-        $email,
-        $maxContentLength = 50,
-        $WISH_LIMIT = 100,
-        $MINIMUM_TALENTS = 3;
+    private $talentRepository, $email, $maxContentLength = 50;
+    public $WISH_LIMIT = 3 , $MINIMUM_TALENTS = 3;
 
     public function __construct()
     {
@@ -72,7 +69,7 @@ class WishRepository
         return $returnArray;
     }
 
-    private function getUser($email)
+    public function getUser($email)
     {
         $result = Database::query_safe("SELECT * FROM user WHERE user.Email = ?", array($email));
 
@@ -125,7 +122,6 @@ class WishRepository
               ON w.Id = wcMax.wish_Id
           JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
           WHERE w.User = ?
-          AND w.Status != 'Geweigerd'
           AND w.Status != 'Verwijderd'
           ORDER BY max_date DESC"
             , array($user));
@@ -308,28 +304,38 @@ class WishRepository
 
         $this->email = $email;
 
-        $query = "select count(*) as counter from `wish` where `user` = ? and `status` != ? and `status` != ? and `status` != ? ";
-        $array = array($email, "Vervuld", "Geweigerd", "Verwijderd");
-
-        $result = Database::query_safe($query, $array);
-        $amountWishes = $result[0]["counter"];
+        $amountWishes = $this->getWishAmount($email);
 
         $wishLimit = $this->WISH_LIMIT;
 
         // count talents
-        $myTalents = $this->talentRepository->getUserTalents();
-        $amountOfTalents = 0;
-        foreach($myTalents as $item){
-            if($item instanceof Talent){
-                if($item->is_rejected == 1){
-                    $amountOfTalents++;
-                }
-            }
-        }
+//        $myTalents = $this->talentRepository->getUserTalents();
+//        $amountOfTalents = 0;
+//        foreach($myTalents as $item){
+//            if($item instanceof Talent){
+//                if($item->is_rejected == 1){
+//                    $amountOfTalents++;
+//                }
+//            }
+//        }
 
-        if ($amountWishes >= $wishLimit || $amountOfTalents < $this->MINIMUM_TALENTS)
+//        if ($amountWishes >= $wishLimit || $amountOfTalents < $this->MINIMUM_TALENTS)
+//            return false;
+//        return true;
+
+        if($amountWishes >= $wishLimit){
             return false;
-        return true;
+        } else {
+            return true;
+        }
+    }
+
+    public function getWishAmount($email){
+        $query = "select count(*) as counter from `wish` where `user` = ? and `status` != ? and `status` != ? and `status` != ?";
+        $array = array($email, "Vervuld", "Geweigerd" , "Verwijderd");
+        $result = Database::query_safe($query, $array);
+
+        return $result[0]["counter"];
     }
 
 

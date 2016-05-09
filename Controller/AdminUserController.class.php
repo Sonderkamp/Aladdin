@@ -9,16 +9,17 @@
 class AdminUserController
 {
 
-    private $reportRepository, $current;
+    private $reportRepository, $userRepository;
 
     public function __construct()
     {
         $this->reportRepository = new ReportRepository();
+        $this->userRepository = new UserRepository();
     }
 
     public function run()
     {
-        guaranteeLogin("/Wishes");
+        guaranteeAdmin("/Wishes");
         if (isset($_GET["action"])) {
             switch (strtolower($_GET["action"])) {
                 case "home":
@@ -69,6 +70,17 @@ class AdminUserController
         if (isset($_GET["id"])) {
             $id = $_GET["id"];
             $this->reportRepository->block($id);
+
+            $reported = $this->reportRepository->get("single", $id);
+            $reported = $reported[0];
+            if($reported instanceof Report){
+                $reported = $reported->getReported();
+                if($reported instanceof User){
+                    $displayName = $reported->getDisplayName();
+                    $email = $this->userRepository->getUser($displayName)->getEmail();
+                    $this->userRepository->blockUser($email);
+                }
+            }
         }
         $this->back();
     }
