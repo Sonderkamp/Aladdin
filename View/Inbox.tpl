@@ -76,7 +76,7 @@
                 {/if}
                 <div class="panel-body">
                     <a href="/Inbox/folder={$folderShortcut}/p={$page[0]}/message={$message->id}"
-                       class="title">{$message->title}</a> <span
+                       class="title">{htmlspecialchars($message->title)}</a> <span
                             class="info">
                     {if isset($out)}
                         {$message->receiver}

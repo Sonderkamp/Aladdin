@@ -1,3 +1,11 @@
+p, span {
+    font-size: 120%;
+}
+
+.smaller {
+    height: 88px;
+    width: auto;
+}
 
 h3 .h3 {
     color: brown;
@@ -17,26 +25,31 @@ h3 .h3 {
     background-color: brown;
 }
 
+.register {
+    height: 120px;
+    width: 120px;
+}
+
 .btn-dashboard {
     float: right;
     margin: 10px 10px 5px 5px;
 }
 
-.btn-text{
+.btn-text {
     margin: 5px;
     text-align: center;
 }
 
-.dashboard-row{
+.dashboard-row {
     margin-bottom: 50px;
 }
 
-.dashboard-header{
+.dashboard-header {
     margin-top: 0;
     color: #BF5F5F;
 }
 
-.large-caption{
+.large-caption {
     min-height: 150px;
 }
 

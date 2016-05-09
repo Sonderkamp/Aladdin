@@ -58,31 +58,32 @@
 
             </p>
         </div>
-        <div class="col-xs-12 col-sm-6  col-sm-offset-3 buttongrid homebuttons">
-            <br><br>
-            <row>
-                <div class="col-xs-12 col-sm-6 col-md-4 buttongroup homebuttons">
-                    <a href="/"> <img class="thumbnail" width="100%" src="/Resources/Images/Icons/bedrijven100.jpg">
-                    </a>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-4 buttongroup homebuttons">
-                    <a href="/"> <img class="thumbnail" width="100%" src="/Resources/Images/Icons/beperkten100.jpg"></a>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-4 buttongroup homebuttons">
-                    <a href="/"> <img class="thumbnail" width="100%"
-                                      src="/Resources/Images/Icons/grootouders100.jpg"></a>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-4 buttongroup homebuttons">
-                    <a href="/"> <img class="thumbnail" width="100%"
-                                      src="/Resources/Images/Icons/man%20vrouw100.jpg"></a>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-4 buttongroup homebuttons">
-                    <a href="/"> <img class="thumbnail" width="100%" src="/Resources/Images/Icons/ster%20100.jpg"></a>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-4 buttongroup homebuttons">
-                    <a href="/"> <img class="thumbnail" width="100%" src="/Resources/Images/Icons/hart100.jpg"></a>
-                </div>
-        </div>
+        {*BUTTONS WEG!! IEL*}
+        {*<div class="col-xs-12 col-sm-6  col-sm-offset-3 buttongrid homebuttons">*}
+            {*<br><br>*}
+            {*<row>*}
+                {*<div class="col-xs-12 col-sm-6 col-md-4 buttongroup homebuttons">*}
+                    {*<a href="/"> <img class="thumbnail" width="100%" src="/Resources/Images/Icons/bedrijven100.jpg">*}
+                    {*</a>*}
+                {*</div>*}
+                {*<div class="col-xs-12 col-sm-6 col-md-4 buttongroup homebuttons">*}
+                    {*<a href="/"> <img class="thumbnail" width="100%" src="/Resources/Images/Icons/beperkten100.jpg"></a>*}
+                {*</div>*}
+                {*<div class="col-xs-12 col-sm-6 col-md-4 buttongroup homebuttons">*}
+                    {*<a href="/"> <img class="thumbnail" width="100%"*}
+                                      {*src="/Resources/Images/Icons/grootouders100.jpg"></a>*}
+                {*</div>*}
+                {*<div class="col-xs-12 col-sm-6 col-md-4 buttongroup homebuttons">*}
+                    {*<a href="/"> <img class="thumbnail" width="100%"*}
+                                      {*src="/Resources/Images/Icons/man%20vrouw100.jpg"></a>*}
+                {*</div>*}
+                {*<div class="col-xs-12 col-sm-6 col-md-4 buttongroup homebuttons">*}
+                    {*<a href="/"> <img class="thumbnail" width="100%" src="/Resources/Images/Icons/ster%20100.jpg"></a>*}
+                {*</div>*}
+                {*<div class="col-xs-12 col-sm-6 col-md-4 buttongroup homebuttons">*}
+                    {*<a href="/"> <img class="thumbnail" width="100%" src="/Resources/Images/Icons/hart100.jpg"></a>*}
+                {*</div>*}
+        {*</div>*}
         </row>
     </div>
 </div>
