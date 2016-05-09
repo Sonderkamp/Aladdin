@@ -255,7 +255,7 @@ class WishRepository
         $array = array($description, $wish, $id);
         Database::query_safe($query, $array);
 
-        $array = $this->talentRepository->getAllTalents(false);
+        $array = $this->talentRepository->getTalents();
         $allTags = array();
         foreach ($array as $value) {
             $allTags[] = $value->name;

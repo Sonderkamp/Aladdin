@@ -58,6 +58,9 @@ switch ($page) {
     case "adminuser":
         (new AdminUserController())->run();
         break;
+    case "forbiddenwords":
+        (new ForbiddenWordController())->run();
+        break;
     default:
         apologize("Sorry. Pagina bestaat niet");
         break;

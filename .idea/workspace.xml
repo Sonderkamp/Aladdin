@@ -2,10 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="86368e17-99c2-47f6-8c54-e1644aa121c5" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Controller/ForbiddenWordController.class.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Model/ForbiddenWordRepository.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/View/Admin/forbiddenWord.tpl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSS/Style.css" afterPath="$PROJECT_DIR$/CSS/Style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Controller/AdminTalentController.class.php" afterPath="$PROJECT_DIR$/Controller/AdminTalentController.class.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Controller/DashboardController.class.php" afterPath="$PROJECT_DIR$/Controller/DashboardController.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Controller/MatchController.class.php" afterPath="$PROJECT_DIR$/Controller/MatchController.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Controller/ProfileCheckController.class.php" afterPath="$PROJECT_DIR$/Controller/ProfileCheckController.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Controller/TalentController.class.php" afterPath="$PROJECT_DIR$/Controller/TalentController.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Includes/classes.php" afterPath="$PROJECT_DIR$/Includes/classes.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Model/Talent.php" afterPath="$PROJECT_DIR$/Model/Talent.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Model/TalentRepository.php" afterPath="$PROJECT_DIR$/Model/TalentRepository.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Model/WishRepository.php" afterPath="$PROJECT_DIR$/Model/WishRepository.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/Dashboard.tpl" afterPath="$PROJECT_DIR$/View/Dashboard.tpl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/footer.tpl" afterPath="$PROJECT_DIR$/View/footer.tpl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/Admin/talent.tpl" afterPath="$PROJECT_DIR$/View/Admin/talent.tpl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/header.tpl" afterPath="$PROJECT_DIR$/View/header.tpl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/View/talentOverview.tpl" afterPath="$PROJECT_DIR$/View/talentOverview.tpl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.php" afterPath="$PROJECT_DIR$/index.php" />
     </list>
     <ignored path="Aladdin.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -30,7 +43,7 @@
       <file leaf-file-name="Dashboard.tpl" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/View/Dashboard.tpl">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-25.807692">
+            <state vertical-scroll-proportion="0.0">
               <caret line="132" column="14" selection-start-line="132" selection-start-column="14" selection-end-line="132" selection-end-column="14" />
               <folding />
             </state>
@@ -40,7 +53,7 @@
       <file leaf-file-name="Quote.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Model/Quote.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
+            <state vertical-scroll-proportion="0.0">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding>
                 <marker date="1461878049978" expanded="true" signature="266:285" placeholder="SELECT * FRO... quote" />
@@ -53,7 +66,7 @@
         <entry file="file://$PROJECT_DIR$/index.php">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="28" column="38" selection-start-line="28" selection-start-column="38" selection-end-line="28" selection-end-column="38" />
+              <caret line="32" column="14" selection-start-line="32" selection-start-column="14" selection-end-line="32" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -62,8 +75,8 @@
       <file leaf-file-name="DashboardController.class.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Controller/DashboardController.class.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5997758">
-              <caret line="73" column="73" selection-start-line="73" selection-start-column="73" selection-end-line="73" selection-end-column="73" />
+            <state vertical-scroll-proportion="0.86659193">
+              <caret line="108" column="59" selection-start-line="108" selection-start-column="59" selection-end-line="108" selection-end-column="59" />
               <folding />
             </state>
           </provider>
@@ -72,7 +85,7 @@
       <file leaf-file-name="functions.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Includes/functions.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-18.961538">
+            <state vertical-scroll-proportion="0.0">
               <caret line="88" column="29" selection-start-line="88" selection-start-column="29" selection-end-line="88" selection-end-column="29" />
               <folding />
             </state>
@@ -82,7 +95,7 @@
       <file leaf-file-name="footer.tpl" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/View/footer.tpl">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.2692308">
+            <state vertical-scroll-proportion="0.0">
               <caret line="5" column="9" selection-start-line="5" selection-start-column="9" selection-end-line="5" selection-end-column="9" />
               <folding />
             </state>
@@ -322,6 +335,56 @@
     <entry file="file://$PROJECT_DIR$/View/Dashboard.tpl">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
+          <caret line="132" column="14" selection-start-line="132" selection-start-column="14" selection-end-line="132" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Model/Quote.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1461878049978" expanded="true" signature="266:285" placeholder="SELECT * FRO... quote" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="28" column="38" selection-start-line="28" selection-start-column="38" selection-end-line="28" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Controller/DashboardController.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Includes/functions.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="88" column="29" selection-start-line="88" selection-start-column="29" selection-end-line="88" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/View/footer.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="5" column="9" selection-start-line="5" selection-start-column="9" selection-end-line="5" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/View/Dashboard.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
           <caret line="52" column="10" selection-start-line="52" selection-start-column="10" selection-end-line="52" selection-end-column="10" />
           <folding />
         </state>
@@ -361,7 +424,7 @@
     <entry file="file://$PROJECT_DIR$/index.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="28" column="38" selection-start-line="28" selection-start-column="38" selection-end-line="28" selection-end-column="38" />
+          <caret line="32" column="14" selection-start-line="32" selection-start-column="14" selection-end-line="32" selection-end-column="14" />
           <folding />
         </state>
       </provider>
@@ -370,7 +433,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -386,7 +448,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Includes/functions.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-18.961538">
+        <state vertical-scroll-proportion="0.0">
           <caret line="88" column="29" selection-start-line="88" selection-start-column="29" selection-end-line="88" selection-end-column="29" />
           <folding />
         </state>
@@ -394,7 +456,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/View/footer.tpl">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.2692308">
+        <state vertical-scroll-proportion="0.0">
           <caret line="5" column="9" selection-start-line="5" selection-start-column="9" selection-end-line="5" selection-end-column="9" />
           <folding />
         </state>
@@ -402,7 +464,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/View/Dashboard.tpl">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-25.807692">
+        <state vertical-scroll-proportion="0.0">
           <caret line="132" column="14" selection-start-line="132" selection-start-column="14" selection-end-line="132" selection-end-column="14" />
           <folding />
         </state>
@@ -410,8 +472,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Controller/DashboardController.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5997758">
-          <caret line="73" column="73" selection-start-line="73" selection-start-column="73" selection-end-line="73" selection-end-column="73" />
+        <state vertical-scroll-proportion="0.86659193">
+          <caret line="108" column="59" selection-start-line="108" selection-start-column="59" selection-end-line="108" selection-end-column="59" />
           <folding />
         </state>
       </provider>

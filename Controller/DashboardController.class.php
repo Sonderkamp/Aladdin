@@ -95,9 +95,9 @@ class DashboardController
         return $this->wishRepo->getMyWishes();
     }
 
-    private function getMyTalents()
-    {
-        return $this->talentRepo->getUserTalents();
+
+    private function getMyTalents(){
+        return $this->talentRepo->getTalents(null,null,null,null,true);
     }
 
     private function getWishAmount()
@@ -105,9 +105,8 @@ class DashboardController
         return $this->wishRepo->getWishAmount($_SESSION["user"]->email);
     }
 
-    private function getTalentAmount()
-    {
-        return $this->talentRepo->checkNumberOfTalentsFromUser();
+    private function getTalentAmount(){
+        return $this->talentRepo->getNumberOfTalents(true);
     }
 
     private function checkAmounts()
