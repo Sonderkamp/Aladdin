@@ -8,7 +8,7 @@
  */
 class TalentController
 {
-    private $message_model, $page, $talents, $talents_user, $talent_repository, $talent_numbers, $current_talent_number, $user_talents_number, $current_user_talent_number, $talent_name, $talent_error, $talent_warning, $requested_talents, $requested_talents_number, $current_requested_talent_number;
+    private $message_model, $page, $talents, $talents_user, $talent_repository, $talent_numbers, $current_talent_number, $user_talents_number, $current_user_talent_number, $talent_name, $talent_error, $talent_warning, $requested_talents, $requested_talents_number, $current_requested_talent_number, $forbidden_words_repo;
 
     public function __construct()
     {
@@ -16,6 +16,7 @@ class TalentController
 
         $this->page = "m";
         $this->talent_repository = new TalentRepository();
+        $this->forbidden_words_repo = new ForbiddenWordRepository();
         $this->message_model = new MessageModel();
 
         $this->user_talents_number = ceil($this->talent_repository->getNumberOfTalents(true)/10);
@@ -51,37 +52,13 @@ class TalentController
 
     private function checkPost()
     {
+
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
             if (!Empty($_POST["talent_name"])) {
-                if(strlen($_POST["talent_name"]) > 0 && strlen($_POST["talent_name"]) <= 45){
-                    $correct = true;
-                    foreach($this->talent_repository->getTalents() as $talent){
-                        if(strtolower($talent->name) == strtolower($_POST["talent_name"])){
-                            $_SESSION["talent_name"] = $_POST["talent_name"];
-                            $_SESSION["err_talent"] = "";
-                            $_SESSION["wrn_talent"] = "De ingevoegde naam is al toegevoegd, aangevraagd of geweigerd. Het talent wordt toegevoegd zodra het nog geaccepteerd word.";
-                            $this->talent_repository->addTalentToUser($talent->id);
-                            $correct = false;
-                            break;
-                        }
-                    }
-                    if($correct == true){
-                        if(!preg_match('/[^a-z\s]/i', $_POST["talent_name"])) {
-                            $this->talent_repository->addTalent($_POST["talent_name"]);
-                            $_SESSION["talent_name"] = "";
-                            $_SESSION["err_talent"] = "";
-                            $_SESSION["wrn_talent"] = "";
-                        } else{
-                            $_SESSION["talent_name"] = $_POST["talent_name"];
-                            $_SESSION["wrn_talent"] = "";
-                            $_SESSION["err_talent"] = "Er mogen alleen letters en spaties worden gebruikt in het talent!";
-                        }
-                    }
-                } else{
-                    $_SESSION["talent_name"] = $_POST["talent_name"];
-                    $_SESSION["wrn_talent"] = "";
-                    $_SESSION["err_talent"] = "Het tekstbox moet minimaal 1 en maximaal 45 characters bevatten!";
-                }
+
+                $this->addTalent($_POST["talent_name"]);
+
 
                 $_SESSION["current_talent_page"] = "t";
 
@@ -113,6 +90,7 @@ class TalentController
 
     private function checkGet()
     {
+
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
             if (!Empty($_GET["p"])) {
                 if($_GET["p"] == "m"){
@@ -178,9 +156,11 @@ class TalentController
     }
 
     private function checkSessions(){
+
         if(!Empty($_SESSION["current_talent_page"])){
             $this->page = $_SESSION["current_talent_page"];
         }
+
         if(!Empty($_SESSION["talent_m"])){
             if($this->user_talents_number > 1){
                 $this->current_user_talent_number = $_SESSION["talent_m"];
@@ -189,6 +169,7 @@ class TalentController
                 $_SESSION["talent_m"] = $this->user_talents_number;
             }
         }
+
         if(!Empty($_SESSION["talent_a"])){
             if($this->talent_numbers > 1){
                 $this->current_talent_number = $_SESSION["talent_a"];
@@ -197,6 +178,7 @@ class TalentController
                 $_SESSION["talent_a"] = $this->talent_numbers;
             }
         }
+
         if(!Empty($_SESSION["talent_t"])){
             if($this->requested_talents_number > 1){
                 $this->current_requested_talent_number = $_SESSION["talent_t"];
@@ -205,14 +187,63 @@ class TalentController
                 $_SESSION["talent_t"] = $this->requested_talents_number;
             }
         }
+
         if(!Empty($_SESSION["talent_name"])){
             $this->talent_name = $_SESSION["talent_name"];
+            $_SESSION["talent_name"] = "";
         }
+
         if(!Empty($_SESSION["err_talent"])){
             $this->talent_error = $_SESSION["err_talent"];
+            $_SESSION["err_talent"] = "";
         }
+
         if(!Empty($_SESSION["wrn_talent"])){
             $this->talent_warning = $_SESSION["wrn_talent"];
+            $_SESSION["wrn_talent"] = "";
+        }
+    }
+
+    private function addTalent($new_talent) {
+
+        if($this->forbidden_words_repo->isValid($new_talent)) {
+
+            if (strlen($new_talent) > 0 && strlen($new_talent) <= 45) {
+
+                $correct = true;
+
+                foreach ($this->talent_repository->getTalents() as $talent) {
+                    if (strtolower($talent->name) == strtolower($new_talent)) {
+
+                        $_SESSION["wrn_talent"] = "Het talent " . $new_talent . " al toegevoegd, aangevraagd of geweigerd. Het talent wordt toegevoegd zodra het nog geaccepteerd word.";
+
+                        $this->talent_repository->addTalentToUser($talent->id);
+                        $correct = false;
+
+                        break;
+                    }
+                }
+
+                if ($correct == true) {
+
+                    if (!preg_match('/[^a-z\s]/i', $new_talent)) {
+
+                        $this->talent_repository->addTalent($new_talent);
+                    } else {
+
+                        $_SESSION["talent_name"] = $new_talent;
+                        $_SESSION["err_talent"] = "Er mogen alleen letters en spaties worden gebruikt in het talent!";
+                    }
+                }
+            } else {
+
+                $_SESSION["talent_name"] = $new_talent;
+                $_SESSION["err_talent"] = "Het tekstbox moet minimaal 1 en maximaal 45 characters bevatten!";
+            }
+        } else {
+
+            $_SESSION["err_talent"] = "De ingevoerde talent is verboden, omdat het niet aan de algemene voorwaarden voldoet!";
+            $_SESSION["talent_name"] = $new_talent;
         }
     }
 }

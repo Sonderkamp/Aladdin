@@ -8,7 +8,7 @@
  */
 class AdminTalentController
 {
-    private $message_model, $page, $talents, $all_talents, $unaccepted_talents, $current_all_talents_number, $all_talents_number, $talent_repository;
+    private $message_model, $page, $talents, $all_talents, $unaccepted_talents, $current_all_talents_number, $all_talents_number, $talent_repository, $forbidden_words_repo;
 
     public function __construct()
     {
@@ -16,6 +16,7 @@ class AdminTalentController
 
         $this->page = "m";
         $this->talent_repository = new TalentRepository();
+        $this->forbidden_words_repo = new ForbiddenWordRepository();
         $this->message_model = new MessageModel();
 
         $this->talents = $this->talent_repository->getTalents();
@@ -74,31 +75,50 @@ class AdminTalentController
         if (!Empty($_POST["admin_talent_id"]) && !Empty($this->talent_repository->getTalents(null,null,null,$_POST["admin_talent_id"])->moderator_username)) {
 
             $correct = true;
+
             if(!Isset($_POST["admin_talent_name"])) {
+
                 $name = $this->talent_repository->getTalents(null,null,null,$_POST["admin_talent_id"])->name;
             } else{
+
                 $name = $_POST["admin_talent_name"];
-                if($name != $this->talent_repository->getTalents(null,null,null,$_POST["admin_talent_id"])->name) {
-                    if(strlen($name) > 0 && strlen($name) <= 45){
-                        foreach($this->talent_repository->getTalents() as $talent){
-                            if(strtolower($talent->name) == strtolower($name)){
+
+                if($this->forbidden_words_repo->isValid($name)) {
+
+                    if (strlen($name) > 0 && strlen($name) <= 45) {
+
+                        foreach ($this->talent_repository->getTalents() as $talent) {
+
+                            if (strtolower($talent->name) == strtolower($name)) {
+
                                 //De ingevoegde naam is al toegevoegd, aangevraagd of geweigerd.
                                 $correct = false;
                                 break;
                             }
                         }
                     }
+                } else {
+
+                    // De ingevoerde naam voldoet niet aan de algemene voorwaarden en is daarom verboden.
+                    $name = $this->talent_repository->getTalents(null,null,null,$_POST["admin_talent_id"])->name;
                 }
             }
+
             if($correct == true){
+
                 if(isset($_POST["admin_talent_is_rejected"])){
+
                     $accepted = 1;
                 } else {
+
                     $accepted = 0;
                 }
+
                 if(!preg_match('/[^a-z\s]/i', $name)) {
-                    $this->talent_repository->updateTalent($name, $accepted, $this->checkSynonym(),$_POST["admin_talent_id"]);
+
+                    $this->talent_repository->updateTalent($name, $accepted, $this->checkSynonym(), $_POST["admin_talent_id"]);
                 } else{
+
                     //Er mogen alleen letters en spaties worden gebruikt in het talent!
                 }
             }
@@ -140,9 +160,12 @@ class AdminTalentController
     }
 
     private function checkSynonym(){
+
         if(!empty($_POST["admin_talent_synonym"]) && $_POST["admin_talent_synonym"] != "-1"){
+
             return $_POST["admin_talent_synonym"];
         } else {
+
             return null;
         }
     }
