@@ -58,7 +58,7 @@
                                     <tbody>
                                     {foreach from=$user_talents item=talent}
                                         <tr>
-                                            <td class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{$talent -> name}</td>
+                                            <td class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{htmlentities(trim($talent->name),ENT_QUOTES)}</td>
                                             <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
                                                 {if $number_of_talents <= 3}
                                                     <button type="button" class="btn btn-inbox disabled btn-sm">
@@ -67,7 +67,7 @@
                                                 {else}
                                                     <button type="button" class="btn btn-inbox btn-sm"
                                                             data-toggle="modal"
-                                                            data-target="#myModal{preg_replace('/\s+/', '', $talent->name)}">
+                                                            data-target="#myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->name),ENT_QUOTES))}">
                                                         <span class="glyphicon glyphicon-remove"></span>
                                                     </button>
                                                 {/if}
@@ -146,11 +146,11 @@
                                                     <tbody>
                                                     {foreach from=$talents item=talent}
                                                         <tr>
-                                                            <td class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{$talent -> name}</td>
+                                                            <td class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{htmlentities(trim($talent->name),ENT_QUOTES)}</td>
                                                             <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
                                                                 <form action="/talents" method="post">
                                                                     <input type="hidden" name="add_id"
-                                                                           value="{$talent->id}"/>
+                                                                           value="{htmlentities(trim($talent->id),ENT_QUOTES)}"/>
                                                                     <button type="submit" name="submit"
                                                                             class="btn btn-add btn-sm">
                                                                         <span class="glyphicon glyphicon-ok"></span>
@@ -364,7 +364,7 @@
 
                                     <!-- Modal Remove-->
                                     {foreach from=$user_talents item=talent}
-                                    <div id="myModal{preg_replace('/\s+/', '', $talent->name)}" class="modal fade"
+                                    <div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->name),ENT_QUOTES))}" class="modal fade"
                                          role="dialog">
                                         <div class="modal-dialog">\
                                             <!-- Modal content-->
@@ -376,7 +376,7 @@
                                                 </div>
                                                 <div class="modal-body">
                                                     <p>
-                                                        Weet u zeker dat u het talent "{$talent->name}" wilt
+                                                        Weet u zeker dat u het talent "{htmlentities(trim($talent->name),ENT_QUOTES)}" wilt
                                                         verwijderen?
                                                     </p>
                                                 </div>
@@ -385,7 +385,7 @@
                                                             data-dismiss="modal">Sluiten
                                                     </button>
                                                     <form action="/talents" method="post">
-                                                        <input type="hidden" name="remove_id" value="{$talent->id}"/>
+                                                        <input type="hidden" name="remove_id" value="{htmlentities(trim($talent->id),ENT_QUOTES)}"/>
                                                         <button type="submit" name="submit" class="btn btn-inbox info">
                                                             <span class="glyphicon glyphicon-remove"></span> Verwijderen
                                                         </button>
