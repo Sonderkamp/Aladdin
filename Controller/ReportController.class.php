@@ -47,7 +47,7 @@ class ReportController
             $this->reportRepository->add($report);
         }
 
-        (new WishController())->run();
+        (new WishController())->back();
     }
     
 

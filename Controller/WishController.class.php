@@ -420,18 +420,22 @@ class WishController
     {
         switch ($this->getCurrent()) {
             case "myWishes":
-                $this->getMyWishes();
+                $_GET["action"] = "mywishes";
+                $this->run();
                 break;
             case "incompleted":
                 $_GET["action"] = "incompletedwishes";
                 $this->run();
-//                $this->getIncompletedWishes();
                 break;
             case "completed":
-                $this->getCompletedWishes();
+                $_GET["action"] = "completedwishes";
+                $this->run();
                 break;
             case "match":
                 (new MatchController())->open_match_view();
+                break;
+            default:
+                $this->getMyWishes();
                 break;
         }
     }
