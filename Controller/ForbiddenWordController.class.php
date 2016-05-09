@@ -42,9 +42,9 @@ class ForbiddenWordController
 
                 $forbidden_word = htmlentities(trim($_POST["add_forbidden_word"]),ENT_QUOTES);
 
-                $success = $this->checkWordForAdding($forbidden_word);
+                $can_add = $this->checkWordForAdding($forbidden_word);
 
-                if(Empty($success)) {
+                if($can_add == "succeeded") {
 
                     $this->forbidden_word_repository->createForbiddenWord($forbidden_word);
                     $_SESSION["forbidden_words_success"] = 'Het woord "'.$forbidden_word.'" is succesvol toegevoegd!';
@@ -79,9 +79,9 @@ class ForbiddenWordController
                 $forbidden_word_new = htmlentities(trim($_POST["edit_forbidden_word_new"]),ENT_QUOTES);
                 $forbidden_word_old = htmlentities(trim($_POST["edit_forbidden_word_old"]),ENT_QUOTES);
 
-                $success = $this->checkWordForAdding($forbidden_word_new);
+                $can_edit = $this->checkWordForAdding($forbidden_word_new);
 
-                if($success != false) {
+                if($can_edit == "succeeded") {
 
                     $this->forbidden_word_repository->updateForbiddenWord($forbidden_word_old,$forbidden_word_new);
                     $_SESSION["forbidden_words_success"] = 'Het woord "'.$forbidden_word_old.'" is succesvol gewijzigd naar "'.$forbidden_word_new.'"!';
@@ -172,13 +172,13 @@ class ForbiddenWordController
 
     private function checkWordForAdding($forbidden_word) {
 
-        $success = "";
+        $success = "succeeded";
 
         foreach ($this->forbidden_word_repository->getForbiddenWords() as $word) {
 
             if(strtolower($word) == strtolower($forbidden_word)) {
 
-                $success = false;
+                $success = "failed";
                 $_SESSION["forbidden_words_error"] = 'Het woord "'.$forbidden_word.'" bestaat al!';
 
                 break;
@@ -187,7 +187,7 @@ class ForbiddenWordController
 
         if(strlen($forbidden_word) > 150) {
 
-            $success = false;
+            $success = "failed";
             $_SESSION["forbidden_words_error"] .= ' Het woord "'.$forbidden_word.'" is '.(strlen($forbidden_word) - 150).' karakters te lang! Het woord mag maar 150 lang zijn!';
         }
 

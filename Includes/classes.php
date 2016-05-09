@@ -15,11 +15,8 @@ include_once("Model/Quote.php");
 include_once("Model/Graph.php");
 include_once("Model/Report.php");
 include_once("Model/ReportRepository.php");
-<<<<<<< HEAD
 include_once("Model/ForbiddenWordRepository.php");
-=======
 include_once("Model/UserRepository.php");
->>>>>>> eac70cafe7a7a9276fb8360b3f074dffc3c3c8a6
 
 include_once("Controller/WishController.class.php");
 include_once("Controller/TalentController.class.php");
