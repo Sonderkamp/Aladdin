@@ -8,9 +8,9 @@
  */
 class Talent
 {
-    public $id, $name, $creation_date, $acceptance_date, $is_rejected, $moderator_username, $user_email, $synonym_of, $synonym_name;
+    public $id, $name, $creation_date, $acceptance_date, $is_rejected, $moderator_username, $user_email;
 
-    public function __construct($id, $name, $creation_date, $acceptance_date, $is_rejected, $moderator_username, $user_email, $synonym_of) {
+    public function __construct($id, $name, $creation_date, $acceptance_date, $is_rejected, $moderator_username, $user_email) {
         $this->id = $id;
         $this->name = $name;
         $this->creation_date = $creation_date;
@@ -18,11 +18,6 @@ class Talent
         $this->is_rejected = $is_rejected;
         $this->moderator_username = $moderator_username;
         $this->user_email = $user_email;
-        $this->synonym_of = $synonym_of;
-    }
-    
-    public function setSynonymName($name){
-        $this->synonym_name = $name;
     }
 
     public function getName()

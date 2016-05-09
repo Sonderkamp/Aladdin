@@ -419,6 +419,10 @@ blockquote footer, blockquote small, blockquote .small {
     background-color: floralwhite;
 }
 
+.alert-success {
+    background-color: #7FCDBB;
+}
+
 video {
 
     position: fixed;
@@ -465,4 +469,12 @@ blockquote footer, blockquote small, blockquote .small {
 .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
     background-color: brown;
     border-color: brown;
+}
+
+.list-arrows {
+    padding-top: 50px;
+}
+
+.small-margin-bottom {
+    margin-bottom: 5px;
 }
