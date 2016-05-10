@@ -50,7 +50,7 @@ class MatchController
         /* get wishes who match by talents/synonyms */
         $possibleMatches = $this->wishRepository->getAllWishesWithTag($allTalents);
 
-        /* Nothing with matching, only check if user can Add a wish and get his DisplayName*/
+        /* Nothing with matching, only check if user can Add a wish and get his DisplayName */
         $canAddWish = $this->wishRepository->canAddWish($_SESSION["user"]->email);
         $report = $this->reportRepository->getUsersIHaveReported($_SESSION["user"]->email);
         
