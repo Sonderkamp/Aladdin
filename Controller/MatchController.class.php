@@ -9,13 +9,14 @@
 class MatchController
 {
 
-    private $wishRepository;
-    private $talenRepository;
+    private $wishRepository, $talenRepository, $reportRepository, $userRepository;
 
     public function __construct()
     {
         $this->wishRepository = new WishRepository();
         $this->talenRepository = new TalentRepository();
+        $this->reportRepository = new ReportRepository();
+        $this->userRepository = new UserRepository();
     }
 
     public function run()
@@ -37,14 +38,46 @@ class MatchController
 
     public function open_match_view()
     {
+        /* get my own talents */
         $userTalents = $this->talenRepository->getTalents(null,null,null,null,true);
 
+        /* get all sysnoynms of my talents */
         $synonmys = $this->talenRepository->getSynonymsOfTalents($userTalents);
-        $allTalents = array_merge($userTalents,$synonmys);
+        
+        /* delete multipe talents */
+        $allTalents = array_merge($userTalents, $synonmys);
 
+        /* get wishes who match by talents/synonyms */
         $possibleMatches = $this->wishRepository->getAllWishesWithTag($allTalents);
 
-        render("match_view.tpl", ["currentPage" => "match", "possibleMatches" => $possibleMatches]);
+        /* Nothing with matching, only check if user can Add a wish and get his DisplayName*/
+        $canAddWish = $this->wishRepository->canAddWish($_SESSION["user"]->email);
+        $report = $this->reportRepository->getUsersIHaveReported($_SESSION["user"]->email);
+        
+        /* check wich users/displaynames I have repported*/
+        $displayNames = array();
+        if (count($report) !== 0) {
+            foreach ($report as $item) {
+                if ($item instanceof Report) {
+                    $user = $item->getReported();
+                    if ($user instanceof User) {
+                        $displayNames[] = $user->getDisplayName();
+                    };
+                }
+            }
+        }
+
+        /* get my own displayname */
+        $user = $this->userRepository->getUser($_SESSION["user"]->email);
+        $displayName = $user->getDisplayName();
+
+        /* set current to 'match' so I can go back to the correct page*/
+        $_SESSION["current"] = "match";
+
+        render("wishOverview.tpl",
+            ["title" => "Vervulde wensen overzicht", "wishes" => $possibleMatches,
+                "canAddWish" => $canAddWish, "currentPage" => "match", "displayName" => $displayName, "reported" => $displayNames]);
+
     }
 
 
