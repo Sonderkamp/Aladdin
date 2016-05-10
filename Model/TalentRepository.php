@@ -40,6 +40,17 @@ class TalentRepository
             array($id, $user));
     }
 
+    public function addSynonym($talent_id, $synonym_id) {
+
+        Database::query_safe
+        ("INSERT INTO `synonym`(`talent_Id`, `synonym_Id`) VALUES (?,?)",
+            array($talent_id, $synonym_id));
+
+        Database::query_safe
+        ("INSERT INTO `synonym`(`talent_Id`, `synonym_Id`) VALUES (?,?)",
+            array($synonym_id, $talent_id));
+    }
+
     // Read
     public function getTalents($limit = null, $accepted = null, $not_added = null, $id = null, $current_user = null, $user_requested = null, $all_requested = null, $user = null, $synonyms = null, $name_only = null) {
 
@@ -183,13 +194,22 @@ class TalentRepository
     }
 
     // Delete
-    public function deleteTalentFromUser($id)
-    {
+    public function deleteTalentFromUser($id) {
+
         Database::query_safe("
           DELETE FROM `talent_has_user`
           WHERE `talent_has_user`.`talent_Id` = ?
           AND `talent_has_user`.`user_Email` = ?",
             array($id, $_SESSION["user"]->email));
+    }
+
+    public function deleteSynonym($talent_id,$synonym_id) {
+
+        Database::query_safe("DELETE FROM `synonym` WHERE `talent_Id` = ? AND `synonym_Id` = ?",
+            array($talent_id, $synonym_id));
+
+        Database::query_safe("DELETE FROM `synonym` WHERE `talent_Id` = ? AND `synonym_Id` = ?",
+            array($synonym_id, $talent_id));
     }
 
     // Helping methods
