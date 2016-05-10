@@ -21,9 +21,15 @@ class DashboardController
     public function run()
     {
         guaranteeLogin("/dashboard");
-        if ($this->checkAmounts()) {
-            $this->showProfile();
+        if (!$this->checkAmounts()) {
+            $this->showForcedProfile();
         } else {
+            $this->showProfile();
+        }
+    }
+
+    public function guaranteeProfile(){
+        if (!$this->checkAmounts()) {
             $this->showForcedProfile();
         }
     }
@@ -61,7 +67,7 @@ class DashboardController
     {
         $prefix = "<strong>Pas op!</strong> U heeft uw profiel nog niet voltooid. Vul alstublieft nog ";
         $str = "";
-        if ($wishAmount <= $this->wish_limit && $wishAmount >= 0) {
+        if ($wishAmount <= $this->wish_limit && $wishAmount > 0) {
             $str .= $wishAmount;
             if ($wishAmount > 1) {
                 $str .= " wensen in";
@@ -71,7 +77,7 @@ class DashboardController
         }
 
 
-        if ($talentAmount <= $this->talent_limit && $talentAmount >= 0) {
+        if ($talentAmount <= $this->talent_limit && $talentAmount > 0) {
 
             if ($str != "") {
                 $str .= " en vul ";
