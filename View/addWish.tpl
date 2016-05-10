@@ -24,11 +24,7 @@
             <div class="form-group row">
                 <label class="col-sm-2 form-control-label">Title:</label>
                 <div class="col-sm-10">
-                    {if isset($wishtitle)}
-                    <input class="form-control" name="title" placeholder="Wat is uw wens" value="{($wishtitle)}">
-                    {else}
-                    <input class="form-control" name="title" placeholder="Wat is uw wens">
-                    {/if}
+                    <input class="form-control" name="title" placeholder="Wat is uw wens" {if isset($wishtitle)} value="{($wishtitle)}" {/if}>
                 </div>
             </div>
 

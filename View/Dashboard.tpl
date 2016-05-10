@@ -47,7 +47,7 @@
         <h3 class="col-xs-6 col-sm-4 col-md-12 dashboard-header">Mijn wensen</h3>
         {if $wishCheck}
         <a href="/Wishes/action=open_wish" class="btn btn-info col-xs-1 visible-sm visible-xs">
-            <span class="glyphicon glyphicon-plus"></span>
+            <i class="fa fa-plus" aria-hidden="true"></i>
         </a>
         {/if}
     </div>
@@ -61,7 +61,7 @@
                                 <h4 class="col-md-12">Nieuwe Wens</h4>
                                 <a href="/Wishes/action=open_wish" class="btn btn-info btn-dashboard">
                                     Voeg wens toe
-                                    <span class="glyphicon glyphicon-plus btn-dashboard btn-text"></span>
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
                                 </a>
                             </div>
                         </div>
@@ -100,7 +100,7 @@
     <div class="row">
         <h3 class="col-xs-6 col-sm-4 col-md-12 dashboard-header">Mijn talenten</h3>
         <a href="/Talents/p=t" class="btn btn-info col-xs-1 visible-sm visible-xs">
-            <span class="glyphicon glyphicon-plus"></span>
+            <i class="fa fa-plus" aria-hidden="true"></i>
         </a>
     </div>
     <div class="row dashboard-row">
@@ -112,7 +112,7 @@
                             <h4 class="col-md-12">Nieuw talent</h4>
                             <a href="/Talents/p=t" class="btn btn-info btn-dashboard">
                                 Voeg talent toe
-                                <span class="glyphicon glyphicon-plus btn-dashboard btn-text"></span>
+                                <i class="fa fa-plus" aria-hidden="true"></i>
                             </a>
                         </div>
                     </div>
