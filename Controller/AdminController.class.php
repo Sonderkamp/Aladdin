@@ -39,12 +39,7 @@ class AdminController
                     case "cats":
                         $val->getCats();
                         exit();
-                    case
-                    "age":
-                        $val->getAge();
-                        exit();
-                    case
-                    "monthly":
+                    case "monthly":
                         $val->getCatsMonth($_GET["month"]);
                         exit();
                 }

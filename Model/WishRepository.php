@@ -36,37 +36,38 @@ class WishRepository
      */
     private function getReturnArray($queryResult)
     {
+        if(!empty($queryResult)) {
+            $returnArray = array();
 
-        $returnArray = array();
+            for ($i = 0; $i < count($queryResult); $i++) {
 
-        for ($i = 0; $i < count($queryResult); $i++) {
+                if (!isset($queryResult[$i]["max_date"])) {
+                    $queryResult[$i]["max_date"] = null;
+                }
 
-            if (!isset($queryResult[$i]["max_date"])) {
-                $queryResult[$i]["max_date"] = null;
+                $queryResult[$i]["Content"] = $this->checkWishContent($queryResult[$i]["Content"]);
+
+                $newUser = $this->getUser($queryResult[$i]["User"]);
+                $completed = false;
+                if ($queryResult[$i]["Status"] == "Vervuld") {
+                    $completed = true;
+                }
+
+                $returnArray[$i] = new Wish(
+                    $queryResult[$i]["Id"],
+                    $newUser,
+                    $queryResult[$i]["Title"],
+                    $completed,
+                    $queryResult[$i]["Content"],
+                    $queryResult[$i]["IsAccepted"],
+                    $queryResult[$i]["max_date"],
+                    $queryResult[$i]["Date"],
+                    $queryResult[$i]["Status"]
+                );
             }
 
-            $queryResult[$i]["Content"] = $this->checkWishContent($queryResult[$i]["Content"]);
-
-            $newUser = $this->getUser($queryResult[$i]["User"]);
-            $completed = false;
-            if ($queryResult[$i]["Status"] == "Vervuld") {
-                $completed = true;
-            }
-
-            $returnArray[$i] = new Wish(
-                $queryResult[$i]["Id"],
-                $newUser,
-                $queryResult[$i]["Title"],
-                $completed,
-                $queryResult[$i]["Content"],
-                $queryResult[$i]["IsAccepted"],
-                $queryResult[$i]["max_date"],
-                $queryResult[$i]["Date"],
-                $queryResult[$i]["Status"]
-            );
+            return $returnArray;
         }
-
-        return $returnArray;
     }
 
     public function getUser($email)
@@ -110,8 +111,6 @@ class WishRepository
               w.CompletionDate,
               wc.Content,
               wc.Title,
-              wc.Country,
-              wc.City,
               wc.IsAccepted,
               wc.moderator_Username,
               wcMax.max_date
@@ -146,8 +145,6 @@ class WishRepository
               w.CompletionDate,
               wc.Content,
               wc.Title,
-              wc.Country,
-              wc.City,
               wc.IsAccepted,
               wc.moderator_Username,
               wcMax.max_date
@@ -180,8 +177,6 @@ class WishRepository
               w.CompletionDate,
               wc.Content,
               wc.Title,
-              wc.Country,
-              wc.City,
               wc.IsAccepted,
               wc.moderator_Username,
               wcMax.max_date
@@ -254,7 +249,7 @@ class WishRepository
         $array = array($description, $wish, $id);
         Database::query_safe($query, $array);
 
-        $array = $this->talentRepository->getAllTalents(false);
+        $array = $this->talentRepository->getTalents();
         $allTags = array();
         foreach ($array as $value) {
             $allTags[] = $value->name;
@@ -358,8 +353,6 @@ class WishRepository
               u.DisplayName as display,
               u.Address as address,
               u.Postalcode as postalcode,
-              u.Country as ucountry,
-              u.City as ucity,
               w.status as status,
               w.User as user,
               wc.Content as content,
@@ -396,8 +389,6 @@ AND ab.Block_Id = test.blockid) AS isblock
             select u.DisplayName as display,
               u.Address as address,
               u.Postalcode as postalcode,
-              u.Country as country,
-              u.City as city,
             w.User as user,
              wc.wish_Id as wishid,
               w.Status as status,
@@ -418,8 +409,6 @@ AND ab.Block_Id = test.blockid) AS isblock
             select u.DisplayName as display,
               u.Address as address,
               u.Postalcode as postalcode,
-              u.Country as ucountry,
-              u.City as ucity,
             w.User as user,
              wc.wish_Id as wishid,
              w.Status as status,
@@ -447,8 +436,6 @@ AND ab.Block_Id = test.blockid) AS isblock
             select u.DisplayName as display,
               u.Address as address,
               u.Postalcode as postalcode,
-              u.Country as ucountry,
-              u.City as ucity,
             w.User as user,
              wc.wish_Id as wishid,
              w.Status as status,
@@ -475,8 +462,6 @@ AND ab.Block_Id = test.blockid) AS isblock
             select u.DisplayName as display,
               u.Address as address,
               u.Postalcode as postalcode,
-              u.Country as ucountry,
-              u.City as ucity,
             w.User as user,
              wc.wish_Id as wishid,
              w.Status as status,
@@ -503,8 +488,6 @@ AND ab.Block_Id = test.blockid) AS isblock
             select u.DisplayName as display,
               u.Address as address,
               u.Postalcode as postalcode,
-              u.Country as ucountry,
-              u.City as ucity,
             w.User as user,
              wc.wish_Id as wishid,
              w.Status as status,
@@ -531,8 +514,6 @@ AND ab.Block_Id = test.blockid) AS isblock
             select u.DisplayName as display,
               u.Address as address,
               u.Postalcode as postalcode,
-              u.Country as ucountry,
-              u.City as ucity,
             w.User as user,
              wc.wish_Id as wishid,
              w.Status as status,
@@ -559,8 +540,6 @@ AND ab.Block_Id = test.blockid) AS isblock
             select u.DisplayName as display,
               u.Address as address,
               u.Postalcode as postalcode,
-              u.Country as ucountry,
-              u.City as ucity,
             w.User as user,
              wc.wish_Id as wishid,
              w.Status as status,
@@ -636,8 +615,6 @@ AND ab.Block_Id = test.blockid) AS isblock
               u.DisplayName as display,
               u.Address as address,
               u.Postalcode as postalcode,
-              u.Country as country,
-              u.City as city,
               w.status as status,
               w.User as user,
               wc.Content as content,
