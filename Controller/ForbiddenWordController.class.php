@@ -12,7 +12,7 @@ class ForbiddenWordController
 
     public function __construct() {
 
-        guaranteeAdmin("forbiddenwords");
+        guaranteeAdmin("/forbiddenwords");
 
         $this->forbidden_word_repository = new ForbiddenWordRepository();
         $this->number_of_words = ceil($this->forbidden_word_repository->countForbiddenWords()/10);

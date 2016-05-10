@@ -25,16 +25,15 @@ class Graph
     public function getCats()
     {
         $list = Database::query("
-
-SELECT count(*) AS count,
-  CASE WHEN (TIMESTAMPDIFF(YEAR,`Dob`,CURDATE()) < 18)
-    THEN \"Kind (onder 18)\"
-  WHEN TIMESTAMPDIFF(YEAR,`Dob`,CURDATE()) BETWEEN 18 AND 70
-    THEN \"Volwassen\"
-    ELSE \"Ouderen\"
-  END AS category
-FROM `user`
-GROUP BY category");
+        SELECT count(*) AS count,
+          CASE WHEN (TIMESTAMPDIFF(YEAR,`Dob`,CURDATE()) < 18)
+            THEN \"Kind (onder 18)\"
+          WHEN TIMESTAMPDIFF(YEAR,`Dob`,CURDATE()) BETWEEN 18 AND 70
+            THEN \"Volwassen\"
+            ELSE \"Ouderen\"
+          END AS category
+        FROM `user`
+        GROUP BY category");
 
         $csvString = 'amount,cat' . "\n";
 
@@ -44,7 +43,7 @@ GROUP BY category");
 
         $list = Database::query("
         SELECT count(*) AS handicap FROM `user`
-WHERE `Handicap` = TRUE;");
+        WHERE `Handicap` = TRUE;");
         foreach ($list as $row) {
             $csvString .= $row["handicap"] . ',' . "Handicap" . "\n";
         }
@@ -56,16 +55,16 @@ WHERE `Handicap` = TRUE;");
     {
         $list = Database::query_safe("
 
-SELECT count(*) AS count,
-  CASE WHEN (TIMESTAMPDIFF(YEAR,`Dob`,CURDATE()) < 18)
-    THEN \"Kind (onder 18)\"
-  WHEN TIMESTAMPDIFF(YEAR,`Dob`,CURDATE()) BETWEEN 18 AND 70
-    THEN \"Volwassen\"
-    ELSE \"Ouderen\"
-  END AS category
-FROM `user`
-where EXTRACT( YEAR_MONTH FROM `CreationDate` ) = ?
-GROUP BY category", array($month));
+        SELECT count(*) AS count,
+          CASE WHEN (TIMESTAMPDIFF(YEAR,`Dob`,CURDATE()) < 18)
+            THEN \"Kind (onder 18)\"
+          WHEN TIMESTAMPDIFF(YEAR,`Dob`,CURDATE()) BETWEEN 18 AND 70
+            THEN \"Volwassen\"
+            ELSE \"Ouderen\"
+          END AS category
+        FROM `user`
+        where EXTRACT( YEAR_MONTH FROM `CreationDate` ) = ?
+        GROUP BY category", array($month));
 
         $csvString = 'value,name' . "\n";
 
@@ -75,7 +74,7 @@ GROUP BY category", array($month));
 
         $list = Database::query_safe("
         SELECT count(*) AS handicap FROM `user`
-WHERE `Handicap` = TRUE AND EXTRACT( YEAR_MONTH FROM `CreationDate` ) = ?", array($month));
+        WHERE `Handicap` = TRUE AND EXTRACT( YEAR_MONTH FROM `CreationDate` ) = ?", array($month));
         foreach ($list as $row) {
             $csvString .= $row["handicap"] . ',' . "Handicap" . "\n";
         }
@@ -99,9 +98,10 @@ WHERE `Handicap` = TRUE AND EXTRACT( YEAR_MONTH FROM `CreationDate` ) = ?", arra
 
     public function getUsersMonth()
     {
-        $list = Database::query("SELECT count(`Email`) AS amount, EXTRACT( YEAR_MONTH FROM `CreationDate` )  AS 'Date' FROM `user`
-WHERE `CreationDate` > CURRENT_DATE() - INTERVAL 12 MONTH
- GROUP BY YEAR(`CreationDate`), MONTH(`CreationDate`)");
+        $list = Database::query("
+        SELECT count(`Email`) AS amount, EXTRACT( YEAR_MONTH FROM `CreationDate` )  AS 'Date' FROM `user`
+        WHERE `CreationDate` > CURRENT_DATE() - INTERVAL 12 MONTH
+        GROUP BY YEAR(`CreationDate`), MONTH(`CreationDate`)");
 
         $csvString = 'amount,date' . "\n";
         foreach ($list as $fields) {

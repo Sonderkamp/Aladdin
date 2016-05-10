@@ -95,7 +95,6 @@ class DashboardController
         return $this->wishRepo->getMyWishes();
     }
 
-
     private function getMyTalents(){
         return $this->talentRepo->getTalents(null,null,null,null,true);
     }
