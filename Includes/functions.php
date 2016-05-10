@@ -58,7 +58,7 @@ function guaranteeAdmin($page)
 
 function guaranteeProfile(){
     $controller = new DashboardController();
-    $controller->run();
+    $controller->guaranteeProfile();
 }
 
 function htmlspecialcharsWithNL($string)

@@ -52,17 +52,18 @@ class AdminUserController
         $this->setCurrent("unhandled");
         $report = $this->reportRepository->get("new");
 
-        foreach ($report as $item) {
-            if ($item instanceof Report) {
-                $user = $item->getReported();
-                if ($user instanceof User) {
-                    if($this->userRepository->isBlocked($user->getEmail())){
-                        $user->setBlocked(true);
-                    }
-                };
+        if (count($report) > 0) {
+            foreach ($report as $item) {
+                if ($item instanceof Report) {
+                    $user = $item->getReported();
+                    if ($user instanceof User) {
+                        if ($this->userRepository->isBlocked($user->getEmail())) {
+                            $user->setBlocked(true);
+                        }
+                    };
+                }
             }
         }
-
         render("adminUser.tpl", ["reports" => $report, "current" => $this->getCurrent()]);
     }
 

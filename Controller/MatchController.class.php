@@ -39,10 +39,16 @@ class MatchController
     public function open_match_view()
     {
         $userTalents = $this->talenRepository->getTalents(null,null,null,null,true);
-        $synonmys = $this->talenRepository->getSynonymsOfTalents($userTalents);
-        $allTalents = array_merge($userTalents, $synonmys);
 
+        // hier gaat het fout
+//        $synonmys = $this->talenRepository->getSynonymsOfTalents($userTalents);
+//        $allTalents = array_merge($userTalents, $synonmys);
+
+        $allTalents = $userTalents;
+//        print_r($allTalents);
         $possibleMatches = $this->wishRepository->getAllWishesWithTag($allTalents);
+        print_r($possibleMatches);
+
         $canAddWish = $this->wishRepository->canAddWish($_SESSION["user"]->email);
 
         $report = $this->reportRepository->getUsersIHaveReported($_SESSION["user"]->email);

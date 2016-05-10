@@ -38,6 +38,7 @@ class ReportController
     public function report()
     {
         if (!empty($_POST["wish_id"])) {
+            echo "inside";
             $id = $_POST["wish_id"];
             $reporter = $_SESSION["user"]->email;
             $reported = $this->wishRepository->getUserOfWish($id);
@@ -46,11 +47,9 @@ class ReportController
             $report = new Report($reporter, $reported, $status, $id, $message);
             $this->reportRepository->add($report);
         }
-//<<<<<<< HEAD
-//
-//        (new WishController())->back();
-//=======
-        redirect("/wishes");
+
+        /* LATEN STAAN */
+        (new WishController())->back();
     }
 
 

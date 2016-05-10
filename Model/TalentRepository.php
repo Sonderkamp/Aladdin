@@ -150,7 +150,7 @@ class TalentRepository
 
         foreach ($talent as $item) {
             if ($item instanceof Talent) {
-                $synoymID[] = $item->synonym_of;
+                $synoymID[] = $item->getName();
             }
         }
 
@@ -199,7 +199,7 @@ class TalentRepository
 
     // Helping methods
     public function createReturnArray($result){
-        
+
         $returnArray = array();
 
         for ($i = 0; $i < count($result); $i++) {
