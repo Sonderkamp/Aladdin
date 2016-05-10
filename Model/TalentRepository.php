@@ -41,9 +41,14 @@ class TalentRepository
     }
 
     // Read
-    public function getTalents($limit = null, $accepted = null, $not_added = null, $id = null, $current_user = null, $user_requested = null, $all_requested = null, $user = null) {
+    public function getTalents($limit = null, $accepted = null, $not_added = null, $id = null, $current_user = null, $user_requested = null, $all_requested = null, $user = null, $synonyms = null, $name_only = null) {
 
-        $query = "SELECT `talent`.`Id`,
+        if($name_only != null) {
+
+            $query = "SELECT `talent`.`Name` FROM `talent`";
+        } else {
+
+            $query = "SELECT `talent`.`Id`,
           `talent`.`Name`,
           `talent`.`CreationDate`,
           `talent`.`AcceptanceDate`,
@@ -51,6 +56,7 @@ class TalentRepository
           `talent`.`moderator_Username`,
           `talent`.`user_Email`
           FROM `talent`";
+        }
         $suffix = " ORDER BY `talent`.`Name` ASC";
 
         if($limit != null) {
@@ -63,10 +69,6 @@ class TalentRepository
         if($accepted != null) {
 
             $query .= " WHERE `AcceptanceDate` IS NOT NULL AND `IsRejected` = 1 AND `IsRejected` IS NOT NULL AND `moderator_Username` IS NOT NULL";
-
-            $result = Database::query($query.$suffix);
-
-            return $this->createReturnArray($result);
         } else if($not_added != null) {
 
             $query .= " WHERE `talent`.`Id` NOT IN (SELECT `talent_Id` FROM `talent_has_user` WHERE `talent_has_user`.`user_Email` = ?) AND `talent`.`AcceptanceDate` IS NOT NULL AND `talent`.`IsRejected` = 1 AND `talent`.`IsRejected` IS NOT NULL AND `talent`.`moderator_Username` IS NOT NULL";
@@ -79,7 +81,13 @@ class TalentRepository
 
             $result = Database::query_safe($query.$suffix, array($id));
 
-            return $this->createSingleTalent($result);
+            if($name_only != null) {
+
+                return $result[0]["Name"];
+            } else {
+
+                return $this->createSingleTalent($result,$synonyms);
+            }
         } else if($current_user != null) {
 
             $query .= " JOIN `talent_has_user` ON `talent`.`Id` = `talent_has_user`.`talent_Id` JOIN `user` ON `talent_has_user`.`user_Email` = `user`.`Email` WHERE `user`.`Email` = ? AND `talent`.`IsRejected` = 1";
@@ -93,10 +101,6 @@ class TalentRepository
         } else if($all_requested != null) {
 
             $query .= " WHERE `talent`.`AcceptanceDate` IS NULL AND `talent`.`IsRejected` IS NULL AND `talent`.`moderator_Username` IS NULL";
-
-            $result = Database::query($query.$suffix);
-
-            return $this->createReturnArray($result);
         } else if($user != null) {
 
             $query .= " INNER JOIN `talent_has_user` AS `tu` ON `t`.`Id` = `tu`.`talent_Id` WHERE `tu`.`user_Email` = ?";
@@ -107,14 +111,26 @@ class TalentRepository
         if(isset($parameters)) {
 
             $result = Database::query_safe($query.$suffix, $parameters);
-
-            return $this->createReturnArray($result);
         } else {
 
             $result = Database::query($query.$suffix);
-
-            return $this->createReturnArray($result);
         }
+
+        return $this->createReturnArray($result,$synonyms);
+    }
+
+    public function getSynonyms($talent_id = null) {
+
+        $query = "SELECT * FROM `synonym`";
+
+        if($talent_id != null) {
+            $query .= " WHERE `talent_Id` = ?";
+            $result = Database::query_safe($query,array($talent_id));
+        } else {
+            $result = Database::query($query);
+        }
+
+        return $result;
     }
 
     public function getNumberOfTalents($user = null, $user_accepted = null, $user_requested = null) {
@@ -140,22 +156,6 @@ class TalentRepository
         $result = Database::query_safe($query,array($_SESSION["user"]->email));
 
         return $result[0]["Number_of_talents"];
-    }
-
-    public function getSynonyms($talent_id = null) {
-
-        $query = "SELECT * FROM `synonym`";
-
-        if($talent_id != null) {
-
-            $query .= " WHERE `talent_Id` = ?";
-
-            $result = Database::query_safe($query,array($talent_id));
-
-            return $this->createReturnArray($result,true);
-        }
-
-        return Database::query($query);
     }
 
     // Update
@@ -197,33 +197,33 @@ class TalentRepository
 
         $returnArray = array();
 
-        if($synonym != null) {
+        for ($i = 0; $i < count($result); $i++) {
 
-            for ($i = 0; $i < count($result); $i++) {
+            $returnArray[$i] = new Talent(
+                $result[$i]["Id"],
+                $result[$i]["Name"],
+                $result[$i]["CreationDate"],
+                $result[$i]["AcceptanceDate"],
+                $result[$i]["IsRejected"],
+                $result[$i]["moderator_Username"],
+                $result[$i]["user_Email"]
+            );
 
-                $returnArray[$i] = $result[$i]["synonym_Id"];
-            }
-        } else {
+            if($synonym != null) {
 
-            for ($i = 0; $i < count($result); $i++) {
+                $synonyms = $this->getSynonyms($result[$i]["Id"]);
 
-                $returnArray[$i] = new Talent(
-                    $result[$i]["Id"],
-                    $result[$i]["Name"],
-                    $result[$i]["CreationDate"],
-                    $result[$i]["AcceptanceDate"],
-                    $result[$i]["IsRejected"],
-                    $result[$i]["moderator_Username"],
-                    $result[$i]["user_Email"],
-                    $this->getSynonyms($result[$i]["Id"])
-                );
+                for ($k = 0; $k < count($synonyms); $k++) {
+
+                    $returnArray[$i]->addSynonym($synonyms[$k]["synonym_Id"],$this->getTalents(null,null,null,$synonyms[$k]["synonym_Id"],null,null,null,null,null,true));
+                }
             }
         }
 
         return $returnArray;
     }
 
-    public function createSingleTalent($result) {
+    public function createSingleTalent($result,$synonym = null) {
 
         $talent = new Talent(
             $result[0]["Id"],
@@ -232,9 +232,18 @@ class TalentRepository
             $result[0]["AcceptanceDate"],
             $result[0]["IsRejected"],
             $result[0]["moderator_Username"],
-            $result[0]["user_Email"],
-            $this->getSynonyms($result[0]["Id"])
+            $result[0]["user_Email"]
         );
+
+        if($synonym != null) {
+
+            $synonyms = $this->getSynonyms($talent->id);
+
+            for ($k = 0; $k < count($synonyms); $k++) {
+
+                $talent->addSynonym($synonyms[$k]["synonym_Id"],$this->getTalents(null,null,null,$synonyms[$k]["synonym_Id"],null,null,null,null,null,true));
+            }
+        }
 
         return $talent;
     }

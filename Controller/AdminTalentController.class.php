@@ -45,7 +45,7 @@ class AdminTalentController
         if(!Empty($_SESSION["talent_admin"])){
             if($this->all_talents_number > 1){
                 $this->current_all_talents_number = $_SESSION["talent_admin"];
-                $this->all_talents = $this->talent_repository->getTalents($_SESSION["talent_admin"]);
+                $this->all_talents = $this->talent_repository->getTalents($_SESSION["talent_admin"],null,null,null,null,null,null,null,true);
             } else{
                 $_SESSION["talent_admin"] = $this->all_talents_number;
             }
@@ -56,16 +56,16 @@ class AdminTalentController
     {
         if (!Empty($_GET["admin_a"])) {
             if($_GET["admin_a"] > 0 & $_GET["admin_a"] <= $this->all_talents_number) {
-                $this->all_talents = $this->talent_repository->getTalents($_GET["admin_a"]);
+                $this->all_talents = $this->talent_repository->getTalents($_GET["admin_a"],null,null,null,null,null,null,null,true);
                 $this->current_all_talents_number = $_GET["admin_a"];
                 $_SESSION["talent_admin"] = $this->current_all_talents_number;
             } else{
-                $this->all_talents = $this->talent_repository->getTalents(1);
+                $this->all_talents = $this->talent_repository->getTalents(1,null,null,null,null,null,null,null,true);
                 $this->current_all_talents_number = 1;
                 $_SESSION["talent_admin"] = $this->current_all_talents_number;
             }
         } else {
-            $this->all_talents = $this->talent_repository->getTalents(1);
+            $this->all_talents = $this->talent_repository->getTalents(1,null,null,null,null,null,null,null,true);
             $this->current_all_talents_number = 1;
         }
     }
