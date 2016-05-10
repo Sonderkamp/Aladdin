@@ -36,7 +36,7 @@
         <div class="col-xs-6">
             <div class="btn-text">
                 <h4 class="dashboard-header">Weet u niet waarvoor u moet wensen?</h4>
-                <a href="/" class="btn btn-info">
+                <a href="/survey" class="btn btn-info">
                     Vul de vragenlijst in!
                 </a>
             </div>

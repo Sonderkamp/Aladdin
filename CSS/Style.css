@@ -30,6 +30,10 @@ h3 .h3 {
     width: 120px;
 }
 
+.answer-container label{
+    margin: 0 !important;
+}
+
 .btn-dashboard {
     float: right;
     margin: 10px 10px 5px 5px;
@@ -175,6 +179,12 @@ body {
     background-color: brown;
     text-align: center;
     padding: 3px;
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+    max-width: 88px;
 }
 
 .header {
