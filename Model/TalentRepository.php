@@ -42,13 +42,20 @@ class TalentRepository
 
     public function addSynonym($talent_id, $synonym_id) {
 
-        Database::query_safe
-        ("INSERT INTO `synonym`(`talent_Id`, `synonym_Id`) VALUES (?,?)",
-            array($talent_id, $synonym_id));
+        $talent = $this->getTalents(null,null,null,$talent_id);
+        $synonym = $this->getTalents(null,null,null,$synonym_id);
 
-        Database::query_safe
-        ("INSERT INTO `synonym`(`talent_Id`, `synonym_Id`) VALUES (?,?)",
-            array($synonym_id, $talent_id));
+
+        if($talent->is_rejected === 1 && $synonym->is_rejected === 1) {
+
+            Database::query_safe
+            ("INSERT INTO `synonym`(`talent_Id`, `synonym_Id`) VALUES (?,?)",
+                array($talent_id, $synonym_id));
+
+            Database::query_safe
+            ("INSERT INTO `synonym`(`talent_Id`, `synonym_Id`) VALUES (?,?)",
+                array($synonym_id, $talent_id));
+        }
     }
 
     // Read
@@ -240,6 +247,12 @@ class TalentRepository
                   SET `Name`=?,`IsRejected`=?,`moderator_Username`=?,`AcceptanceDate`=NULL
                   WHERE `Id`=?",
                     Array($name, $isRejected, $_SESSION["admin"]->username, $id));
+
+                Database::query_safe("DELETE FROM `synonym` WHERE `talent_Id` = ?",
+                    array($id));
+
+                Database::query_safe("DELETE FROM `synonym` WHERE `synonym_Id` = ?",
+                    array($id));
             }
         }
     }
