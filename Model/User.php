@@ -525,44 +525,44 @@ class User
     public function getBlockStatus($username)
     {
         // query om alle blocks van een user te zien
-        $result = Database::query_safe("SELECT Block_Id,BlockDate,user_Email,IsBlocked as IsBlocked
+        $result = Database::query_safe("SELECT Block_Id,DateBlocked,user_Email,IsBlocked as IsBlocked
 from blockedusers
  where user_Email = ?
-              order by BlockDate asc", array($username));
+              order by DateBlocked asc", array($username));
         $result = $result[0];
         return $result;
     }
 
     public function isBlocked($username)
     {
-
         if (Database::query_safe("SELECT count(*) as count  from `blockedusers` where `user_Email` = ?", array($username))[0]["count"] == 0)
             return false;
 
-        $status = Database::query_safe("SELECT *  from `blockedusers` where `user_Email` = ? order by BlockDate DESC", array($username))[0];
+        $status = Database::query_safe("SELECT *  from `blockedusers` where `user_Email` = ? order by DateBlocked DESC", array($username))[0];
         if ($status["IsBlocked"] == 1)
             return $status["Reason"];
+
         return false;
     }
 
     public function getLastBlockStatus($username)
     {
         // query om de laatste block van een user te zien
-        $result = Database::query_safe("SELECT Block_Id,BlockDate,Reason, user_Email,IsBlocked as IsBlocked
+        $result = Database::query_safe("SELECT Block_Id,DateBlocked,Reason, user_Email,IsBlocked as IsBlocked
 from blockedusers
-where BlockDate =
+where DateBlocked =
         (select
-max(blockedusers.BlockDate) AS max_date
+max(blockedusers.DateBlocked) AS max_date
               FROM blockedusers
               where user_Email = ?)
-              order by BlockDate asc", array($username));
+              order by DateBlocked asc", array($username));
         $result = $result[0];
         return $result;
     }
 
     public function getAllBlocks($user)
     {
-        $result = Database::query_safe("SELECT Block_Id ,BlockDate as bdate,IsBlocked as isblocked
+        $result = Database::query_safe("SELECT Block_Id ,DateBlocked as bdate,IsBlocked as isblocked
               from blockedusers
               where user_Email = ?
               order by Block_Id desc", array($user));
@@ -588,8 +588,6 @@ max(blockedusers.BlockDate) AS max_date
     {
         $this->blocked = $blocked;
     }
-
-
 
 
 }
