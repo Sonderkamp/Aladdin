@@ -38,21 +38,23 @@ class MatchController
 
     public function open_match_view()
     {
+        /* get my own talents */
         $userTalents = $this->talenRepository->getTalents(null,null,null,null,true);
 
-        // hier gaat het fout
-//        $synonmys = $this->talenRepository->getSynonymsOfTalents($userTalents);
-//        $allTalents = array_merge($userTalents, $synonmys);
+        /* get all sysnoynms of my talents */
+        $synonmys = $this->talenRepository->getSynonymsOfTalents($userTalents);
+        
+        /* delete multipe talents */
+        $allTalents = array_merge($userTalents, $synonmys);
 
-        $allTalents = $userTalents;
-//        print_r($allTalents);
+        /* get wishes who match by talents/synonyms */
         $possibleMatches = $this->wishRepository->getAllWishesWithTag($allTalents);
-        print_r($possibleMatches);
 
+        /* Nothing with matching, only check if user can Add a wish and get his DisplayName*/
         $canAddWish = $this->wishRepository->canAddWish($_SESSION["user"]->email);
-
         $report = $this->reportRepository->getUsersIHaveReported($_SESSION["user"]->email);
-
+        
+        /* check wich users/displaynames I have repported*/
         $displayNames = array();
         if (count($report) !== 0) {
             foreach ($report as $item) {
@@ -65,9 +67,11 @@ class MatchController
             }
         }
 
+        /* get my own displayname */
         $user = $this->userRepository->getUser($_SESSION["user"]->email);
         $displayName = $user->getDisplayName();
 
+        /* set current to 'match' so I can go back to the correct page*/
         $_SESSION["current"] = "match";
 
         render("wishOverview.tpl",

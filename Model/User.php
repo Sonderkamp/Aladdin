@@ -511,14 +511,14 @@ class User
 
     public function blockUser($username)
     {
-        Database::query_safe("INSERT INTO adminBlock (`IsBlocked`, `Reason`, `moderator_Username`, `user_Email`) VALUES (1, 'xxxxx', 'Admin', ?)", array($username));
+        Database::query_safe("INSERT INTO blockedusers (`IsBlocked`, `Reason`, `moderator_Username`, `user_Email`) VALUES (1, 'xxxxx', 'Admin', ?)", array($username));
 
 
     }
 
     public function unblockUser($username)
     {
-        Database::query_safe("INSERT INTO adminBlock (`IsBlocked`, `Reason`, `moderator_Username`, `user_Email`) VALUES (0, 'xxxxx', 'Admin', ?)", array($username));
+        Database::query_safe("INSERT INTO blockedusers (`IsBlocked`, `Reason`, `moderator_Username`, `user_Email`) VALUES (0, 'xxxxx', 'Admin', ?)", array($username));
 
     }
 
@@ -526,7 +526,7 @@ class User
     {
         // query om alle blocks van een user te zien
         $result = Database::query_safe("SELECT Block_Id,BlockDate,user_Email,IsBlocked as IsBlocked
-from adminBlock
+from blockedusers
  where user_Email = ?
               order by BlockDate asc", array($username));
         $result = $result[0];
@@ -536,10 +536,10 @@ from adminBlock
     public function isBlocked($username)
     {
 
-        if (Database::query_safe("SELECT count(*) as count  from `adminBlock` where `user_Email` = ?", array($username))[0]["count"] == 0)
+        if (Database::query_safe("SELECT count(*) as count  from `blockedusers` where `user_Email` = ?", array($username))[0]["count"] == 0)
             return false;
 
-        $status = Database::query_safe("SELECT *  from `adminBlock` where `user_Email` = ? order by BlockDate DESC", array($username))[0];
+        $status = Database::query_safe("SELECT *  from `blockedusers` where `user_Email` = ? order by BlockDate DESC", array($username))[0];
         if ($status["IsBlocked"] == 1)
             return $status["Reason"];
         return false;
@@ -549,11 +549,11 @@ from adminBlock
     {
         // query om de laatste block van een user te zien
         $result = Database::query_safe("SELECT Block_Id,BlockDate,Reason, user_Email,IsBlocked as IsBlocked
-from adminBlock
+from blockedusers
 where BlockDate =
         (select
-max(adminBlock.BlockDate) AS max_date
-              FROM adminBlock
+max(blockedusers.BlockDate) AS max_date
+              FROM blockedusers
               where user_Email = ?)
               order by BlockDate asc", array($username));
         $result = $result[0];
@@ -563,7 +563,7 @@ max(adminBlock.BlockDate) AS max_date
     public function getAllBlocks($user)
     {
         $result = Database::query_safe("SELECT Block_Id ,BlockDate as bdate,IsBlocked as isblocked
-              from adminBlock
+              from blockedusers
               where user_Email = ?
               order by Block_Id desc", array($user));
         return $result;

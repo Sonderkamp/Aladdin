@@ -38,7 +38,6 @@ class ReportController
     public function report()
     {
         if (!empty($_POST["wish_id"])) {
-            echo "inside";
             $id = $_POST["wish_id"];
             $reporter = $_SESSION["user"]->email;
             $reported = $this->wishRepository->getUserOfWish($id);

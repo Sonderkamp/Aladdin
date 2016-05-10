@@ -150,12 +150,25 @@ class TalentRepository
 
         foreach ($talent as $item) {
             if ($item instanceof Talent) {
-                $synoymID[] = $item->getName();
+                $synoymID[] = $item->getId();
             }
         }
 
+        /* my talents */
         $talents = $this->inCreator($synoymID);
-        $result = Database::query("select * from talent where Id IN $talents");
+
+        $result = Database::query("select * from synonym where talent_Id IN $talents");
+
+        $id = array();
+        foreach ($result as $item){
+                $id[] = $item["synonym_Id"];
+        }
+
+        $id = $this->inCreator($id);
+
+        $sql = "select * from talent where Id in $id";
+        $result = Database::query($sql);
+
         return $this->createReturnArray($result);
     }
 
@@ -198,7 +211,8 @@ class TalentRepository
     }
 
     // Helping methods
-    public function createReturnArray($result){
+    public function createReturnArray($result)
+    {
 
         $returnArray = array();
 
@@ -218,7 +232,8 @@ class TalentRepository
         return $returnArray;
     }
 
-    public function createSingleTalent($result) {
+    public function createSingleTalent($result)
+    {
 
         $talent = new Talent(
             $result[0]["Id"],
