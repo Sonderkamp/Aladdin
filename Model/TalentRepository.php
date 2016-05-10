@@ -52,7 +52,7 @@ class TalentRepository
     }
 
     // Read
-    public function getTalents($limit = null, $accepted = null, $not_added = null, $id = null, $current_user = null, $user_requested = null, $all_requested = null, $user = null, $synonyms = null, $name_only = null) {
+    public function getTalents($limit = null, $accepted = null, $not_added = null, $id = null, $current_user = null, $user_requested = null, $all_requested = null, $user = null, $synonyms = null, $name_only = null, $search = null) {
 
         if($name_only != null) {
 
@@ -80,10 +80,13 @@ class TalentRepository
         if($accepted != null) {
 
             $query .= " WHERE `AcceptanceDate` IS NOT NULL AND `IsRejected` = 1 AND `IsRejected` IS NOT NULL AND `moderator_Username` IS NOT NULL";
+
+            $where = "on";
         } else if($not_added != null) {
 
             $query .= " WHERE `talent`.`Id` NOT IN (SELECT `talent_Id` FROM `talent_has_user` WHERE `talent_has_user`.`user_Email` = ?) AND `talent`.`AcceptanceDate` IS NOT NULL AND `talent`.`IsRejected` = 1 AND `talent`.`IsRejected` IS NOT NULL AND `talent`.`moderator_Username` IS NOT NULL";
 
+            $where = "on";
             $parameters = array($_SESSION["user"]->email);
         } else if($id != null) {
 
@@ -103,20 +106,40 @@ class TalentRepository
 
             $query .= " JOIN `talent_has_user` ON `talent`.`Id` = `talent_has_user`.`talent_Id` JOIN `user` ON `talent_has_user`.`user_Email` = `user`.`Email` WHERE `user`.`Email` = ? AND `talent`.`IsRejected` = 1";
 
+            $where = "on";
             $parameters = array($_SESSION["user"]->email);
         } else if($user_requested != null) {
 
             $query .= " WHERE `talent`.`AcceptanceDate` IS NULL AND `talent`.`user_Email` = ? AND `talent`.`IsRejected` IS NULL AND `talent`.`moderator_Username` IS NULL";
 
+            $where = "on";
             $parameters = array($_SESSION["user"]->email);
         } else if($all_requested != null) {
 
             $query .= " WHERE `talent`.`AcceptanceDate` IS NULL AND `talent`.`IsRejected` IS NULL AND `talent`.`moderator_Username` IS NULL";
+
+            $where = "on";
         } else if($user != null) {
 
             $query .= " INNER JOIN `talent_has_user` AS `tu` ON `t`.`Id` = `tu`.`talent_Id` WHERE `tu`.`user_Email` = ?";
 
+            $where = "on";
             $parameters = array($user);
+        }
+
+        if($search != null) {
+
+            if(Isset($where)) {
+
+                $query .= " AND `talent`.`name` LIKE ?";
+
+                array_push($parameters, "%".$search."%");
+            } else {
+
+                $query .= " WHERE `talent`.`name` LIKE ?";
+
+                $parameters = array("%".$search."%");
+            }
         }
 
         if(isset($parameters)) {

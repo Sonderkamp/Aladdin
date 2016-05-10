@@ -48,6 +48,19 @@
                                     </div>
                                 {/if}
 
+                                <form class="col-xs-12 col-sm-12 col-md-12 col-lg-12" action="/talents" method="get">
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                        <input class="form-control" name="search_added" placeholder="Zoek een toegevoegd talent">
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                        <button type="submit" class="btn btn-primary">Zoek</button>
+                                    </div>
+
+                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                        <a href="/talents/p=m" class="btn btn-warning">Alle</a>
+                                    </div>
+                                </form>
+
                                 <table class="table">
                                     <thead>
                                     <tr>
@@ -136,6 +149,20 @@
                                         <div class="tab-pane" id="tab2">
                                             {/if}
                                             <div>
+
+                                                <form class="col-xs-12 col-sm-12 col-md-12 col-lg-12" action="/talents" method="get">
+                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                                        <input class="form-control" name="search_all" placeholder="Zoek een talent">
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                                        <button type="submit" class="btn btn-primary">Zoek</button>
+                                                    </div>
+
+                                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                                        <a href="/talents/p=a" class="btn btn-warning">Alle</a>
+                                                    </div>
+                                                </form>
+
                                                 <table class="table">
                                                     <thead>
                                                     <tr>
