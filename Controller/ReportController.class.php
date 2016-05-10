@@ -46,8 +46,11 @@ class ReportController
             $report = new Report($reporter, $reported, $status, $id, $message);
             $this->reportRepository->add($report);
         }
-        redirect("/wishes");
+
+        /* LATEN STAAN */
+        (new WishController())->back();
     }
+
 
 
 }

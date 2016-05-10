@@ -80,14 +80,24 @@
                                                    aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
                                                     {htmlspecialcharsWithNL($wish -> user -> displayName)}</span><span
                                                             class="caret"></span></a>
-                                                <ul class="dropdown-menu">
-                                                    <li>
-                                                        <a data-toggle="modal"
-                                                           data-target="#myModal{preg_replace('/\s+/', '', $wish->id)}">
-                                                            Rapporteren
-                                                        </a>
-                                                    </li>
-                                                </ul>
+                                                {if in_array(($wish -> user -> displayName),$reported)}
+                                                    <ul class="dropdown-menu">
+                                                        <li>
+                                                            <a>
+                                                                U heeft deze gebruiker gerapporteerd.
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                {else}
+                                                    <ul class="dropdown-menu">
+                                                        <li>
+                                                            <a data-toggle="modal"
+                                                               data-target="#myModal{preg_replace('/\s+/', '', $wish->id)}">
+                                                                Rapporteren
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                {/if}
                                             {else}
                                                 <a class="dropdown-toggle" data-toggle="dropdown" role="button"
                                                    aria-haspopup="true"
@@ -98,7 +108,6 @@
                                     {/if}
 
                                 </div>
-
                                 Stad: <b>{htmlspecialcharsWithNL($wish -> user -> city)}</b><br>
                                 Status: <b>{htmlspecialcharsWithNL($wish -> status)}</b>
                             </div>
@@ -108,14 +117,17 @@
                     <div class="panel-footer right">
 
                         {if $currentPage == "mywishes"}
-                            <form class='noPadding infoLeft' action="/Wishes/action=open_edit_wish"
-                                  method="get">
-                                <button name="editwishbtn" value="{$wish -> id}" type="sumbit"
-                                        class="btn btn-inbox" data-toggle="modal">
-                                    <span class="glyphicon glyphicon-edit"></span>
-                                </button>
-                            </form>
-                            <a class="btn btn-danger infoLeft margLeft" href="/Wishes/action=remove/wishID={$wish->id}">
+                            {if {htmlspecialcharsWithNL($wish -> status) != "Geweigerd"}}
+                                <form class='noPadding infoLeft' action="/Wishes/action=open_edit_wish"
+                                      method="get">
+                                    <button name="editwishbtn" value="{$wish -> id}" type="sumbit"
+                                            class="btn btn-inbox" data-toggle="modal">
+                                        <span class="glyphicon glyphicon-edit"></span>
+                                    </button>
+                                </form>
+                            {/if}
+                            <a class="btn btn-danger infoLeft margLeft"
+                               href="/Wishes/action=remove/wishID={$wish->id}">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </a>
                         {/if}

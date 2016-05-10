@@ -23,14 +23,14 @@ class TalentRepository
                                     `moderator_Username`,
                                     `user_Email`)
           VALUES (?, CURRENT_TIMESTAMP, NULL, NULL, NULL, ?)",
-                array(htmlentities(ucfirst(strtolower(trim($name))),ENT_QUOTES), $_SESSION["user"]->email));
+                array(htmlentities(ucfirst(strtolower(trim($name))), ENT_QUOTES), $_SESSION["user"]->email));
         }
     }
 
     public function addTalentToUser($id, $user = null)
     {
 
-        if($user == null) {
+        if ($user == null) {
             $user = $_SESSION["user"]->email;
         }
 
@@ -70,14 +70,14 @@ class TalentRepository
         }
         $suffix = " ORDER BY `talent`.`Name` ASC";
 
-        if($limit != null) {
+        if ($limit != null) {
 
             $limit -= 1;
             $limit *= 10;
-            $suffix .= " LIMIT ".$limit.",10";
+            $suffix .= " LIMIT " . $limit . ",10";
         }
 
-        if($accepted != null) {
+        if ($accepted != null) {
 
             $query .= " WHERE `AcceptanceDate` IS NOT NULL AND `IsRejected` = 1 AND `IsRejected` IS NOT NULL AND `moderator_Username` IS NOT NULL";
 
@@ -88,12 +88,12 @@ class TalentRepository
 
             $where = "on";
             $parameters = array($_SESSION["user"]->email);
-        } else if($id != null) {
+        } else if ($id != null) {
 
             $query .= " WHERE `talent`.`Id` = ?";
             $suffix = " LIMIT 1";
 
-            $result = Database::query_safe($query.$suffix, array($id));
+            $result = Database::query_safe($query . $suffix, array($id));
 
             if($name_only != null) {
 
@@ -108,13 +108,13 @@ class TalentRepository
 
             $where = "on";
             $parameters = array($_SESSION["user"]->email);
-        } else if($user_requested != null) {
+        } else if ($user_requested != null) {
 
             $query .= " WHERE `talent`.`AcceptanceDate` IS NULL AND `talent`.`user_Email` = ? AND `talent`.`IsRejected` IS NULL AND `talent`.`moderator_Username` IS NULL";
 
             $where = "on";
             $parameters = array($_SESSION["user"]->email);
-        } else if($all_requested != null) {
+        } else if ($all_requested != null) {
 
             $query .= " WHERE `talent`.`AcceptanceDate` IS NULL AND `talent`.`IsRejected` IS NULL AND `talent`.`moderator_Username` IS NULL";
 
@@ -167,17 +167,18 @@ class TalentRepository
         return $result;
     }
 
-    public function getNumberOfTalents($user = null, $user_accepted = null, $user_requested = null) {
+    public function getNumberOfTalents($user = null, $user_accepted = null, $user_requested = null)
+    {
 
         $query = "SELECT COUNT(`talent`.`Id`) AS `Number_of_talents` FROM `talent`";
 
-        if($user != null) {
+        if ($user != null) {
 
             $query .= " JOIN `talent_has_user` ON `talent`.`Id` = `talent_has_user`.`talent_Id` JOIN `user` ON `talent_has_user`.`user_Email` = `user`.`Email` WHERE `user`.`Email` = ? AND `talent`.`IsRejected` = 1";
-        } else if($user_accepted != null) {
+        } else if ($user_accepted != null) {
 
             $query .= " WHERE `talent`.`Id` NOT IN (SELECT `talent_Id` FROM `talent_has_user` WHERE `talent_has_user`.`user_Email` = ?) AND `talent`.`AcceptanceDate` IS NOT NULL AND `talent`.`IsRejected` = 1 AND `talent`.`IsRejected` IS NOT NULL AND `talent`.`moderator_Username` IS NOT NULL";
-        } else if($user_requested != null) {
+        } else if ($user_requested != null) {
 
             $query .= " WHERE `talent`.`AcceptanceDate` IS NULL AND `talent`.`user_Email` = ? AND `talent`.`IsRejected` IS NULL AND `talent`.`moderator_Username` IS NULL";
         } else {
@@ -187,9 +188,37 @@ class TalentRepository
             return $result[0]["Number_of_talents"];
         }
 
-        $result = Database::query_safe($query,array($_SESSION["user"]->email));
+        $result = Database::query_safe($query, array($_SESSION["user"]->email));
 
         return $result[0]["Number_of_talents"];
+    }
+
+    public function getSynonymsOfTalents($talent)
+    {
+        $synoymID = array();
+
+        foreach ($talent as $item) {
+            if ($item instanceof Talent) {
+                $synoymID[] = $item->getId();
+            }
+        }
+
+        /* my talents */
+        $talents = $this->inCreator($synoymID);
+
+        $result = Database::query("select * from synonym where talent_Id IN $talents");
+
+        $id = array();
+        foreach ($result as $item){
+                $id[] = $item["synonym_Id"];
+        }
+
+        $id = $this->inCreator($id);
+
+        $sql = "select * from talent where Id in $id";
+        $result = Database::query($sql);
+
+        return $this->createReturnArray($result);
     }
 
     // Update
@@ -212,9 +241,9 @@ class TalentRepository
                   WHERE `Id`=?",
                     Array($name, $isRejected, $_SESSION["admin"]->username, $id));
             }
-
         }
     }
+
 
     // Delete
     public function deleteTalentFromUser($id) {

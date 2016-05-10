@@ -28,6 +28,11 @@ class ProfileCheckController
 
                 $this->unblock($_GET["user"]);
                 $this->renderProfilePage($_GET["user"]);
+            } else if ($_GET["action"] == "viewProfile"){
+                $email = $_GET["user"];
+                if(isset($_GET["user"])){
+                    $this->renderProfilePage($email);
+                };
             }
         }
         else

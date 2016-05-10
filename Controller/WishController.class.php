@@ -14,6 +14,7 @@ class WishController
         $incompletedWishes,
         $wishRepository,
         $talentRepository,
+        $reportRepository,
         $userRepostitory,
         $title,
         $description,
@@ -27,6 +28,7 @@ class WishController
         $this->wishRepository = new WishRepository();
         $this->talentRepository = new TalentRepository();
         $this->userRepostitory = new UserRepository();
+        $this->reportRepository = new ReportRepository();
     }
 
     public function run()
@@ -68,6 +70,8 @@ class WishController
                 case "go_back":
                     $this->go_back();
                     break;
+                case "report":
+                    $this->back();
                 default:
                     apologize("404 not found, Go back to my wishes");
                     break;
@@ -110,7 +114,9 @@ class WishController
     {
         $mywishes = $this->wishRepository->getMyWishes();
         $canAddWish = $this->wishRepository->canAddWish($_SESSION["user"]->email);
-        
+
+        $this->setCurrent("myWishes");
+
         render("wishOverview.tpl",
             ["title" => "Wensen overzicht", "wishes" => $mywishes, "canAddWish" => $canAddWish, "currentPage" => $this->currentPage]);
     }
@@ -123,6 +129,9 @@ class WishController
         $completedWishes = $this->wishRepository->getCompletedWishes();
 
         $canAddWish = $this->wishRepository->canAddWish($_SESSION["user"]->email);
+
+        $this->setCurrent("completed");
+
         render("wishOverview.tpl",
             ["title" => "Vervulde wensen overzicht", "wishes" => $completedWishes, "canAddWish" => $canAddWish, "currentPage" => $this->currentPage]);
     }
@@ -138,10 +147,28 @@ class WishController
 
         $user = $this->userRepostitory->getUser($_SESSION["user"]->email);
         $displayName = $user->getDisplayName();
-        
+
+        $report = $this->reportRepository->getUsersIHaveReported($_SESSION["user"]->email);
+        $displayNames = array();
+
+        $amountReports = count($report);
+
+        if ($amountReports !== 0) {
+            foreach ($report as $item) {
+                if ($item instanceof Report) {
+                    $user = $item->getReported();
+                    if ($user instanceof User) {
+                        $displayNames[] = $user->getDisplayName();
+                    };
+                }
+            }
+        }
+
+        $this->setCurrent("incompleted");
+
         render("wishOverview.tpl",
-            ["title" => "Vervulde wensen overzicht", "wishes" => $incompletedWishes, "canAddWish" => $canAddWish, 
-                "currentPage" => $this->currentPage, "displayName" => $displayName]);
+            ["title" => "Vervulde wensen overzicht", "wishes" => $incompletedWishes, "canAddWish" => $canAddWish,
+                "currentPage" => $this->currentPage, "displayName" => $displayName, "reported" => $displayNames]);
     }
 
 
@@ -387,7 +414,40 @@ class WishController
         }
         //to remove last comma in a string
         return rtrim($hashtag, ',');
+    }
 
+    public function back()
+    {
+        switch ($this->getCurrent()) {
+            case "myWishes":
+                $_GET["action"] = "mywishes";
+                $this->run();
+                break;
+            case "incompleted":
+                $_GET["action"] = "incompletedwishes";
+                $this->run();
+                break;
+            case "completed":
+                $_GET["action"] = "completedwishes";
+                $this->run();
+                break;
+            case "match":
+                (new MatchController())->open_match_view();
+                break;
+            default:
+                $this->getMyWishes();
+                break;
+        }
+    }
+
+    public function setCurrent($page)
+    {
+        $_SESSION["current"] = $page;
+    }
+
+    public function getCurrent()
+    {
+        return $_SESSION["current"];
     }
 
 

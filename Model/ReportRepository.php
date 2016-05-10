@@ -18,8 +18,9 @@ class ReportRepository
 
     public function add(Report $report)
     {
-        $sql = "INSERT INTO `reportedusers` (`user_Reporter`,`user_Reported`, `reportStatus_status`, `moderator_Username`, `wish_Id`, `Message`) VALUES (?,?,?,?,?,?)";
-        $parameters = array($report->getReporter(), $report->getReported(), $report->getStatus(), $report->getModerator(), $report->getWishID(), $report->getMessage());
+        $sql = "INSERT INTO `reportedusers` (`user_Reporter`,`user_Reported`, `reportStatus_status`, `wish_Id`, `Message`) 
+                VALUES (?,?,?,?,?)";
+        $parameters = array($report->getReporter(), $report->getReported(), $report->getStatus(), $report->getWishID(), $report->getMessage());
 
         Database::query_safe($sql, $parameters);
     }
@@ -92,9 +93,7 @@ class ReportRepository
             $reported = $item["user_Reported"];
             $reported = $this->userRepository->getUser($reported);
             $status = $item["reportStatus_Status"];
-            $moderator = $item["moderator_Username"];
             $wishID = $item["wish_Id"];
-            $messageID = $item["message_Id"];
 
             $report = new Report($reporter, $reported, $status, $wishID, $message, $date, $id);
             $reports[] = $report;
@@ -103,5 +102,13 @@ class ReportRepository
         return $reports;
     }
 
+    public function getUsersIHaveReported($email){
+        $sql = "SELECT * FROM `reportedusers` WHERE `user_Reporter` = ?";
+        $parameters = array($email);
 
+        $result = Database::query_safe($sql,$parameters);
+        
+        return $this->create($result);
+    }
+    
 }

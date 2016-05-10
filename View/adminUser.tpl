@@ -28,45 +28,54 @@
 
                 {if isset($reports)}
                     {foreach from=$reports item=report}
-                        <tr>
-                            <td>
-                                <span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($report -> getReporter() -> getDisplayName())}
-                            </td>
-                            <td>{htmlspecialcharsWithNL($report -> getMessage()|substr:0:20)}</td>
-                            <td>
-                                <span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($report -> getReported() -> getDisplayName())}
-                            </td>
-                            <td>{htmlspecialcharsWithNL($report -> getStatus())}</td>
-                            <td>
-                                <span class="glyphicon glyphicon-calendar"></span> {htmlspecialcharsWithNL($report -> getDate())}
-                            </td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                       aria-haspopup="true"
-                                       aria-expanded="false"></span>
-                                        Kies</span><span class="caret"></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <a data-toggle="modal"
-                                               data-target="#myModal{preg_replace('/\s+/', '', $report->getId())}">
-                                                Bekijken
-                                            </a>
-                                        </li>
-                                        {*<li><a href="/AdminUser/action=check/id={$report->getId()}">Bekijken</a></li>*}
-                                        <li>
-                                            <a href="/AdminUser/action=block/id={$report->getId()}">Blokkeren</a>
-                                        </li>
-                                        <li>
-                                            <a href="/AdminUser/action=delete/id={$report->getId()}">Verwijderen</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
+                        {if $report -> getReported() -> getBlocked() == false}
+                            <tr>
+                                <td>
+                                    <span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($report -> getReporter() -> getDisplayName())}
+                                </td>
+                                <td>{htmlspecialcharsWithNL($report -> getMessage()|substr:0:20)}</td>
+                                <td>
+                                    <span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($report -> getReported() -> getDisplayName())}
+                                </td>
+                                <td>{htmlspecialcharsWithNL($report -> getStatus())}</td>
+                                <td>
+                                    <span class="glyphicon glyphicon-calendar"></span> {htmlspecialcharsWithNL($report -> getDate())}
+                                </td>
+                                <td>
+                                    {if $current == "unhandled"}
+                                        <div class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                               aria-haspopup="true"
+                                               aria-expanded="false"></span>
+                                                Kies</span><span class="caret"></span></a>
+
+
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a data-toggle="modal"
+                                                       data-target="#myModal{preg_replace('/\s+/', '', $report->getId())}">
+                                                        Bekijken
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="/AdminUser/action=delete/id={$report->getId()}">Verwijderen</a>
+                                                </li>
+                                                <li>
+                                                    <a href="/AdminUser/action=block/id={$report->getId()}">Blokkeren</a>
+                                                </li>
+                                                {*<li><a href="/AdminUser/action=check/id={$report->getId()}">Bekijken</a></li>*}
+                                            </ul>
+                                        </div>
+                                    {else}
+                                        <a href="/profilecheck/action=viewProfile/user={$report -> getReported() -> getEmail()}">
+                                            <span>Bekijk profiel</span>
+                                        </a>
+                                    {/if}
+                                </td>
+                            </tr>
+                        {/if}
                     {/foreach}
                 {/if}
-
                 </tbody>
             </table>
         </div>
