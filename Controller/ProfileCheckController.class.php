@@ -12,7 +12,7 @@ class ProfileCheckController
 
     public function run()
     {
-        guaranteeLogin("/ProfileCheck");
+        guaranteeAdmin("/ProfileCheck");
         if (isset($_GET["user"]) && !isset($_GET["action"])) {
             $this->renderProfilePage($_GET["user"]);
         } elseif (isset($_GET["action"]) || isset($_GET["user"]))

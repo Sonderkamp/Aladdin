@@ -26,9 +26,9 @@ class TalentController
 
     public function run()
     {
+        $this->checkSessions();
         $this->checkGet();
         $this->checkPost();
-        $this->checkSessions();
 
         render("talentOverview.tpl",
             ["title" => "Talenten",
@@ -157,6 +157,28 @@ class TalentController
                 $this->requested_talents = $this->talent_repository->getTalents(1,null,null,null,null,true);
                 $this->current_requested_talent_number = 1;
             }
+
+            if (!Empty($_GET["search_added"])) {
+
+                $search = htmlentities(trim($_GET["search_added"],ENT_QUOTES));
+
+                $this->talents_user = $this->talent_repository->getTalents(null,null,null,null,true,null,null,null,null,null,$search);
+
+                $this->user_talents_number = 0;
+                $this->current_user_talent_number = 0;
+
+                $this->page = "m";
+            } else if (!Empty($_GET["search_all"])) {
+
+                $search = htmlentities(trim($_GET["search_all"],ENT_QUOTES));
+
+                $this->talents = $this->talent_repository->getTalents(null,null,true,null,null,null,null,null,null,null,$search);
+
+                $this->current_talent_number = 0;
+                $this->talent_numbers = 0;
+
+                $this->page = "a";
+            }
         }
     }
 
@@ -164,6 +186,7 @@ class TalentController
 
         if(!Empty($_SESSION["current_talent_page"])){
             $this->page = $_SESSION["current_talent_page"];
+            $_SESSION["current_talent_page"] = "";
         }
 
         if(!Empty($_SESSION["talent_m"])){
@@ -218,9 +241,10 @@ class TalentController
                 $correct = true;
 
                 foreach ($this->talent_repository->getTalents() as $talent) {
+
                     if (strtolower($talent->name) == strtolower($new_talent)) {
 
-                        $_SESSION["wrn_talent"] = "Het talent " . $new_talent . " al toegevoegd, aangevraagd of geweigerd. Het talent wordt toegevoegd zodra het nog geaccepteerd word.";
+                        $_SESSION["wrn_talent"] = "Het talent " . $new_talent . " is al toegevoegd, aangevraagd of geweigerd. Indien het talent is geweigerd wordt deze toegevoegd zodra het nog geaccepteerd word.";
 
                         $this->talent_repository->addTalentToUser($talent->id);
                         $correct = false;

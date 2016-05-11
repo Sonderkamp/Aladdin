@@ -300,28 +300,31 @@
                     </div>
                     <div class="modal-body">
                         <form action="admintalents" method="post">
+                            <input type="hidden" name="talent_synonym_id" value="{$talent->id}">
                             <fieldset class="form-group col-xs-5">
-                                <label for="exampleSelect2">Geen synoniem</label>
-                                <select multiple class="form-control" id="exampleSelect2">
-                                    {foreach from=$talents item=talent}
-                                        <option value="{htmlentities(trim($talent->id),ENT_QUOTES)}">{htmlentities(trim($talent->name),ENT_QUOTES)}</option>
+                                <label for="synonym">Wel synoniem</label>
+                                <select name="synonym_remove[]" multiple class="form-control" id="synonym">
+                                    {foreach from=$talent->synonyms item=synonym}
+                                        <option value="{htmlentities(trim($synonym["id"]),ENT_QUOTES)}">{htmlentities(trim($synonym["name"]),ENT_QUOTES)}</option>
                                     {/foreach}
                                 </select>
                             </fieldset>
                             <div class="list-arrows col-xs-2 text-center">
-                                <button name="add_synonym_button" class="btn btn-default btn-sm move-left small-margin-bottom" value="remove">
+                                <button name="add_synonym_button" class="btn btn-default btn-sm move-left small-margin-bottom" value="add">
                                     <span class="glyphicon glyphicon-chevron-left"></span>
                                 </button>
 
-                                <button name="remove_synonym_button" class="btn btn-default btn-sm move-right" value="add">
+                                <button name="remove_synonym_button" class="btn btn-default btn-sm move-right" value="remove">
                                     <span class="glyphicon glyphicon-chevron-right"></span>
                                 </button>
                             </div>
                             <fieldset class="form-group col-xs-5">
-                                <label for="exampleSelect2">Wel synoniem</label>
-                                <select multiple class="form-control" id="exampleSelect2">
-                                    {foreach from=$talents item=talent}
-                                        <option value="{htmlentities(trim($talent->id),ENT_QUOTES)}">{htmlentities(trim($talent->name),ENT_QUOTES)}</option>
+                                <label for="no_synonym">Geen synoniem</label>
+                                <select name="synonym_add[]" multiple class="form-control" id="no_synonym">
+                                    {foreach from=$talents item=talent2}
+                                        {if $talent->id != $talent2->id && array_search($talent2->id, array_column($talent->synonyms, "id")) === false}
+                                            <option value="{htmlentities(trim($talent2->id),ENT_QUOTES)}">{htmlentities(trim($talent2->name),ENT_QUOTES)}</option>
+                                        {/if}
                                     {/foreach}
                                 </select>
                             </fieldset>
@@ -398,3 +401,10 @@
 </div>
 {/foreach}
 
+{if !Empty($synonym_id)}
+    <script type="text/javascript">
+        $(window).load(function(){
+            $('#myModal{preg_replace('/\s+/', '', htmlentities(trim($synonym_id),ENT_QUOTES))}synonym').modal('show');
+        });
+    </script>
+{/if}
