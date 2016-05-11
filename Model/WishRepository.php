@@ -189,6 +189,7 @@ class WishRepository
           WHERE w.Status != ?
           AND w.Status != 'Geweigerd'
           AND w.Status != 'Aangemaakt'
+          AND w.Status != 'Verwijderd'
           ORDER BY max_date DESC"
             , array($status));
 
