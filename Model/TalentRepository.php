@@ -22,7 +22,7 @@ class TalentRepository
                                     `IsRejected`,
                                     `moderator_Username`,
                                     `user_Email`)
-          VALUES (?, CURRENT_TIMESTAMP, NULL, NULL, NULL, ?)",
+              VALUES (?, CURRENT_TIMESTAMP, NULL, NULL, NULL, ?)",
                 array(htmlentities(ucfirst(strtolower(trim($name))), ENT_QUOTES), $_SESSION["user"]->email));
         }
     }
@@ -42,14 +42,30 @@ class TalentRepository
 
     public function addSynonym($talent_id, $synonym_id) {
 
-        Database::query_safe
-        ("INSERT INTO `synonym`(`talent_Id`, `synonym_Id`) VALUES (?,?)",
-            array($talent_id, $synonym_id));
+        $talent = $this->getTalents(null,null,null,$talent_id);
+        $synonym = $this->getTalents(null,null,null,$synonym_id);
 
-        Database::query_safe
-        ("INSERT INTO `synonym`(`talent_Id`, `synonym_Id`) VALUES (?,?)",
-            array($synonym_id, $talent_id));
+
+        if($talent->is_rejected === 1 && $synonym->is_rejected === 1) {
+
+            Database::query_safe
+            ("INSERT INTO `synonym`(`talent_Id`, `synonym_Id`) VALUES (?,?)",
+                array($talent_id, $synonym_id));
+
+            Database::query_safe
+            ("INSERT INTO `synonym`(`talent_Id`, `synonym_Id`) VALUES (?,?)",
+                array($synonym_id, $talent_id));
+        }
     }
+
+//    public function getAllTalentsUser($zoek = null )
+//    {
+//        return
+//    }
+//    public function getPageTalentsUser($page, $zoek = null )
+//    {
+//        return
+//    }
 
     // Read
     public function getTalents($limit = null, $accepted = null, $not_added = null, $id = null, $current_user = null, $user_requested = null, $all_requested = null, $user = null, $synonyms = null, $name_only = null, $search = null) {
@@ -240,6 +256,12 @@ class TalentRepository
                   SET `Name`=?,`IsRejected`=?,`moderator_Username`=?,`AcceptanceDate`=NULL
                   WHERE `Id`=?",
                     Array($name, $isRejected, $_SESSION["admin"]->username, $id));
+
+                Database::query_safe("DELETE FROM `synonym` WHERE `talent_Id` = ?",
+                    array($id));
+
+                Database::query_safe("DELETE FROM `synonym` WHERE `synonym_Id` = ?",
+                    array($id));
             }
         }
     }
@@ -297,27 +319,7 @@ class TalentRepository
 
     public function createSingleTalent($result,$synonym = null) {
 
-        $talent = new Talent(
-            $result[0]["Id"],
-            $result[0]["Name"],
-            $result[0]["CreationDate"],
-            $result[0]["AcceptanceDate"],
-            $result[0]["IsRejected"],
-            $result[0]["moderator_Username"],
-            $result[0]["user_Email"]
-        );
-
-        if($synonym != null) {
-
-            $synonyms = $this->getSynonyms($talent->id);
-
-            for ($k = 0; $k < count($synonyms); $k++) {
-
-                $talent->addSynonym($synonyms[$k]["synonym_Id"],$this->getTalents(null,null,null,$synonyms[$k]["synonym_Id"],null,null,null,null,null,true));
-            }
-        }
-
-        return $talent;
+        return $this->createReturnArray($result,$synonym)[0];
     }
 
 //    public function getSynonymsOfTalents($talent)
