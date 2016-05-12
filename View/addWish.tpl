@@ -73,7 +73,7 @@
             </a>
 
 
-            <a href="/Wishes/action=go_back">
+            <a href="/Wishes/action=back">
                 <button type=button class="btn btn-default side-button">
                     Terug
                 </button>
