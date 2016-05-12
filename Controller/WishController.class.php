@@ -71,6 +71,7 @@ class WishController
                     $this->go_back();
                     break;
                 case "report":
+                case "back":
                     $this->back();
                 default:
                     apologize("404 not found, Go back to my wishes");
@@ -203,7 +204,7 @@ class WishController
 
             $this->tag = $this->prepend("#", implode(" #", $tempTag));
             render("addWish.tpl", ["wishtitle" => $this->title,
-                "description" => $this->description, "edit" => "isset", "tag" => $this->tag]);
+                "description" => $this->description, "edit" => "isset", "tag" => $this->tag, "previousPage"]);
         }
     }
 
