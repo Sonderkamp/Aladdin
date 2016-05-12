@@ -251,10 +251,10 @@ class WishController
                 || Empty($this->tag) || $size == 0
             ) {
                 render("addWish.tpl", ["error" => "Vul AUB alles in", "wishtitle" => $this->title,
-                    "description" => $this->description, "edit" => "isset"]);
+                    "description" => $this->description,"tag" => $this->tag, /*"edit" => "isset"*/]);
                 exit(1);
             }
-
+            
             $allTags = $this->gethashtags($this->tag);
             $myArray = explode(',', $allTags);
             $new_array = array_map('ucfirst', $myArray);
