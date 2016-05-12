@@ -8,7 +8,7 @@
  */
 class AdminTalentController
 {
-    private $message_model, $page, $talents, $all_talents, $unaccepted_talents, $current_all_talents_number, $all_talents_number, $talent_repository, $forbidden_words_repo, $synonym_id;
+    private $message_model, $page, $talents, $all_talents, $unaccepted_talents, $current_all_talents_number, $all_talents_number, $talent_repository, $forbidden_words_repo, $synonym_id, $accepted_talents;
 
     public function __construct()
     {
@@ -24,7 +24,7 @@ class AdminTalentController
         $this->talents = $this->talent_repository->getTalents();
         $this->all_talents_number = ceil($this->talent_repository->getNumberOfTalents()/10);
         $this->unaccepted_talents = $this->talent_repository->getTalents(null,null,null,null,null,null,true);
-
+        $this->accepted_talents = $this->talent_repository->getTalents(null,true);
     }
 
     public function run()
@@ -40,7 +40,8 @@ class AdminTalentController
                 "current_all_talents_number" => $this->current_all_talents_number,
                 "unaccepted_talents" => $this->unaccepted_talents,
                 "talents" => $this->talents,
-                "synonym_id" => $this->synonym_id]);
+                "synonym_id" => $this->synonym_id,
+                "accepted_talents" => $this->accepted_talents]);
         exit(0);
     }
 
@@ -93,24 +94,28 @@ class AdminTalentController
 
                 $name = $_POST["admin_talent_name"];
 
-                if($this->forbidden_words_repo->isValid($name)) {
+                $talent2 = $this->talent_repository->getTalents(null,null,null,$_POST["admin_talent_id"]);
 
-                    if (strlen($name) > 0 && strlen($name) <= 45) {
+                if($name != $talent2->name) {
+                    if ($this->forbidden_words_repo->isValid($name)) {
 
-                        foreach ($this->talent_repository->getTalents() as $talent) {
+                        if (strlen($name) > 0 && strlen($name) <= 45) {
 
-                            if (strtolower($talent->name) == strtolower($name)) {
+                            foreach ($this->talent_repository->getTalents() as $talent) {
 
-                                //De ingevoegde naam is al toegevoegd, aangevraagd of geweigerd.
-                                $correct = false;
-                                break;
+                                if (strtolower($talent->name) == strtolower($name)) {
+
+                                    //De ingevoegde naam is al toegevoegd, aangevraagd of geweigerd.
+                                    $correct = false;
+                                    break;
+                                }
                             }
                         }
-                    }
-                } else {
+                    } else {
 
-                    // De ingevoerde naam voldoet niet aan de algemene voorwaarden en is daarom verboden.
-                    $name = $this->talent_repository->getTalents(null,null,null,$_POST["admin_talent_id"])->name;
+                        // De ingevoerde naam voldoet niet aan de algemene voorwaarden en is daarom verboden.
+                        $name = $this->talent_repository->getTalents(null, null, null, $_POST["admin_talent_id"])->name;
+                    }
                 }
             }
 
@@ -142,7 +147,7 @@ class AdminTalentController
 
             $talent = $this->talent_repository->getTalents(null,null,null,$_POST["deny_id"]);
 
-            $this->talent_repository->updateTalent($talent->name,0,$_POST["deny_id"]);
+            $this->talent_repository->updateTalent($talent->name,0,$talent->id);
 
             $message_id = $this->message_model->sendMessage("Admin", $talent->user_email, "Het talent '" . $talent->name . "' is afgewezen", $_POST["deny_message"]);
             $this->message_model->setLink("", "Talent", $message_id);
