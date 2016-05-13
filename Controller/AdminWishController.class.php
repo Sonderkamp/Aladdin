@@ -181,7 +181,7 @@ class AdminWishController
     function wishAction($action, $wishID, $mdate, $username, $message, $title)
     {
         $wishmodel = new WishRepository();
-        $messagemmodel = new messageModel();
+        $messagemmodel = new messageRepository();
         $wishdetails = $wishmodel->getWish($wishID);
         $newdate = str_replace('%20', ' ', $mdate);
         switch ($action) {
@@ -215,7 +215,7 @@ class AdminWishController
 
     private function sendRefuseMessage($user, $wishid, $message, $title)
     {
-        $messagemodel = new messageModel();
+        $messagemodel = new messageRepository();
         $wishmodel = new WishRepository();
         $test = $wishmodel->getWishOwner($wishid);
         //"Geachte " + $_GET["wishdisplay"] +"<p> Je wens is afgewezen als u de reden hiervoor wilt weten kunt u contact opnemen via de website. <p> hieronder kunt u de inhoud van de wens nog inzien.<p><p><h4>" + $_GET["wishtitle"] +"</h4><p>" + $_GET["wishcontent"] +"</p>"

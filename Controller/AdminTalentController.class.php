@@ -19,10 +19,10 @@ class AdminTalentController
         
         $this->talent_repository = new TalentRepository();
         $this->forbidden_words_repo = new ForbiddenWordRepository();
-        $this->message_model = new MessageModel();
+        $this->message_model = new messageRepository();
 
-        $this->talents = $this->talent_repository->getTalentssss();
-        $this->all_talents_number = ceil(count($this->talent_repository->getTalentssss())/10);
+        $this->talents = $this->talent_repository->getTalents();
+        $this->all_talents_number = ceil(count($this->talent_repository->getTalents())/10);
         $this->unaccepted_talents = $this->talent_repository->getAllRequestedTalents();
         $this->accepted_talents = $this->talent_repository->getAcceptedTalents();
     }
@@ -50,7 +50,7 @@ class AdminTalentController
         if(!Empty($_SESSION["talent_admin"])){
             if($this->all_talents_number > 1){
                 $this->current_all_talents_number = $_SESSION["talent_admin"];
-                $this->all_talents = $this->talent_repository->getTalentssss($_SESSION["talent_admin"],true);
+                $this->all_talents = $this->talent_repository->getTalents($_SESSION["talent_admin"],true);
             } else{
                 $_SESSION["talent_admin"] = $this->all_talents_number;
             }
@@ -67,16 +67,16 @@ class AdminTalentController
     {
         if (!Empty($_GET["admin_a"])) {
             if($_GET["admin_a"] > 0 & $_GET["admin_a"] <= $this->all_talents_number) {
-                $this->all_talents = $this->talent_repository->getTalentssss($_GET["admin_a"],true);
+                $this->all_talents = $this->talent_repository->getTalents($_GET["admin_a"],true);
                 $this->current_all_talents_number = $_GET["admin_a"];
                 $_SESSION["talent_admin"] = $this->current_all_talents_number;
             } else{
-                $this->all_talents = $this->talent_repository->getTalentssss(1,true);
+                $this->all_talents = $this->talent_repository->getTalents(1,true);
                 $this->current_all_talents_number = 1;
                 $_SESSION["talent_admin"] = $this->current_all_talents_number;
             }
         } else {
-            $this->all_talents = $this->talent_repository->getTalentssss(1,true);
+            $this->all_talents = $this->talent_repository->getTalents(1,true);
             $this->current_all_talents_number = 1;
         }
     }
@@ -101,7 +101,7 @@ class AdminTalentController
 
                         if (strlen($name) > 0 && strlen($name) <= 45) {
 
-                            foreach ($this->talent_repository->getTalentssss() as $talent) {
+                            foreach ($this->talent_repository->getTalents() as $talent) {
 
                                 if (strtolower($talent->name) == strtolower($name)) {
 

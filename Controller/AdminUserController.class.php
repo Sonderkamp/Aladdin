@@ -50,7 +50,8 @@ class AdminUserController
     public function unhandledReports()
     {
         $this->setCurrent("unhandled");
-        $report = $this->reportRepository->get("new");
+        $report = $this->reportRepository->getRequested();
+//        $report = $this->reportRepository->get("new");
 
         if (count($report) > 0) {
             foreach ($report as $item) {
@@ -61,9 +62,6 @@ class AdminUserController
                         if($temp->isBlocked($user->getEmail())){
                             $user->setBlocked(true);
                         }
-//                        if ($this->userRepository->isBlocked($user->getEmail())) {
-//                            $user->setBlocked(true);
-//                        }
                     };
                 }
             }
@@ -74,7 +72,8 @@ class AdminUserController
     public function handledReports()
     {
         $this->setCurrent("handled");
-        $report = $this->reportRepository->get("handled");
+        $report = $this->reportRepository->getHandled();
+//        $report = $this->reportRepository->get("handled");
         render("adminUser.tpl", ["reports" => $report, "current" => $this->getCurrent()]);
     }
 
@@ -89,7 +88,7 @@ class AdminUserController
             $id = $_GET["id"];
             $this->reportRepository->block($id);
 
-            $reported = $this->reportRepository->get("single", $id);
+            $reported = $this->reportRepository->getId($id);
             $reported = $reported[0];
             if ($reported instanceof Report) {
                 $reported = $reported->getReported();
@@ -123,7 +122,6 @@ class AdminUserController
                 break;
         }
     }
-
 
     public function setCurrent($page)
     {

@@ -17,7 +17,7 @@ class TalentController
         $this->page = "m";
         $this->talent_repository = new TalentRepository();
         $this->forbidden_words_repo = new ForbiddenWordRepository();
-        $this->message_model = new MessageModel();
+        $this->message_model = new messageRepository();
 
         $this->user_talents_number = ceil(count($this->talent_repository->getAddedTalents())/10);
         $this->talent_numbers = ceil(count($this->talent_repository->getUnaddedTalents())/10);
@@ -240,7 +240,7 @@ class TalentController
 
                 $correct = true;
 
-                foreach ($this->talent_repository->getTalentssss() as $talent) {
+                foreach ($this->talent_repository->getTalents() as $talent) {
 
                     if (strtolower($talent->name) == strtolower($new_talent)) {
 

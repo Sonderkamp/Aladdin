@@ -8,107 +8,58 @@
  */
 class ReportRepository
 {
+    private $reportQueryBuilder;
 
-    private $userRepository;
+    private $BLOCK_STATUS = "bevestigd";
+    private $DELETE_STATUS = "verwijderd";
 
     public function __construct()
     {
-        $this->userRepository = new UserRepository();
+        $this->reportQueryBuilder = new ReportQueryBuilder();
     }
 
     public function add(Report $report)
     {
-        $sql = "INSERT INTO `reportedusers` (`user_Reporter`,`user_Reported`, `reportStatus_status`, `wish_Id`, `Message`) 
-                VALUES (?,?,?,?,?)";
-        $parameters = array($report->getReporter(), $report->getReported(), $report->getStatus(), $report->getWishID(), $report->getMessage());
-
-        Database::query_safe($sql, $parameters);
+        $this->reportQueryBuilder->add($report);
     }
 
-    public function get($type, $id = null)
+    public function getAll()
     {
-        switch ($type) {
-            case "all":
-                $query = "SELECT * FROM reportedusers";
-                break;
-            case "new":
-                $query = "SELECT * FROM reportedusers WHERE reportStatus_Status = ?";
-                $parameters = array("aangevraagd");
-                break;
-            case "single":
-                if (isset($id)) {
-                    $query = "SELECT * FROM reportedusers WHERE Id = $id";
-                }
-                break;
-            case "handled":
-                $query = "SELECT * FROM reportedusers WHERE reportStatus_Status != ? ORDER BY CreationDate DESC";
-                $parameters = array("aangevraagd");
-                break;
-
-        }
-
-        if (isset($parameters)) {
-            $result = Database::query_safe($query, $parameters);
-        } else {
-            $result = Database::query($query);
-        }
-
-        return $this->create($result);
+        $reports = $this->reportQueryBuilder->get();
+        return $this->reportQueryBuilder->getReportArray($reports);
     }
 
+    public function getRequested()
+    {
+        $reports = $this->reportQueryBuilder->get(true);
+        return $this->reportQueryBuilder->getReportArray($reports);
+    }
+
+    public function getId($id)
+    {
+        $report = $this->reportQueryBuilder->get(null, $id);
+        return $this->reportQueryBuilder->getReportArray($report);
+    }
+
+    public function getHandled()
+    {
+        $reports = $this->reportQueryBuilder->get(null, null, true);
+        return $this->reportQueryBuilder->getReportArray($reports);
+    }
 
     public function block($id)
     {
-        if ($id > 0) {
-            $sql = "UPDATE `aladdin_db2`.`reportedusers` SET `reportStatus_Status` = 'bevestigd' WHERE `reportedusers`.`Id` = ?";
-            $parameters = array($id);
-
-            Database::query_safe($sql, $parameters);
-        }
+        $this->reportQueryBuilder->setStatus($this->BLOCK_STATUS, $id);
     }
 
     public function delete($id)
     {
-        if ($id > 0) {
-            $sql = "UPDATE `aladdin_db2`.`reportedusers` SET `reportStatus_Status` = 'verwijderd' WHERE `reportedusers`.`Id` = ?";
-            $parameters = array($id);
-
-            Database::query_safe($sql, $parameters);
-        }
+        $this->reportQueryBuilder->setStatus($this->DELETE_STATUS, $id);
     }
 
-    public function create($result)
-    {
-        if (count($result) <= 0) {
-            return;
-        }
-
-        $reports = array();
-        foreach ($result as $item) {
-            $id = $item["Id"];
-            $message = $item["Message"];
-            $date = $item["CreationDate"];
-            $reporter = $item["user_Reporter"];
-            $reporter = $this->userRepository->getUser($reporter);
-            $reported = $item["user_Reported"];
-            $reported = $this->userRepository->getUser($reported);
-            $status = $item["reportStatus_Status"];
-            $wishID = $item["wish_Id"];
-
-            $report = new Report($reporter, $reported, $status, $wishID, $message, $date, $id);
-            $reports[] = $report;
-        }
-
-        return $reports;
-    }
-
-    public function getUsersIHaveReported($email){
-        $sql = "SELECT * FROM `reportedusers` WHERE `user_Reporter` = ?";
-        $parameters = array($email);
-
-        $result = Database::query_safe($sql,$parameters);
-        
-        return $this->create($result);
+    public function getReportedUsers($email = null){
+        $reported = $this->reportQueryBuilder->getReportedUsers($email);
+        return $this->reportQueryBuilder->getReportArray($reported);
     }
     
 }

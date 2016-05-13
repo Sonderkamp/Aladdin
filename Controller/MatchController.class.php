@@ -52,9 +52,11 @@ class MatchController
         
         /* Nothing with matching, only check if user can Add a wish and get his DisplayName */
         $canAddWish = $this->wishRepository->canAddWish($_SESSION["user"]->email);
-        $report = $this->reportRepository->getUsersIHaveReported($_SESSION["user"]->email);
-        
-        /* check wich users/displaynames I have repported*/
+
+        /* Get users I have reported */
+        $report = $this->reportRepository->getReportedUsers();
+
+        /* Get the displaynames of the users which I have reported */
         $displayNames = array();
         if (count($report) !== 0) {
             foreach ($report as $item) {
@@ -71,7 +73,7 @@ class MatchController
         $user = $this->userRepository->getUser($_SESSION["user"]->email);
         $displayName = $user->getDisplayName();
 
-        /* set current to 'match' so I can go back to the correct page*/
+        /* set current to 'match' so I can go back to the correct page */
         $_SESSION["current"] = "match";
 
         render("wishOverview.tpl",

@@ -6,7 +6,7 @@ include_once("Model/Database.php");
 include_once("Model/Email.php");
 include_once("Model/Wish.php");
 include_once("Model/Talent.php");
-include_once("Model/MessageModel.php");
+include_once("Model/MessageRepository.php");
 include_once("Model/Message.php");
 include_once("Model/MessageLink.php");
 include_once("Model/WishRepository.php");
@@ -17,7 +17,10 @@ include_once("Model/Report.php");
 include_once("Model/ReportRepository.php");
 include_once("Model/ForbiddenWordRepository.php");
 include_once("Model/UserRepository.php");
+
 include_once("Model/QueryBuilder/TalentQueryBuilder.php");
+include_once("Model/QueryBuilder/ReportQueryBuilder.php");
+include_once("Model/QueryBuilder/MessageQueryBuilder.php");
 
 include_once("Controller/WishController.class.php");
 include_once("Controller/TalentController.class.php");

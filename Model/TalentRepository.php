@@ -41,7 +41,7 @@ class TalentRepository
     // ####### Read ######
 
     // getAllTalents
-    public function getTalentssss($page = null, $synonyms = null) {
+    public function getTalents($page = null, $synonyms = null) {
         return $this->createTalentArray($this->talentBuilder->getTalents($page),$synonyms);
     }
 

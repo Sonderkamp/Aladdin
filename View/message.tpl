@@ -23,21 +23,21 @@
     <div class="col-sm-3 hidden-xs">
         <a href="/Inbox/p={$page}/action=new" class="btn btn-default" style="width:100%">Nieuw Bericht</a><br>
         <br>
-        {if isset($in)}
+        {if $folderShortcut == "inbox"}
             <a href="/Inbox/p={$page}" class="btn btn-default active" style="width:100%">Postvak in</a>
             <br>
         {else}
             <a href="/Inbox/p={$page}" class="btn btn-default" style="width:100%">Postvak in</a>
             <br>
         {/if}
-        {if isset($out)}
+        {if $folderShortcut == "outbox"}
             <a href="/Inbox/folder=outbox/p={$page}" class="btn btn-default active" style="width:100%">Postvak uit</a>
             <br>
         {else}
             <a href="/Inbox/folder=outbox/p={$page}" class="btn btn-default" style="width:100%">Postvak uit</a>
             <br>
         {/if}
-        {if isset($trash)}
+        {if $folderShortcut == "trash"}
             <a href="/Inbox/folder=trash/p={$page}" class="btn btn-default active" style="width:100%">Prullenbak</a>
             <br>
         {else}
@@ -132,27 +132,28 @@
         </div>
 
         <div class="col-xs-12 hidden-sm hidden-md hidden-lg">
-            {if isset($in)}
-                <a href="/Inbox" class="btn btn-default active" style="width:100%">Postvak in</a>
-                <br>
-            {else}
-                <a href="/Inbox" class="btn btn-default" style="width:100%">Postvak in</a>
-                <br>
-            {/if}
-            {if isset($out)}
-                <a href="/Inbox/folder=outbox" class="btn btn-default active" style="width:100%">Postvak uit</a>
-                <br>
-            {else}
-                <a href="/Inbox/folder=outbox" class="btn btn-default" style="width:100%">Postvak uit</a>
-                <br>
-            {/if}
-            {if isset($trash)}
-                <a href="/Inbox/folder=trash" class="btn btn-default active" style="width:100%">Prullenbak</a>
-                <br>
-            {else}
-                <a href="/Inbox/folder=trash" class="btn btn-default" style="width:100%">Prullenbak</a>
-                <br>
-            {/if}
+                {if $folderShortcut == "inbox"}
+                    <a href="/Inbox/p={$page}" class="btn btn-default active" style="width:100%">Postvak in</a>
+                    <br>
+                {else}
+                    <a href="/Inbox/p={$page}" class="btn btn-default" style="width:100%">Postvak in</a>
+                    <br>
+                {/if}
+                {if $folderShortcut == "outbox"}
+                    <a href="/Inbox/folder=outbox/p={$page}" class="btn btn-default active" style="width:100%">Postvak uit</a>
+                    <br>
+                {else}
+                    <a href="/Inbox/folder=outbox/p={$page}" class="btn btn-default" style="width:100%">Postvak uit</a>
+                    <br>
+                {/if}
+                {if $folderShortcut == "trash"}
+                    <a href="/Inbox/folder=trash/p={$page}" class="btn btn-default active" style="width:100%">Prullenbak</a>
+                    <br>
+                {else}
+                    <a href="/Inbox/folder=trash/p={$page}" class="btn btn-default" style="width:100%">Prullenbak</a>
+                    <br>
+                {/if}
+                <br><br>
             <br>
             <a href="/Inbox/action=new" class="btn btn-default" style="width:100%">Nieuw Bericht</a><br>
             <br>
