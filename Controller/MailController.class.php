@@ -242,7 +242,7 @@ class MailController
         }
 
         $userRepo = new UserRepository();
-        $username = $userRepo->getUsername($_POST["recipient"]);
+        $username = $userRepo->getUser($_POST["recipient"])->email;
 
         if ($username === false) {
             render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Gebruiker bestaat niet", "names" => $names]);
