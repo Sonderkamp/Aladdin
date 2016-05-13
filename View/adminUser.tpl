@@ -4,9 +4,9 @@
         <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2">
             <ul class="nav nav-pills nav-stacked">
                 {if isset($current)}
-                    <li {if $current == "unhandled"} class="active" {/if}><a href="AdminUser/action=unhandled">Nieuwe
+                    <li {if $current == "unhandled"} class="active" {/if}><a href="/AdminUser/action=unhandled">Nieuwe
                             rapportages</a></li>
-                    <li {if $current == "handled"} class="active" {/if}><a href="AdminUser/action=handled">Behandelde
+                    <li {if $current == "handled"} class="active" {/if}><a href="/AdminUser/action=handled">Behandelde
                             rapportages</a></li>
                 {/if}
             </ul>
