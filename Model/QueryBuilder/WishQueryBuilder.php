@@ -41,11 +41,12 @@ class WishQueryBuilder
      * search incompleted wishes
      *
      */
-    public function getWishes($user = null, array $status = null, $searchKey = null)
+    public function getWishes($user = null, array $status = null, $searchKey = null, $admin = false)
     {
-        $query = "SELECT * FROM `wish`  LEFT JOIN `wishContent`
+        $query = "SELECT * FROM `wish` LEFT JOIN `wishContent`
                         ON `wish`.Id = `wishContent`.wish_Id
-                        WHERE ";
+                        WHERE `wish`.User IS NOT NULL AND
+                        NOT EXISTS(SELECT NULL FROM blockedusers AS b WHERE b.user_Email = `wish`.User AND b.IsBlocked = 1) AND";
 
         if($user != null){
             $query .= "User = ? AND ";
@@ -58,7 +59,12 @@ class WishQueryBuilder
                 if($item == "Aangemaakt"){
                     $query .= ")";
                 } else{
-                    $query .= " AND `wishContent`.`IsAccepted` = 1)";
+                    $query .= " AND `wishContent`.`IsAccepted` = ";
+                    if($admin){
+                        $query .= "0)";
+                    } else {
+                        $query .= "1)";
+                    }
                 }
                 $query .= " OR ";
 
@@ -78,6 +84,10 @@ class WishQueryBuilder
                         SOUNDS LIKE ? ";
         }
 
+        if($admin){
+            $query = substr_replace($query, '', -3);
+        }
+
         $query .= "GROUP BY `wish`.Id";
 
         //acquire params if any
@@ -95,6 +105,10 @@ class WishQueryBuilder
     }
 
     public function getManagementWishes(){
+        $query = "SELECT * FROM `wish` as w LEFT JOIN `wishContent`
+                        ON `wish`.Id = `wishContent`.wish_Id
+                        WHERE NOT w.User IS NULL AND
+                        NOT EXISTS(SELECT NULL FROM blockedusers AS b WHERE b.user_Email = w.User AND b.IsBlocked = 1)";
 
     }
 }

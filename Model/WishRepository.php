@@ -277,63 +277,65 @@ class WishRepository
 
         switch ($wishPage) {
             case 'requested':
+                return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, null , null, true));
                 // changeuser_email froms tring to $user have to get $user form somewhere
-                $result = Database::query("
-              SELECT
-              wc.wish_Id as wishid,
-              u.DisplayName as display,
-              u.Address as address,
-              u.Postalcode as postalcode,
-              w.status as status,
-              w.User as user,
-              wc.Content as content,
-              wc.Title as title,
-              wc.IsAccepted as accepted,
-              wc.moderator_Username as modname,
-              wcMax.max_date as mdate,
-              isblock.IsBlocked as isblocked
-          FROM wish AS w
-          JOIN (SELECT wish_Id, MAX(wishContent.Date) AS max_date
-              FROM wishContent
-              GROUP BY wish_Id) AS wcMax
-              ON w.Id = wcMax.wish_Id
-          JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
-          join user as u on w.user = u.Email
-          left JOIN (select IsBlocked,ab.user_email
-from adminBlock as ab,(
-SELECT User_Email,max(ab.Block_Id)  as blockid , MAX(ab.BlockDate) AS abmax_date
-              FROM adminBlock as ab
-              GROUP BY User_Email
-    ) as test
-where ab.user_Email = test.User_Email
-AND ab.BlockDate = test.abmax_date
-AND ab.Block_Id = test.blockid) AS isblock
-              ON u.Email = isblock.User_Email
-              where (isBlocked = 0 OR isBlocked is null)
-              AND u.IsActive = 1
-              AND wc.IsAccepted = 0
-              AND wc.moderator_username is null
-              ORDER BY max_date asc");
+//                $result = Database::query("
+//              SELECT
+//              wc.wish_Id as wishid,
+//              u.DisplayName as display,
+//              u.Address as address,
+//              u.Postalcode as postalcode,
+//              w.status as status,
+//              w.User as user,
+//              wc.Content as content,
+//              wc.Title as title,
+//              wc.IsAccepted as accepted,
+//              wc.moderator_Username as modname,
+//              wcMax.max_date as mdate,
+//              isblock.IsBlocked as isblocked
+//          FROM wish AS w
+//          JOIN (SELECT wish_Id, MAX(wishContent.Date) AS max_date
+//              FROM wishContent
+//              GROUP BY wish_Id) AS wcMax
+//              ON w.Id = wcMax.wish_Id
+//          JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
+//          join user as u on w.user = u.Email
+//          left JOIN (select IsBlocked,ab.user_email
+//from adminBlock as ab,(
+//SELECT User_Email,max(ab.Block_Id)  as blockid , MAX(ab.BlockDate) AS abmax_date
+//              FROM adminBlock as ab
+//              GROUP BY User_Email
+//    ) as test
+//where ab.user_Email = test.User_Email
+//AND ab.BlockDate = test.abmax_date
+//AND ab.Block_Id = test.blockid) AS isblock
+//              ON u.Email = isblock.User_Email
+//              where (isBlocked = 0 OR isBlocked is null)
+//              AND u.IsActive = 1
+//              AND wc.IsAccepted = 0
+//              AND wc.moderator_username is null
+//              ORDER BY max_date asc");
                 break;
             case 'changed':
-                $result = Database::query("
-            select u.DisplayName as display,
-              u.Address as address,
-              u.Postalcode as postalcode,
-            w.User as user,
-             wc.wish_Id as wishid,
-              w.Status as status,
-              wc.Date as mdate,
-              wc.Title as title ,
-              wc.Content as content ,
-              wc.Date as mdate
-            from wishContent wc
-            INNER JOIN wish w on w.id = wc.wish_Id
-            INNER JOIN user u on w.user = u.email
-            WHERE status != 'Geweigerd'
-            AND wc.moderator_username is null
-            AND u.IsActive =1
-            ORDER BY mdate asc");
+
+//                $result = Database::query("
+//            select u.DisplayName as display,
+//              u.Address as address,
+//              u.Postalcode as postalcode,
+//            w.User as user,
+//             wc.wish_Id as wishid,
+//              w.Status as status,
+//              wc.Date as mdate,
+//              wc.Title as title ,
+//              wc.Content as content ,
+//              wc.Date as mdate
+//            from wishContent wc
+//            INNER JOIN wish w on w.id = wc.wish_Id
+//            INNER JOIN user u on w.user = u.email
+//            WHERE status != 'Geweigerd'
+//            AND wc.moderator_username is null
+//            AND u.IsActive =1
+//            ORDER BY mdate asc");
                 break;
             case 'open':
                 $result = Database::query("

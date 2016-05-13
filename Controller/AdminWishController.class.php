@@ -120,14 +120,14 @@ class AdminWishController
 //                    break;
 //                default:
         render("AdminWish.tpl", ["title" => "WensBeheer",
-            "reqwishes" => $this->wishPageAction('requested'),
-            "openwishes" => $this->wishPageAction('open'),
-            "matchedwishes" => $this->wishPageAction('matched'),
-            "currentwishes" => $this->wishPageAction('current'),
-            "donewishes" => $this->wishPageAction('done'),
-            "deniedwishes" => $this->wishPageAction('denied'),
-            "deletedwishes" => $this->wishPageAction('deleted'),
-            "current_page" => $this->page
+            "requested" => $this->wishPageAction('requested'),
+            "published" => $this->wishPageAction('open'),
+            "matched" => $this->wishPageAction('matched'),
+            "current" => $this->wishPageAction('current'),
+            "completed" => $this->wishPageAction('done'),
+            "denied" => $this->wishPageAction('denied'),
+            "deleted" => $this->wishPageAction('deleted'),
+            "currentPage" => $this->page
         ]);
 //                    break;
 //
