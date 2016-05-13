@@ -77,8 +77,8 @@ class ProfileCheckController
 
     private function getTalents($user)
     {
-        $wishmodel = new TalentRepository();
-        return $wishmodel->getTalents(null,null,null,null,null,null,null,$user);
+        $talentRepo = new TalentRepository();
+        return $talentRepo->getTalentsUser($user);
     }
 
     private function getBlocks($user)

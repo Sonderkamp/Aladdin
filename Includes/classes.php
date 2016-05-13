@@ -17,6 +17,7 @@ include_once("Model/Report.php");
 include_once("Model/ReportRepository.php");
 include_once("Model/ForbiddenWordRepository.php");
 include_once("Model/UserRepository.php");
+include_once("Model/QueryBuilder/TalentQueryBuilder.php");
 
 include_once("Controller/WishController.class.php");
 include_once("Controller/TalentController.class.php");
