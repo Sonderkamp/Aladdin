@@ -31,6 +31,11 @@ class UserRepository
 
     public function createUser($result)
     {
+
+        if ($result == null || $result == false || count($result) == 0) {
+            return false;
+        }
+
         $newUser = new User();
 
         $newUser->email = $result[0]["Email"];
