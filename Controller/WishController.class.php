@@ -376,7 +376,7 @@ class WishController
                 $mail->to = $_SESSION["user"]->email;
                 $mail->sendMail();
 
-                $newmail = new MessageModel();
+                $newmail = new messageRepository();
                 $msgID = $newmail->sendMessage("Admin", $mail->to, $mail->subject, $mail->message);
                 $newmail->setLink($id, "Wens", $msgID);
             }

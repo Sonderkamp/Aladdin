@@ -11,7 +11,7 @@ class MailController
 
     public function run()
     {
-        $this->messageModel = new messageModel();
+        $this->messageModel = new messageRepository();
         guaranteeLogin("/Inbox");
 
         if (!empty($_GET["p"])) {
@@ -117,7 +117,7 @@ class MailController
                         render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "names" => $names]);
                         break;
                     default:
-                        render("inbox.tpl", ["title" => "Inbox", "folder" => "Postvak in", "page" => $this->messageModel->isValidPageInbox()]);
+                        render("inbox.tpl", ["title" => "Inbox", "folder" => "Postvak in", "page" => $this->messageModel->isValidPage()]);
                         break;
                 }
                 exit();
@@ -145,24 +145,28 @@ class MailController
                     $this->renderInbox();
                 }
 
+                $folder = "Postvak uit";
+                $folderShortcut = "inbox";
                 if (!Empty($_GET["folder"])) {
+
                     switch (strtolower($_GET["folder"])) {
                         case "inbox":
-                            render("message.tpl", ["page" => $this->page, "title" => "Inbox", "folder" => "Postvak in" . $this->title, "folderShortcut" => "inbox", "in" => true, "message" => $message, "error" => $this->error, "search" => $this->search]);
+                            $folder = "Postvak in";
+                            $folderShortcut = "inbox";
                             break;
                         case "outbox":
-                            render("message.tpl", ["page" => $this->page, "title" => "Inbox", "folder" => "Postvak uit" . $this->title, "out" => true, "folderShortcut" => "outbox", "message" => $message, "error" => $this->error, "search" => $this->search]);
+                            $folder = "Postvak uit";
+                            $folderShortcut = "outbox";
                             break;
                         case "trash":
-                            render("message.tpl", ["page" => $this->page, "title" => "Inbox", "folder" => "Prullenbak" . $this->title, "trash" => true, "folderShortcut" => "trash", "message" => $message, "error" => $this->error, "search" => $this->search]);
+                            $folder = "Prullenbak";
+                            $folderShortcut = "trash";
                             break;
                         default:
-                            render("message.tpl", ["page" => $this->page, "title" => "Inbox", "folder" => "Postvak in" . $this->title, "folderShortcut" => "inbox", "message" => $message, "error" => $this->error, "search" => $this->search]);
                             break;
                     }
-                    exit();
                 }
-                render("message.tpl", ["page" => $this->page, "title" => "Inbox", "folder" => "Postvak in" . $this->title, "folderShortcut" => "inbox", "in" => true, "message" => $message, "error" => $this->error, "search" => $this->search]);
+                render("message.tpl", ["page" => $this->page, "title" => "Inbox", "folder" => $folder . $this->title, "folderShortcut" => $folderShortcut, "message" => $message, "error" => $this->error, "search" => $this->search]);
                 exit();
             }
 
@@ -177,21 +181,21 @@ class MailController
         if (!Empty($_GET["folder"])) {
             switch (strtolower($_GET["folder"])) {
                 case "inbox":
-                    render("inbox.tpl", ["title" => "Inbox", "folder" => "Postvak in" . $this->title, "in" => true, "folderShortcut" => "inbox", "messages" => $this->messageModel->getInbox($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPageInbox()]);
+                    render("inbox.tpl", ["title" => "Inbox", "folder" => "Postvak in" . $this->title, "in" => true, "folderShortcut" => "inbox", "messages" => $this->messageModel->getInbox($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPage()]);
                     break;
                 case "outbox":
-                    render("inbox.tpl", ["title" => "Inbox", "folder" => "Postvak uit" . $this->title, "out" => true, "folderShortcut" => "outbox", "messages" => $this->messageModel->getOutbox($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPageOutbox()]);
+                    render("inbox.tpl", ["title" => "Inbox", "folder" => "Postvak uit" . $this->title, "out" => true, "folderShortcut" => "outbox", "messages" => $this->messageModel->getOutbox($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPage()]);
                     break;
                 case "trash":
-                    render("inbox.tpl", ["title" => "Inbox", "folder" => "Prullenbak" . $this->title, "trash" => true, "folderShortcut" => "trash", "messages" => $this->messageModel->getTrash($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPageTrash()]);
+                    render("inbox.tpl", ["title" => "Inbox", "folder" => "Prullenbak" . $this->title, "trash" => true, "folderShortcut" => "trash", "messages" => $this->messageModel->getTrash($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPage()]);
                     break;
                 default:
-                    render("inbox.tpl", ["title" => "Inbox", "folder" => "Postvak in" . $this->title, "folderShortcut" => "inbox", "messages" => $this->messageModel->getInbox($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPageInbox()]);
+                    render("inbox.tpl", ["title" => "Inbox", "folder" => "Postvak in" . $this->title, "folderShortcut" => "inbox", "messages" => $this->messageModel->getInbox($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPage()]);
                     break;
             }
             exit();
         }
-        render("inbox.tpl", ["title" => "Inbox", "folder" => "Postvak in" . $this->title, "in" => true, "folderShortcut" => "inbox", "messages" => $this->messageModel->getInbox($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPageInbox()]);
+        render("inbox.tpl", ["title" => "Inbox", "folder" => "Postvak in" . $this->title, "in" => true, "folderShortcut" => "inbox", "messages" => $this->messageModel->getInbox($this->search, $this->page), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPage()]);
         exit();
     }
 
@@ -231,7 +235,7 @@ class MailController
         }
 
         // check if there is a block
-        $mes = new messageModel();
+        $mes = new messageRepository();
         $res = $mes->checkblock($_SESSION["user"]->email, $username);
 
         if ($res !== false) {
