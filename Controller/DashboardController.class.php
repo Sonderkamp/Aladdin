@@ -8,14 +8,14 @@
  */
 class DashboardController
 {
-    private $wishRepo, $talentRepo, $wish_limit, $talent_limit;
+    private $wishRepo, $talentRepo, $wishLimit, $talentLimit;
 
     public function __construct()
     {
         $this->wishRepo = new WishRepository();
         $this->talentRepo = new TalentRepository();
-        $this->wish_limit = $this->wishRepo->WISH_LIMIT;
-        $this->talent_limit = $this->talentRepo->TALENT_MINIMUM;
+        $this->wishLimit = $this->wishRepo->WISH_LIMIT;
+        $this->talentLimit = $this->talentRepo->TALENT_MINIMUM;
     }
 
     public function run()
@@ -36,11 +36,11 @@ class DashboardController
 
     public function showForcedProfile()
     {
-            $wishAmount = $this->wish_limit - $this->getWishAmount();
-            $talentAmount = $this->talent_limit - $this->getTalentAmount();
+            $wishAmount = $this->wishLimit - $this->getWishAmount();
+            $talentAmount = $this->talentLimit - $this->getTalentAmount();
             $wishCheck = false;
 
-            if ($wishAmount <= $this->wish_limit) {
+            if ($wishAmount <= $this->wishLimit) {
                 $wishCheck = true;
             }
 
@@ -67,7 +67,7 @@ class DashboardController
     {
         $prefix = "<strong>Pas op!</strong> U heeft uw profiel nog niet voltooid. Vul alstublieft nog ";
         $str = "";
-        if ($wishAmount <= $this->wish_limit && $wishAmount > 0) {
+        if ($wishAmount <= $this->wishLimit && $wishAmount > 0) {
             $str .= $wishAmount;
             if ($wishAmount > 1) {
                 $str .= " wensen in";
@@ -77,7 +77,7 @@ class DashboardController
         }
 
 
-        if ($talentAmount <= $this->talent_limit && $talentAmount > 0) {
+        if ($talentAmount <= $this->talentLimit && $talentAmount > 0) {
 
             if ($str != "") {
                 $str .= " en vul ";
@@ -102,7 +102,7 @@ class DashboardController
     }
 
     private function getMyTalents(){
-        return $this->talentRepo->getTalents(null,null,null,null,true);
+        return $this->talentRepo->getAddedTalents();
     }
 
     private function getWishAmount()
@@ -111,7 +111,7 @@ class DashboardController
     }
 
     private function getTalentAmount(){
-        return $this->talentRepo->getNumberOfTalents(true);
+        return count($this->talentRepo->getAddedTalents());
     }
 
     private function checkAmounts()
@@ -121,7 +121,7 @@ class DashboardController
             $talentAmount = $this->getTalentAmount();
 
             //3 wishes and 3 talents are mandatory
-            if ($wishAmount >= $this->wish_limit && $talentAmount >= $this->talent_limit) {
+            if ($wishAmount >= $this->wishLimit && $talentAmount >= $this->talentLimit) {
                 return true;
             } else {
                 return false;

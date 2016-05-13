@@ -15,7 +15,7 @@ class ForbiddenWordController
         guaranteeAdmin("/forbiddenwords");
 
         $this->forbidden_word_repository = new ForbiddenWordRepository();
-        $this->number_of_words = ceil($this->forbidden_word_repository->countForbiddenWords()/10);
+        $this->number_of_words = ceil(count($this->forbidden_word_repository->getForbiddenWords())/10);
     }
 
     public function run() {
@@ -61,7 +61,7 @@ class ForbiddenWordController
 
                 $this->forbidden_word_repository->deleteForbiddenWord($forbidden_word);
 
-                if(Empty($this->forbidden_word_repository->getForbiddenWords(null,$forbidden_word))) {
+                if(Empty($this->forbidden_word_repository->getForbiddenWord($forbidden_word))) {
 
                     $_SESSION["forbidden_words_success"] = 'Het woord "'.$forbidden_word.'" is succesvol verwijderd!';
                 } else {
@@ -119,7 +119,7 @@ class ForbiddenWordController
             if (!Empty($_GET["search"])) {
 
                 $search = htmlentities(trim($_GET["search"]),ENT_QUOTES);
-                $this->number_of_words = ceil($this->forbidden_word_repository->countForbiddenWords($search)/10);
+                $this->number_of_words = ceil(count($this->forbidden_word_repository->getForbiddenWords(null, $search))/10);
             } else {
 
                 $search = null;
@@ -131,21 +131,21 @@ class ForbiddenWordController
 
                     if ($_GET["words_page"] > 0 && $_GET["words_page"] <= $this->number_of_words) {
 
-                        $this->forbidden_words = $this->forbidden_word_repository->getForbiddenWords($_GET["words_page"], null, $search);
+                        $this->forbidden_words = $this->forbidden_word_repository->getForbiddenWords($_GET["words_page"], $search);
                         $this->current_number_of_words = $_GET["words_page"];
                     } else {
 
-                        $this->forbidden_words = $this->forbidden_word_repository->getForbiddenWords(1, null, $search);
+                        $this->forbidden_words = $this->forbidden_word_repository->getForbiddenWords(1, $search);
                         $this->current_number_of_words = 1;
                     }
                 } else {
 
-                    $this->forbidden_words = $this->forbidden_word_repository->getForbiddenWords(1, null, $search);
+                    $this->forbidden_words = $this->forbidden_word_repository->getForbiddenWords(1, $search);
                     $this->current_number_of_words = 1;
                 }
             } else {
 
-                $this->forbidden_words = $this->forbidden_word_repository->getForbiddenWords(null, null, $search);
+                $this->forbidden_words = $this->forbidden_word_repository->getForbiddenWords(null, $search);
             }
         }
     }
