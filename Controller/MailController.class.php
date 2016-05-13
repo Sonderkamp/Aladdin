@@ -52,8 +52,8 @@ class MailController
                         $this->renderInbox();
                     }
 
-                    $user = new User();
-                    $names = $user->getAllMatchedDislaynames($_SESSION["user"]);
+                    $userRepo = new UserRepository();
+                    $names = $userRepo->getAllMatchedDislaynames($_SESSION["user"]);
                     if (($key = array_search($_SESSION["user"]->displayName, $names)) !== false) {
                         unset($names[$key]);
                     }
@@ -109,8 +109,8 @@ class MailController
                 switch (strtolower($_GET["action"])) {
                     case "new":
                         // get all DisplayNames
-                        $user = new User();
-                        $names = $user->getAllMatchedDislaynames($_SESSION["user"]);
+                        $userRepo = new UserRepository();
+                        $names = $userRepo->getAllMatchedDislaynames($_SESSION["user"]);
                         if (($key = array_search($_SESSION["user"]->displayName, $names)) !== false) {
                             unset($names[$key]);
                         }
@@ -201,8 +201,8 @@ class MailController
 
     public function sendNewMessage()
     {
-        $user = new User();
-        $names = $user->getAllDislaynames();
+        $userRepo = new UserRepository();
+        $names = $userRepo->getAllDislaynames();
         if (($key = array_search($_SESSION["user"]->displayName, $names)) !== false) {
             unset($names[$key]);
         }
@@ -226,8 +226,8 @@ class MailController
             exit();
         }
 
-        $user = new User();
-        $username = $user->getUsername($_POST["recipient"]);
+        $userRepo = new UserRepository();
+        $username = $userRepo->getUsername($_POST["recipient"]);
 
         if ($username === false) {
             render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Gebruiker bestaat niet", "names" => $names]);

@@ -69,7 +69,7 @@ class MessageQueryBuilder
         if ($res === false || $res === null || count($res) == 0)
             return false;
 
-        $User = new User();
+        $User = new UserRepository();
         $res = $res[0];
         $mess = DATABASE::query_safe("SELECT * FROM `message` WHERE `Id` = ?", array($res["message_Id"]));
         $mess = $mess[0];
@@ -81,7 +81,7 @@ class MessageQueryBuilder
         $mesmodel->content = $mess["Message"];
         $mesmodel->content = htmlspecialcharsWithNL($mesmodel->content);
         $mesmodel->folder = $res["folder_Name"];
-        $mesmodel->receiver = $User->getUser($mess["user_Receiver"])["DisplayName"];
+        $mesmodel->receiver = $User->getUser($mess["user_Receiver"])->displayName;
 
         $mesmodel->id = $res["Id"];
         $mesmodel->adminSender = false;
@@ -90,7 +90,7 @@ class MessageQueryBuilder
             $mesmodel->adminSender = true;
             $mesmodel->sender = $mess["moderator_Sender"];
         } else {
-            $mesmodel->sender = $User->getUser($mess["user_Sender"])["DisplayName"];
+            $mesmodel->sender = $User->getUser($mess["user_Sender"])->displayName;
         }
 
         $links = DATABASE::query_safe("SELECT * FROM `messageLink` WHERE `message_Id` = ?", array($res["message_Id"]));
@@ -111,7 +111,7 @@ class MessageQueryBuilder
     {
         $ret = [];
         setlocale(LC_TIME, 'Dutch');
-        $User = new User();
+        $User = new UserRepository();
         foreach ($dbres as $row) {
 
             $mesmodel = new Message();
@@ -132,7 +132,7 @@ class MessageQueryBuilder
 
             $mesmodel->content = htmlspecialcharsWithNL($mesmodel->content);
 
-            $mesmodel->receiver = $User->getUser($row["user_Receiver"])["DisplayName"];
+            $mesmodel->receiver = $User->getUser($row["user_Receiver"])->displayName;
             if ($mesmodel->content != $row["Message"])
                 $mesmodel->content .= "...";
 
@@ -143,7 +143,7 @@ class MessageQueryBuilder
                 $mesmodel->adminSender = true;
                 $mesmodel->sender = $row["moderator_Sender"];
             } else {
-                $mesmodel->sender = $User->getUser($row["user_Sender"])["DisplayName"];
+                $mesmodel->sender = $User->getUser($row["user_Sender"])->displayName;
             }
 
             $links = DATABASE::query_safe("SELECT * FROM `messageLink` WHERE `message_Id` = ?", array($row["message_Id"]));
@@ -175,7 +175,7 @@ class MessageQueryBuilder
 
     public function sendMessage($me, $recipient, $title, $message)
     {
-        $user = new User();
+        $user = new UserRepository();
         $pdo = DATABASE::getPDO();
         $pdo->beginTransaction();
         $itemNR = null;

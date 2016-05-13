@@ -83,7 +83,7 @@ class ProfileController
 
     private function changeDetails()
     {
-        $usermodel = new User();
+        $usermodel = new UserRepository();
 
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -122,8 +122,7 @@ class ProfileController
                 else
                     $arr["handicap"] = true;
 
-                echo $_SESSION["user"]->checkPassword($_SESSION["user"]->email)["password"];
-                $_SESSION["user"]->updateUser($arr);
+                $usermodel->updateUser($arr);
                 render("account.tpl", ["title" => "profile", "success" => "Gegevens gewijzigd"]);
                 exit();
 
@@ -135,11 +134,11 @@ class ProfileController
 
     private function changePass()
     {
-        $userModel = new User();
+        $userModel = new UserRepository();
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($_SESSION["user"]->checkPassword($_POST["pwo"])) {
 
-                $userModel = new User();
+                $userModel = new UserRepository();
                 if ((Empty($_POST["username"]) || !$userModel->validateUsername($_POST["username"]))) {
                     render("account.tpl", ["error" => "Wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter, een nummer en een speciaal teken bevatten.", "title" => "nieuw wachtwoord"]);
                     exit();
