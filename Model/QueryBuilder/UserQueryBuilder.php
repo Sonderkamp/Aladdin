@@ -10,6 +10,13 @@ class UserQueryBuilder
 {
 
 
+    public function setPassword($hashed, $username)
+    {
+        if (Database::query_safe("UPDATE `user` SET `Password` = ?  WHERE `Email` = ?", array($hashed, $username)) === false) {
+            exit();
+        }
+    }
+
     public function IPlog($check = null)
     {
         if ($check) {

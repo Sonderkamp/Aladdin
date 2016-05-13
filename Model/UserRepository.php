@@ -450,10 +450,7 @@ class UserRepository
 
             // save password
             $hashed = password_hash($password, PASSWORD_DEFAULT);
-            if (Database::query_safe("UPDATE `user` SET `Password` = ?  WHERE `Email` = ?", array($hashed, $username)) === false) {
-                echo "Query error: \"UPDATE `user` SET `Password` = '$hashed'  WHERE `Email` = '$username'\"";
-                exit();
-            }
+            $this->UserQueryBuilder->setPassword($hashed, $username);
             return true;
         }
         return false;
