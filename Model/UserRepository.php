@@ -41,4 +41,16 @@ class UserRepository
         return $newUser;
     }
 
+    public function isBlocked($username)
+    {
+        if (Database::query_safe("SELECT count(*) as count  from `adminBlock` where `user_Email` = ?", array($username))[0]["count"] == 0)
+            return false;
+
+        $status = Database::query_safe("SELECT *  from `adminBlock` where `user_Email` = ? order by BlockDate DESC", array($username))[0];
+        if ($status["IsBlocked"] == 1)
+            return $status["Reason"];
+        return false;
+    }
+    
+    
 }

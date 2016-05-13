@@ -79,6 +79,7 @@ class Database
     {
         return Database::open();
     }
+
     public static function transaction_action_safe($pdo, $sql, $parameters)
     {
         try {
@@ -102,4 +103,22 @@ class Database
             Database::printError($e);
         }
     }
+
+    // ###### ForbiddenWordsRepo ######
+
+    
+    // ###### MessageRepo ######
+
+    
+    // ###### ReportRepo ######
+
+    
+    // ###### TalentRepo ######
+
+    
+    // ###### UserRepo ######
+
+    
+    // ###### WishRepo ######
+    
 }
