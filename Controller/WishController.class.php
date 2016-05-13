@@ -149,7 +149,8 @@ class WishController
         $user = $this->userRepostitory->getUser($_SESSION["user"]->email);
         $displayName = $user->getDisplayName();
 
-        $report = $this->reportRepository->getUsersIHaveReported($_SESSION["user"]->email);
+        $report = $this->reportRepository->getReportedUsers();
+//        getUsersIHaveReported($_SESSION["user"]->email);
         $displayNames = array();
 
         $amountReports = count($report);
@@ -251,9 +252,33 @@ class WishController
                 || Empty($this->tag) || $size == 0
             ) {
                 render("addWish.tpl", ["error" => "Vul AUB alles in", "wishtitle" => $this->title,
-                    "description" => $this->description, "edit" => "isset"]);
+                    "description" => $this->description,"tag" => $this->tag, /*"edit" => "isset"*/]);
                 exit(1);
             }
+
+
+            $myWishes = $this->wishRepository->getMyWishes();
+            $canAdd = true;
+            foreach ($myWishes as $item){
+                if($item instanceof Wish){
+                    if($item->getTitle() == $this->title){
+                        $canAdd = false;
+                        break;
+                    }
+                }
+            }
+
+//            TODO: check of er een wens is met zelfde titel
+//            if($canAdd){
+//                if (Empty($this->title)
+//                    || Empty($this->description)
+//                    || Empty($this->tag) || $size == 0
+//                ) {
+//                    render("addWish.tpl", ["error" => "Vul AUB alles in", "wishtitle" => $this->title,
+//                        "description" => $this->description,"tag" => $this->tag, /*"edit" => "isset"*/]);
+//                    exit(1);
+//                }
+//            }
 
             $allTags = $this->gethashtags($this->tag);
             $myArray = explode(',', $allTags);
