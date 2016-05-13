@@ -49,8 +49,11 @@ class UserRepository
         $newUser->city = $result[0]["City"];
         $newUser->dob = $result[0]["Dob"];
         $newUser->gender = $result[0]["Gender"];
+        $newUser->hash = $result[0]["ValidationHash"];
         $newUser->displayName = $result[0]["DisplayName"];
         $newUser->initials = $result[0]["Initials"];
+        $newUser->RecoveryHash = $result[0]["RecoveryHash"];
+        $newUser->RecoveryDate = $result[0]["RecoveryDate"];
 
         return $newUser;
     }
@@ -168,10 +171,10 @@ max(blockedusers.DateBlocked) AS max_date
 
         // Get
         $mail->to = $username;
-        $mail->toName = $val["Name"] . " " . $val["Surname"];
+        $mail->toName = $val->name . " " . $val->surname;
         $mail->subject = "Activeer Account Webshop";
         $mail->message =
-            "Beste " . $val["Name"] . ",\n
+            "Beste " . $val->name . ",\n
             Deze mail is verstuurd omdat u een nieuw account aan heeft gemaakt.\n
             Om uw account te activeren, ga naar deze link:\n
             http://" . $_SERVER["SERVER_NAME"] . "/account/action=activate/token=" . $token . "\n
@@ -334,13 +337,13 @@ max(blockedusers.DateBlocked) AS max_date
             $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
             // Get
             $mail->to = $username;
-            $mail->toName = $val["Name"] . " " . $val["Surname"];;
+            $mail->toName = $val->name . " " . $val->surname;
             $mail->subject = "Wachtwoord vergeten Webshop";
             $mail->message =
-                "Beste " . $val["Name"] . ",\n
+                "Beste " . $val->name . ",\n
             Deze mail is verstuurd omdat u uw wachtwoord vergeten bent.\n
             Om een nieuw wachtwoord in te stellen, ga naar deze link:\n
-            http://" . $_SERVER["SERVER_NAME"] . "/account/action=recover/token=" . $val->token . "\n
+            http://" . $_SERVER["SERVER_NAME"] . "/account/action=recover/token=" . $val->RecoveryHash . "\n
             Deze link is 24 uur geldig \n
 
             Met vriendelijke groet,\n
@@ -355,7 +358,7 @@ max(blockedusers.DateBlocked) AS max_date
 
     public function newHash($username)
     {
-        $this->token = bin2hex(openssl_random_pseudo_bytes(16));
+        $token = bin2hex(openssl_random_pseudo_bytes(16));
         $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
         if ($this->validateUsername($username)) {
 
@@ -363,9 +366,9 @@ max(blockedusers.DateBlocked) AS max_date
             if ($res === false)
                 return false;
 
-            if ($res["RecoveryHash"] == null || $this->hoursPassed($res["RecoveryDate"]) >= 24) {
-                if (Database::query_safe("UPDATE `user` SET `RecoveryHash` = ?, `RecoveryDate` = ? WHERE `Email` = ?", array($res->token, date('Y-m-d H:i:s'), $username)) === false) {
-                    echo "Query error: \"UPDATE `user` SET `RecoveryHash` = '$this->token', `RecoveryDate` = '" . date('Y-m-d H:i:s') . "' WHERE `Email` = '$username'\"";
+            if ($res->RecoveryHash == null || $this->hoursPassed($res->RecoveryDate) >= 24) {
+                if (Database::query_safe("UPDATE `user` SET `RecoveryHash` = ?, `RecoveryDate` = ? WHERE `Email` = ?", array($token, date('Y-m-d H:i:s'), $username)) === false) {
+                    echo "Query error: \"UPDATE `user` SET `RecoveryHash` = '$token', `RecoveryDate` = '" . date('Y-m-d H:i:s') . "' WHERE `Email` = '$username'\"";
                     exit();
                 }
                 return true;
@@ -433,7 +436,7 @@ max(blockedusers.DateBlocked) AS max_date
 
         // SQL
         $hashed = password_hash($array["password"], PASSWORD_DEFAULT);
-        $this->token = bin2hex(openssl_random_pseudo_bytes(16));
+        $token = bin2hex(openssl_random_pseudo_bytes(16));
 
 
         if (Database::query_safe("INSERT INTO `user` (`Email`, `Password`, `Name`,
@@ -442,7 +445,7 @@ max(blockedusers.DateBlocked) AS max_date
             `Country`, `City`, `Dob`,
             `Gender`, `Handicap`, `DisplayName`, `Initials`) VALUES (?, ?, ?,?, NULL, NULL, ?, ?,?,?, ?,?,?,?,?,?)"
                 , array(strtolower($array["username"]), $hashed, strtolower($array["name"]),
-                    $array["surname"], $this->token, $array["address"],
+                    $array["surname"], $token, $array["address"],
                     $array["postalcode"], $array["country"], $array["city"],
                     $d->format('Y-m-d'), $array["gender"], $array["handicap"], $displayname, $array["initial"])) === false
         ) {
