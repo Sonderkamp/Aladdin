@@ -19,7 +19,7 @@ class AdminTalentController
         
         $this->talent_repository = new TalentRepository();
         $this->forbidden_words_repo = new ForbiddenWordRepository();
-        $this->message_model = new MessageModel();
+        $this->message_model = new messageRepository();
 
         $this->talents = $this->talent_repository->getTalents();
         $this->all_talents_number = ceil($this->talent_repository->getNumberOfTalents()/10);

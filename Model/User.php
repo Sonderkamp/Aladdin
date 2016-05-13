@@ -82,6 +82,8 @@ class User
     {
         $res = Database::query_safe("select `Email`, `DisplayName` from user where Email = ANY (SELECT DISTINCT IF(`user_Receiver` = ? ,`user_Sender`,`user_Receiver`) FROM `message` WHERE `user_Sender` = ? OR `user_Receiver` = ?)", array($user->email, $user->email, $user->email));
 
+        //$res = Database::query("select `Email`, `DisplayName` from user");
+
         $ret = [];
         foreach ($res as $val) {
             $ret[] = $val["DisplayName"];

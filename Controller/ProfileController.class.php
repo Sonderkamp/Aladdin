@@ -168,7 +168,7 @@ class ProfileController
                 if (!Empty($_POST["username"]) && $userModel->validateUsername($_POST["username"]) && $_POST["password1"] == $_POST["password2"]) {
                     if ($_POST["password1"] != $_POST["pwo"]) {
                         $userModel->newPassword($_POST["username"], $_POST["password1"]);
-                        $messagemodel = new messageModel();
+                        $messagemodel = new messageRepository();
                         $messagemodel->sendMessage("Admin", $_SESSION["user"]->email, "Je wachtwoord voor Aladdin is veranderd", "Je wachtwoord voor Aladdin is veranderd heeft u dit niet zelf gedaan vraag dan een nieuw wachtwoord aan op http://localhost/Account/action=Recover");
                         render("account.tpl", ["title" => "nieuw wachtwoord", "error" => "Uw wachtwoord is veranderd"]);
                         exit();

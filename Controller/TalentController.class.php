@@ -17,7 +17,7 @@ class TalentController
         $this->page = "m";
         $this->talent_repository = new TalentRepository();
         $this->forbidden_words_repo = new ForbiddenWordRepository();
-        $this->message_model = new MessageModel();
+        $this->message_model = new messageRepository();
 
         $this->user_talents_number = ceil($this->talent_repository->getNumberOfTalents(true)/10);
         $this->talent_numbers = ceil($this->talent_repository->getNumberOfTalents(null,true)/10);
