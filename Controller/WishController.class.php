@@ -87,9 +87,9 @@ class WishController
 
         }
         //werkt nog niet todat de hosting gefixt is
-//        else if(isset($_GET["search"])){
-//            $this->searchWish($_GET["search_key"]);
-//        }
+        else if(isset($_GET["search"])){
+            $this->searchWish($_GET["search"]);
+        }
         else if (isset($_POST["match/wish_id"])) {
             guaranteeProfile();
             $this->requestMatch($_POST["match/wish_id"]);
@@ -103,8 +103,8 @@ class WishController
     private function searchWish($key)
     {
         //Werkt als de sql versie geupdate wordt.
-        $searchReturn = $this->wishRepository->searchWish($key);
-        render("wishOverview.tpl", ["title" => "Wensen overzicht", "wishes" => $searchReturn]);
+        $searchReturn = $this->wishRepository->searchMyWishes($key);
+//        render("wishOverview.tpl", ["title" => "Wensen overzicht", "wishes" => $searchReturn]);
     }
 
 

@@ -9,11 +9,12 @@
 class WishRepository
 {
 
-    private $talentRepository, $email, $maxContentLength = 50;
+    private $talentRepository, $email, $maxContentLength = 50 , $WishQueryBuilder;
     public $WISH_LIMIT = 3 , $MINIMUM_TALENTS = 3;
 
     public function __construct()
     {
+        $this->WishQueryBuilder = new WishQueryBuilder();
         $this->talentRepository = new TalentRepository();
     }
 
@@ -70,6 +71,7 @@ class WishRepository
         }
     }
 
+    //Soon to be deprecated
     public function getUser($email)
     {
         $result = Database::query_safe("SELECT * FROM user WHERE user.Email = ?", array($email));
@@ -95,70 +97,29 @@ class WishRepository
 
 
     /**
-     * @return array of wishes where user == current user
+     * @return array of wishes where user == current user and status != "Verwijderd"
      */
     public function getMyWishes()
     {
-
-        $user = $this->getEmail();
-
-        $result = Database::query_safe
-        ("SELECT
-              w.Status,
-              w.Id,
-              w.User,
-              w.Date,
-              w.CompletionDate,
-              wc.Content,
-              wc.Title,
-              wc.IsAccepted,
-              wc.moderator_Username,
-              wcMax.max_date
-          FROM wish AS w
-          JOIN (SELECT wish_Id, MAX(wishContent.Date) AS max_date
-              FROM wishContent
-              GROUP BY wish_Id) AS wcMax
-              ON w.Id = wcMax.wish_Id
-          JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
-          WHERE w.User = ?
-          AND w.Status != 'Verwijderd'
-          ORDER BY max_date DESC"
-            , array($user));
-
-        return $this->getReturnArray($result);
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes
+        ($_SESSION["user"]->email , [0 => "Aangemaakt",
+            1 => "Gepubliceerd",
+            2 => "Geweigerd",
+            3 => "Match gevonden" ,
+            4 => "Vervuld",
+            5 => "Wordt vervuld"]));
     }
 
     /**
-     * @return array of wishes where status == "vervuld"
+     * @return array of wishes where status == "vervuld" or "wordt vervuld"
      */
     public function getCompletedWishes()
     {
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes([0 => "Vervuld", 1 => "Wordt vervuld"]));
+    }
 
-        $status = "Vervuld";
-
-        $result = Database::query_safe
-        ("SELECT
-              w.Status,
-              w.Id,
-              w.User,
-              w.Date,
-              w.CompletionDate,
-              wc.Content,
-              wc.Title,
-              wc.IsAccepted,
-              wc.moderator_Username,
-              wcMax.max_date
-          FROM wish AS w
-          JOIN (SELECT wish_Id, MAX(wishContent.Date) AS max_date
-              FROM wishContent
-              GROUP BY wish_Id) AS wcMax
-              ON w.Id = wcMax.wish_Id
-          JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
-          WHERE w.Status = ?
-          ORDER BY max_date DESC"
-            , array($status));
-
-        return $this->getReturnArray($result);
+    public function getMyCompletedWishes(){
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes($_SESSION["user"]->email , [0 => "Vervuld", 1 => "Wordt vervuld"]));
     }
 
     /**
@@ -166,48 +127,17 @@ class WishRepository
      */
     public function getIncompletedWishes()
     {
-        $status = "Vervuld";
-
-        $result = Database::query_safe
-        ("SELECT
-              w.Status,
-              w.Id,
-              w.User,
-              w.Date,
-              w.CompletionDate,
-              wc.Content,
-              wc.Title,
-              wc.IsAccepted,
-              wc.moderator_Username,
-              wcMax.max_date
-          FROM wish AS w
-          JOIN (SELECT wish_Id, MAX(wishContent.Date) AS max_date
-              FROM wishContent
-              GROUP BY wish_Id) AS wcMax
-              ON w.Id = wcMax.wish_Id
-          JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
-          WHERE w.Status != ?
-          AND w.Status != 'Geweigerd'
-          AND w.Status != 'Aangemaakt'
-          AND w.Status != 'Verwijderd'
-          ORDER BY max_date DESC"
-            , array($status));
-
-        return $this->getReturnArray($result);
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Gepubliceerd", 1 => "Match gevonden" ]));
     }
 
-    public function searchWish($key)
+    /**
+     * @param $key
+     * @return array
+     * Searches if title or content SOUNDSLIKE $key
+     */
+    public function searchMyWishes($key)
     {
-        $result = Database::query_safe("SELECT *
-        FROM wish
-        JOIN wishContent
-        ON wish.Id = wishContent.wish_Id
-        WHERE wishContent.Content
-        SOUNDS LIKE ?
-        OR wishContent.Title
-        SOUNDS LIKE ?", array($key, $key));
-
-        return $this->getReturnArray($result);
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes($_SESSION["user"]->email , null , $key));
     }
 
     /**
@@ -325,7 +255,7 @@ class WishRepository
             return true;
         }
     }
-
+    //deprecated use count($mywishesarray) instead
     public function getWishAmount($email){
         $query = "select count(*) as counter from `wish` where `user` = ? and `status` != ? and `status` != ? and `status` != ?";
         $array = array($email, "Vervuld", "Geweigerd" , "Verwijderd");

@@ -20,6 +20,7 @@ include_once("Model/UserRepository.php");
 include_once("Model/Answer.php");
 include_once("Model/Question.php");
 include_once("Model/Survey.php");
+include_once("Model/QueryBuilder/WishQueryBuilder.php");
 
 include_once("Controller/WishController.class.php");
 include_once("Controller/TalentController.class.php");

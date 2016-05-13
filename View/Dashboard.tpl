@@ -123,8 +123,7 @@
                     <div class="thumbnail">
                         <div class="caption">
                             <div class="row">
-                                <label class="col-md-4">Naam:</label>
-                                <label>{htmlspecialchars($value->name)}</label>
+                                <label class="col-xs-12 text-center">{htmlspecialchars($value->name)}</label>
                             </div>
                         </div>
                     </div>
