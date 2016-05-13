@@ -102,6 +102,7 @@ class ReportRepository
         return $reports;
     }
 
+    // getReportedUsers // email = null
     public function getUsersIHaveReported($email){
         $sql = "SELECT * FROM `reportedusers` WHERE `user_Reporter` = ?";
         $parameters = array($email);

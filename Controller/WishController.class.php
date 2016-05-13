@@ -254,7 +254,31 @@ class WishController
                     "description" => $this->description,"tag" => $this->tag, /*"edit" => "isset"*/]);
                 exit(1);
             }
-            
+
+
+            $myWishes = $this->wishRepository->getMyWishes();
+            $canAdd = true;
+            foreach ($myWishes as $item){
+                if($item instanceof Wish){
+                    if($item->getTitle() == $this->title){
+                        $canAdd = false;
+                        break;
+                    }
+                }
+            }
+
+//            TODO: check of er een wens is met zelfde titel
+//            if($canAdd){
+//                if (Empty($this->title)
+//                    || Empty($this->description)
+//                    || Empty($this->tag) || $size == 0
+//                ) {
+//                    render("addWish.tpl", ["error" => "Vul AUB alles in", "wishtitle" => $this->title,
+//                        "description" => $this->description,"tag" => $this->tag, /*"edit" => "isset"*/]);
+//                    exit(1);
+//                }
+//            }
+
             $allTags = $this->gethashtags($this->tag);
             $myArray = explode(',', $allTags);
             $new_array = array_map('ucfirst', $myArray);
