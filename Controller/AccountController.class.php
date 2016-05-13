@@ -290,7 +290,8 @@ class AccountController
             $res = $userRepo->tryRegister($arr);
             if ($res === true) {
                 $mailer = new Email();
-                if ($userRepo->setActivateMail($mailer, $arr["username"])) {
+                $user = $userRepo->getUser($arr["username"]);
+                if ($userRepo->setActivateMail($mailer, $arr["username"], $user->hash)) {
                     $mailer->sendMail();
                     render("messageScreen.tpl", ["title" => "Email verzonden.", "message" => "Er is een email verstuurd naar " . $arr["username"] . " met een activatielink.
                     Deze link verschijnt binnen drie minuten.
