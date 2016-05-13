@@ -39,7 +39,7 @@ class MatchController
     public function open_match_view()
     {
         /* get my own talents */
-        $userTalents = $this->talenRepository->getTalents(null,null,null,null,true);
+        $userTalents = $this->talenRepository->getAddedTalents();
 
         /* get all sysnoynms of my talents */
         $synonmys = $this->talenRepository->getSynonymsOfTalents($userTalents);
