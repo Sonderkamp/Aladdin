@@ -149,7 +149,8 @@ class WishController
         $user = $this->userRepostitory->getUser($_SESSION["user"]->email);
         $displayName = $user->getDisplayName();
 
-        $report = $this->reportRepository->getUsersIHaveReported($_SESSION["user"]->email);
+        $report = $this->reportRepository->getReportedUsers();
+//        getUsersIHaveReported($_SESSION["user"]->email);
         $displayNames = array();
 
         $amountReports = count($report);
