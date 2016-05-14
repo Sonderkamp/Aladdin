@@ -1,10 +1,8 @@
 <!--/**-->
 <!-- * Created by PhpStorm.-->
-<!-- * User: simon-->
-<!-- * Date: 8-3-2016-->
-<!-- * Time: 17:51-->
+<!-- * User: Simon / Max-->
+<!-- * Date: 8-3-2016 Rewritten on: 14-05-2016-->
 <!-- */-->
-
 
 <div class="container">
 
@@ -107,7 +105,78 @@
 
             {*Requested Wishes*}
 
-            <div class="tab-pane fade in active" id="requestedTab">
+            <div class="tab-pane fade in {if $currentPage == "requested"}active{/if}" id="requestedTab">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Gebruiker</th>
+                        <th>Wens</th>
+                        <th>Status</th>
+                        <th width="1%"></th>
+                        <th width="1%"></th>
+                        <th width="1%"></th>
+                        <th width="1%"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach from=$requested item=wish}
+                        <tr>
+                            <td>{$wish->user->displayName}</td>
+                            <td>{$wish->title}</td>
+                            <td>{$wish->status}</td>
+                            <td>
+                                <form class='noPadding' method="post">
+                                    <button class="btn btn-sm"
+                                            formaction="/Wishes/wish_id={$wish->id}"
+                                            value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
+                                            type="submit"
+                                            name="page">
+                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                    </button>
+                                </form>
+                            </td>
+                            <td>
+                                <form class='noPadding' method="post">
+                                    <button class="btn btn-sm"
+                                            formaction="/Wishes/wish_id={$wish->id}"
+                                            value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
+                                            type="submit"
+                                            name="page">
+                                        <span class="glyphicon glyphicon-ok"></span>
+                                    </button>
+                                </form>
+                            </td>
+                            <td>
+                                <form class='noPadding' method="post">
+                                    <button class="btn btn-sm"
+                                            formaction="/Wishes/wish_id={$wish->id}"
+                                            value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
+                                            type="submit"
+                                            name="page">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                </form>
+                            </td>
+                            <td>
+                                <form class='noPadding' method="post">
+                                    <button class="btn btn-sm"
+                                            formaction="/Wishes/wish_id={$wish->id}"
+                                            value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
+                                            type="submit"
+                                            name="page">
+                                        <span class="glyphicon glyphicon glyphicon-user"></span>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            </div>
+
+            {*Published Wishes*}
+
+            <div class="tab-pane fade in {if $currentPage == "published"}active{/if}" id="publishedTab">
                 <table class="table">
                     <thead>
                     <tr>
@@ -120,37 +189,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {foreach from=$requested item=wish}
+                    {foreach from=$published item=wish}
                         <tr>
                             <td>{$wish->user->displayName}</td>
                             <td>{$wish->title}</td>
                             <td>{$wish->status}</td>
-                        </tr>
-                    {/foreach}
-                    </tbody>
-                </table>
-            </div>
-
-            {*Published Wishes*}
-
-            <div class="tab-pane fade in" id="publishedTab">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Gebruiker</th>
-                        <th>Wens</th>
-                        <th width="1%"></th>
-                        <th width="1%"></th>
-                        <th width="1%"></th>
-                        <th width="1%"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {foreach from=$requested item=wish}
-                        <tr>
-
-                            <td>{$wish->title}</td>
-
                         </tr>
                     {/foreach}
                     </tbody>
@@ -165,18 +208,18 @@
                     <tr>
                         <th>Gebruiker</th>
                         <th>Wens</th>
-                        <th width="1%"></th>
-                        <th width="1%"></th>
-                        <th width="1%"></th>
-                        <th width="1%"></th>
+                        <th>Status</th>
+                        {*<th width="1%"></th>*}
+                        {*<th width="1%"></th>*}
+                        {*<th width="1%"></th>*}
                     </tr>
                     </thead>
                     <tbody>
-                    {foreach from=$requested item=wish}
+                    {foreach from=$matched item=wish}
                         <tr>
-
+                            <td>{$wish->user->displayName}</td>
                             <td>{$wish->title}</td>
-
+                            <td>{$wish->status}</td>
                         </tr>
                     {/foreach}
                     </tbody>
@@ -185,24 +228,24 @@
 
             {*Current Wishes*}
 
-            <div class="tab-pane fade in" id="currentTab">
+            <div class="tab-pane fade in {if $currentPage == "current"}active{/if}" id="currentTab">
                 <table class="table">
                     <thead>
                     <tr>
                         <th>Gebruiker</th>
                         <th>Wens</th>
-                        <th width="1%"></th>
-                        <th width="1%"></th>
-                        <th width="1%"></th>
-                        <th width="1%"></th>
+                        <th>Status</th>
+                        {*<th width="1%"></th>*}
+                        {*<th width="1%"></th>*}
+                        {*<th width="1%"></th>*}
                     </tr>
                     </thead>
                     <tbody>
-                    {foreach from=$requested item=wish}
+                    {foreach from=$current item=wish}
                         <tr>
-
+                            <td>{$wish->user->displayName}</td>
                             <td>{$wish->title}</td>
-
+                            <td>{$wish->status}</td>
                         </tr>
                     {/foreach}
                     </tbody>
@@ -211,24 +254,24 @@
 
             {*Completed Wishes*}
 
-            <div class="tab-pane fade in" id="completedTab">
+            <div class="tab-pane fade in {if $currentPage == "completed"}active{/if}" id="completedTab">
                 <table class="table">
                     <thead>
                     <tr>
                         <th>Gebruiker</th>
                         <th>Wens</th>
-                        <th width="1%"></th>
-                        <th width="1%"></th>
-                        <th width="1%"></th>
-                        <th width="1%"></th>
+                        <th>Status</th>
+                        {*<th width="1%"></th>*}
+                        {*<th width="1%"></th>*}
+                        {*<th width="1%"></th>*}
                     </tr>
                     </thead>
                     <tbody>
-                    {foreach from=$requested item=wish}
+                    {foreach from=$completed item=wish}
                         <tr>
-
+                            <td>{$wish->user->displayName}</td>
                             <td>{$wish->title}</td>
-
+                            <td>{$wish->status}</td>
                         </tr>
                     {/foreach}
                     </tbody>
@@ -237,24 +280,24 @@
 
             {*Denied Wishes*}
 
-            <div class="tab-pane fade in" id="deniedTab">
+            <div class="tab-pane fade in {if $currentPage == "denied"}active{/if}" id="deniedTab">
                 <table class="table">
                     <thead>
                     <tr>
                         <th>Gebruiker</th>
                         <th>Wens</th>
-                        <th width="1%"></th>
-                        <th width="1%"></th>
-                        <th width="1%"></th>
-                        <th width="1%"></th>
+                        <th>Status</th>
+                        {*<th width="1%"></th>*}
+                        {*<th width="1%"></th>*}
+                        {*<th width="1%"></th>*}
                     </tr>
                     </thead>
                     <tbody>
-                    {foreach from=$requested item=wish}
+                    {foreach from=$denied item=wish}
                         <tr>
-
+                            <td>{$wish->user->displayName}</td>
                             <td>{$wish->title}</td>
-
+                            <td>{$wish->status}</td>
                         </tr>
                     {/foreach}
                     </tbody>
@@ -263,24 +306,24 @@
 
             {*Deleted Wishes*}
 
-            <div class="tab-pane fade in" id="deletedTab">
+            <div class="tab-pane fade in {if $currentPage == "deleted"}active{/if}" id="deletedTab">
                 <table class="table">
                     <thead>
                     <tr>
                         <th>Gebruiker</th>
                         <th>Wens</th>
-                        <th width="1%"></th>
-                        <th width="1%"></th>
-                        <th width="1%"></th>
-                        <th width="1%"></th>
+                        <th>Status</th>
+                        {*<th width="1%"></th>*}
+                        {*<th width="1%"></th>*}
+                        {*<th width="1%"></th>*}
                     </tr>
                     </thead>
                     <tbody>
-                    {foreach from=$requested item=wish}
+                    {foreach from=$deleted item=wish}
                         <tr>
-
+                            <td>{$wish->user->displayName}</td>
                             <td>{$wish->title}</td>
-
+                            <td>{$wish->status}</td>
                         </tr>
                     {/foreach}
                     </tbody>

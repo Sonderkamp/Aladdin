@@ -127,7 +127,7 @@ class WishController
      */
     private function getCompletedWishes()
     {
-        $completedWishes = $this->wishRepository->getCompletedWishes();
+        $completedWishes = $this->wishRepository->getCurrentCompletedWishes();
 
         $canAddWish = $this->wishRepository->canAddWish($_SESSION["user"]->email);
 

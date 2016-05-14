@@ -47,7 +47,6 @@ class WishRepository
                 }
 
                 $queryResult[$i]["Content"] = $this->checkWishContent($queryResult[$i]["Content"]);
-
                 $newUser = $this->getUser($queryResult[$i]["User"]);
                 $completed = false;
                 if ($queryResult[$i]["Status"] == "Vervuld") {
@@ -113,7 +112,7 @@ class WishRepository
     /**
      * @return array of wishes where status == "vervuld" or "wordt vervuld"
      */
-    public function getCompletedWishes()
+    public function getCurrentCompletedWishes()
     {
         return $this->getReturnArray($this->WishQueryBuilder->getWishes([0 => "Vervuld", 1 => "Wordt vervuld"]));
     }
@@ -264,237 +263,32 @@ class WishRepository
         return $result[0]["counter"];
     }
 
+    public function getRequestedWishes(){
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, null , null, true));
+    }
 
-//    public function getWish($id) {
-//    /**
-//     * Gets wish using param
-//     * @param $id
-//     * @return Wish
-//     */
+    public function getPublishedWishes(){
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Gepubliceerd"] , null , true));
+    }
 
-    public function getRequestedWishes($wishPage)
-    {
+    public function getMatchedWishes(){
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Match gevonden"] , null , true));
+    }
 
-        switch ($wishPage) {
-            case 'requested':
-                return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, null , null, true));
-                // changeuser_email froms tring to $user have to get $user form somewhere
-//                $result = Database::query("
-//              SELECT
-//              wc.wish_Id as wishid,
-//              u.DisplayName as display,
-//              u.Address as address,
-//              u.Postalcode as postalcode,
-//              w.status as status,
-//              w.User as user,
-//              wc.Content as content,
-//              wc.Title as title,
-//              wc.IsAccepted as accepted,
-//              wc.moderator_Username as modname,
-//              wcMax.max_date as mdate,
-//              isblock.IsBlocked as isblocked
-//          FROM wish AS w
-//          JOIN (SELECT wish_Id, MAX(wishContent.Date) AS max_date
-//              FROM wishContent
-//              GROUP BY wish_Id) AS wcMax
-//              ON w.Id = wcMax.wish_Id
-//          JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
-//          join user as u on w.user = u.Email
-//          left JOIN (select IsBlocked,ab.user_email
-//from adminBlock as ab,(
-//SELECT User_Email,max(ab.Block_Id)  as blockid , MAX(ab.BlockDate) AS abmax_date
-//              FROM adminBlock as ab
-//              GROUP BY User_Email
-//    ) as test
-//where ab.user_Email = test.User_Email
-//AND ab.BlockDate = test.abmax_date
-//AND ab.Block_Id = test.blockid) AS isblock
-//              ON u.Email = isblock.User_Email
-//              where (isBlocked = 0 OR isBlocked is null)
-//              AND u.IsActive = 1
-//              AND wc.IsAccepted = 0
-//              AND wc.moderator_username is null
-//              ORDER BY max_date asc");
-                break;
-            case 'changed':
+    public function getCurrentWishes(){
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Wordt vervuld"] , null , true));
+    }
 
-//                $result = Database::query("
-//            select u.DisplayName as display,
-//              u.Address as address,
-//              u.Postalcode as postalcode,
-//            w.User as user,
-//             wc.wish_Id as wishid,
-//              w.Status as status,
-//              wc.Date as mdate,
-//              wc.Title as title ,
-//              wc.Content as content ,
-//              wc.Date as mdate
-//            from wishContent wc
-//            INNER JOIN wish w on w.id = wc.wish_Id
-//            INNER JOIN user u on w.user = u.email
-//            WHERE status != 'Geweigerd'
-//            AND wc.moderator_username is null
-//            AND u.IsActive =1
-//            ORDER BY mdate asc");
-                break;
-            case 'open':
-                $result = Database::query("
-            select u.DisplayName as display,
-              u.Address as address,
-              u.Postalcode as postalcode,
-            w.User as user,
-             wc.wish_Id as wishid,
-             w.Status as status,
-            wc.Date as mdate,
-            wc.Title as title ,
-            wc.Content as content ,
-              wc.Date as mdate
-            from wishContent wc
-            INNER JOIN wish w on w.id = wc.wish_Id
-            INNER JOIN user u on w.user = u.email
-             JOIN (SELECT wish_Id as wishid, MAX(wishContent.Date) AS max_date
-              FROM wishContent
-              where moderator_username is not null
-            AND isaccepted = 1 GROUP BY wish_Id ) AS wccMax
-              ON w.Id = wccMax.wishid
-            WHERE status = 'Gepubliseerd'
-            AND wc.moderator_username is not null
-            AND wc.isaccepted = 1
-            AND u.IsActive =1
-            AND wc.Date = wccMax.max_date
-            ORDER BY mdate asc");
-                break;
-            case 'matched':
-                $result = Database::query("
-            select u.DisplayName as display,
-              u.Address as address,
-              u.Postalcode as postalcode,
-            w.User as user,
-             wc.wish_Id as wishid,
-             w.Status as status,
-            wc.Date as mdate,
-            wc.Title as title ,
-            wc.Content as content ,
-              wc.Date as mdate
-            from wishContent wc
-            INNER JOIN wish w on w.id = wc.wish_Id
-            INNER JOIN user u on w.user = u.email
-            JOIN (SELECT wish_Id as wishid, MAX(wishContent.Date) AS max_date
-              FROM wishContent
-              where moderator_username is not null
-            AND isaccepted = 1 GROUP BY wish_Id ) AS wccMax
-            WHERE status = 'Match gevonden'
-            AND wc.moderator_username is not null
-            AND wc.isaccepted = 1
-            AND u.IsActive =1
-            AND wc.Date = wccMax.max_date
-            ORDER BY mdate asc");
-                break;
-            case 'current':
-                $result = Database::query("
-            select u.DisplayName as display,
-              u.Address as address,
-              u.Postalcode as postalcode,
-            w.User as user,
-             wc.wish_Id as wishid,
-             w.Status as status,
-            wc.Date as mdate,
-            wc.Title as title ,
-            wc.Content as content ,
-              wc.Date as mdate
-            from wishContent wc
-            INNER JOIN wish w on w.id = wc.wish_Id
-            INNER JOIN user u on w.user = u.email
-            JOIN (SELECT wish_Id as wishid, MAX(wishContent.Date) AS max_date
-              FROM wishContent
-              where moderator_username is not null
-            AND isaccepted = 1 GROUP BY wish_Id ) AS wccMax
-            WHERE status = 'Wordt vervuld'
-            AND wc.moderator_username is not null
-            AND wc.isaccepted = 1
-            AND u.IsActive =1
-            AND wc.Date = wccMax.max_date
-            ORDER BY mdate asc");
-                break;
-            case 'done':
-                $result = Database::query("
-            select u.DisplayName as display,
-              u.Address as address,
-              u.Postalcode as postalcode,
-            w.User as user,
-             wc.wish_Id as wishid,
-             w.Status as status,
-            wc.Date as mdate,
-            wc.Title as title ,
-            wc.Content as content ,
-              wc.Date as mdate
-            from wishContent wc
-            INNER JOIN wish w on w.id = wc.wish_Id
-            INNER JOIN user u on w.user = u.email
-            JOIN (SELECT wish_Id as wishid, MAX(wishContent.Date) AS max_date
-              FROM wishContent
-              where moderator_username is not null
-            AND isaccepted = 1 GROUP BY wish_Id ) AS wccMax
-            WHERE status = 'Vervuld'
-            AND wc.moderator_username is not null
-            AND wc.isaccepted = 1
-            AND u.IsActive =1
-            AND wc.Date = wccMax.max_date
-            ORDER BY mdate asc");
-                break;
-            case 'denied':
-                $result = Database::query("
-            select u.DisplayName as display,
-              u.Address as address,
-              u.Postalcode as postalcode,
-            w.User as user,
-             wc.wish_Id as wishid,
-             w.Status as status,
-            wc.Date as mdate,
-            wc.Title as title ,
-            wc.Content as content ,
-              wc.Date as mdate
-            from wishContent wc
-            INNER JOIN wish w on w.id = wc.wish_Id
-            INNER JOIN user u on w.user = u.email
-            JOIN (SELECT wish_Id as wishid, MAX(wishContent.Date) AS max_date
-              FROM wishContent
-              where moderator_username is not null
-            AND isaccepted = 0 GROUP BY wish_Id ) AS wccMax
-            WHERE status = 'Geweigerd'
-            AND wc.moderator_username is not null
-            AND wc.isaccepted = 0
-            AND u.IsActive =1
-            AND wc.Date = wccMax.max_date
-            ORDER BY mdate asc");
-                break;
-            case 'deleted':
-                $result = Database::query("
-            select u.DisplayName as display,
-              u.Address as address,
-              u.Postalcode as postalcode,
-            w.User as user,
-             wc.wish_Id as wishid,
-             w.Status as status,
-            wc.Date as mdate,
-            wc.Title as title ,
-            wc.Content as content ,
-              wc.Date as mdate
-            from wishContent wc
-            INNER JOIN wish w on w.id = wc.wish_Id
-            INNER JOIN user u on w.user = u.email
-            JOIN (SELECT wish_Id as wishid, MAX(wishContent.Date) AS max_date
-              FROM wishContent
-              where moderator_username is not null
-            AND isaccepted = 0 GROUP BY wish_Id ) AS wccMax
-            WHERE status = 'Verwijderd'
-            AND u.IsActive =1
-            AND wc.Date = wccMax.max_date
-            ORDER BY mdate asc");
-                break;
-        }
+    public function getCompletedWishes(){
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Vervuld"] , null , true));
+    }
 
-        return $result;
+    public function getDeniedWishes(){
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Geweigerd"] , null , true));
+    }
+
+    public function getDeletedWishes(){
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Verwijderd"] , null , true));
     }
 
     public function AdminAcceptWish($id, $mdate)
@@ -789,10 +583,4 @@ AND ab.Block_Id = test.blockid) AS isblock
         $result = Database::query_safe($sql,$parameters);
         return $result[0]["User"];
     }
-
-
-
-
-
-
 }

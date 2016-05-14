@@ -17,7 +17,7 @@ class WishQueryBuilder
      *
      * if params is not empty will execute safe query. Otherwise regular query
      */
-    private function executeQuery($query, $params){
+    private function executeQuery($query, array $params){
         if(!empty($params)){
             return Database::query_safe($query , $params);
         } else {
@@ -40,6 +40,8 @@ class WishQueryBuilder
      * search completed wishes
      * search incompleted wishes
      *
+     * All gets from admin
+     *
      */
     public function getWishes($user = null, array $status = null, $searchKey = null, $admin = false)
     {
@@ -48,10 +50,13 @@ class WishQueryBuilder
                         WHERE `wish`.User IS NOT NULL AND
                         NOT EXISTS(SELECT NULL FROM blockedusers AS b WHERE b.user_Email = `wish`.User AND b.IsBlocked = 1) AND";
 
+        //Used in queries by User
         if($user != null){
             $query .= "User = ? AND ";
         }
 
+
+        //Used in queries by status
         if($status != null){
             $query .= "(";
             foreach($status as $item){
@@ -73,6 +78,7 @@ class WishQueryBuilder
             $query .= ")";
         }
 
+        //Used in searching wish
         if($searchKey != null){
             if($status != null){
                 $query .= " AND ";
@@ -84,7 +90,7 @@ class WishQueryBuilder
                         SOUNDS LIKE ? ";
         }
 
-        if($admin){
+        if($admin && $status == null){
             $query = substr_replace($query, '', -3);
         }
 
@@ -98,17 +104,18 @@ class WishQueryBuilder
         }
 
         if($searchKey != null){
-            $params[] = $user;
+            $params[] = $searchKey;
         }
 
         return $this->executeQuery($query , $params);
     }
 
-    public function getManagementWishes(){
-        $query = "SELECT * FROM `wish` as w LEFT JOIN `wishContent`
-                        ON `wish`.Id = `wishContent`.wish_Id
-                        WHERE NOT w.User IS NULL AND
-                        NOT EXISTS(SELECT NULL FROM blockedusers AS b WHERE b.user_Email = w.User AND b.IsBlocked = 1)";
+    public function getSingleWish($wishId){
+        $query = "SELECT * FROM `wish` LEFT JOIN `wishContent`
+                        ON `wish`.Id = `wishContent`.wish_Id";
+        $query .= "WHERE `wish`.Id = ? AND `wishContent`.`IsAccepted` = 1";
+        $query .= "GROUP BY `wish`.Id";
 
+        return $this->executeQuery($query , array($wishId));
     }
 }

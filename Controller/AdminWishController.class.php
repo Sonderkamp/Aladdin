@@ -8,44 +8,38 @@
  */
 class AdminWishController
 {
-    private $page;
+    public $wishRepository;
+
     public function __construct()
     {
-
-        if (!isset($this->page))
-        {
-
-        $this->page = "requested";
-        }
+        $this->wishRepository = new WishRepository();
     }
+
     public function run()
     {
         guaranteeAdmin("/AdminWish");
         if (isset($_GET["action"])) {
             switch (strtolower($_GET["action"])) {
                 case "requested":
-                    $this->wishPageAction('requested');
+                    $this->renderPage("requested");
                     break;
-                case "changed":
-                    $this->wishPageAction('changed');
-                    break;
-                case "open":
-                    $this->wishPageAction('open');
-                    break;
-                case "done":
-                    $this->wishPageAction('done');
+                case "published":
+                    $this->renderPage("published");
                     break;
                 case "matched":
-                    $this->wishPageAction('matched');
+                    $this->renderPage("matched");
                     break;
                 case "current":
-                    $this->wishPageAction('current');
+                    $this->renderPage("current");
+                    break;
+                case "completed":
+                    $this->renderPage("completed");
                     break;
                 case "denied":
-                    $this->wishPageAction('denied');
+                    $this->renderPage("denied");
                     break;
                 case "deleted":
-                    $this->wishPageAction('deleted');
+                    $this->renderPage("deleted");
                     break;
                 case "profile":
 //                    $this->wishAction('accept', $_GET["wishid"],$_GET["mdate"]);
@@ -73,112 +67,47 @@ class AdminWishController
                     break;
             }
         } else {
-            $this->renderPage();
-            exit();
+            $this->renderPage("requested");
         }
-        $this->renderPage();
-        exit();
     }
 
 
-    public function renderPage()
+    public function renderPage($currentPage)
     {
-//        if (!Empty($_GET["action"])) {
-//            switch (strtolower($_GET["action"])) {
-//                case "requested":
-//                    render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested'),"current_page" => $this->page ]);
-//                    break;
-//                case "accept":
-//                    render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested'),"current_page" => $this->page ]);
-//                    break;
-//                case "deny":
-//                    render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested'),"current_page" => $this->page ]);
-//                    break;
-//                case "changed":
-//                    render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('changed'),"current_page" => $this->page ]);
-//                    break;
-//                case "open":
-//                    render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('open'),"current_page" => $this->page ]);
-//                    break;
-//                case "redraw":
-//                    render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('open'),"current_page" => $this->page ]);
-//                    break;
-//                case "delete":
-//                    render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('open'),"current_page" => $this->page ]);
-//                    break;
-//                case "matched":
-//                    render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('matched'),"current_page" => $this->page ]);
-//                    break;
-//                case "current":
-//                    render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('current'),"current_page" => $this->page ]);
-//                    break;
-//                case "done":
-//                    render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('done'),"current_page" => $this->page ]);
-//                    break;
-//                case "denied":
-//                    render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('denied'),"current_page" => $this->page ]);
-//                    break;
-//                default:
+        $requestedWishes = $this->wishRepository->getRequestedWishes();
+        $publishedWishes = $this->wishRepository->getPublishedWishes();
+        $matchedWishes   = $this->wishRepository->getMatchedWishes();
+        $currentWishes   = $this->wishRepository->getCurrentWishes();
+        $completedWishes = $this->wishRepository->getCompletedWishes();
+        $deniedWishes    = $this->wishRepository->getDeniedWishes();
+        $deletedWishes   = $this->wishRepository->getDeletedWishes();
+
         render("AdminWish.tpl", ["title" => "WensBeheer",
-            "requested" => $this->wishPageAction('requested'),
-            "published" => $this->wishPageAction('open'),
-            "matched" => $this->wishPageAction('matched'),
-            "current" => $this->wishPageAction('current'),
-            "completed" => $this->wishPageAction('done'),
-            "denied" => $this->wishPageAction('denied'),
-            "deleted" => $this->wishPageAction('deleted'),
-            "currentPage" => $this->page
+            "requested"   => $requestedWishes,
+            "published"   => $publishedWishes,
+            "matched"     => $matchedWishes,
+            "current"     => $currentWishes,
+            "completed"   => $completedWishes,
+            "denied"      => $deniedWishes,
+            "deleted"     => $deletedWishes,
+            "currentPage" => $currentPage
         ]);
-//                    break;
-//
-//
-//            }
-//            exit();
-//        }
-//
-//        render("AdminWish.tpl", ["title" => "WensBeheer", "reqwishes" => $this->wishPageAction('requested'),"current_page" => $this->page]);
-//        exit();
+    }
+
+    private function refuseWish($wishId){
+
+    }
+
+    private function acceptWish($wishId){
+
+    }
+
+    private function deleteWish($wishId){
+
     }
 
 
-    private function wishPageAction($page)
-    {
-        $wishmodel = new WishRepository();
-        $reqwishes = $wishmodel;
-
-        switch ($page) {
-            case 'requested':
-                $reqwishes = $wishmodel->getRequestedWishes('requested');
-                break;
-            case 'changed':
-                $reqwishes = $wishmodel->getRequestedWishes('changed');
-                break;
-            case 'open':
-                $reqwishes = $wishmodel->getRequestedWishes('open');
-                break;
-            case 'matched':
-                $reqwishes = $wishmodel->getRequestedWishes('matched');
-                break;
-            case 'current':
-                $reqwishes = $wishmodel->getRequestedWishes('current');
-                break;
-            case 'done':
-                $reqwishes = $wishmodel->getRequestedWishes('done');
-                break;
-            case 'denied':
-                $reqwishes = $wishmodel->getRequestedWishes('denied');
-                break;
-            case 'deleted':
-                $reqwishes = $wishmodel->getRequestedWishes('deleted');
-                break;
-
-        }
-        return $reqwishes;
-    }
-
-
-    private
-    function wishAction($action, $wishID, $mdate, $username, $message, $title)
+    private function wishAction($action, $wishID, $mdate, $username, $message = null, $title = null)
     {
         $wishmodel = new WishRepository();
         $messagemmodel = new messageRepository();

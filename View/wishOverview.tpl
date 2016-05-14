@@ -138,7 +138,7 @@
                                     value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
                                     type="submit"
                                     name="page">
-                                <span class="glyphicon glyphicon-menu-right"/>
+                                <span class="glyphicon glyphicon-menu-right"></span>
                             </button>
                         </form>
 
