@@ -18,6 +18,7 @@ class WishRepository
         $this->talentRepository = new TalentRepository();
     }
 
+    //move to controller
     private function checkWishContent($string)
     {
         if (strlen($string) > $this->maxContentLength) {
@@ -40,58 +41,24 @@ class WishRepository
         if(!empty($queryResult)) {
             $returnArray = array();
 
-            for ($i = 0; $i < count($queryResult); $i++) {
+            foreach($queryResult as $item){
 
-                if (!isset($queryResult[$i]["max_date"])) {
-                    $queryResult[$i]["max_date"] = null;
-                }
+                $wish = new Wish();
 
-                $queryResult[$i]["Content"] = $this->checkWishContent($queryResult[$i]["Content"]);
-                $newUser = $this->getUser($queryResult[$i]["User"]);
-                $completed = false;
-                if ($queryResult[$i]["Status"] == "Vervuld") {
-                    $completed = true;
-                }
+                $wish->id = $item["wish_Id"];
+                $wish->title = $item["Title"];
+                $wish->content = $item["Content"];
+                $wish->accepted = $item["IsAccepted"];
+                $wish->contentDate = $item["Date"];
+                $wish->status = $item["Status"];
+                $wish->displayName = $item["DisplayName"];
+                $wish->city = $item["City"];
 
-                $returnArray[$i] = new Wish(
-                    $queryResult[$i]["Id"],
-                    $newUser,
-                    $queryResult[$i]["Title"],
-                    $completed,
-                    $queryResult[$i]["Content"],
-                    $queryResult[$i]["IsAccepted"],
-                    $queryResult[$i]["max_date"],
-                    $queryResult[$i]["Date"],
-                    $queryResult[$i]["Status"]
-                );
+                $returnArray[] = $wish;
             }
-
             return $returnArray;
         }
-    }
-
-    //Soon to be deprecated
-    public function getUser($email)
-    {
-        $result = Database::query_safe("SELECT * FROM user WHERE user.Email = ?", array($email));
-
-
-        $newUser = new User();
-        $newUser->email = $email;
-        $newUser->isAdmin = $result[0]["Admin"];
-        $newUser->name = $result[0]["Name"];
-        $newUser->surname = $result[0]["Surname"];
-        $newUser->address = $result[0]["Address"];
-        $newUser->handicap = $result[0]["Handicap"];
-        $newUser->postalcode = $result[0]["Postalcode"];
-        $newUser->country = $result[0]["Country"];
-        $newUser->city = $result[0]["City"];
-        $newUser->dob = $result[0]["Dob"];
-        $newUser->gender = $result[0]["Gender"];
-        $newUser->displayName = $result[0]["DisplayName"];
-        $newUser->initials = $result[0]["Initials"];
-
-        return $newUser;
+        return false;
     }
 
 
@@ -264,7 +231,7 @@ class WishRepository
     }
 
     public function getRequestedWishes(){
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, null , null, true));
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Aangemaakt" , 1 => "Gepubliceerd"] , null, true));
     }
 
     public function getPublishedWishes(){
@@ -293,36 +260,22 @@ class WishRepository
 
     public function AdminAcceptWish($id, $mdate)
     {
-        Database::query_safe("UPDATE wishContent SET `IsAccepted`=1  WHERE Date =?", array($mdate));
-        Database::query_safe("UPDATE wishContent SET `moderator_username`='Admin'  WHERE Date =?", array($mdate));
-
-        $currentstatus = Database::query_safe("SELECT status as status from wish where id =?", array($id));
-
-        if (($currentstatus[0]["status"] == 'Aangemaakt')) {
-            Database::query_safe("UPDATE wish SET `Status`='Gepubliseerd'  WHERE id=?", array($id));
-        }
-
+        $this->WishQueryBuilder->executeAdminAction($id , 1 , "Admin" , "Gepubliceerd");
     }
 
     public function AdminRefuseWish($id, $mdate)
     {
-        Database::query_safe("UPDATE wishContent SET `IsAccepted`=0  WHERE Date=?", array($mdate));
-        Database::query_safe("UPDATE wishContent SET `moderator_username`='Admin'  WHERE Date=?", array($mdate));
-        Database::query_safe("UPDATE wish SET `Status`='Geweigerd'  WHERE id=?", array($id));
+        $this->WishQueryBuilder->executeAdminAction($id , 0 , "Admin" , "Geweigerd");
     }
 
     public function AdminDeleteWish($id, $mdate = null)
     {
-        Database::query_safe("UPDATE wishContent SET `IsAccepted`=0  WHERE wish_id=?", array($id));
-        Database::query_safe("UPDATE wishContent SET `moderator_username`='Admin'  WHERE wish_id=?", array($id));
-        Database::query_safe("UPDATE wish SET `Status`='Verwijderd'  WHERE id=?", array($id));
+        $this->WishQueryBuilder->executeAdminAction($id , 0 , "Admin" , "Verwijderd");
     }
 
     public function AdminRedrawWish($id, $mdate)
     {
-        Database::query_safe("UPDATE wishContent SET `IsAccepted`=0  WHERE Date =?", array($mdate));
-        Database::query_safe("UPDATE wishContent SET `moderator_username`= null  WHERE Date =?", array($mdate));
-        Database::query_safe("UPDATE wish SET `Status`='Aangemaakt'  WHERE id=?", array($id));
+        $this->WishQueryBuilder->executeAdminAction($id , 0 , null , "Aangemaakt");
     }
 
 
@@ -518,7 +471,7 @@ AND ab.Block_Id = test.blockid) AS isblock
             $myWishId = "(";
             foreach ($myWishes as $item) {
                 if ($item instanceof Wish) {
-                    $myWishId .= $item->getId() . ",";
+                    $myWishId .= $item->id . ",";
                 }
             }
 
@@ -548,35 +501,7 @@ AND ab.Block_Id = test.blockid) AS isblock
         }
     }
 
-    public function getWishv2(Wish $wish)
-    {
-        $query = "SELECT * FROM `wishContent` WHERE `wish_Id` = ? ORDER BY `Date` desc limit 1";
-        $array = array($wish->getId());
-        $result = Database::query_safe($query, $array);
-
-        $id = $result[0]["wish_Id"];
-        $title = $result[0]["Title"];
-        $content = $result[0]["Content"];
-        $contentDate = $result[0]["Date"];
-
-        $wish = new Wish($id, "", $title, "", $content, "", "", $contentDate, "");
-        return $wish;
-    }
-
-    public function inCreator($array)
-    {
-        $string = "(";
-        foreach ($array as $item) {
-            if ($item != null) {
-                $string .= $item . ",";
-            }
-        }
-        $value = substr($string, 0, -1);
-        $value .= ')';
-
-        return $value;
-    }
-
+    //soon to be deprecated
     public function getUserOfWish($wishID){
         $sql = "select * from wish where Id = ?";
         $parameters = array($wishID);

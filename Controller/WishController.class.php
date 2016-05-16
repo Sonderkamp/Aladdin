@@ -261,7 +261,7 @@ class WishController
             $canAdd = true;
             foreach ($myWishes as $item){
                 if($item instanceof Wish){
-                    if($item->getTitle() == $this->title){
+                    if($item->title == $this->title){
                         $canAdd = false;
                         break;
                     }

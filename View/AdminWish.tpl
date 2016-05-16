@@ -39,6 +39,72 @@
         </ul>
     </div>
 
+
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Uitleg wens beheer</h4>
+                </div>
+                <div class="modal-body">
+
+                    <p> Hier vind u uitleg over de icoontjes die in het wensbeheer systeem voor komen:</p>
+
+                    <div class="col-xs-12 info-row">
+                        <button class="btn btn-sm">
+                            <span class="glyphicon glyphicon glyphicon-eye-open"></span>
+                        </button>
+                        <span class="info-text">Opent een pagina waar je de bijbehorende wens kan ziens</span>
+                    </div>
+
+                    <div class="col-xs-12 info-row">
+                        <button class="btn btn-sm">
+                            <span class="glyphicon glyphicon glyphicon-ok"></span>
+                        </button>
+                        <span class="info-text">Accepteert de wens</span>
+                    </div>
+
+                    <div class="col-xs-12 info-row">
+                        <button class="btn btn-sm">
+                            <span class="glyphicon glyphicon glyphicon-remove"></span>
+                        </button>
+                        <span class="info-text">Weigert de wens</span>
+                    </div>
+
+                    <div class="col-xs-12 info-row">
+                        <button class="btn btn-sm">
+                            <span class="glyphicon glyphicon glyphicon-user"></span>
+                        </button>
+                        <span class="info-text">Gaat naar profiel pagina van een gebruiker</span>
+                    </div>
+
+                    <div class="col-xs-12 info-row">
+                        <button class="btn btn-sm">
+                            <span class="glyphicon glyphicon glyphicon-refresh"></span>
+                        </button>
+                        <span class="info-text">Gekozen wens gaat terug naar aangevraagde wensen</span>
+                    </div>
+
+                    <div class="col-xs-12 info-row">
+                        <button class="btn btn-sm">
+                            <span class="glyphicon glyphicon glyphicon glyphicon-trash"></span>
+                        </button>
+                        <span class="info-text">Verwijderd wens</span>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Sluiten
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {* <form action="/AdminWish/action=accept" method="post">
                                 <td>{$i.display}</td>
                                 <td>{$i.title|escape:"html"}</td>
@@ -95,240 +161,309 @@
                             </form> *}
 
 
-    <div class="col-md-10">
+        <div class="col-md-10">
         <span class="info">
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">
                 <span class="glyphicon glyphicon-info-sign"></span>
             </button>
         </span>
-        <div class="tab-content">
+            <div class="tab-content">
 
-            {*Requested Wishes*}
+                {*Requested Wishes*}
 
-            <div class="tab-pane fade in {if $currentPage == "requested"}active{/if}" id="requestedTab">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Gebruiker</th>
-                        <th>Wens</th>
-                        <th>Status</th>
-                        <th width="1%"></th>
-                        <th width="1%"></th>
-                        <th width="1%"></th>
-                        <th width="1%"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {foreach from=$requested item=wish}
-                        <tr>
-                            <td>{$wish->user->displayName}</td>
-                            <td>{$wish->title}</td>
-                            <td>{$wish->status}</td>
-                            <td>
-                                <form class='noPadding' method="post">
-                                    <button class="btn btn-sm"
-                                            formaction="/Wishes/wish_id={$wish->id}"
-                                            value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
-                                            type="submit"
-                                            name="page">
-                                        <span class="glyphicon glyphicon-eye-open"></span>
-                                    </button>
-                                </form>
-                            </td>
-                            <td>
-                                <form class='noPadding' method="post">
-                                    <button class="btn btn-sm"
-                                            formaction="/Wishes/wish_id={$wish->id}"
-                                            value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
-                                            type="submit"
-                                            name="page">
-                                        <span class="glyphicon glyphicon-ok"></span>
-                                    </button>
-                                </form>
-                            </td>
-                            <td>
-                                <form class='noPadding' method="post">
-                                    <button class="btn btn-sm"
-                                            formaction="/Wishes/wish_id={$wish->id}"
-                                            value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
-                                            type="submit"
-                                            name="page">
-                                        <span class="glyphicon glyphicon-remove"></span>
-                                    </button>
-                                </form>
-                            </td>
-                            <td>
-                                <form class='noPadding' method="post">
-                                    <button class="btn btn-sm"
-                                            formaction="/Wishes/wish_id={$wish->id}"
-                                            value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
-                                            type="submit"
-                                            name="page">
-                                        <span class="glyphicon glyphicon glyphicon-user"></span>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    {/foreach}
-                    </tbody>
-                </table>
-            </div>
+                <div class="tab-pane fade in {if $currentPage == "requested"}active{/if}" id="requestedTab">
+                    {if $requested}
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Gebruiker</th>
+                                <th>Wens</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach from=$requested item=wish}
+                                <tr>
+                                    <td>{$wish->displayName}</td>
+                                    <td>{$wish->title}</td>
+                                    <td>{$wish->content}</td>
+                                    <td>{$wish->status}</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <a href="#"
+                                               class="dropdown-toggle"
+                                               data-toggle="dropdown"
+                                               role="button"
+                                               aria-haspopup="true"
+                                               aria-expanded="false">
+                                                <span class="glyphicon glyphicon-chevron-down"></span>
+                                            </a>
+                                            <ul class="dropdown-menu small-dropdown-menu">
 
-            {*Published Wishes*}
+                                                <li>
+                                                    <form class='noPadding' method="post">
+                                                        <button class="btn btn-sm"
+                                                                formaction="/Wishes/wish_id={$wish->id}"
+                                                                value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
+                                                                type="submit"
+                                                                name="page">
+                                                            <span class="glyphicon glyphicon-eye-open"></span>
+                                                        </button>
+                                                    </form
+                                                </li>
 
-            <div class="tab-pane fade in {if $currentPage == "published"}active{/if}" id="publishedTab">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Gebruiker</th>
-                        <th>Wens</th>
-                        <th>Status</th>
-                        {*<th width="1%"></th>*}
-                        {*<th width="1%"></th>*}
-                        {*<th width="1%"></th>*}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {foreach from=$published item=wish}
-                        <tr>
-                            <td>{$wish->user->displayName}</td>
-                            <td>{$wish->title}</td>
-                            <td>{$wish->status}</td>
-                        </tr>
-                    {/foreach}
-                    </tbody>
-                </table>
-            </div>
+                                                <li>
+                                                    <form class='noPadding' method="post">
+                                                        <button class="btn btn-sm"
+                                                                formaction="/Wishes/wish_id={$wish->id}"
+                                                                value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
+                                                                type="submit"
+                                                                name="page">
+                                                            <span class="glyphicon glyphicon-ok"></span>
+                                                        </button>
+                                                    </form>
+                                                </li>
 
-            {*Matched Wishes*}
+                                                <li>
+                                                    <form class='noPadding' method="post">
+                                                        <button class="btn btn-sm"
+                                                                formaction="/Wishes/wish_id={$wish->id}"
+                                                                value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
+                                                                type="submit"
+                                                                name="page">
+                                                            <span class="glyphicon glyphicon-remove"></span>
+                                                        </button>
+                                                    </form>
+                                                </li>
 
-            <div class="tab-pane fade in" id="matchedTab">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Gebruiker</th>
-                        <th>Wens</th>
-                        <th>Status</th>
-                        {*<th width="1%"></th>*}
-                        {*<th width="1%"></th>*}
-                        {*<th width="1%"></th>*}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {foreach from=$matched item=wish}
-                        <tr>
-                            <td>{$wish->user->displayName}</td>
-                            <td>{$wish->title}</td>
-                            <td>{$wish->status}</td>
-                        </tr>
-                    {/foreach}
-                    </tbody>
-                </table>
-            </div>
+                                                <li>
+                                                    <form class='noPadding' method="post">
+                                                        <button class="btn btn-sm"
+                                                                formaction="/Wishes/wish_id={$wish->id}"
+                                                                value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
+                                                                type="submit"
+                                                                name="page">
+                                                            <span class="glyphicon glyphicon glyphicon-user"></span>
+                                                        </button>
+                                                    </form>
+                                                </li>
 
-            {*Current Wishes*}
+                                                <li>
+                                                    <form class='noPadding' method="post">
+                                                        <button class="btn btn-sm"
+                                                                formaction="/Wishes/wish_id={$wish->id}"
+                                                                value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
+                                                                type="submit"
+                                                                name="page">
+                                                            <span class="glyphicon glyphicon glyphicon-trash"></span>
+                                                        </button>
+                                                    </form>
+                                                </li>
 
-            <div class="tab-pane fade in {if $currentPage == "current"}active{/if}" id="currentTab">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Gebruiker</th>
-                        <th>Wens</th>
-                        <th>Status</th>
-                        {*<th width="1%"></th>*}
-                        {*<th width="1%"></th>*}
-                        {*<th width="1%"></th>*}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {foreach from=$current item=wish}
-                        <tr>
-                            <td>{$wish->user->displayName}</td>
-                            <td>{$wish->title}</td>
-                            <td>{$wish->status}</td>
-                        </tr>
-                    {/foreach}
-                    </tbody>
-                </table>
-            </div>
+                                                <li>
+                                                    <form class='noPadding' method="post">
+                                                        <button class="btn btn-sm"
+                                                                formaction="/Wishes/wish_id={$wish->id}"
+                                                                value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
+                                                                type="submit"
+                                                                name="page">
+                                                            <span class="glyphicon glyphicon glyphicon-refresh"></span>
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                    {else}
+                        <div class="center-block text-center"><h4>Er zijn momenteel geen aangevraagde wensen</h4></div>
+                    {/if}
+                </div>
 
-            {*Completed Wishes*}
+                {*Published Wishes*}
 
-            <div class="tab-pane fade in {if $currentPage == "completed"}active{/if}" id="completedTab">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Gebruiker</th>
-                        <th>Wens</th>
-                        <th>Status</th>
-                        {*<th width="1%"></th>*}
-                        {*<th width="1%"></th>*}
-                        {*<th width="1%"></th>*}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {foreach from=$completed item=wish}
-                        <tr>
-                            <td>{$wish->user->displayName}</td>
-                            <td>{$wish->title}</td>
-                            <td>{$wish->status}</td>
-                        </tr>
-                    {/foreach}
-                    </tbody>
-                </table>
-            </div>
+                <div class="tab-pane fade in {if $currentPage == "published"}active{/if}" id="publishedTab">
+                    {if $published}
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Gebruiker</th>
+                                <th>Wens</th>
+                                <th>Status</th>
+                                {*<th width="1%"></th>*}
+                                {*<th width="1%"></th>*}
+                                {*<th width="1%"></th>*}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach from=$published item=wish}
+                                <tr>
+                                    <td>{$wish->displayName}</td>
+                                    <td>{$wish->title}</td>
+                                    <td>{$wish->status}</td>
+                                </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                    {else}
+                        <div class="center-block text-center"><h4>Er zijn momenteel geen gepubliceerde wensen</h4></div>
+                    {/if}
+                </div>
 
-            {*Denied Wishes*}
+                {*Matched Wishes*}
 
-            <div class="tab-pane fade in {if $currentPage == "denied"}active{/if}" id="deniedTab">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Gebruiker</th>
-                        <th>Wens</th>
-                        <th>Status</th>
-                        {*<th width="1%"></th>*}
-                        {*<th width="1%"></th>*}
-                        {*<th width="1%"></th>*}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {foreach from=$denied item=wish}
-                        <tr>
-                            <td>{$wish->user->displayName}</td>
-                            <td>{$wish->title}</td>
-                            <td>{$wish->status}</td>
-                        </tr>
-                    {/foreach}
-                    </tbody>
-                </table>
-            </div>
+                <div class="tab-pane fade in" id="matchedTab">
+                    {if $matched}
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Gebruiker</th>
+                                <th>Wens</th>
+                                <th>Status</th>
+                                {*<th width="1%"></th>*}
+                                {*<th width="1%"></th>*}
+                                {*<th width="1%"></th>*}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach from=$matched item=wish}
+                                <tr>
+                                    <td>{$wish->displayName}</td>
+                                    <td>{$wish->title}</td>
+                                    <td>{$wish->status}</td>
+                                </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                    {else}
+                        <div class="center-block text-center"><h4>Er zijn momenteel geen gevonden matches</h4></div>
+                    {/if}
+                </div>
 
-            {*Deleted Wishes*}
+                {*Current Wishes*}
 
-            <div class="tab-pane fade in {if $currentPage == "deleted"}active{/if}" id="deletedTab">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Gebruiker</th>
-                        <th>Wens</th>
-                        <th>Status</th>
-                        {*<th width="1%"></th>*}
-                        {*<th width="1%"></th>*}
-                        {*<th width="1%"></th>*}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {foreach from=$deleted item=wish}
-                        <tr>
-                            <td>{$wish->user->displayName}</td>
-                            <td>{$wish->title}</td>
-                            <td>{$wish->status}</td>
-                        </tr>
-                    {/foreach}
-                    </tbody>
-                </table>
+                <div class="tab-pane fade in {if $currentPage == "current"}active{/if}" id="currentTab">
+                    {if $current}
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Gebruiker</th>
+                                <th>Wens</th>
+                                <th>Status</th>
+                                {*<th width="1%"></th>*}
+                                {*<th width="1%"></th>*}
+                                {*<th width="1%"></th>*}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach from=$current item=wish}
+                                <tr>
+                                    <td>{$wish->displayName}</td>
+                                    <td>{$wish->title}</td>
+                                    <td>{$wish->status}</td>
+                                </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                    {else}
+                        <div class="center-block text-center"><h4>Er zijn momenteel geen wensen die worden vervuld</h4>
+                        </div>
+                    {/if}
+                </div>
+
+                {*Completed Wishes*}
+
+                <div class="tab-pane fade in {if $currentPage == "completed"}active{/if}" id="completedTab">
+                    {if $completed}
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Gebruiker</th>
+                                <th>Wens</th>
+                                <th>Status</th>
+                                {*<th width="1%"></th>*}
+                                {*<th width="1%"></th>*}
+                                {*<th width="1%"></th>*}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach from=$completed item=wish}
+                                <tr>
+                                    <td>{$wish->displayName}</td>
+                                    <td>{$wish->title}</td>
+                                    <td>{$wish->status}</td>
+                                </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                    {else}
+                        <div class="center-block text-center"><h4>Er zijn momenteel geen vervulde wensen</h4></div>
+                    {/if}
+                </div>
+
+                {*Denied Wishes*}
+
+                <div class="tab-pane fade in {if $currentPage == "denied"}active{/if}" id="deniedTab">
+                    {if $denied}
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Gebruiker</th>
+                                <th>Wens</th>
+                                <th>Status</th>
+                                {*<th width="1%"></th>*}
+                                {*<th width="1%"></th>*}
+                                {*<th width="1%"></th>*}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach from=$denied item=wish}
+                                <tr>
+                                    <td>{$wish->displayName}</td>
+                                    <td>{$wish->title}</td>
+                                    <td>{$wish->status}</td>
+                                </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                    {else}
+                        <div class="center-block text-center"><h4>Er zijn momenteel geen geweigerde wensen</h4></div>
+                    {/if}
+                </div>
+
+                {*Deleted Wishes*}
+
+                <div class="tab-pane fade in {if $currentPage == "deleted"}active{/if}" id="deletedTab">
+                    {if $deleted}
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Gebruiker</th>
+                                <th>Wens</th>
+                                <th>Status</th>
+                                {*<th width="1%"></th>*}
+                                {*<th width="1%"></th>*}
+                                {*<th width="1%"></th>*}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach from=$deleted item=wish}
+                                <tr>
+                                    <td>{$wish->displayName}</td>
+                                    <td>{$wish->title}</td>
+                                    <td>{$wish->status}</td>
+                                </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                    {else}
+                        <div class="center-block text-center"><h4>Er zijn momenteel geen geweigerde wensen</h4></div>
+                    {/if}
+                </div>
             </div>
         </div>
-    </div>
 

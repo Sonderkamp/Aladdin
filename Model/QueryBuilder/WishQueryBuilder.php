@@ -45,10 +45,13 @@ class WishQueryBuilder
      */
     public function getWishes($user = null, array $status = null, $searchKey = null, $admin = false)
     {
-        $query = "SELECT * FROM `wish` LEFT JOIN `wishContent`
-                        ON `wish`.Id = `wishContent`.wish_Id
-                        WHERE `wish`.User IS NOT NULL AND
-                        NOT EXISTS(SELECT NULL FROM blockedusers AS b WHERE b.user_Email = `wish`.User AND b.IsBlocked = 1) AND";
+        $query = "SELECT *
+                  FROM `wish`
+                  LEFT JOIN `wishContent`
+                  ON `wish`.Id = `wishContent`.wish_Id
+                  JOIN `user` ON `wish`.User = `user`.Email
+                  WHERE `wish`.User IS NOT NULL AND
+                  NOT EXISTS(SELECT NULL FROM blockedusers AS b WHERE b.user_Email = `wish`.User AND b.IsBlocked = 1) AND ";
 
         //Used in queries by User
         if($user != null){
@@ -110,12 +113,37 @@ class WishQueryBuilder
         return $this->executeQuery($query , $params);
     }
 
-    public function getSingleWish($wishId){
+    public function getSingleWish($wishId, $admin = false)
+    {
         $query = "SELECT * FROM `wish` LEFT JOIN `wishContent`
                         ON `wish`.Id = `wishContent`.wish_Id";
-        $query .= "WHERE `wish`.Id = ? AND `wishContent`.`IsAccepted` = 1";
-        $query .= "GROUP BY `wish`.Id";
+        $query .= "WHERE `wish`.Id = ? AND `wishContent`.`IsAccepted` = ";
+
+        if($admin){
+            $query .= "0";
+        } else {
+            $query .= "1";
+        }
+
+        $query .= "AND `wish`.Id = ? GROUP BY `wish`.Id LIMIT 1";
 
         return $this->executeQuery($query , array($wishId));
+    }
+
+    public function executeAdminAction($wishId, $IsAccepted, $modName, $status)
+    {
+        $wishContentDate = $this->getSingleWish($wishId , true)[0]["Date"];
+
+        $query  = "UPDATE `wishContent` SET IsAccepted = ? WHERE `wishContent`.Date = ?;";
+        $query .= "UPDATE `wishContent` SET moderator_username = ? WHERE `wishContent`.Date = ?;";
+        $query .= "UPDATE `wish` SET Status = ? WHERE id = ?;";
+
+        $this->executeQuery($query ,
+            array(0 => $IsAccepted,
+            1 => $wishContentDate,
+            2 => $modName,
+            3 => $wishContentDate ,
+            4 => $status ,
+            5 => $wishId));
     }
 }
