@@ -58,7 +58,7 @@ class AdminUserController
                 if ($item instanceof Report) {
                     $user = $item->getReported();
                     if ($user instanceof User) {
-                        $temp = new User();
+                        $temp = new UserRepository();
                         if($temp->isBlocked($user->getEmail())){
                             $user->setBlocked(true);
                         }

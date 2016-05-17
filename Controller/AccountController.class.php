@@ -57,8 +57,8 @@ class AccountController
 
             if (!Empty($_POST["username"])) {
                 // htmlspecialchar
-                $userModel = new User();
-                if ($userModel->getUser($_POST["username"]) !== false) {
+                $userRepo = new UserRepository();
+                if ($userRepo->getUser($_POST["username"]) !== false) {
                     header('Content-Type: application/json');
                     echo json_encode(array('result' => true));
                     exit();
@@ -103,8 +103,8 @@ class AccountController
             if (!Empty($_POST["token"])) {
                 // newpassword-form is filled in
                 $username = $this->checkRecoveryToken($_POST["token"]);
-                $userModel = new User();
-                if ((Empty($_POST["username"]) || !$userModel->validateUsername($_POST["username"]))) {
+                $userRepo = new UserRepository();
+                if ((Empty($_POST["username"]) || !$userRepo->validateUsername($_POST["username"]))) {
                     apologize("Invalid form.");
                 }
                 if ($username != $_POST["username"]) {
@@ -121,25 +121,25 @@ class AccountController
                 }
 
                 // save password
-                if (!$userModel->newPassword($_POST["username"], $_POST["password1"])) {
+                if (!$userRepo->newPassword($_POST["username"], $_POST["password1"])) {
                     render("newPassword.tpl", ["error" => "Wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter, een nummer en een speciaal teken bevatten.", "title" => "nieuw wachtwoord", "username" => $username, "token" => $_POST["token"]]);
                     exit(1);
                 }
                 // reset hash & date
-                $userModel->resetHash($_POST["username"]);
+                $userRepo->resetHash($_POST["username"]);
                 redirect("/");
 
 
                 exit(1);
             } else if (!Empty($_POST["username"])) {
                 // new recovery creation
-                $userModel = new User();
-                if (!$userModel->validateUsername($_POST["username"])) {
+                $userRepo = new UserRepository();
+                if (!$userRepo->validateUsername($_POST["username"])) {
                     $this->recoverError("Invalid username");
                 }
-                if ($userModel->newHash($_POST["username"])) {
+                if ($userRepo->newHash($_POST["username"])) {
                     $mailer = new Email();
-                    if ($userModel->setRecoveryMail($mailer, $_POST["username"])) {
+                    if ($userRepo->setRecoveryMail($mailer, $_POST["username"])) {
                         $mailer->sendMail();
                         render("messageScreen.tpl", ["title" => "Email verzonden.", "message" => "Er is een email verstuurd naar " . $_POST["username"] . " met een link om uw wachtwoord te resetten.
                     Deze link verschijnt binnen drie minuten.
@@ -167,12 +167,12 @@ class AccountController
 
     private function checkRecoveryToken($token)
     {
-        $userModel = new User();
-        $this->canRecover($userModel);
+        $userRepo = new UserRepository();
+        $this->canRecover($userRepo);
         // validate email-link
-        $username = $userModel->validateToken($token);
+        $username = $userRepo->validateToken($token);
         if ($username === false) {
-            $userModel->logRecovery();
+            $userRepo->logRecovery();
             apologize("niet geldige token.");
         }
         return $username;
@@ -180,22 +180,22 @@ class AccountController
 
     private function checkActivateToken($token)
     {
-        $userModel = new User();
-        $this->canRecover($userModel);
+        $userRepo = new UserRepository();
+        $this->canRecover($userRepo);
         // validate email-link
-        $username = $userModel->validateActivateToken($token);
+        $username = $userRepo->validateActivateToken($token);
         if ($username === false) {
-            $userModel->logRecovery();
+            $userRepo->logRecovery();
             apologize("niet geldige token.");
 
         }
         return $username;
     }
 
-    private function canRecover($userModel)
+    private function canRecover($userRepo)
     {
-        if (!$userModel->CanRecover()) {
-            apologize("Er is afgelopen 24 uur te veel (verkeerde) activiteit van dit IP adress gekomen. Wacht 24 uur voordat u opnieuw een activatielink of recoverylink probeert.");
+        if (!$userRepo->CanRecover()) {
+            apologize("Er is afgelopen 24 uur te veel malfide activiteit van dit IP adress gekomen. Wacht 24 uur voordat u opnieuw een activatielink of recoverylink probeert.");
         }
     }
 
@@ -205,12 +205,12 @@ class AccountController
 
             if (!Empty($_POST["username"]) && !Empty($_POST["password"])) {
                 // htmlspecialchar
-                $userModel = new User();
-                if ($userModel->validate(htmlspecialchars($_POST["username"]), htmlspecialchars($_POST["password"]))) {
+                $userRepo = new UserRepository();
+                if ($userRepo->validate(htmlspecialchars($_POST["username"]), htmlspecialchars($_POST["password"]))) {
 
-                    if ($userModel->isBlocked($_POST["username"]) !== false) {
+                    if ($userRepo->isBlocked($_POST["username"]) !== false) {
                         $_SESSION["user"] = null;
-                        $this->loginError("gebruiker is geblokkeerd. Reden: " . htmlspecialcharsWithNL($userModel->isBlocked($_POST["username"])));
+                        $this->loginError("gebruiker is geblokkeerd. Reden: " . htmlspecialcharsWithNL($userRepo->isBlocked($_POST["username"])));
                         exit();
                     }
                     if (!empty($_SESSION["Redirect"])) {
@@ -286,11 +286,12 @@ class AccountController
                 $arr["handicap"] = 0;
 
 
-            $userModel = new User();
-            $res = $userModel->tryRegister($arr);
+            $userRepo = new UserRepository();
+            $res = $userRepo->tryRegister($arr);
             if ($res === true) {
                 $mailer = new Email();
-                if ($userModel->setActivateMail($mailer, $arr["username"])) {
+                $user = $userRepo->getUser($arr["username"]);
+                if ($userRepo->setActivateMail($mailer, $arr["username"])) {
                     $mailer->sendMail();
                     render("messageScreen.tpl", ["title" => "Email verzonden.", "message" => "Er is een email verstuurd naar " . $arr["username"] . " met een activatielink.
                     Deze link verschijnt binnen drie minuten.

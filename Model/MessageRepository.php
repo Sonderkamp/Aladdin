@@ -21,37 +21,16 @@ class messageRepository
     }
 
 
-    public function getInbox($search, $page)
+    public function getbox($search, $page, $box)
     {
         $pages = 0;
-        $messages = $this->messageBuilder->getbox($search, $page, $this->size, "inbox", $pages);
+        $messages = $this->messageBuilder->getbox($search, $page, $this->size, $box, $pages);
         $this->page = $page;
         $this->pages = $pages;
 
         return $messages;
     }
-
-    public function getOutbox($search, $page)
-    {
-        $pages = 0;
-        $messages = $this->messageBuilder->getbox($search, $page, $this->size, "outbox", $pages);
-        $this->page = $page;
-        $this->pages = $pages;
-
-        return $messages;
-
-    }
-
-    public function getTrash($search, $page)
-    {
-        $pages = 0;
-        $messages = $this->messageBuilder->getbox($search, $page, $this->size, "trash", $pages);
-        $this->page = $page;
-        $this->pages = $pages;
-
-        return $messages;
-    }
-
+    
 
     public function isValidPage()
     {
@@ -100,11 +79,11 @@ class messageRepository
         $itemNR = $this->messageBuilder->sendMessage($me, $recipient, $title, $message);
 
         // EMAIL
-        $user = new User();
+        $user = new UserRepository();
         $user = $user->getUser($recipient);
         $mail = new Email();
         $mail->to = $recipient;
-        $mail->toName = $user["Name"] . " " . $user["Surname"];;
+        $mail->toName = $user->name . " " . $user->surname;
         $mail->subject = "Aladdin:  " . $title;
         $mail->message = "Dit bericht is verstuurd via " . $_SERVER["SERVER_NAME"] . ": \nReageren kan via de website. Mailtjes naar dit emailadress worden niet gezien.\n\n" . $message;
         $mail->sendMail();
