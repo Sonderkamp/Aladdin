@@ -8,189 +8,272 @@
  */
 class ForbiddenWordController
 {
-    private $forbidden_word_repository, $forbidden_words, $error_message, $success_message, $number_of_words, $current_number_of_words;
+    // Instant variables
+    private $wordRepo, $words, $error, $success, $wordsCount, $page;
 
     public function __construct() {
 
+        // Guarentee if an admin is logged in
         guaranteeAdmin("/forbiddenwords");
 
-        $this->forbidden_word_repository = new ForbiddenWordRepository();
-        $this->number_of_words = ceil(count($this->forbidden_word_repository->getForbiddenWords())/10);
+        // Set the wordRepo
+        $this->wordRepo = new ForbiddenWordRepository();
+
+        // wordsCount is the number of words in total devided by 10 and rounded upwards.
+        // page is the current page of the pagination. if page is 2 then show words 10 to 20
+        $this->wordsCount = ceil(count($this->wordRepo->getForbiddenWords())/10);
     }
 
     public function run() {
 
+        // Check the session variables
         $this->checkSession();
+        // Check if a post method is sent
         $this->checkPost();
+        // Check if a get method is sent and set words
         $this->checkGet();
 
+        // Render the .tpl
         render("Admin/forbiddenWord.tpl",
             ["title" => "Verboden woorden",
-            "forbidden_words" => $this->forbidden_words,
-            "error_message" => $this->error_message,
-            "success_message" => $this->success_message,
-            "number_of_words" => $this->number_of_words,
-            "current_number_of_words" => $this->current_number_of_words]);
+            "forbiddenWords" => $this->words,
+            "errorMessage" => $this->error,
+            "successMessage" => $this->success,
+            "wordsCount" => $this->wordsCount,
+            "page" => $this->page]);
+        // Exit with succes status
         exit(0);
     }
 
     private function checkPost() {
 
+        // Check if request method of the server is POST
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+            // Check if the request sent is a word to be added
             if (!Empty($_POST["add_forbidden_word"])) {
 
-                $forbidden_word = htmlentities(trim($_POST["add_forbidden_word"]),ENT_QUOTES);
+                // Secure the value sent by post
+                $word = htmlentities(trim($_POST["add_forbidden_word"]),ENT_QUOTES);
 
-                $can_add = $this->checkWordForAdding($forbidden_word);
+                // Set succes succeeded or failed depending on the result of checkWord
+                $succes = $this->checkWord($word);
 
-                if($can_add == "succeeded") {
+                // if $succes is succeeded create the word.
+                if($succes == "succeeded") {
 
-                    $this->forbidden_word_repository->createForbiddenWord($forbidden_word);
-                    $_SESSION["forbidden_words_success"] = 'Het woord "'.$forbidden_word.'" is succesvol toegevoegd!';
+                    // Set the word in the database
+                    $this->wordRepo->createForbiddenWord($word);
+                    // Create a succes message
+                    $_SESSION["wordsSucces"] = 'Het woord "'.$word.'" is succesvol toegevoegd!';
                 }
 
-                header("HTTP/1.1 303 See Other");
-                header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-                exit(0);
+                // Reload page without post requests
+                $this->redirect();
             }
 
+            // Check if the request is a word to be removed
             if (!Empty($_POST["remove_forbidden_word"])) {
 
-                $forbidden_word = htmlentities(trim($_POST["remove_forbidden_word"]),ENT_QUOTES);
+                // Secure the value sent by post
+                $word = htmlentities(trim($_POST["remove_forbidden_word"]),ENT_QUOTES);
 
-                $this->forbidden_word_repository->deleteForbiddenWord($forbidden_word);
+                // Delete the word from the database
+                $this->wordRepo->deleteForbiddenWord($word);
 
-                if(Empty($this->forbidden_word_repository->getForbiddenWord($forbidden_word))) {
+                // Check if the word cannot be received from the database
+                // ELSE set error message
+                if(Empty($this->wordRepo->getForbiddenWord($word))) {
 
-                    $_SESSION["forbidden_words_success"] = 'Het woord "'.$forbidden_word.'" is succesvol verwijderd!';
+                    // Set the succes message
+                    $_SESSION["wordsSucces"] = 'Het woord "'.$word.'" is succesvol verwijderd!';
                 } else {
 
-                    $_SESSION["forbidden_words_error"] = 'Het woord "'.$forbidden_word.'" is niet verwijderd!';
+                    // Set the error message
+                    $_SESSION["wordsError"] = 'Het woord "'.$word.'" is niet verwijderd!';
                 }
 
-                header("HTTP/1.1 303 See Other");
-                header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-                exit(0);
+                // Reload page without post requests
+                $this->redirect();
             }
 
+            // Check if the request method is a word to be edited and the old word is send as well
+            // The old word is needed, because forbidden words is a look up table without keys, so the old word is the key.
             if (!Empty($_POST["edit_forbidden_word_new"]) && !Empty($_POST["edit_forbidden_word_old"])) {
 
+                // Secure the edited word sent by POST
                 $forbidden_word_new = htmlentities(trim($_POST["edit_forbidden_word_new"]),ENT_QUOTES);
+                // Secure the old word sent by POST
                 $forbidden_word_old = htmlentities(trim($_POST["edit_forbidden_word_old"]),ENT_QUOTES);
 
-                $can_edit = $this->checkWordForAdding($forbidden_word_new);
+                // Set succes succeeded or failed depending on the result of checkWord
+                $succes = $this->checkWord($forbidden_word_new);
 
-                if($can_edit == "succeeded") {
+                // if $succes is succeeded than continue
+                // ELSE set error message
+                if($succes == "succeeded") {
 
-                    $this->forbidden_word_repository->updateForbiddenWord($forbidden_word_old,$forbidden_word_new);
-                    $_SESSION["forbidden_words_success"] = 'Het woord "'.$forbidden_word_old.'" is succesvol gewijzigd naar "'.$forbidden_word_new.'"!';
+                    // Update the word in the database
+                    $this->wordRepo->updateForbiddenWord($forbidden_word_old,$forbidden_word_new);
+                    // Set the succes message
+                    $_SESSION["wordsSucces"] = 'Het woord "'.$forbidden_word_old.'" is succesvol gewijzigd naar "'.$forbidden_word_new.'"!';
                 } else {
 
-                    $_SESSION["forbidden_words_error"] .= ' Het woord "'.$forbidden_word_old.'" blijft ongewijzigd!';
+                    // Set the error message
+                    $_SESSION["wordsError"] .= ' Het woord "'.$forbidden_word_old.'" blijft ongewijzigd!';
                 }
 
-                header("HTTP/1.1 303 See Other");
-                header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-                exit(0);
+                // Reload page without post requests
+                $this->redirect();
             }
 
+            // Check if the request method sent is for pagination
             if (!Empty($_POST["pagination"])) {
 
+                // If the method sent equals off than turn the pagination off
+                // ELSE turn the pagination on
                 if($_POST["pagination"] == "off") {
 
-                    $_SESSION["forbidden_words_pagination"] = "off";
+                    // Set pagination off
+                    $_SESSION["wordsPagination"] = "off";
                 } else {
 
-                    $_SESSION["forbidden_words_pagination"] = "on";
+                    // Set pagination on
+                    $_SESSION["wordsPagination"] = "on";
                 }
 
-                header("HTTP/1.1 303 See Other");
-                header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-                exit(0);
+                // Reload page without post requests
+                $this->redirect();
             }
         }
     }
 
+    private function redirect() {
+
+        // Set header
+        header("HTTP/1.1 303 See Other");
+        header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+        // Exit with succes status
+        exit(0);
+    }
+
     private function checkGet() {
 
+        // Check if the request method of the server is GET
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
+            // Check search is set and not empty
             if (!Empty($_GET["search"])) {
 
+                // Make $search secure
                 $search = htmlentities(trim($_GET["search"]),ENT_QUOTES);
-                $this->number_of_words = ceil(count($this->forbidden_word_repository->getForbiddenWords(null, $search))/10);
+
+                // Change wordsCount to the words that fit the search criteria
+                $this->wordsCount = ceil(count($this->wordRepo->getForbiddenWords(null, $search))/10);
             } else {
 
+                // Set search null, because of optional variables.
                 $search = null;
             }
 
-            if($_SESSION["forbidden_words_pagination"] != "off") {
+            // If pagination is not switched off, than continue
+            // ELSE load all the words
+            if($_SESSION["wordsPagination"] != "off") {
 
+                // Check if a page is requested
+                // ELSE get the first page
                 if (!Empty($_GET["words_page"])) {
 
-                    if ($_GET["words_page"] > 0 && $_GET["words_page"] <= $this->number_of_words) {
+                    // Check if the requested page is higher than zero and the same or under the maximum word count.
+                    // ELSE get the first page
+                    if ($_GET["words_page"] > 0 && $_GET["words_page"] <= $this->wordsCount) {
 
-                        $this->forbidden_words = $this->forbidden_word_repository->getForbiddenWords($_GET["words_page"], $search);
-                        $this->current_number_of_words = $_GET["words_page"];
+                        // Fill words with the requested page and if isset search
+                        $this->words = $this->wordRepo->getForbiddenWords($_GET["words_page"], $search);
+
+                        // Set the page to load in the .tpl
+                        $this->page = $_GET["words_page"];
                     } else {
 
-                        $this->forbidden_words = $this->forbidden_word_repository->getForbiddenWords(1, $search);
-                        $this->current_number_of_words = 1;
+                        // Fill words with the first page an if isset search
+                        $this->words = $this->wordRepo->getForbiddenWords(1, $search);
+                        // Set the page to load in the .tpl
+                        $this->page = 1;
                     }
                 } else {
 
-                    $this->forbidden_words = $this->forbidden_word_repository->getForbiddenWords(1, $search);
-                    $this->current_number_of_words = 1;
+                    // Fill words with the first page an if isset search
+                    $this->words = $this->wordRepo->getForbiddenWords(1, $search);
+                    // Set the page to load in the .tpl
+                    $this->page = 1;
                 }
             } else {
 
-                $this->forbidden_words = $this->forbidden_word_repository->getForbiddenWords(null, $search);
+                // Fill words with all the words and if isset search
+                $this->words = $this->wordRepo->getForbiddenWords(null, $search);
             }
         }
     }
 
     private function checkSession() {
 
-        if(!Empty($_SESSION["forbidden_words_error"])) {
+        // Check if an error message is set during a POST method
+        if(!Empty($_SESSION["wordsError"])) {
 
-            $this->error_message = $_SESSION["forbidden_words_error"];
-            $_SESSION["forbidden_words_error"] = "";
+            // Set the error message to show in the .tpl
+            $this->error = $_SESSION["wordsError"];
+            // Clear the session so it can not show on accident when the page loads again.
+            $_SESSION["wordsError"] = "";
         }
 
-        if(!Empty($_SESSION["forbidden_words_success"])) {
+        // Check if a succes message is set during a POST method
+        if(!Empty($_SESSION["wordsSucces"])) {
 
-            $this->success_message = $_SESSION["forbidden_words_success"];
-            $_SESSION["forbidden_words_success"] = "";
+            // Set the succes message to show in the .tpl
+            $this->success = $_SESSION["wordsSucces"];
+            // Clear the session so it can not show on accident when the page loads again.
+            $_SESSION["wordsSucces"] = "";
         }
 
-        if(Empty($_SESSION["forbidden_words_pagination"])) {
+        // Check if the pagination is set or not. If the variable isn't declared yet then set it.
+        if(Empty($_SESSION["wordsPagination"])) {
 
-            $_SESSION["forbidden_words_pagination"] = "on";
+            // Turn pagination on
+            $_SESSION["wordsPagination"] = "on";
         }
     }
 
-    private function checkWordForAdding($forbidden_word) {
+    private function checkWord($forbiddenWord) {
 
+        // Set success as succeeded. It will only be changed if adding will result in failure.
         $success = "succeeded";
 
-        foreach ($this->forbidden_word_repository->getForbiddenWords() as $word) {
+        // Loop through all the words
+        foreach ($this->wordRepo->getForbiddenWords() as $word) {
 
-            if(strtolower($word) == strtolower($forbidden_word)) {
+            // Check if the word for adding and the word from the loop are the same
+            if(strtolower($word) == strtolower($forbiddenWord)) {
 
+                // Set succes on failed.
                 $success = "failed";
-                $_SESSION["forbidden_words_error"] = 'Het woord "'.$forbidden_word.'" bestaat al!';
+                // Set error message to show in the .tpl
+                $_SESSION["wordsError"] = 'Het woord "'.$forbiddenWord.'" bestaat al!';
 
+                // Break free from the loop.
                 break;
             }
         }
 
-        if(strlen($forbidden_word) > 150) {
+        // Check if the maximum length of 150 isn't exceeded.
+        if(strlen($forbiddenWord) > 150) {
 
+            // Set succes on failed.
             $success = "failed";
-            $_SESSION["forbidden_words_error"] .= ' Het woord "'.$forbidden_word.'" is '.(strlen($forbidden_word) - 150).' karakters te lang! Het woord mag maar 150 lang zijn!';
+            // Add to the error message to show in the .tpl
+            $_SESSION["wordsError"] .= ' Het woord "'.$forbiddenWord.'" is '.(strlen($forbiddenWord) - 150).' karakters te lang! Het woord mag maar 150 lang zijn!';
         }
 
+        // Return succeeded or failed.
         return $success;
     }
 }

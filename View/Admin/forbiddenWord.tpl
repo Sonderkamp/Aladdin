@@ -1,16 +1,16 @@
 <div class="container">
 
-    {if !empty($success_message)}
+    {if !empty($successMessage)}
         <div class="alert alert-success">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>Succes!</strong> {$success_message}
+            <strong>Succes!</strong> {$successMessage}
         </div>
     {/if}
 
-    {if !empty($error_message)}
+    {if !empty($errorMessage)}
         <div class="alert alert-danger">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>Error!</strong> {$error_message}
+            <strong>Error!</strong> {$errorMessage}
         </div>
     {/if}
 
@@ -42,7 +42,7 @@
         </div>
     </form>
 
-    {if $number_of_words > 0}
+    {if $wordsCount > 0}
         <h5 class="col-xs-12 col-sm-12 col-md-12 col-lg-12">Verboden woorden</h5>
         <table class="table col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <thead>
@@ -53,7 +53,7 @@
                 </tr>
             </thead>
             <tbody>
-                {foreach from=$forbidden_words item=word}
+                {foreach from=$forbiddenWords item=word}
                     <tr>
                         <td class="col-xs-10 col-sm-10 col-md-10 col-lg-10">{htmlentities(trim($word),ENT_QUOTES)}</td>
                         <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
@@ -71,15 +71,15 @@
             </tbody>
         </table>
 
-        {if $number_of_words > 1}
+        {if $wordsCount > 1}
 
             <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                {if $smarty.session.forbidden_words_pagination != "off"}
+                {if $smarty.session.wordsPagination != "off"}
                     <div class="col-xs-offset-4">
                         <nav>
-                            {if $number_of_words < 7}
+                            {if $wordsCount < 7}
                                 <ul class="pagination">
-                                    {if $current_number_of_words <= 1}
+                                    {if $page <= 1}
                                         <li class="disabled">
                                             <a href="#" aria-label="Previous">
                                                 <span aria-hidden="true">&laquo;</span>
@@ -87,14 +87,14 @@
                                         </li>
                                     {else}
                                         <li>
-                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$current_number_of_words - 1}" aria-label="Previous">
+                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$page - 1}" aria-label="Previous">
                                                 <span aria-hidden="true">&laquo;</span>
                                             </a>
                                         </li>
                                     {/if}
 
-                                    {for $number=1 to $number_of_words}
-                                        {if $number == $current_number_of_words}
+                                    {for $number=1 to $wordsCount}
+                                        {if $number == $page}
                                             <li class="active">
                                                 <a href="#">{$number}</a>
                                             </li>
@@ -105,7 +105,7 @@
                                         {/if}
                                     {/for}
 
-                                    {if $current_number_of_words >= $number_of_words}
+                                    {if $page >= $wordsCount}
                                         <li class="disabled">
                                             <a href="#" aria-label="Next">
                                                 <span aria-hidden="true">&raquo;</span>
@@ -113,7 +113,7 @@
                                         </li>
                                     {else}
                                         <li>
-                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$current_number_of_words + 1}" aria-label="Next">
+                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$page + 1}" aria-label="Next">
                                                 <span aria-hidden="true">&raquo;</span>
                                             </a>
                                         </li>
@@ -121,7 +121,7 @@
                                 </ul>
                             {else}
                                 <ul class="pagination">
-                                    {if $current_number_of_words <= 1}
+                                    {if $page <= 1}
                                         <li class="disabled">
                                             <a href="#" aria-label="Previous">
                                                 <span aria-hidden="true">&laquo;</span>
@@ -129,12 +129,12 @@
                                         </li>
                                     {else}
                                         <li>
-                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$current_number_of_words - 1}" aria-label="Previous">
+                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$page - 1}" aria-label="Previous">
                                                 <span aria-hidden="true">&laquo;</span>
                                             </a>
                                         </li>
                                     {/if}
-                                    {if 1 == $current_number_of_words}
+                                    {if 1 == $page}
                                         <li class="active">
                                             <a href="#">1</a>
                                         </li>
@@ -143,9 +143,9 @@
                                             <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page=1">1</a>
                                         </li>
                                     {/if}
-                                    {if $current_number_of_words < 4}
+                                    {if $page < 4}
                                         {for $number=2 to 4}
-                                            {if $number == $current_number_of_words}
+                                            {if $number == $page}
                                                 <li class="active">
                                                     <a href="#">{$number}</a>
                                                 </li>
@@ -158,12 +158,12 @@
                                         <li class="disabled">
                                             <a href="#">...</a>
                                         </li>
-                                    {elseif $current_number_of_words > ($number_of_words - 3)}
+                                    {elseif $page > ($wordsCount - 3)}
                                         <li class="disabled">
                                             <a href="#">...</a>
                                         </li>
-                                        {for $number=($number_of_words - 3) to ($number_of_words - 1)}
-                                            {if $number == $current_number_of_words}
+                                        {for $number=($wordsCount - 3) to ($wordsCount - 1)}
+                                            {if $number == $page}
                                                 <li class="active">
                                                     <a href="#">{$number}</a>
                                                 </li>
@@ -177,8 +177,8 @@
                                         <li class="disabled">
                                             <a href="#">...</a>
                                         </li>
-                                        {for $number=($current_number_of_words - 1) to ($current_number_of_words + 1)}
-                                            {if $number == $current_number_of_words}
+                                        {for $number=($page - 1) to ($page + 1)}
+                                            {if $number == $page}
                                                 <li class="active">
                                                     <a href="#">{$number}</a>
                                                 </li>
@@ -192,18 +192,18 @@
                                             <a href="#">...</a>
                                         </li>
                                     {/if}
-                                    {if $number_of_words == $current_number_of_words}
+                                    {if $wordsCount == $page}
                                         <li class="active">
                                             <a href="#">{$number}</a>
                                         </li>
                                     {else}
                                         <li>
                                             <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$number_of_words}">
-                                                <span aria-hidden="true">{$number_of_words}</span>
+                                                <span aria-hidden="true">{$wordsCount}</span>
                                             </a>
                                         </li>
                                     {/if}
-                                    {if $current_number_of_words >= $number_of_words}
+                                    {if $page >= $wordsCount}
                                         <li class="disabled">
                                             <a href="#" aria-label="Next">
                                                 <span aria-hidden="true">&raquo;</span>
@@ -211,7 +211,7 @@
                                         </li>
                                     {else}
                                         <li>
-                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$current_number_of_words + 1}" aria-label="Next">
+                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$page + 1}" aria-label="Next">
                                                 <span aria-hidden="true">&raquo;</span>
                                             </a>
                                         </li>
@@ -222,8 +222,8 @@
                     </div>
                 {/if}
                 <form class="pull-right"  action="/forbiddenwords" method="post">
-                    <input type="hidden" value="{if $smarty.session.forbidden_words_pagination == "off"}on{else}off{/if}" name="pagination">
-                    <button type="submit" class="btn btn-primary">Pagination {if $smarty.session.forbidden_words_pagination == "off"}aan{else}uit{/if}</button>
+                    <input type="hidden" value="{if $smarty.session.wordsPagination == "off"}on{else}off{/if}" name="pagination">
+                    <button type="submit" class="btn btn-primary">Pagination {if $smarty.session.wordsPagination == "off"}aan{else}uit{/if}</button>
                 </form>
             </div>
         {/if}
@@ -233,7 +233,7 @@
 </div>
 
 <!-- Modal remove word-->
-{foreach from=$forbidden_words item=word}
+{foreach from=$forbiddenWords item=word}
     <div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}Remove" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
@@ -259,7 +259,7 @@
 {/foreach}
 
 <!-- Modal edit word-->
-{foreach from=$forbidden_words item=word}
+{foreach from=$forbiddenWords item=word}
     <div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}Edit" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
