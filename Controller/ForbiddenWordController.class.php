@@ -30,8 +30,8 @@ class ForbiddenWordController
         $this->checkSession();
         // Check if a post method is sent
         $this->checkPost();
-        // Check if a get method is sent and set words
-        $this->checkGet();
+        // Set the words variable
+        $this->setWords();
 
         // Render the .tpl
         render("Admin/forbiddenWord.tpl",
@@ -51,10 +51,10 @@ class ForbiddenWordController
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Check if the request sent is a word to be added
-            if (!Empty($_POST["add_forbidden_word"])) {
+            if (!Empty($_POST["addWord"])) {
 
                 // Secure the value sent by post
-                $word = htmlentities(trim($_POST["add_forbidden_word"]),ENT_QUOTES);
+                $word = htmlentities(trim($_POST["addWord"]),ENT_QUOTES);
 
                 // Set succes succeeded or failed depending on the result of checkWord
                 $succes = $this->checkWord($word);
@@ -73,10 +73,10 @@ class ForbiddenWordController
             }
 
             // Check if the request is a word to be removed
-            if (!Empty($_POST["remove_forbidden_word"])) {
+            if (!Empty($_POST["removeWord"])) {
 
                 // Secure the value sent by post
-                $word = htmlentities(trim($_POST["remove_forbidden_word"]),ENT_QUOTES);
+                $word = htmlentities(trim($_POST["removeWord"]),ENT_QUOTES);
 
                 // Delete the word from the database
                 $this->wordRepo->deleteForbiddenWord($word);
@@ -99,28 +99,28 @@ class ForbiddenWordController
 
             // Check if the request method is a word to be edited and the old word is send as well
             // The old word is needed, because forbidden words is a look up table without keys, so the old word is the key.
-            if (!Empty($_POST["edit_forbidden_word_new"]) && !Empty($_POST["edit_forbidden_word_old"])) {
+            if (!Empty($_POST["editedWord"]) && !Empty($_POST["oldWord"])) {
 
                 // Secure the edited word sent by POST
-                $forbidden_word_new = htmlentities(trim($_POST["edit_forbidden_word_new"]),ENT_QUOTES);
+                $newWord = htmlentities(trim($_POST["editedWord"]),ENT_QUOTES);
                 // Secure the old word sent by POST
-                $forbidden_word_old = htmlentities(trim($_POST["edit_forbidden_word_old"]),ENT_QUOTES);
+                $oldWord = htmlentities(trim($_POST["oldWord"]),ENT_QUOTES);
 
                 // Set succes succeeded or failed depending on the result of checkWord
-                $succes = $this->checkWord($forbidden_word_new);
+                $succes = $this->checkWord($newWord);
 
                 // if $succes is succeeded than continue
                 // ELSE set error message
                 if($succes == "succeeded") {
 
                     // Update the word in the database
-                    $this->wordRepo->updateForbiddenWord($forbidden_word_old,$forbidden_word_new);
+                    $this->wordRepo->updateForbiddenWord($oldWord, $newWord);
                     // Set the succes message
-                    $_SESSION["wordsSucces"] = 'Het woord "'.$forbidden_word_old.'" is succesvol gewijzigd naar "'.$forbidden_word_new.'"!';
+                    $_SESSION["wordsSucces"] = 'Het woord "'.$oldWord.'" is succesvol gewijzigd naar "'.$newWord.'"!';
                 } else {
 
                     // Set the error message
-                    $_SESSION["wordsError"] .= ' Het woord "'.$forbidden_word_old.'" blijft ongewijzigd!';
+                    $_SESSION["wordsError"] .= ' Het woord "'.$oldWord.'" blijft ongewijzigd!';
                 }
 
                 // Reload page without post requests
@@ -157,7 +157,7 @@ class ForbiddenWordController
         exit(0);
     }
 
-    private function checkGet() {
+    private function setWords() {
 
         // Check if the request method of the server is GET
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -182,17 +182,17 @@ class ForbiddenWordController
 
                 // Check if a page is requested
                 // ELSE get the first page
-                if (!Empty($_GET["words_page"])) {
+                if (!Empty($_GET["wordsPage"])) {
 
                     // Check if the requested page is higher than zero and the same or under the maximum word count.
                     // ELSE get the first page
-                    if ($_GET["words_page"] > 0 && $_GET["words_page"] <= $this->wordsCount) {
+                    if ($_GET["wordsPage"] > 0 && $_GET["wordsPage"] <= $this->wordsCount) {
 
                         // Fill words with the requested page and if isset search
-                        $this->words = $this->wordRepo->getForbiddenWords($_GET["words_page"], $search);
+                        $this->words = $this->wordRepo->getForbiddenWords($_GET["wordsPage"], $search);
 
                         // Set the page to load in the .tpl
-                        $this->page = $_GET["words_page"];
+                        $this->page = $_GET["wordsPage"];
                     } else {
 
                         // Fill words with the first page an if isset search

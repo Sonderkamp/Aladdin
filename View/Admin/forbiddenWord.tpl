@@ -1,5 +1,6 @@
 <div class="container">
 
+    {* If succes message is not empty than show it *}
     {if !empty($successMessage)}
         <div class="alert alert-success">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -7,6 +8,7 @@
         </div>
     {/if}
 
+    {* If error message is not empty than show it *}
     {if !empty($errorMessage)}
         <div class="alert alert-danger">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -18,7 +20,7 @@
         <div class="form-group row">
             <label for="word" class="col-sm-2 form-control-label">Verboden woord</label>
             <div class="col-sm-10">
-                <input type="text" name="add_forbidden_word" class="form-control" id="word" placeholder="Verboden woord">
+                <input type="text" name="addWord" class="form-control" id="word" placeholder="Verboden woord">
                 <small class="text-muted">Dit is het verboden woord. Als dit woord voorkomt in een aanvraag bij wens of talent word deze aanvraag automatisch verwijderd.</small>
             </div>
         </div>
@@ -87,7 +89,7 @@
                                         </li>
                                     {else}
                                         <li>
-                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$page - 1}" aria-label="Previous">
+                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}wordsPage={$page - 1}" aria-label="Previous">
                                                 <span aria-hidden="true">&laquo;</span>
                                             </a>
                                         </li>
@@ -100,7 +102,7 @@
                                             </li>
                                         {else}
                                             <li>
-                                                <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$number}">{$number}</a>
+                                                <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}wordsPage={$number}">{$number}</a>
                                             </li>
                                         {/if}
                                     {/for}
@@ -113,7 +115,7 @@
                                         </li>
                                     {else}
                                         <li>
-                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$page + 1}" aria-label="Next">
+                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}wordsPage={$page + 1}" aria-label="Next">
                                                 <span aria-hidden="true">&raquo;</span>
                                             </a>
                                         </li>
@@ -129,7 +131,7 @@
                                         </li>
                                     {else}
                                         <li>
-                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$page - 1}" aria-label="Previous">
+                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}wordsPage={$page - 1}" aria-label="Previous">
                                                 <span aria-hidden="true">&laquo;</span>
                                             </a>
                                         </li>
@@ -140,7 +142,7 @@
                                         </li>
                                     {else}
                                         <li>
-                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page=1">1</a>
+                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}wordsPage=1">1</a>
                                         </li>
                                     {/if}
                                     {if $page < 4}
@@ -151,7 +153,7 @@
                                                 </li>
                                             {else}
                                                 <li>
-                                                    <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$number}">{$number}</a>
+                                                    <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}wordsPage={$number}">{$number}</a>
                                                 </li>
                                             {/if}
                                         {/for}
@@ -169,7 +171,7 @@
                                                 </li>
                                             {else}
                                                 <li>
-                                                    <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$number}">{$number}</a>
+                                                    <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}wordsPage={$number}">{$number}</a>
                                                 </li>
                                             {/if}
                                         {/for}
@@ -184,7 +186,7 @@
                                                 </li>
                                             {else}
                                                 <li>
-                                                    <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$number}">{$number}</a>
+                                                    <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}wordsPage={$number}">{$number}</a>
                                                 </li>
                                             {/if}
                                         {/for}
@@ -198,7 +200,7 @@
                                         </li>
                                     {else}
                                         <li>
-                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$number_of_words}">
+                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}wordsPage={$number_of_words}">
                                                 <span aria-hidden="true">{$wordsCount}</span>
                                             </a>
                                         </li>
@@ -211,7 +213,7 @@
                                         </li>
                                     {else}
                                         <li>
-                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$page + 1}" aria-label="Next">
+                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}wordsPage={$page + 1}" aria-label="Next">
                                                 <span aria-hidden="true">&raquo;</span>
                                             </a>
                                         </li>
@@ -246,7 +248,7 @@
                     <button type="button" class="btn btn-default infoLeft" data-dismiss="modal">Sluiten</button>
 
                     <form action="/forbiddenwords" method="post">
-                        <input type="hidden" value="{htmlentities(trim($word),ENT_QUOTES)}" name="remove_forbidden_word">
+                        <input type="hidden" value="{htmlentities(trim($word),ENT_QUOTES)}" name="removeWord">
 
                         <button type="submit" class="btn btn-danger btn-small">
                             <span class="glyphicon glyphicon-trash"></span> verwijderen
@@ -274,7 +276,7 @@
                         <div class="form-group row">
                             <label for="edit{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}" class="col-sm-2 form-control-label">Verboden woord</label>
                             <div class="col-sm-10">
-                                <input type="text" name="edit_forbidden_word_new" class="form-control" id="edit{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}" placeholder="Verboden woord" value="{htmlentities(trim($word),ENT_QUOTES)}">
+                                <input type="text" name="editedWord" class="form-control" id="edit{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}" placeholder="Verboden woord" value="{htmlentities(trim($word),ENT_QUOTES)}">
                                 <small class="text-muted">Dit is het verboden woord. Als dit woord voorkomt in een aanvraag bij wens of talent word deze aanvraag automatisch verwijderd.</small>
                             </div>
                         </div>
@@ -282,7 +284,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default infoLeft" data-dismiss="modal">Sluiten</button>
 
-                        <input type="hidden" value="{htmlentities(trim($word),ENT_QUOTES)}" name="edit_forbidden_word_old">
+                        <input type="hidden" value="{htmlentities(trim($word),ENT_QUOTES)}" name="oldWord">
 
                         <button type="submit" class="btn btn-inbox btn-small">
                             <span class="glyphicon glyphicon-edit"></span> wijzigen
