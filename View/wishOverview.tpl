@@ -73,18 +73,18 @@
                                     <div class="dropdown">
                                         {if $currentPage == "mywishes"}
                                             <span class="glyphicon glyphicon-user"></span>
-                                            {htmlspecialcharsWithNL($wish -> displayName)}
+                                            {htmlspecialcharsWithNL($wish -> user -> displayName)}
                                         {else}
                                             {if isset($displayName)}
-                                                {if ($wish -> displayName) != $displayName}
+                                                {if ($wish -> user -> displayName) != $displayName}
                                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                                                        role="button"
                                                        aria-haspopup="true"
                                                        aria-expanded="false"><span
                                                                 class="glyphicon glyphicon-user"></span>
-                                                        {htmlspecialcharsWithNL($wish -> displayName)}</span><span
+                                                        {htmlspecialcharsWithNL($wish -> user -> displayName)}</span><span
                                                                 class="caret"></span></a>
-                                                    {if in_array(($wish -> displayName),$reported)}
+                                                    {if in_array(($wish -> user -> displayName),$reported)}
                                                         <ul class="dropdown-menu">
                                                             <li>
                                                                 <a>
@@ -107,13 +107,13 @@
                                                        aria-haspopup="true"
                                                        aria-expanded="false"><span
                                                                 class="glyphicon glyphicon-user"></span>
-                                                        {htmlspecialcharsWithNL($wish -> displayName)}</span></a>
+                                                        {htmlspecialcharsWithNL($wish -> user -> displayName)}</span></a>
                                                 {/if}
                                             {/if}
                                         {/if}
 
                                     </div>
-                                    Stad: <b>{htmlspecialcharsWithNL($wish -> city)}</b><br>
+                                    Stad: <b>{htmlspecialcharsWithNL($wish -> user -> city)}</b><br>
                                     Status: <b>{htmlspecialcharsWithNL($wish -> status)}</b>
                                 </div>
 
@@ -168,7 +168,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Rapporteren van gebruiker <span
-                                class="glyphicon glyphicon-user"></span>{htmlspecialcharsWithNL($wish -> displayName)}
+                                class="glyphicon glyphicon-user"></span>{htmlspecialcharsWithNL($wish -> user -> displayName)}
                     </h4>
                 </div>
                 <form action="/report/action=report" method="post">
@@ -182,7 +182,7 @@
                             <div class="col-xs-9">
                                 <input type="hidden" value="{$wish->id}" name="wish_id"/>
                                 <input type="text" class="form-control"
-                                       placeholder="Reden dat u {{htmlspecialcharsWithNL($wish -> displayName)}} wilt rappoteren"
+                                       placeholder="Reden dat u {{htmlspecialcharsWithNL($wish -> user -> displayName)}} wilt rappoteren"
                                        name="report_message">
                             </div>
                             </p>

@@ -129,7 +129,7 @@
                         <tbody>
                         {foreach from=$requested item=wish}
                             <tr>
-                                <td>{$wish->displayName}</td>
+                                <td>{$wish->user->displayName}</td>
                                 <td>{$wish->title}</td>
                                 <td>{$wish->status}</td>
                                 <td>
@@ -154,17 +154,18 @@
                             <th>Gebruiker</th>
                             <th>Wens</th>
                             <th>Status</th>
-                            {*<th width="1%"></th>*}
-                            {*<th width="1%"></th>*}
-                            {*<th width="1%"></th>*}
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         {foreach from=$published item=wish}
                             <tr>
-                                <td>{$wish->displayName}</td>
+                                <td>{$wish->user->displayName}</td>
                                 <td>{$wish->title}</td>
                                 <td>{$wish->status}</td>
+                                <td>
+                                    {include file='view/adminWishModals.tpl'}
+                                </td>
                             </tr>
                         {/foreach}
                         </tbody>
@@ -184,17 +185,18 @@
                             <th>Gebruiker</th>
                             <th>Wens</th>
                             <th>Status</th>
-                            {*<th width="1%"></th>*}
-                            {*<th width="1%"></th>*}
-                            {*<th width="1%"></th>*}
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         {foreach from=$matched item=wish}
                             <tr>
-                                <td>{$wish->displayName}</td>
+                                <td>{$wish->user->displayName}</td>
                                 <td>{$wish->title}</td>
                                 <td>{$wish->status}</td>
+                                <td>
+                                    {include file='view/adminWishModals.tpl'}
+                                </td>
                             </tr>
                         {/foreach}
                         </tbody>
@@ -214,17 +216,18 @@
                             <th>Gebruiker</th>
                             <th>Wens</th>
                             <th>Status</th>
-                            {*<th width="1%"></th>*}
-                            {*<th width="1%"></th>*}
-                            {*<th width="1%"></th>*}
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         {foreach from=$current item=wish}
                             <tr>
-                                <td>{$wish->displayName}</td>
+                                <td>{$wish->user->displayName}</td>
                                 <td>{$wish->title}</td>
                                 <td>{$wish->status}</td>
+                                <td>
+                                    {include file='view/adminWishModals.tpl'}
+                                </td>
                             </tr>
                         {/foreach}
                         </tbody>
@@ -245,17 +248,18 @@
                             <th>Gebruiker</th>
                             <th>Wens</th>
                             <th>Status</th>
-                            {*<th width="1%"></th>*}
-                            {*<th width="1%"></th>*}
-                            {*<th width="1%"></th>*}
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         {foreach from=$completed item=wish}
                             <tr>
-                                <td>{$wish->displayName}</td>
+                                <td>{$wish->user->displayName}</td>
                                 <td>{$wish->title}</td>
                                 <td>{$wish->status}</td>
+                                <td>
+                                    {include file='view/adminWishModals.tpl'}
+                                </td>
                             </tr>
                         {/foreach}
                         </tbody>
@@ -275,17 +279,18 @@
                             <th>Gebruiker</th>
                             <th>Wens</th>
                             <th>Status</th>
-                            {*<th width="1%"></th>*}
-                            {*<th width="1%"></th>*}
-                            {*<th width="1%"></th>*}
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         {foreach from=$denied item=wish}
                             <tr>
-                                <td>{$wish->displayName}</td>
+                                <td>{$wish->user->displayName}</td>
                                 <td>{$wish->title}</td>
                                 <td>{$wish->status}</td>
+                                <td>
+                                    {include file='view/adminWishModals.tpl'}
+                                </td>
                             </tr>
                         {/foreach}
                         </tbody>
@@ -305,17 +310,18 @@
                             <th>Gebruiker</th>
                             <th>Wens</th>
                             <th>Status</th>
-                            {*<th width="1%"></th>*}
-                            {*<th width="1%"></th>*}
-                            {*<th width="1%"></th>*}
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         {foreach from=$deleted item=wish}
                             <tr>
-                                <td>{$wish->displayName}</td>
+                                <td>{$wish->user->displayName}</td>
                                 <td>{$wish->title}</td>
                                 <td>{$wish->status}</td>
+                                <td>
+                                    {include file='view/adminWishModals.tpl'}
+                                </td>
                             </tr>
                         {/foreach}
                         </tbody>

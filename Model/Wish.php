@@ -8,7 +8,7 @@
  */
 class Wish {
 
-    public $id, $displayName, $city, $title, $completed, $content, $accepted, $newestDate, $status, $contentDate;
+    public $id, $user,$displayName, $city, $title, $completed, $content, $accepted, $newestDate, $status, $contentDate;
 
 }
 

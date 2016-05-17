@@ -43,6 +43,19 @@ class WishRepository
 
             foreach($queryResult as $item){
 
+                $user = new User();
+                $user->email = $item["Email"];
+                $user->name = $item["Name"];
+                $user->displayName = $item["DisplayName"];
+                $user->surname = $item["Surname"];
+                $user->address = $item["Address"];
+                $user->postalcode = $item["Postalcode"];
+                $user->country = $item["Country"];
+                $user->city = $item["City"];
+                $user->dob = $item["Dob"];
+                $user->gender = $item["Gender"];
+                $user->handicap = $item["Handicap"];
+
                 $wish = new Wish();
 
                 $wish->id = $item["wish_Id"];
@@ -51,8 +64,7 @@ class WishRepository
                 $wish->accepted = $item["IsAccepted"];
                 $wish->contentDate = $item["Date"];
                 $wish->status = $item["Status"];
-                $wish->displayName = $item["DisplayName"];
-                $wish->city = $item["City"];
+                $wish->user = $user;
 
                 $returnArray[] = $wish;
             }
