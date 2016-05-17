@@ -63,11 +63,6 @@ class ProfileCheckController
 
     }
 
-    private function getLastBlockStatus($user)
-{
-    $usermodel = new User();
-    return $usermodel->getLastBlockStatus($user);
-}
 
     private function getWishes($user)
     {
