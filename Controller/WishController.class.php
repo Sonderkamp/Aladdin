@@ -258,27 +258,22 @@ class WishController
 
 
             $myWishes = $this->wishRepository->getMyWishes();
-            $canAdd = true;
+
             foreach ($myWishes as $item){
                 if($item instanceof Wish){
-                    if($item->getTitle() == $this->title){
-                        $canAdd = false;
+
+                    similar_text($item->title, $this->title, $percent);
+
+                    /* Check the percentage of the matches between the title */ 
+                    if($percent > 80){
+                        render("addWish.tpl", ["error" => "U heeft al een wens met een soort gelijke titel.", "wishtitle" => $this->title,
+                            "description" => $this->description,"tag" => $this->tag, /*"edit" => "isset"*/]);
+                        exit(1);
                         break;
                     }
+                    
                 }
             }
-
-//            TODO: check of er een wens is met zelfde titel
-//            if($canAdd){
-//                if (Empty($this->title)
-//                    || Empty($this->description)
-//                    || Empty($this->tag) || $size == 0
-//                ) {
-//                    render("addWish.tpl", ["error" => "Vul AUB alles in", "wishtitle" => $this->title,
-//                        "description" => $this->description,"tag" => $this->tag, /*"edit" => "isset"*/]);
-//                    exit(1);
-//                }
-//            }
 
             $allTags = $this->gethashtags($this->tag);
             $myArray = explode(',', $allTags);
@@ -301,7 +296,6 @@ class WishController
 
     private function getSpecificwish($id, $previousPage)
     {
-
         $selectedWish = $this->wishRepository->getWish($id);
 
         if ($selectedWish->user->email != null && $selectedWish->status != "Geweigerd") {
