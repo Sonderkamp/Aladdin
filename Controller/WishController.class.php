@@ -107,6 +107,16 @@ class WishController
 //        render("wishOverview.tpl", ["title" => "Wensen overzicht", "wishes" => $searchReturn]);
     }
 
+    private function checkWishContent($string)
+    {
+        if (strlen($string) > $this->maxContentLength) {
+            $returnString = substr($string, 0, $this->maxContentLength);
+            $returnString = $returnString . '...';
+            return $returnString;
+        }
+        return $string;
+    }
+
 
     /**
      * Gets all wishes where wish.user == current user
@@ -189,7 +199,7 @@ class WishController
             $this->wishContentId = $_GET["editwishbtn"];
             $_SESSION["wishcontentid"] = $_GET["editwishbtn"];
 
-            $wish = $this->wishRepository->getSelectedWish($this->wishContentId);
+            $wish = $this->wishRepository->getWish($this->wishContentId);
             $id = $wish[0]["wish_Id"];
             $returnWish = $this->wishRepository->getAllWishesByEmail($_SESSION["user"]->email);
 

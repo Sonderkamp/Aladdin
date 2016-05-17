@@ -18,17 +18,6 @@ class WishRepository
         $this->talentRepository = new TalentRepository();
     }
 
-    //move to controller
-    private function checkWishContent($string)
-    {
-        if (strlen($string) > $this->maxContentLength) {
-            $returnString = substr($string, 0, $this->maxContentLength);
-            $returnString = $returnString . '...';
-            return $returnString;
-        }
-        return $string;
-    }
-
     /**
      * Creates array of wish objects with the params given in the $queryResult.
      * And adds the user elements to the given objects
@@ -234,6 +223,7 @@ class WishRepository
         }
     }
     //deprecated use count($mywishesarray) instead
+    //rewrite dashboard controller
     public function getWishAmount($email){
         $query = "select count(*) as counter from `wish` where `user` = ? and `status` != ? and `status` != ? and `status` != ?";
         $array = array($email, "Vervuld", "Geweigerd" , "Verwijderd");
@@ -290,72 +280,12 @@ class WishRepository
         $this->WishQueryBuilder->executeAdminAction($id , 0 , null , "Aangemaakt");
     }
 
-
-    public function getWishOwner($id)
-    {
-        $result = Database::query_safe("select u.Email as User from wishContent wc INNER JOIN wish w on w.id = wc.wish_Id INNER JOIN user u on w.user = u.email WHERE wc.wish_id =?", array($id));
-
-
-        return $result;
-    }
-
-    public function getUserWishes($user)
-    {
-        $result = Database::query_safe("
-              SELECT
-              wc.wish_Id as wishid,
-              u.DisplayName as display,
-              u.Address as address,
-              u.Postalcode as postalcode,
-              w.status as status,
-              w.User as user,
-              wc.Content as content,
-              wc.Title as title,
-              wc.IsAccepted as accepted,
-              wc.moderator_Username as modname,
-              wcMax.max_date as mdate,
-              isblock.IsBlocked as isblocked
-          FROM wish AS w
-          JOIN (SELECT wish_Id, MAX(wishContent.Date) AS max_date
-              FROM wishContent
-              GROUP BY wish_Id) AS wcMax
-              ON w.Id = wcMax.wish_Id
-          JOIN wishContent AS wc on wcMax.wish_Id = wc.wish_Id AND wc.Date = wcMax.max_date
-          join user as u on w.user = u.Email
-          left JOIN (select IsBlocked,ab.user_email
-from adminBlock as ab,(
-SELECT User_Email,max(ab.Block_Id)  as blockid , MAX(ab.BlockDate) AS abmax_date
-              FROM adminBlock as ab
-              GROUP BY User_Email
-    ) as test
-where ab.user_Email = test.User_Email
-AND ab.BlockDate = test.abmax_date
-AND ab.Block_Id = test.blockid) AS isblock
-              ON u.Email = isblock.User_Email
-              where w.User =?
-              ORDER BY max_date asc", array($user));
-
-        return $result;
-    }
-
     public function getWish($id)
     {
         return $this->getReturnArray($this->WishQueryBuilder->getSingleWish($id, null));
     }
 
-    /**
-     * Zou wel eens deprecated kunnen zijn -> even navragen bij mevlüt
-     * @param $id
-     * @return array|bool
-     */
-    public function getSelectedWish($id)
-    {
-        $query = "select * from `wishContent` where `wish_Id` = ? ORDER BY `date` DESC limit 1";
-        $array = array($id);
-        $wish = Database::query_safe($query, $array);
-        return $wish;
-    }
-
+    //move to talent repo
     public function getWishTalent($wishId)
     {
         $query = "SELECT `talent_id` as talent FROM `talent_has_wish` WHERE `wish_id`=?";
@@ -386,7 +316,7 @@ AND ab.Block_Id = test.blockid) AS isblock
 
         return $returnArray;
     }
-
+    //rewrite together with edit and add wish
     public function getAllWishesByEmail($email)
     {
         $query = "SELECT * FROM `wish` WHERE `user` = ?";
@@ -402,7 +332,7 @@ AND ab.Block_Id = test.blockid) AS isblock
         return $allWishId;
     }
 
-
+    //Rewrite potential?
     public function getAllWishesWithTag($tag)
     {
         $intArray = array();
@@ -470,10 +400,10 @@ AND ab.Block_Id = test.blockid) AS isblock
     }
 
     //soon to be deprecated
-    public function getUserOfWish($wishID){
-        $sql = "select * from wish where Id = ?";
-        $parameters = array($wishID);
-        $result = Database::query_safe($sql,$parameters);
-        return $result[0]["User"];
-    }
+//    public function getUserOfWish($wishID){
+//        $sql = "select * from wish where Id = ?";
+//        $parameters = array($wishID);
+//        $result = Database::query_safe($sql,$parameters);
+//        return $result[0]["User"];
+//    }
 }

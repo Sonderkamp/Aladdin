@@ -40,7 +40,8 @@ class ReportController
         if (!empty($_POST["wish_id"])) {
             $id = $_POST["wish_id"];
             $reporter = $_SESSION["user"]->email;
-            $reported = $this->wishRepository->getUserOfWish($id);
+            $reported = $this->wishRepository->getWish($id)[0]->user;
+//            $reported = $this->wishRepository->getUserOfWish($id);
             $status = "aangevraagd";
             $message = $_POST["report_message"];
             $report = new Report($reporter, $reported, $status, $id, $message);
