@@ -30,6 +30,10 @@ h3 .h3 {
     width: 120px;
 }
 
+.answer-container label{
+    margin: 0 !important;
+}
+
 .btn-dashboard {
     float: right;
     margin: 10px 10px 5px 5px;
@@ -93,8 +97,34 @@ a:hover {
     font-size: 25px;
 }
 
+.info-row{
+    margin-bottom: 10px;
+}
+
+.info-text{
+    margin-left: 5px;
+    font-family: inherit;
+}
+
 .info {
     float: right;
+}
+
+.small-dropdown-menu{
+    padding: 5px;
+    left: -175px;
+    max-width: none;
+    min-width: 285px;
+}
+
+.small-dropdown-menu li{
+    display: inline;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.small-dropdown-menu li:last-child{
+    margin-right: 0;
 }
 
 .infoLeft {
@@ -175,6 +205,12 @@ body {
     background-color: brown;
     text-align: center;
     padding: 3px;
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+    max-width: 88px;
 }
 
 .header {

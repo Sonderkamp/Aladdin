@@ -52,7 +52,7 @@
 
             <div class="row">
                 <label class="col-sm-4">Wenser: </label>
-                <div class="col-sm-8">{htmlspecialcharsWithNL($selectedWish->user->displayName)}</div>
+                <div class="col-sm-8">{htmlspecialcharsWithNL($selectedWish->displayName)}</div>
             </div>
 
             <div class="row">
@@ -62,7 +62,7 @@
 
             <div class="row">
                 <label class="col-sm-4">Plaats: </label>
-                <div class="col-sm-8">{htmlspecialcharsWithNL($selectedWish->user->city)}</div>
+                <div class="col-sm-8">{htmlspecialcharsWithNL($selectedWish->city)}</div>
             </div>
 
 

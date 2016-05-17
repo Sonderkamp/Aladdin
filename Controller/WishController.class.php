@@ -78,7 +78,7 @@ class WishController
                     break;
             }
         } else if (isset($_GET["wish_id"])) {
-            guaranteeProfile();
+//            guaranteeProfile();
             if (isset($_POST["page"])) {
                 $this->getSpecificWish($_GET["wish_id"], $_POST["page"]);
             } else {
@@ -87,9 +87,9 @@ class WishController
 
         }
         //werkt nog niet todat de hosting gefixt is
-//        else if(isset($_GET["search"])){
-//            $this->searchWish($_GET["search_key"]);
-//        }
+        else if(isset($_GET["search"])){
+            $this->searchWish($_GET["search"]);
+        }
         else if (isset($_POST["match/wish_id"])) {
             guaranteeProfile();
             $this->requestMatch($_POST["match/wish_id"]);
@@ -103,8 +103,18 @@ class WishController
     private function searchWish($key)
     {
         //Werkt als de sql versie geupdate wordt.
-        $searchReturn = $this->wishRepository->searchWish($key);
-        render("wishOverview.tpl", ["title" => "Wensen overzicht", "wishes" => $searchReturn]);
+        $searchReturn = $this->wishRepository->searchMyWishes($key);
+//        render("wishOverview.tpl", ["title" => "Wensen overzicht", "wishes" => $searchReturn]);
+    }
+
+    private function checkWishContent($string)
+    {
+        if (strlen($string) > $this->maxContentLength) {
+            $returnString = substr($string, 0, $this->maxContentLength);
+            $returnString = $returnString . '...';
+            return $returnString;
+        }
+        return $string;
     }
 
 
@@ -127,7 +137,7 @@ class WishController
      */
     private function getCompletedWishes()
     {
-        $completedWishes = $this->wishRepository->getCompletedWishes();
+        $completedWishes = $this->wishRepository->getCurrentCompletedWishes();
 
         $canAddWish = $this->wishRepository->canAddWish($_SESSION["user"]->email);
 
@@ -189,7 +199,7 @@ class WishController
             $this->wishContentId = $_GET["editwishbtn"];
             $_SESSION["wishcontentid"] = $_GET["editwishbtn"];
 
-            $wish = $this->wishRepository->getSelectedWish($this->wishContentId);
+            $wish = $this->wishRepository->getWish($this->wishContentId);
             $id = $wish[0]["wish_Id"];
             $returnWish = $this->wishRepository->getAllWishesByEmail($_SESSION["user"]->email);
 
@@ -261,7 +271,6 @@ class WishController
 
             foreach ($myWishes as $item){
                 if($item instanceof Wish){
-
                     similar_text($item->title, $this->title, $percent);
 
                     /* Check the percentage of the matches between the title */ 
@@ -415,7 +424,7 @@ class WishController
     {
         $id = $_GET["wishID"];
         if (isset($id)) {
-            $this->wishRepository->AdminDeleteWish($id);
+            $this->wishRepository->DeleteWish($id);
         }
         $this->currentPage = "mywishes";
         $this->go_back();

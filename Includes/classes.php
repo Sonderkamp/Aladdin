@@ -17,6 +17,10 @@ include_once("Model/Report.php");
 include_once("Model/ReportRepository.php");
 include_once("Model/ForbiddenWordRepository.php");
 include_once("Model/UserRepository.php");
+include_once("Model/Answer.php");
+include_once("Model/Question.php");
+include_once("Model/Survey.php");
+include_once("Model/QueryBuilder/WishQueryBuilder.php");
 
 include_once("Model/QueryBuilder/TalentQueryBuilder.php");
 include_once("Model/QueryBuilder/ReportQueryBuilder.php");
@@ -35,6 +39,7 @@ include_once("Controller/AdminController.class.php");
 include_once("Controller/MailController.class.php");
 include_once("Controller/HomeController.class.php");
 include_once("Controller/DashboardController.class.php");
+include_once("Controller/SurveyController.class.php");
 include_once("Controller/AdminTalentController.class.php");
 include_once("Controller/MatchController.class.php");
 include_once("Controller/ReportController.class.php");

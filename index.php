@@ -28,6 +28,9 @@ switch ($page) {
     case "dashboard":
         (new DashboardController())->run();
         break;
+    case "survey":
+        (new SurveyController())->run();
+        break;
     case "wishes":
         (new WishController())->run();
         break;
