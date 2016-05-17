@@ -113,19 +113,19 @@ class WishQueryBuilder
         return $this->executeQuery($query , $params);
     }
 
-    public function getSingleWish($wishId, $admin = false)
+    public function getSingleWish($wishId, $admin = null)
     {
         $query = "SELECT * FROM `wish` LEFT JOIN `wishContent`
-                        ON `wish`.Id = `wishContent`.wish_Id";
-        $query .= "WHERE `wish`.Id = ? AND `wishContent`.`IsAccepted` = ";
+                        ON `wish`.Id = `wishContent`.wish_Id ";
+        $query .= "WHERE `wish`.Id = ? ";
 
         if($admin){
-            $query .= "0";
-        } else {
-            $query .= "1";
+            $query .= "AND `wishContent`.IsAccepted = 0";
+        } else if(!$admin){
+            $query .= "AND `wishContent`.IsAccepted = 1";
         }
 
-        $query .= "AND `wish`.Id = ? GROUP BY `wish`.Id LIMIT 1";
+        $query .= " GROUP BY `wish`.Id LIMIT 1";
 
         return $this->executeQuery($query , array($wishId));
     }
@@ -134,16 +134,23 @@ class WishQueryBuilder
     {
         $wishContentDate = $this->getSingleWish($wishId , true)[0]["Date"];
 
-        $query  = "UPDATE `wishContent` SET IsAccepted = ? WHERE `wishContent`.Date = ?;";
-        $query .= "UPDATE `wishContent` SET moderator_username = ? WHERE `wishContent`.Date = ?;";
-        $query .= "UPDATE `wish` SET Status = ? WHERE id = ?;";
+        $query1  = "UPDATE `wishContent` SET IsAccepted = ? WHERE `wishContent`.Date = ?;";
+        $query2 = "UPDATE `wishContent` SET moderator_username = ? WHERE `wishContent`.Date = ?;";
+        $query3 = "UPDATE `wish` SET Status = ? WHERE id = ?;";
 
-        $this->executeQuery($query ,
-            array(0 => $IsAccepted,
-            1 => $wishContentDate,
-            2 => $modName,
-            3 => $wishContentDate ,
-            4 => $status ,
-            5 => $wishId));
+//        print_r($query);
+//        print_r($wishId . $IsAccepted . $modName . $status . $wishContentDate);
+
+        $this->executeQuery($query1 , array($IsAccepted, $wishContentDate));
+        $this->executeQuery($query2 , array($modName, $wishContentDate));
+        $this->executeQuery($query3 , array($status, $wishId));
+
+//        $this->executeQuery($query ,
+//            array(0 => $IsAccepted,
+//            1 => $wishContentDate,
+//            2 => $modName,
+//            3 => $wishContentDate ,
+//            4 => $status ,
+//            5 => $wishId));
     }
 }

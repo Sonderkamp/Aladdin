@@ -112,7 +112,7 @@ class WishRepository
      */
     public function addWish($newWish)
     {
-        $email = $this->getEmail();
+        $email = $_SESSION["user"]->email;
         $status = "Aangemaakt";
 
         $query = "INSERT INTO `wish` (`Status`,`User`) VALUES (?,?)";
@@ -235,7 +235,7 @@ class WishRepository
     }
 
     public function getPublishedWishes(){
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Gepubliceerd"] , null , true));
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Gepubliceerd"] , null , false));
     }
 
     public function getMatchedWishes(){
@@ -258,22 +258,22 @@ class WishRepository
         return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Verwijderd"] , null , true));
     }
 
-    public function AdminAcceptWish($id, $mdate)
+    public function acceptWish($id)
     {
-        $this->WishQueryBuilder->executeAdminAction($id , 1 , "Admin" , "Gepubliceerd");
+        $this->WishQueryBuilder->executeAdminAction($id , 1 , $_SESSION["admin"]->username  , "Gepubliceerd");
     }
 
-    public function AdminRefuseWish($id, $mdate)
+    public function refuseWish($id)
     {
-        $this->WishQueryBuilder->executeAdminAction($id , 0 , "Admin" , "Geweigerd");
+        $this->WishQueryBuilder->executeAdminAction($id , 0 , $_SESSION["admin"]->username , "Geweigerd");
     }
 
-    public function AdminDeleteWish($id, $mdate = null)
+    public function deleteWish($id)
     {
-        $this->WishQueryBuilder->executeAdminAction($id , 0 , "Admin" , "Verwijderd");
+        $this->WishQueryBuilder->executeAdminAction($id , 0 , $_SESSION["admin"]->username , "Verwijderd");
     }
 
-    public function AdminRedrawWish($id, $mdate)
+    public function revertWishAction($id)
     {
         $this->WishQueryBuilder->executeAdminAction($id , 0 , null , "Aangemaakt");
     }
@@ -328,29 +328,7 @@ AND ab.Block_Id = test.blockid) AS isblock
 
     public function getWish($id)
     {
-
-        $result = Database::query_safe
-        ("SELECT
-          wish.Id,
-          wish.Status,
-          wish.User,
-          wish.Date,
-          wishContent.Content,
-          wishContent.Title,
-          wishContent.IsAccepted
-          FROM `wish` JOIN wishContent ON wish.Id = wishContent.wish_Id WHERE wish.Id = ?", array($id));
-
-
-        if ($result != null) {
-
-            $selectedWish = $this->getReturnArray($result)[0];
-
-            return $selectedWish;
-
-        } else {
-            apologize("404 wens kan niet worden gevonden");
-        }
-
+        return $this->getReturnArray($this->WishQueryBuilder->getSingleWish($id, null));
     }
 
     /**
@@ -364,18 +342,6 @@ AND ab.Block_Id = test.blockid) AS isblock
         $array = array($id);
         $wish = Database::query_safe($query, $array);
         return $wish;
-    }
-
-    public function getEmail()
-    {
-        return $_SESSION["user"]->email;
-    }
-
-    public function getAllTalents()
-    {
-        $query = "SELECT `Name` FROM `talent` WHERE `isRejected`=? ORDER BY `Name` ASC";
-        $array = array(1);
-        return Database::query_safe($query, $array);
     }
 
     public function getWishTalent($wishId)
@@ -407,16 +373,6 @@ AND ab.Block_Id = test.blockid) AS isblock
         }
 
         return $returnArray;
-    }
-
-
-    public function getNewestWishContent($id)
-    {
-        $query = "SELECT `wish_Id`, `Date` FROM `wishContent` WHERE `wish_Id` = ? ORDER BY `Date` desc limit 1";
-        $array = array($id);
-        $result = Database::query_safe($query, $array);
-
-        return $result;
     }
 
     public function getAllWishesByEmail($email)

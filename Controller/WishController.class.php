@@ -78,7 +78,7 @@ class WishController
                     break;
             }
         } else if (isset($_GET["wish_id"])) {
-            guaranteeProfile();
+//            guaranteeProfile();
             if (isset($_POST["page"])) {
                 $this->getSpecificWish($_GET["wish_id"], $_POST["page"]);
             } else {
@@ -421,7 +421,7 @@ class WishController
     {
         $id = $_GET["wishID"];
         if (isset($id)) {
-            $this->wishRepository->AdminDeleteWish($id);
+            $this->wishRepository->DeleteWish($id);
         }
         $this->currentPage = "mywishes";
         $this->go_back();
