@@ -32,18 +32,16 @@ class WishRepository
 
             foreach($queryResult as $item){
 
-                $user = new User();
-                $user->email = $item["Email"];
-                $user->name = $item["Name"];
-                $user->displayName = $item["DisplayName"];
-                $user->surname = $item["Surname"];
-                $user->address = $item["Address"];
-                $user->postalcode = $item["Postalcode"];
-                $user->country = $item["Country"];
-                $user->city = $item["City"];
-                $user->dob = $item["Dob"];
-                $user->gender = $item["Gender"];
-                $user->handicap = $item["Handicap"];
+                $userParams = array("Email" , "Name" , "DisplayName" , "Surname" , "Address" ,
+                    "Postalcode", "Country" , "City" , "Dob" , "Gender" , "Handicap");
+                $userCheck = true;
+
+                foreach($userParams as $param){
+                    if(!isset($item[$param])){
+                        $userCheck = false;
+                        break;
+                    }
+                }
 
                 $wish = new Wish();
 
@@ -53,7 +51,22 @@ class WishRepository
                 $wish->accepted = $item["IsAccepted"];
                 $wish->contentDate = $item["Date"];
                 $wish->status = $item["Status"];
-                $wish->user = $user;
+
+                if($userCheck) {
+                    $user = new User();
+                    $user->email = $item[$userParams[0]];
+                    $user->name = $item[$userParams[1]];
+                    $user->displayName = $item[$userParams[2]];
+                    $user->surname = $item[$userParams[3]];
+                    $user->address = $item[$userParams[4]];
+                    $user->postalcode = $item[$userParams[5]];
+                    $user->country = $item[$userParams[6]];
+                    $user->city = $item[$userParams[7]];
+                    $user->dob = $item[$userParams[8]];
+                    $user->gender = $item[$userParams[9]];
+                    $user->handicap = $item[$userParams[10]];
+                    $wish->user = $user;
+                }
 
                 $returnArray[] = $wish;
             }

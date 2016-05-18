@@ -122,13 +122,13 @@ class AdminWishController
             $verdict = "geweigerd";
         }
 
-        $acceptedWish = $this->wishRepo->getWish($wishId)[0];
+        $acceptedWish = $this->wishRepo->getWish($wishId);
 
-        $message = "De wens met de titel: " . $acceptedWish->title . " is " . $verdict . ".De inhoud van deze wens is alsvolgt: " . $acceptedWish->content .
-            "\n wij hopen u hiermee voldoende te hebben geinformeerd.";
+        $message = "De wens met de titel '" . $acceptedWish->title . "' is " . $verdict . ". De inhoud van deze wens is alsvolgt: \n" . $acceptedWish->content .
+            "\n \n Wij hopen u hiermee voldoende te hebben geinformeerd.";
         $title = "Uw wens is " . $verdict . "!";
 
-        $messageId = $this->messRepo->sendMessage($_POST["admin"], $acceptedWish->displayname , $title , $message);
+        $messageId = $this->messRepo->sendMessage($_SESSION["admin"]->username, $acceptedWish->user->displayName , $title , $message);
         $this->messRepo->setLink($wishId, 'Wens' , $messageId);
     }
 }

@@ -82,7 +82,7 @@ class messageRepository
         $user = new UserRepository();
         $user = $user->getUser($recipient);
         $mail = new Email();
-        $mail->to = $recipient;
+        $mail->to = $user->email;
         $mail->toName = $user->name . " " . $user->surname;
         $mail->subject = "Aladdin:  " . $title;
         $mail->message = "Dit bericht is verstuurd via " . $_SERVER["SERVER_NAME"] . ": \nReageren kan via de website. Mailtjes naar dit emailadress worden niet gezien.\n\n" . $message;

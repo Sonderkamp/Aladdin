@@ -65,9 +65,11 @@ class WishController
                 //remove refrences to match show=openeditwish
                 case "open_edit_wish":
                     $this->open_wish_view(false);
+                    exit(0);
                     break;
                 case "open_wish":
                     $this->open_wish_view(true);
+                    exit(0);
                     break;
                 case "addwish":
                     $this->add_wish();
@@ -89,6 +91,13 @@ class WishController
                 default:
                     apologize("404 not found, Go back to my wishes");
                     break;
+            }
+        } else if (isset($_GET["wish_id"])) {
+//            guaranteeProfile();
+            if (isset($_POST["page"])) {
+                $this->getSpecificWish($_GET["wish_id"], $_POST["page"]);
+            } else {
+                $this->getSpecificWish($_GET["wish_id"], null);
             }
         }
 
@@ -114,28 +123,15 @@ class WishController
         $incompletedWishes = $this->wishRepo->getIncompletedWishes();
         $matchedWishes = $this->wishRepo->getMatchedWishes();
         $canAddWish = $this->wishRepo->canAddWish($_SESSION["user"]->email);
-
-        //
-        // Needs rewriting
-        //
-        //        $user = $this->userRepostitory->getUser($_SESSION["user"]->email);
-//        $displayName = $user->getDisplayName();
-        $displayName = $_SESSION["user"]->displayName;
+        $this->setCurrent($currentPage);
 
         $report = $this->reportRepository->getReportedUsers();
-//        getUsersIHaveReported($_SESSION["user"]->email);
         $displayNames = array();
-
         $amountReports = count($report);
 
         if ($amountReports !== 0) {
             foreach ($report as $item) {
-                if ($item instanceof Report) {
-                    $user = $item->getReported();
-                    if ($user instanceof User) {
-                        $displayNames[] = $user->getDisplayName();
-                    };
-                }
+                $displayNames[] = $item->getReported()->getDisplayName();
             }
         }
 
@@ -200,9 +196,8 @@ class WishController
 //                $this->go_back();
 //                exit(1);
 //            }
-
             $title = $wish->title;
-            $description = $wish[0]["Content"];
+            $description = $wish->content;
             $tempTag = $this->wishRepo->getWishTalent($this->wishContentId);
             $tag = $this->prepend("#", implode(" #", $tempTag));
 
@@ -299,6 +294,7 @@ class WishController
         $selectedWish = $this->wishRepo->getWish($id);
         render("wishSpecificView.tpl",
             ["title" => "Wens: " . $id, "selectedWish" => $selectedWish, "previousPage" => $previousPage]);
+        exit(0);
     }
 
     private function requestMatch($id)
@@ -433,26 +429,13 @@ class WishController
 
     public function back()
     {
-        switch ($this->getCurrent()) {
-            case "myWishes":
-                $_GET["action"] = "mywishes";
-                $this->run();
-                break;
-            case "incompleted":
-                $_GET["action"] = "incompletedwishes";
-                $this->run();
-                break;
-            case "completed":
-                $_GET["action"] = "completedwishes";
-                $this->run();
-                break;
-            case "match":
-                (new MatchController())->open_match_view();
-                break;
-            default:
-                $this->renderOverview("myWishes");
-                break;
+        if(!empty($this->getCurrent())){
+            redirect("/wishes/show=" . $this->getCurrent());
+            exit(0);
         }
+
+        redirect("/wishes");
+        exit(0);
     }
 
     public function setCurrent($page)

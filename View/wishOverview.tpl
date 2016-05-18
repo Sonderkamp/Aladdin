@@ -55,7 +55,7 @@
             </div>
             <br>
             <div class="tab-content">
-                <div class="tab-pane fade in {if $currentPage == "myWishes"}active{/if}" id="myWishes">
+                <div class="tab-pane fade in {if $smarty.session.current == "myWishes"}active{/if}" id="myWishes">
                     {if $myWishes}
                         {foreach from=$myWishes item=wish}
                             <div class="panel panel-default">
@@ -92,9 +92,15 @@
                                         </a>
                                     {/if}
 
-                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#wishModal{$wish->id}">
-                                        <span class="glyphicon glyphicon-menu-right"></span>
-                                    </button>
+                                    <form class='noPadding' method="post">
+                                        <button class="btn btn-default"
+                                                formaction="/Wishes/wish_id={$wish->id}"
+                                                value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
+                                                type="submit"
+                                                name="page">
+                                            <span class="glyphicon glyphicon-menu-right"></span>
+                                        </button>
+                                    </form>
 
                                 </div>
                             </div>
@@ -104,7 +110,7 @@
                     {/if}
                 </div>
 
-                <div class="tab-pane fade in {if $currentPage == "incompletedWishes"}active{/if}"
+                <div class="tab-pane fade in {if $smarty.session.current == "incompletedWishes"}active{/if}"
                      id="incompletedWishes">
                     {if $incompletedWishes}
                         {foreach from=$incompletedWishes item=wish}
@@ -125,9 +131,15 @@
                                 </div>
 
                                 <div class="panel-footer right">
-                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#wishModal{$wish->id}">
-                                        <span class="glyphicon glyphicon-menu-right"></span>
-                                    </button>
+                                    <form class='noPadding' method="post">
+                                        <button class="btn btn-default"
+                                                formaction="/Wishes/wish_id={$wish->id}"
+                                                value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
+                                                type="submit"
+                                                name="page">
+                                            <span class="glyphicon glyphicon-menu-right"></span>
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         {/foreach}
@@ -136,7 +148,7 @@
                     {/if}
                 </div>
 
-                <div class="tab-pane fade in {if $currentPage == "completedWishes"}active{/if}" id="completedWishes">
+                <div class="tab-pane fade in {if $smarty.session.current == "completedWishes"}active{/if}" id="completedWishes">
                     {if $completedWishes}
                         {foreach from=$completedwishes item=wish}
                             <div class="panel panel-default">
@@ -156,9 +168,15 @@
                                 </div>
 
                                 <div class="panel-footer right">
-                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#wishModal{$wish->id}">
-                                        <span class="glyphicon glyphicon-menu-right"></span>
-                                    </button>
+                                    <form class='noPadding' method="post">
+                                        <button class="btn btn-default"
+                                                formaction="/Wishes/wish_id={$wish->id}"
+                                                value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
+                                                type="submit"
+                                                name="page">
+                                            <span class="glyphicon glyphicon-menu-right"></span>
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         {/foreach}
@@ -167,7 +185,7 @@
                     {/if}
                 </div>
 
-                <div class="tab-pane fade in {if $currentPage == "myCompletedWishes"}active{/if}" id="myCompletedWishes">
+                <div class="tab-pane fade in {if $smarty.session.current == "myCompletedWishes"}active{/if}" id="myCompletedWishes">
                     {if $myCompletedWishes}
                         {foreach from=$myCompletedwishes item=wish}
                             <div class="panel panel-default">
@@ -187,9 +205,15 @@
                                 </div>
 
                                 <div class="panel-footer right">
-                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#wishModal{$wish->id}">
-                                        <span class="glyphicon glyphicon-menu-right"></span>
-                                    </button>
+                                    <form class='noPadding' method="post">
+                                        <button class="btn btn-default"
+                                                formaction="/Wishes/wish_id={$wish->id}"
+                                                value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
+                                                type="submit"
+                                                name="page">
+                                            <span class="glyphicon glyphicon-menu-right"></span>
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         {/foreach}
@@ -198,7 +222,7 @@
                     {/if}
                 </div>
 
-                <div class="tab-pane fade in {if $currentPage == "matchedWishes"}active{/if}" id="matchedWishes">
+                <div class="tab-pane fade in {if $smarty.session.current == "matchedWishes"}active{/if}" id="matchedWishes">
                     {if $matchedWishes}
                         {foreach from=$matchedWishes item=wish}
                             <div class="panel panel-default">
@@ -218,9 +242,18 @@
                                 </div>
 
                                 <div class="panel-footer right">
-                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#wishModal{$wish->id}">
-                                        <span class="glyphicon glyphicon-menu-right"></span>
-                                    </button>
+                                    {*<button type="button" class="btn btn-default" data-toggle="modal" data-target="#wishModal{$wish->id}">*}
+                                        {*<span class="glyphicon glyphicon-menu-right"></span>*}
+                                    {*</button>*}
+                                    <form class='noPadding' method="post">
+                                        <button class="btn btn-default"
+                                                formaction="/Wishes/wish_id={$wish->id}"
+                                                value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
+                                                type="submit"
+                                                name="page">
+                                            <span class="glyphicon glyphicon-menu-right"></span>
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         {/foreach}
