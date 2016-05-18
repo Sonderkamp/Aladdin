@@ -14,7 +14,7 @@ class DashboardController
     {
         $this->wishRepo = new WishRepository();
         $this->talentRepo = new TalentRepository();
-        $this->wishLimit = $this->wishRepo->WISH_LIMIT;
+        $this->wishLimit = $this->wishRepo->wishLimit;
         $this->talentLimit = $this->talentRepo->TALENT_MINIMUM;
     }
 

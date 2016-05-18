@@ -116,13 +116,16 @@ class WishQueryBuilder
     public function getSingleWish($wishId, $admin = null)
     {
         $query = "SELECT * FROM `wish` LEFT JOIN `wishContent`
-                        ON `wish`.Id = `wishContent`.wish_Id ";
+                        ON `wish`.Id = `wishContent`.wish_Id
+                        JOIN `user` ON `wish`.User = `user`.Email ";
         $query .= "WHERE `wish`.Id = ? ";
 
-        if($admin){
-            $query .= "AND `wishContent`.IsAccepted = 0";
-        } else if(!$admin){
-            $query .= "AND `wishContent`.IsAccepted = 1";
+        if($admin !== null){
+            if($admin){
+                $query .= "AND `wishContent`.IsAccepted = 0";
+            } else if(!$admin){
+                $query .= "AND `wishContent`.IsAccepted = 1";
+            }
         }
 
         $query .= " GROUP BY `wish`.Id LIMIT 1";
@@ -138,19 +141,9 @@ class WishQueryBuilder
         $query2 = "UPDATE `wishContent` SET moderator_username = ? WHERE `wishContent`.Date = ?;";
         $query3 = "UPDATE `wish` SET Status = ? WHERE id = ?;";
 
-//        print_r($query);
-//        print_r($wishId . $IsAccepted . $modName . $status . $wishContentDate);
-
         $this->executeQuery($query1 , array($IsAccepted, $wishContentDate));
         $this->executeQuery($query2 , array($modName, $wishContentDate));
         $this->executeQuery($query3 , array($status, $wishId));
 
-//        $this->executeQuery($query ,
-//            array(0 => $IsAccepted,
-//            1 => $wishContentDate,
-//            2 => $modName,
-//            3 => $wishContentDate ,
-//            4 => $status ,
-//            5 => $wishId));
     }
 }
