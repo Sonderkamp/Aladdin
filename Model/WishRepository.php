@@ -9,8 +9,8 @@
 class WishRepository
 {
 
-    private $talentRepository, $email, $maxContentLength = 50 , $WishQueryBuilder;
-    public $WISH_LIMIT = 3 , $MINIMUM_TALENTS = 3;
+    private $talentRepository, $WishQueryBuilder;
+    public $wishLimit = 3;
 
     public function __construct()
     {
@@ -194,42 +194,17 @@ class WishRepository
      */
     public function canAddWish($email)
     {
-
-        $this->email = $email;
-
         $amountWishes = $this->getWishAmount($email);
 
-        $wishLimit = $this->WISH_LIMIT;
-
-        // count talents
-//        $myTalents = $this->talentRepository->getUserTalents();
-//        $amountOfTalents = 0;
-//        foreach($myTalents as $item){
-//            if($item instanceof Talent){
-//                if($item->is_rejected == 1){
-//                    $amountOfTalents++;
-//                }
-//            }
-//        }
-
-//        if ($amountWishes >= $wishLimit || $amountOfTalents < $this->MINIMUM_TALENTS)
-//            return false;
-//        return true;
-
-        if($amountWishes >= $wishLimit){
+        if($amountWishes >= $this->wishLimit){
             return false;
         } else {
             return true;
         }
     }
-    //deprecated use count($mywishesarray) instead
-    //rewrite dashboard controller
-    public function getWishAmount($email){
-        $query = "select count(*) as counter from `wish` where `user` = ? and `status` != ? and `status` != ? and `status` != ?";
-        $array = array($email, "Vervuld", "Geweigerd" , "Verwijderd");
-        $result = Database::query_safe($query, $array);
 
-        return $result[0]["counter"];
+    public function getWishAmount($email){
+        return count($this->getWishesByUser($email));
     }
 
     public function getRequestedWishes(){
@@ -282,7 +257,7 @@ class WishRepository
 
     public function getWish($id)
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getSingleWish($id, null));
+        return $this->getReturnArray($this->WishQueryBuilder->getSingleWish($id, null))[0];
     }
 
     //move to talent repo
@@ -316,21 +291,16 @@ class WishRepository
 
         return $returnArray;
     }
-    //rewrite together with edit and add wish
-    public function getAllWishesByEmail($email)
-    {
-        $query = "SELECT * FROM `wish` WHERE `user` = ?";
-        $array = array($email);
-        $result = Database::query_safe($query, $array);
 
-
-        $allWishId = array();
-        foreach ($result as $item) {
-            $allWishId[] = $item["Id"];
-        }
-
-        return $allWishId;
+    public function getWishesByUser($user){
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes
+        ($user , [0 => "Aangemaakt",
+            1 => "Gepubliceerd",
+            2 => "Geweigerd",
+            3 => "Match gevonden" ,
+            5 => "Wordt vervuld"]));
     }
+
 
     //Rewrite potential?
     public function getAllWishesWithTag($tag)
@@ -398,12 +368,4 @@ class WishRepository
            return $this->getReturnArray($result);
         }
     }
-
-    //soon to be deprecated
-//    public function getUserOfWish($wishID){
-//        $sql = "select * from wish where Id = ?";
-//        $parameters = array($wishID);
-//        $result = Database::query_safe($sql,$parameters);
-//        return $result[0]["User"];
-//    }
 }
