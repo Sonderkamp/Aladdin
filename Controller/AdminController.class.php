@@ -27,23 +27,7 @@ class AdminController extends Controller
         (new AdminController())->guaranteeAdmin("/admin");
 
         if (!empty($_GET["csv"])) {
-
-            $val = new Graph();
-            switch ($_GET["csv"]) {
-                case "usersMonth":
-                    $val->getUsersMonth();
-                    exit();
-                case "cats":
-                    $val->getCats();
-                    exit();
-                case "monthly":
-                    $val->getCatsMonth($_GET["month"]);
-                    exit();
-                case "age":
-                    $val->getAge();
-                    exit();
-            }
-
+            (new Graph())->$_GET["csv"]();
 
         } else {
             $this->render("adminHome.tpl", ["title" => "Statistiek"]);
@@ -62,30 +46,33 @@ class AdminController extends Controller
 
     public function login()
     {
+
+
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-            if (!Empty($_POST["username"]) && !Empty($_POST["password"])) {
-                // htmlspecialchar
-                $adminModel = new Admin();
-                if ($adminModel->validate(htmlspecialchars($_POST["username"]), htmlspecialchars($_POST["password"]))) {
-                    if (!empty($_SESSION["Redirect"])) {
-                        $this->redirect($_SESSION["Redirect"]);
-                        $_SESSION["Redirect"] = null;
-                        exit(0);
-                    }
-                    $this->redirect("/Admin");
-                    exit();
-                }
-                $this->loginError("gebruikersnaam/wachtwoord combinatie is niet geldig");
 
+            $admin = new Admin();
+            $res = $admin->login();
+            if ($res !== true) {
+                $this->loginError($res);
+                exit();
             }
-            $this->loginError("Niet alle gegevens zijn ingevuld");
+
+            if (!empty($_SESSION["Redirect"])) {
+                $this->redirect($_SESSION["Redirect"]);
+                $_SESSION["Redirect"] = null;
+                exit();
+            }
+            $this->redirect("/Admin");
+            exit();
+
         } else {
             $this->render("Admin/login.tpl", ["title" => "Log in", "username" => ""]);
         }
     }
 
-    private function loginError($mess)
+    private
+    function loginError($mess)
     {
         $this->render("Admin/login.tpl", ["title" => "Log in", "error" => $mess, "username" => htmlspecialchars($_POST["username"])]);
         exit();

@@ -3,7 +3,6 @@
 class InboxController extends Controller
 {
 
-    // BREEKT MET NIEUWE STRCTUUR TODO
 
     private $messageModel;
     private $error = null;
@@ -31,71 +30,63 @@ class InboxController extends Controller
         $this->messageModel = new messageRepository();
     }
 
-    public function run()
+    public function newMessage()
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (!Empty($_GET["action"])) {
-                switch (strtolower($_GET["action"])) {
-                    case "new":
-                        $this->sendNewMessage();
-                        $this->redirect("/Inbox/folder=outbox/p=1");
-                    default:
-                        $this->render("inbox.tpl", ["title" => "Inbox", "folder" => "Postvak in", "page" => $this->page]);
-                        break;
-                }
-                exit();
+            $this->sendNewMessage();
+            $this->redirect("/Inbox/folder=outbox/p=1");
+            exit();
+        }
+
+        // get all DisplayNames
+        $userRepo = new UserRepository();
+        $names = $userRepo->getAllMatchedDislaynames($_SESSION["user"]);
+        if (($key = array_search($_SESSION["user"]->displayName, $names)) !== false) {
+            unset($names[$key]);
+        }
+
+        $this->render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "names" => $names]);
+    }
+
+    public function search()
+    {
+        if (!Empty($_GET["search"])) {
+            if (strlen($_GET["search"]) < 3) {
+                $this->error = "Zoekcriteria moet minimaal 3 characters lang zijn.";
             } else {
-                if (isset($_POST["reply"])) {
-                    $this->reply();
-                } else if (isset($_POST["delete"])) {
-
-                    $this->delete();
-                } else if (isset($_POST["trash"])) {
-                    $this->moveTrash();
-
-                } else if (isset($_POST["reset"])) {
-                    $this->undoDelete();
-                }
-
-
+                $this->search = $_GET["search"];
             }
-        } else {
-
-
-            if (!Empty($_GET["action"])) {
-                switch (strtolower($_GET["action"])) {
-                    case "new":
-                        // get all DisplayNames
-                        $userRepo = new UserRepository();
-                        $names = $userRepo->getAllMatchedDislaynames($_SESSION["user"]);
-                        if (($key = array_search($_SESSION["user"]->displayName, $names)) !== false) {
-                            unset($names[$key]);
-                        }
-                        $this->render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "names" => $names]);
-                        break;
-                    default:
-                        $this->render("inbox.tpl", ["title" => "Inbox", "folder" => "Postvak in", "page" => $this->messageModel->isValidPage()]);
-                        break;
-                }
-                exit();
-            }
-            if (!Empty($_GET["search"])) {
-                if (strlen($_GET["search"]) < 3) {
-                    $this->error = "Zoekcriteria moet minimaal 3 characters lang zijn.";
-                } else {
-                    $this->search = $_GET["search"];
-                }
-            }
-
-            if (!Empty($_GET["message"])) {
-
-                $this->loadMessage();
-            }
-
-            $this->renderInbox();
         }
         $this->renderInbox();
-        exit(2);
+    }
+
+    public function message()
+    {
+        if (!Empty($_GET["message"])) {
+
+            $this->loadMessage();
+        }
+
+        $this->renderInbox();
+    }
+
+    public function run()
+    {
+
+        if (isset($_POST["reply"])) {
+            $this->reply();
+        } else if (isset($_POST["delete"])) {
+
+            $this->delete();
+        } else if (isset($_POST["trash"])) {
+            $this->moveTrash();
+
+        } else if (isset($_POST["reset"])) {
+            $this->undoDelete();
+        }
+
+        $this->renderInbox();
+        exit();
     }
 
     public function loadMessage()
@@ -204,15 +195,18 @@ class InboxController extends Controller
                     $folderShortcut = "trash";
                     break;
                 default:
+                    $folder = "Postvak in";
+                    $folderShortcut = "inbox";
                     break;
             }
+            return;
         }
+        $folder = "Postvak in";
+        $folderShortcut = "inbox";
     }
 
     public function renderInbox()
     {
-        $folder = "Postvak in";
-        $folderShortcut = "inbox";
         $this->setFolder($folder, $folderShortcut);
 
         $this->render("inbox.tpl", ["title" => "Inbox", "folder" => $folder . $this->title, "folderShortcut" => $folderShortcut, "messages" => $this->messageModel->getbox($this->search, $this->page, $folderShortcut), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPage()]);
@@ -227,17 +221,14 @@ class InboxController extends Controller
             unset($names[$key]);
         }
 
-        if (empty($_POST["recipient"]) ||
-            empty($_POST["title"]) ||
-            empty($_POST["message"])
-        ) {
-            $this->render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Niet alles is ingevuld.", "names" => $names]);
-            exit();
+        try {
+            $_POST["recipient"] = trim($_POST["recipient"]);
+            $_POST["title"] = trim($_POST["title"]);
+            $_POST["message"] = trim($_POST["message"]);
+        } catch (Exception $e) {
+            // Variable is empty before trim.
         }
-        $_POST["recipient"] = trim($_POST["recipient"]);
-        $_POST["title"] = trim($_POST["title"]);
-        $_POST["message"] = trim($_POST["message"]);
-
+        
         if (empty($_POST["recipient"]) ||
             empty($_POST["title"]) ||
             empty($_POST["message"])
