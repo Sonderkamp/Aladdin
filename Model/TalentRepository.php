@@ -67,7 +67,7 @@ class TalentRepository
         return $this->createTalentArray($this->talentBuilder->getTalents($page, null, true, null, null, null, null, null, null, $search), $synonyms);
     }
 
-    // getNotAddedTalents
+    // getAddedTalents
     public function getAddedTalents($page = null, $synonyms = null) {
         return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, true), $synonyms);
     }
