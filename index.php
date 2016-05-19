@@ -23,7 +23,7 @@ if (class_exists($page)) {
     exit();
 }
 
-if (Empty($_GET["action"]) || !method_exists($controller, $_GET["action"])) {
+if (Empty($_GET["action"]) || !is_callable(array($controller, $_GET["action"]))) {
     $controller->run();
     exit();
 }

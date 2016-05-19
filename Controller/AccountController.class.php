@@ -175,7 +175,7 @@ class AccountController extends Controller
         }
     }
 
-    private function login()
+    public function login()
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -218,7 +218,7 @@ class AccountController extends Controller
         exit();
     }
 
-    private function register()
+    public function register()
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (Empty($_POST["username"])
@@ -301,8 +301,6 @@ class AccountController extends Controller
 
     private function manage()
     {
-        //        // todo: $this->render user-manage screen
-        //        echo $_SESSION["user"]->email;
 
         $this->render("account.tpl", ["title" => "account"]);
         exit();
