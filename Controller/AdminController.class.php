@@ -26,62 +26,41 @@ class AdminController
 
         guaranteeAdmin("/admin");
 
+        if (!empty($_GET["csv"])) {
 
-        if (!Empty($_SESSION["admin"])) {
-
-            if (!empty($_GET["csv"])) {
-
-                $val = new Graph();
-                switch ($_GET["csv"]) {
-                    case "usersMonth":
-                        $val->getUsersMonth();
-                        exit();
-                    case "cats":
-                        $val->getCats();
-                        exit();
-                    case "monthly":
-                        $val->getCatsMonth($_GET["month"]);
-                        exit();
-                    case "age":
-                        $val->getAge();
-                        exit();
-                }
-
-
-            } else {
-
-                if (empty($_GET["action"])) {
-                    render("adminHome.tpl", ["title" => "Statistiek"]);
+            $val = new Graph();
+            switch ($_GET["csv"]) {
+                case "usersMonth":
+                    $val->getUsersMonth();
                     exit();
-                } else {
-                    switch (strtolower($_GET["action"])) {
-                        case "logout":
-                            $this->logout();
-                            exit();
-                            break;
-                        default:
-                            apologize("Pagina bestaat niet");
-                            exit();
-                            break;
-                    }
-                }
-
+                case "cats":
+                    $val->getCats();
+                    exit();
+                case "monthly":
+                    $val->getCatsMonth($_GET["month"]);
+                    exit();
+                case "age":
+                    $val->getAge();
+                    exit();
             }
+
+
         } else {
-            // log IP van gebruiker die admin pagina probeert te openen
-            apologize("Niet als admin ingelogd.");
+            render("adminHome.tpl", ["title" => "Statistiek"]);
+            exit();
         }
+
 
     }
 
-    private function logout()
+    public function logout()
     {
         $adminModel = new Admin();
         $adminModel->logout();
         $this->login();
     }
 
-    private function login()
+    public function login()
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 

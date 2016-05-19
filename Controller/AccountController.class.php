@@ -10,32 +10,8 @@ class AccountController
 {
     public function run()
     {
-
-        if (Empty($_GET["action"])) {
-            $this->pagepicker();
-        } else {
-            $_SESSION["Redirect"] = null;
-            switch (strtolower($_GET["action"])) {
-                case "register":
-                    $this->register();
-                    break;
-                case "logout":
-                    $this->logout();
-                    break;
-                case "recover":
-                    $this->recover();
-                    break;
-                case "check":
-                    $this->check();
-                    break;
-                case "activate":
-                    $this->activate();
-                    break;
-                default:
-                    $this->pagepicker();
-                    break;
-            }
-        }
+        $this->pagepicker();
+       
     }
 
     public function guaranteeLogin($s)

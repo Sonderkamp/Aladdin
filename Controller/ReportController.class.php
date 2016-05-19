@@ -14,25 +14,14 @@ class ReportController
 
     public function __construct()
     {
+        guaranteeLogin("/Wishes");
         $this->reportRepository = new ReportRepository();
         $this->wishRepository = new WishRepository();
     }
 
     public function run()
     {
-        guaranteeLogin("/Wishes");
-        if (isset($_GET["action"])) {
-            switch (strtolower($_GET["action"])) {
-                case "report":
-                    $this->report();
-                    break;
-                default:
-                    apologize("404 not found, Go back to my wishes");
-                    break;
-            }
-        } else {
-            redirect("/wishes");
-        }
+        redirect("/wishes");
     }
 
     public function report()
@@ -49,9 +38,8 @@ class ReportController
         }
 
         /* LATEN STAAN */
-        (new WishController())->back();
+        (new WishesController())->back();
     }
-
 
 
 }

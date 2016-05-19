@@ -12,6 +12,7 @@ class DashboardController
 
     public function __construct()
     {
+        guaranteeLogin("/dashboard");
         $this->wishRepo = new WishRepository();
         $this->talentRepo = new TalentRepository();
         $this->wishLimit = $this->wishRepo->wishLimit;
@@ -20,7 +21,7 @@ class DashboardController
 
     public function run()
     {
-        guaranteeLogin("/dashboard");
+
         if (!$this->checkAmounts()) {
             $this->showForcedProfile();
         } else {
@@ -28,7 +29,8 @@ class DashboardController
         }
     }
 
-    public function guaranteeProfile(){
+    public function guaranteeProfile()
+    {
         if (!$this->checkAmounts()) {
             $this->showForcedProfile();
         }
@@ -36,20 +38,20 @@ class DashboardController
 
     public function showForcedProfile()
     {
-            $wishAmount = $this->wishLimit - $this->getWishAmount();
-            $talentAmount = $this->talentLimit - $this->getTalentAmount();
-            $wishCheck = false;
+        $wishAmount = $this->wishLimit - $this->getWishAmount();
+        $talentAmount = $this->talentLimit - $this->getTalentAmount();
+        $wishCheck = false;
 
-            if ($wishAmount <= $this->wishLimit) {
-                $wishCheck = true;
-            }
+        if ($wishAmount <= $this->wishLimit) {
+            $wishCheck = true;
+        }
 
-            render("dashboard.tpl", ["title" => $_SESSION["user"]->displayName,
-                "wishes" => $this->getMyWishes(),
-                "talents" => $this->getMyTalents(),
-                "wishCheck" => $wishCheck,
-                "errorString" => $this->generateErrorSentence($wishAmount, $talentAmount)]);
-            exit(0);
+        render("dashboard.tpl", ["title" => $_SESSION["user"]->displayName,
+            "wishes" => $this->getMyWishes(),
+            "talents" => $this->getMyTalents(),
+            "wishCheck" => $wishCheck,
+            "errorString" => $this->generateErrorSentence($wishAmount, $talentAmount)]);
+        exit(0);
     }
 
     public function showProfile()
@@ -101,7 +103,8 @@ class DashboardController
         return $this->wishRepo->getMyWishes();
     }
 
-    private function getMyTalents(){
+    private function getMyTalents()
+    {
         return $this->talentRepo->getAddedTalents();
     }
 
@@ -110,7 +113,8 @@ class DashboardController
         return $this->wishRepo->getWishAmount($_SESSION["user"]->email);
     }
 
-    private function getTalentAmount(){
+    private function getTalentAmount()
+    {
         return count($this->talentRepo->getAddedTalents());
     }
 

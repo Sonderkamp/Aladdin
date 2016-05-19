@@ -6,8 +6,10 @@
  * Date: 25-Feb-16
  * Time: 15:08
  */
-class WishController
+class WishesController
 {
+
+    // BREEKT MET NIEUWE STRCTUUR TODO
 
     public
         $completedWishes,
@@ -36,8 +38,8 @@ class WishController
     {
         guaranteeLogin("/Wishes");
 
-        if(isset($_GET["show"])){
-            switch(strtolower($_GET["show"])){
+        if (isset($_GET["show"])) {
+            switch (strtolower($_GET["show"])) {
                 case "mywishes":
                     guaranteeProfile();
                     $this->renderOverview("myWishes");
@@ -102,11 +104,9 @@ class WishController
         }
 
         //werkt nog niet todat de hosting gefixt is
-        if(isset($_GET["search"])){
+        if (isset($_GET["search"])) {
             $this->searchWish($_GET["search"]);
-        }
-
-        else if (isset($_POST["match/wish_id"])) {
+        } else if (isset($_POST["match/wish_id"])) {
             guaranteeProfile();
             $this->requestMatch($_POST["match/wish_id"]);
         } else {
@@ -136,17 +136,17 @@ class WishController
         }
 
 
-        render("wishOverview.tpl" , ["title" => "Wensen Overzicht",
-            "myWishes"          => $myWishes,
-            "completedWishes"   => $completedWishes,
+        render("wishOverview.tpl", ["title" => "Wensen Overzicht",
+            "myWishes" => $myWishes,
+            "completedWishes" => $completedWishes,
             "myCompletedWishes" => $myCompletedWishes,
             "incompletedWishes" => $incompletedWishes,
-            "matchedWishes"     => $matchedWishes,
-            "currentPage"       => $currentPage,
-            "canAddWish"        => $canAddWish,
+            "matchedWishes" => $matchedWishes,
+            "currentPage" => $currentPage,
+            "canAddWish" => $canAddWish,
 
             //Might be deprecated
-            "reported"          => $displayNames
+            "reported" => $displayNames
         ]);
 
         exit(0);
@@ -248,25 +248,25 @@ class WishController
                 || Empty($this->tag) || $size == 0
             ) {
                 render("addWish.tpl", ["error" => "Vul AUB alles in", "wishtitle" => $this->title,
-                    "description" => $this->description,"tag" => $this->tag, /*"edit" => "isset"*/]);
+                    "description" => $this->description, "tag" => $this->tag, /*"edit" => "isset"*/]);
                 exit(1);
             }
 
 
             $myWishes = $this->wishRepo->getMyWishes();
 
-            foreach ($myWishes as $item){
-                if($item instanceof Wish){
+            foreach ($myWishes as $item) {
+                if ($item instanceof Wish) {
                     similar_text($item->title, $this->title, $percent);
 
-                    /* Check the percentage of the matches between the title */ 
-                    if($percent > 80){
+                    /* Check the percentage of the matches between the title */
+                    if ($percent > 80) {
                         render("addWish.tpl", ["error" => "U heeft al een wens met een soort gelijke titel.", "wishtitle" => $this->title,
-                            "description" => $this->description,"tag" => $this->tag, /*"edit" => "isset"*/]);
+                            "description" => $this->description, "tag" => $this->tag, /*"edit" => "isset"*/]);
                         exit(1);
                         break;
                     }
-                    
+
                 }
             }
 
@@ -429,7 +429,7 @@ class WishController
 
     public function back()
     {
-        if(!empty($this->getCurrent())){
+        if (!empty($this->getCurrent())) {
             redirect("/wishes/show=" . $this->getCurrent());
             exit(0);
         }

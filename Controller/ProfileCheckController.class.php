@@ -6,9 +6,9 @@
  * Date: 9-3-2016
  * Time: 20:10
  */
-class ProfileCheckController
+class ProfilecheckController
 {
-
+    // BREEKT MET NIEUWE STRCTUUR TODO
 
     public function run()
     {

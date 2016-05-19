@@ -6,7 +6,7 @@
  * Date: 6-4-2016
  * Time: 14:25
  */
-class AdminTalentController
+class AdmintalentsController
 {
     private $message_model, $page, $talents, $all_talents, $unaccepted_talents, $current_all_talents_number, $all_talents_number, $talent_repository, $forbidden_words_repo, $synonym_id, $accepted_talents;
 
@@ -29,6 +29,7 @@ class AdminTalentController
 
     public function run()
     {
+        // TODO: does not use new structure.
         $this->checkPost();
         $this->checkGet();
         $this->checkSession();

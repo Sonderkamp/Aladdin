@@ -10,24 +10,14 @@ class ProfileController
 {
 
 
-    public function run()
+    public function __construct()
     {
         guaranteeLogin("/Profile");
-        if (isset($_GET["action"])) {
-            switch (strtolower($_GET["action"])) {
-                case "change":
-                    $this->changeDetails();
-                    break;
-                case "changepw":
-                    $this->changePass();
-                    break;
-                default:
-                    apologize("404 not found, Go back to my wishes");
-                    break;
-            }
-        } else {
-            $this->manage();
-        }
+    }
+
+    public function run()
+    {
+        $this->manage();
     }
 
 
@@ -81,7 +71,7 @@ class ProfileController
         exit();
     }
 
-    private function changeDetails()
+    private function change()
     {
         $usermodel = new UserRepository();
 
@@ -132,7 +122,7 @@ class ProfileController
         exit();
     }
 
-    private function changePass()
+    private function changepw()
     {
         $userModel = new UserRepository();
         if ($_SERVER["REQUEST_METHOD"] == "POST") {

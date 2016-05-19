@@ -1,7 +1,9 @@
 <?php
 
-class MailController
+class InboxController
 {
+
+    // BREEKT MET NIEUWE STRCTUUR TODO
 
     private $messageModel;
     private $error = null;
@@ -9,9 +11,8 @@ class MailController
     private $title = "";
     private $page = 1;
 
-    public function run()
+    public function __construct()
     {
-        $this->messageModel = new messageRepository();
         guaranteeLogin("/Inbox");
 
         // page logic
@@ -27,7 +28,11 @@ class MailController
         } else
             $this->page = 1;
 
+        $this->messageModel = new messageRepository();
+    }
 
+    public function run()
+    {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!Empty($_GET["action"])) {
                 switch (strtolower($_GET["action"])) {

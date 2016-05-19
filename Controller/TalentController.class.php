@@ -6,8 +6,9 @@
  * Date: 27-2-2016
  * Time: 21:15
  */
-class TalentController
+class TalentsController
 {
+    // BREEKT MET NIEUWE STRCTUUR TODO
     private $message_model, $page, $talents, $talents_user, $talent_repository, $talent_numbers, $current_talent_number, $user_talents_number, $current_user_talent_number, $talent_name, $talent_error, $talent_warning, $requested_talents, $requested_talents_number, $current_requested_talent_number, $forbidden_words_repo;
 
     public function __construct()

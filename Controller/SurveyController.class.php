@@ -8,7 +8,7 @@
 
 class SurveyController
 {
-
+    // BREEKT MET NIEUWE STRCTUUR TODO
     public $survey;
 
     public function run()

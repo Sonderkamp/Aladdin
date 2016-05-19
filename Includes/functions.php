@@ -98,9 +98,6 @@ function render($template, $values = [])
         // render footer
         $smarty->display("View/footer.tpl");
 
-    } // else err
-    else {
-        trigger_error("Invalid template: $template", E_USER_ERROR);
     }
 }
 
