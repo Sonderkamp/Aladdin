@@ -6,14 +6,14 @@
  * Date: 21-03-16
  * Time: 16:56
  */
-class MatchController
+class MatchController extends Controller
 {
 
     private $wishRepository, $talenRepository, $reportRepository, $userRepository;
 
     public function __construct()
     {
-        guaranteeLogin("/Wishes");
+        (new AccountController())->guaranteeLogin("/Wishes");
         $this->wishRepository = new WishRepository();
         $this->talenRepository = new TalentRepository();
         $this->reportRepository = new ReportRepository();
@@ -65,7 +65,7 @@ class MatchController
         /* set current to 'match' so I can go back to the correct page */
         $_SESSION["current"] = "match";
 
-        render("wishOverview.tpl",
+        $this->render("wishOverview.tpl",
             ["title" => "Vervulde wensen overzicht", "wishes" => $possibleMatches,
                 "canAddWish" => $canAddWish, "currentPage" => "match", "displayName" => $displayName, "reported" => $displayNames]);
 

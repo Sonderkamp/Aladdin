@@ -6,7 +6,7 @@
  * Date: 3-2-2016
  * Time: 20:17
  */
-class AdminController
+class AdminController extends Controller
 {
 
     public function guaranteeAdmin($link)
@@ -24,7 +24,7 @@ class AdminController
     public function run()
     {
 
-        guaranteeAdmin("/admin");
+        (new AdminController())->guaranteeAdmin("/admin");
 
         if (!empty($_GET["csv"])) {
 
@@ -46,7 +46,7 @@ class AdminController
 
 
         } else {
-            render("adminHome.tpl", ["title" => "Statistiek"]);
+            $this->render("adminHome.tpl", ["title" => "Statistiek"]);
             exit();
         }
 
@@ -69,11 +69,11 @@ class AdminController
                 $adminModel = new Admin();
                 if ($adminModel->validate(htmlspecialchars($_POST["username"]), htmlspecialchars($_POST["password"]))) {
                     if (!empty($_SESSION["Redirect"])) {
-                        redirect($_SESSION["Redirect"]);
+                        $this->redirect($_SESSION["Redirect"]);
                         $_SESSION["Redirect"] = null;
                         exit(0);
                     }
-                    redirect("/Admin");
+                    $this->redirect("/Admin");
                     exit();
                 }
                 $this->loginError("gebruikersnaam/wachtwoord combinatie is niet geldig");
@@ -81,13 +81,13 @@ class AdminController
             }
             $this->loginError("Niet alle gegevens zijn ingevuld");
         } else {
-            render("Admin/login.tpl", ["title" => "Log in", "username" => ""]);
+            $this->render("Admin/login.tpl", ["title" => "Log in", "username" => ""]);
         }
     }
 
     private function loginError($mess)
     {
-        render("Admin/login.tpl", ["title" => "Log in", "error" => $mess, "username" => htmlspecialchars($_POST["username"])]);
+        $this->render("Admin/login.tpl", ["title" => "Log in", "error" => $mess, "username" => htmlspecialchars($_POST["username"])]);
         exit();
     }
 }

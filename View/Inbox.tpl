@@ -108,16 +108,16 @@
                     <a href="/Inbox/folder={$folderShortcut}/p={$page[0]}/message={$message->id}"
                        class="title">{htmlspecialchars($message->title)}</a> <span
                             class="info">
-                    {if isset($out)}
-                        {$message->receiver}
-                        {else}
+
                         {if $message->adminSender}
                             <span class="glyphicon glyphicon-eye-open"></span>
                             {$message->sender}
+                        {elseif $message->sender == $smarty.session.user -> displayName}
+                            {$message->receiver}
                         {else}
                             {$message->sender}
                         {/if}
-                    {/if}<br>{$message->date}</span>
+                        <br>{$message->date}</span>
                     <br>
                     <span>{$message->content}</span><br><br>
                 </div>

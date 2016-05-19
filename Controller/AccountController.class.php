@@ -6,12 +6,12 @@
  * Date: 3-2-2016
  * Time: 18:49
  */
-class AccountController
+class AccountController extends Controller
 {
     public function run()
     {
         $this->pagepicker();
-       
+
     }
 
     public function guaranteeLogin($s)
@@ -65,11 +65,11 @@ class AccountController
     private function activate()
     {
         if (empty($_GET["token"])) {
-            redirect("/Account");
+            $this->redirect("/Account");
             exit(1);
         }
         $this->checkActivateToken($_GET["token"]);
-        redirect("/Account");
+        $this->redirect("/Account");
     }
 
     private function recover()
@@ -81,29 +81,29 @@ class AccountController
                 $username = $this->checkRecoveryToken($_POST["token"]);
                 $userRepo = new UserRepository();
                 if ((Empty($_POST["username"]) || !$userRepo->validateUsername($_POST["username"]))) {
-                    apologize("Invalid form.");
+                    $this->apologize("Invalid form.");
                 }
                 if ($username != $_POST["username"]) {
-                    apologize("Invalid form.");
+                    $this->apologize("Invalid form.");
                 }
                 // check passwords
                 if (Empty($_POST["password1"]) || Empty($_POST["password2"])) {
-                    render("newPassword.tpl", ["error" => "Niet alles ingevuld", "title" => "nieuw wachtwoord", "username" => $username, "token" => $_POST["token"]]);
+                    $this->render("newPassword.tpl", ["error" => "Niet alles ingevuld", "title" => "nieuw wachtwoord", "username" => $username, "token" => $_POST["token"]]);
                     exit(1);
                 }
                 if ($_POST["password1"] != $_POST["password2"]) {
-                    render("newPassword.tpl", ["error" => "Wachtwoorden komen niet overeen.", "title" => "nieuw wachtwoord", "username" => $username, "token" => $_POST["token"]]);
+                    $this->render("newPassword.tpl", ["error" => "Wachtwoorden komen niet overeen.", "title" => "nieuw wachtwoord", "username" => $username, "token" => $_POST["token"]]);
                     exit(1);
                 }
 
                 // save password
                 if (!$userRepo->newPassword($_POST["username"], $_POST["password1"])) {
-                    render("newPassword.tpl", ["error" => "Wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter, een nummer en een speciaal teken bevatten.", "title" => "nieuw wachtwoord", "username" => $username, "token" => $_POST["token"]]);
+                    $this->render("newPassword.tpl", ["error" => "Wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter, een nummer en een speciaal teken bevatten.", "title" => "nieuw wachtwoord", "username" => $username, "token" => $_POST["token"]]);
                     exit(1);
                 }
                 // reset hash & date
                 $userRepo->resetHash($_POST["username"]);
-                redirect("/");
+                $this->redirect("/");
 
 
                 exit(1);
@@ -117,7 +117,7 @@ class AccountController
                     $mailer = new Email();
                     if ($userRepo->setRecoveryMail($mailer, $_POST["username"])) {
                         $mailer->sendMail();
-                        render("messageScreen.tpl", ["title" => "Email verzonden.", "message" => "Er is een email verstuurd naar " . $_POST["username"] . " met een link om uw wachtwoord te resetten.
+                        $this->render("messageScreen.tpl", ["title" => "Email verzonden.", "message" => "Er is een email verstuurd naar " . $_POST["username"] . " met een link om uw wachtwoord te resetten.
                     Deze link verschijnt binnen drie minuten.
                     als u niks binnenkrijgt, kijk alstublieft in uw spam folder."]);
                         exit(1);
@@ -132,12 +132,12 @@ class AccountController
         } else if (!Empty($_GET["token"])) {
 
             $username = $this->checkRecoveryToken($_GET["token"]);
-            render("newPassword.tpl", ["title" => "nieuw wachtwoord", "username" => $username, "token" => $_GET["token"]]);
+            $this->render("newPassword.tpl", ["title" => "nieuw wachtwoord", "username" => $username, "token" => $_GET["token"]]);
             exit(1);
 
         }
         // new recovery
-        render("recover.tpl", ["title" => "Log in", "username" => ""]);
+        $this->render("recover.tpl", ["title" => "Log in", "username" => ""]);
 
     }
 
@@ -149,7 +149,7 @@ class AccountController
         $username = $userRepo->validateToken($token);
         if ($username === false) {
             $userRepo->logRecovery();
-            apologize("niet geldige token.");
+            $this->apologize("niet geldige token.");
         }
         return $username;
     }
@@ -162,7 +162,7 @@ class AccountController
         $username = $userRepo->validateActivateToken($token);
         if ($username === false) {
             $userRepo->logRecovery();
-            apologize("niet geldige token.");
+            $this->apologize("niet geldige token.");
 
         }
         return $username;
@@ -171,7 +171,7 @@ class AccountController
     private function canRecover($userRepo)
     {
         if (!$userRepo->CanRecover()) {
-            apologize("Er is afgelopen 24 uur te veel malfide activiteit van dit IP adress gekomen. Wacht 24 uur voordat u opnieuw een activatielink of recoverylink probeert.");
+            $this->apologize("Er is afgelopen 24 uur te veel malfide activiteit van dit IP adress gekomen. Wacht 24 uur voordat u opnieuw een activatielink of recoverylink probeert.");
         }
     }
 
@@ -190,11 +190,11 @@ class AccountController
                         exit();
                     }
                     if (!empty($_SESSION["Redirect"])) {
-                        redirect($_SESSION["Redirect"]);
+                        $this->redirect($_SESSION["Redirect"]);
                         $_SESSION["Redirect"] = null;
                         exit(0);
                     }
-                    redirect("/");
+                    $this->redirect("/");
                     exit();
                 }
                 $this->loginError("gebruikersnaam/wachtwoord combinatie is niet geldig");
@@ -202,19 +202,19 @@ class AccountController
             }
             $this->loginError("Niet alle gegevens zijn ingevuld");
         } else {
-            render("login.tpl", ["title" => "Log in", "username" => ""]);
+            $this->render("login.tpl", ["title" => "Log in", "username" => ""]);
         }
     }
 
     private function loginError($mess)
     {
-        render("login.tpl", ["title" => "Log in", "error" => $mess, "username" => htmlspecialchars($_POST["username"])]);
+        $this->render("login.tpl", ["title" => "Log in", "error" => $mess, "username" => htmlspecialchars($_POST["username"])]);
         exit();
     }
 
     private function recoverError($mess)
     {
-        render("recover.tpl", ["title" => "Log in", "error" => $mess, "username" => htmlspecialchars($_POST["username"])]);
+        $this->render("recover.tpl", ["title" => "Log in", "error" => $mess, "username" => htmlspecialchars($_POST["username"])]);
         exit();
     }
 
@@ -234,13 +234,13 @@ class AccountController
                 || Empty($_POST["dob"])
                 || Empty($_POST["gender"])
             ) {
-                render("register.tpl", ["title" => "register", "error" => "Vul AUB alles in"]);
+                $this->render("register.tpl", ["title" => "register", "error" => "Vul AUB alles in"]);
                 exit(1);
             }
 
             // Validate stuff
             if ($_POST["password1"] != $_POST["password2"]) {
-                render("register.tpl", ["title" => "register", "error" => "wachtwoorden komen niet overeen."]);
+                $this->render("register.tpl", ["title" => "register", "error" => "wachtwoorden komen niet overeen."]);
                 exit(1);
             }
 
@@ -269,18 +269,18 @@ class AccountController
                 $user = $userRepo->getUser($arr["username"]);
                 if ($userRepo->setActivateMail($mailer, $arr["username"])) {
                     $mailer->sendMail();
-                    render("messageScreen.tpl", ["title" => "Email verzonden.", "message" => "Er is een email verstuurd naar " . $arr["username"] . " met een activatielink.
+                    $this->render("messageScreen.tpl", ["title" => "Email verzonden.", "message" => "Er is een email verstuurd naar " . $arr["username"] . " met een activatielink.
                     Deze link verschijnt binnen drie minuten.
                     als u niks binnenkrijgt, kijk alstublieft in uw spam folder."]);
                     exit(1);
 
                 } else {
-                    render("register.tpl", ["title" => "register", "error" => "Mail send error"]);
+                    $this->render("register.tpl", ["title" => "register", "error" => "Mail send error"]);
                     exit(1);
                 }
 
             }
-            render("register.tpl", ["title" => "register", "error" => $res]);
+            $this->render("register.tpl", ["title" => "register", "error" => $res]);
             exit(1);
             // usermodel register
             // send email with register token.
@@ -289,10 +289,10 @@ class AccountController
         } else {
 
             if (empty($_GET["type"])) {
-                render("register.tpl", ["title" => "register"]);
+                $this->render("register.tpl", ["title" => "register"]);
                 exit();
             }
-            render("register.tpl", ["title" => "register", "type" => $_GET["type"]]);
+            $this->render("register.tpl", ["title" => "register", "type" => $_GET["type"]]);
             exit();
 
         }
@@ -301,10 +301,10 @@ class AccountController
 
     private function manage()
     {
-        //        // todo: render user-manage screen
+        //        // todo: $this->render user-manage screen
         //        echo $_SESSION["user"]->email;
 
-        render("account.tpl", ["title" => "account"]);
+        $this->render("account.tpl", ["title" => "account"]);
         exit();
     }
 
@@ -327,6 +327,6 @@ class AccountController
 //        session_destroy();
         $_SESSION["user"] = null;
         // redirect to main page
-        redirect("/");
+        $this->redirect("/");
     }
 }

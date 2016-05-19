@@ -1,6 +1,6 @@
 <?php
 
-class InboxController
+class InboxController extends Controller
 {
 
     // BREEKT MET NIEUWE STRCTUUR TODO
@@ -13,8 +13,8 @@ class InboxController
 
     public function __construct()
     {
-        guaranteeLogin("/Inbox");
 
+        (new AccountController())->guaranteeLogin("/Inbox");
         // page logic
         if (!empty($_GET["p"])) {
             $_GET["p"] = intval($_GET["p"]);
@@ -38,9 +38,9 @@ class InboxController
                 switch (strtolower($_GET["action"])) {
                     case "new":
                         $this->sendNewMessage();
-                        redirect("/Inbox/folder=outbox/p=1");
+                        $this->redirect("/Inbox/folder=outbox/p=1");
                     default:
-                        render("inbox.tpl", ["title" => "Inbox", "folder" => "Postvak in", "page" => $this->page]);
+                        $this->render("inbox.tpl", ["title" => "Inbox", "folder" => "Postvak in", "page" => $this->page]);
                         break;
                 }
                 exit();
@@ -71,10 +71,10 @@ class InboxController
                         if (($key = array_search($_SESSION["user"]->displayName, $names)) !== false) {
                             unset($names[$key]);
                         }
-                        render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "names" => $names]);
+                        $this->render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "names" => $names]);
                         break;
                     default:
-                        render("inbox.tpl", ["title" => "Inbox", "folder" => "Postvak in", "page" => $this->messageModel->isValidPage()]);
+                        $this->render("inbox.tpl", ["title" => "Inbox", "folder" => "Postvak in", "page" => $this->messageModel->isValidPage()]);
                         break;
                 }
                 exit();
@@ -116,7 +116,7 @@ class InboxController
         $folder = "Postvak in";
         $folderShortcut = "inbox";
         $this->setFolder($folder, $folderShortcut);
-        render("message.tpl", ["page" => $this->page, "title" => "Inbox", "folder" => $folder . $this->title, "folderShortcut" => $folderShortcut, "message" => $message, "error" => $this->error, "search" => $this->search]);
+        $this->render("message.tpl", ["page" => $this->page, "title" => "Inbox", "folder" => $folder . $this->title, "folderShortcut" => $folderShortcut, "message" => $message, "error" => $this->error, "search" => $this->search]);
         exit();
     }
 
@@ -155,7 +155,7 @@ class InboxController
 
         $message->content = "\n\n\n-------------------------------\n Origineel: \n-------------------------------\n" . $message->content;
         $message->content = str_replace("<br />", "\n", $message->content);
-        render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "message" => $message, "names" => $names]);
+        $this->render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "message" => $message, "names" => $names]);
         exit();
     }
 
@@ -215,7 +215,7 @@ class InboxController
         $folderShortcut = "inbox";
         $this->setFolder($folder, $folderShortcut);
 
-        render("inbox.tpl", ["title" => "Inbox", "folder" => $folder . $this->title, "folderShortcut" => $folderShortcut, "messages" => $this->messageModel->getbox($this->search, $this->page, $folderShortcut), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPage()]);
+        $this->render("inbox.tpl", ["title" => "Inbox", "folder" => $folder . $this->title, "folderShortcut" => $folderShortcut, "messages" => $this->messageModel->getbox($this->search, $this->page, $folderShortcut), "error" => $this->error, "search" => $this->search, "page" => $this->messageModel->isValidPage()]);
         exit();
     }
 
@@ -231,7 +231,7 @@ class InboxController
             empty($_POST["title"]) ||
             empty($_POST["message"])
         ) {
-            render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Niet alles is ingevuld.", "names" => $names]);
+            $this->render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Niet alles is ingevuld.", "names" => $names]);
             exit();
         }
         $_POST["recipient"] = trim($_POST["recipient"]);
@@ -242,7 +242,7 @@ class InboxController
             empty($_POST["title"]) ||
             empty($_POST["message"])
         ) {
-            render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Niet alles is ingevuld.", "names" => $names]);
+            $this->render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Niet alles is ingevuld.", "names" => $names]);
             exit();
         }
 
@@ -250,7 +250,7 @@ class InboxController
         $username = $userRepo->getUser($_POST["recipient"])->email;
 
         if ($username === false) {
-            render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Gebruiker bestaat niet", "names" => $names]);
+            $this->render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => "Gebruiker bestaat niet", "names" => $names]);
             exit();
         }
 
@@ -259,7 +259,7 @@ class InboxController
         $res = $mes->checkblock($_SESSION["user"]->email, $username);
 
         if ($res !== false) {
-            render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => $res, "names" => $names]);
+            $this->render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => $res, "names" => $names]);
             exit();
         }
 

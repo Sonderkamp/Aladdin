@@ -6,7 +6,7 @@
  * Date: 25-4-2016
  * Time: 12:11
  */
-class ForbiddenwordsController
+class ForbiddenwordsController extends Controller
 {
     // Instant variables
     private $wordRepo, $words, $error, $success, $wordsCount, $page;
@@ -15,7 +15,7 @@ class ForbiddenwordsController
     {
 
         // Guarentee if an admin is logged in
-        guaranteeAdmin("/forbiddenwords");
+        (new AdminController())->guaranteeAdmin("/forbiddenwords");
 
         // Set the wordRepo
         $this->wordRepo = new ForbiddenWordRepository();
@@ -38,7 +38,7 @@ class ForbiddenwordsController
         $this->setWords();
 
         // Render the .tpl
-        render("Admin/forbiddenWord.tpl",
+        $this->render("Admin/forbiddenWord.tpl",
             ["title" => "Verboden woorden",
                 "forbiddenWords" => $this->words,
                 "errorMessage" => $this->error,
@@ -74,7 +74,7 @@ class ForbiddenwordsController
                 }
 
                 // Reload page without post requests
-                $this->redirect();
+                $this->refresh();
             }
 
             // Check if the request is a word to be removed
@@ -99,7 +99,7 @@ class ForbiddenwordsController
                 }
 
                 // Reload page without post requests
-                $this->redirect();
+                $this->refresh();
             }
 
             // Check if the request method is a word to be edited and the old word is send as well
@@ -129,7 +129,7 @@ class ForbiddenwordsController
                 }
 
                 // Reload page without post requests
-                $this->redirect();
+                $this->refresh();
             }
 
             // Check if the request method sent is for pagination
@@ -148,12 +148,12 @@ class ForbiddenwordsController
                 }
 
                 // Reload page without post requests
-                $this->redirect();
+                $this->refresh();
             }
         }
     }
 
-    private function redirect()
+    private function refresh()
     {
 
         // Set header

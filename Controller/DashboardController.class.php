@@ -6,13 +6,13 @@
  * Date: 04/04/2016
  * Time: 16:10
  */
-class DashboardController
+class DashboardController extends Controller
 {
     private $wishRepo, $talentRepo, $wishLimit, $talentLimit;
 
     public function __construct()
     {
-        guaranteeLogin("/dashboard");
+        (new AccountController())->guaranteeLogin("/dashboard");
         $this->wishRepo = new WishRepository();
         $this->talentRepo = new TalentRepository();
         $this->wishLimit = $this->wishRepo->wishLimit;
@@ -46,7 +46,7 @@ class DashboardController
             $wishCheck = true;
         }
 
-        render("dashboard.tpl", ["title" => $_SESSION["user"]->displayName,
+        $this->render("dashboard.tpl", ["title" => $_SESSION["user"]->displayName,
             "wishes" => $this->getMyWishes(),
             "talents" => $this->getMyTalents(),
             "wishCheck" => $wishCheck,
@@ -56,7 +56,7 @@ class DashboardController
 
     public function showProfile()
     {
-        render("dashboard.tpl", ["title" => $_SESSION["user"]->displayName,
+        $this->render("dashboard.tpl", ["title" => $_SESSION["user"]->displayName,
             "wishes" => $this->getMyWishes(),
             "talents" => $this->getMyTalents(),
             "wishCheck" => false

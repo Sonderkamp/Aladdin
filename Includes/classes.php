@@ -28,6 +28,7 @@ include_once("Model/QueryBuilder/MessageQueryBuilder.php");
 include_once("Model/QueryBuilder/UserQueryBuilder.php");
 include_once("Model/QueryBuilder/ForbiddenWordQueryBuilder.php");
 
+include_once("Controller/Controller.class.php");
 include_once("Controller/WishController.class.php");
 include_once("Controller/TalentController.class.php");
 include_once("Controller/AccountController.class.php");

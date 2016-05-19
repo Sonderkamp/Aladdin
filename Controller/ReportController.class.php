@@ -6,7 +6,7 @@
  * Date: 21-04-16
  * Time: 12:30
  */
-class ReportController
+class ReportController extends Controller
 {
 
     private $reportRepository, $wishRepository;
@@ -14,14 +14,15 @@ class ReportController
 
     public function __construct()
     {
-        guaranteeLogin("/Wishes");
+
+        (new AccountController())->guaranteeLogin("/Wishes");
         $this->reportRepository = new ReportRepository();
         $this->wishRepository = new WishRepository();
     }
 
     public function run()
     {
-        redirect("/wishes");
+        $this->redirect("/wishes");
     }
 
     public function report()

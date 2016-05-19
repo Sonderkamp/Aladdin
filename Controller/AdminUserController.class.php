@@ -6,14 +6,14 @@
  * Date: 21-04-16
  * Time: 14:51
  */
-class AdminuserController
+class AdminuserController extends Controller
 {
 
     private $reportRepository, $userRepository;
 
     public function __construct()
     {
-        guaranteeAdmin("/Wishes");
+        (new AdminController())->guaranteeAdmin("/Wishes");
         $this->reportRepository = new ReportRepository();
         $this->userRepository = new UserRepository();
     }
@@ -42,7 +42,7 @@ class AdminuserController
                 }
             }
         }
-        render("adminUser.tpl", ["reports" => $report, "current" => $this->getCurrent()]);
+        $this->render("adminUser.tpl", ["reports" => $report, "current" => $this->getCurrent()]);
     }
 
     public function handled()
@@ -50,7 +50,7 @@ class AdminuserController
         $this->setCurrent("handled");
         $report = $this->reportRepository->getHandled();
 //        $report = $this->reportRepository->get("handled");
-        render("adminUser.tpl", ["reports" => $report, "current" => $this->getCurrent()]);
+        $this->render("adminUser.tpl", ["reports" => $report, "current" => $this->getCurrent()]);
     }
 
     public function check()

@@ -6,13 +6,13 @@
  * Date: 8-3-2016
  * Time: 17:50
  */
-class AdminwishController
+class AdminwishController extends Controller
 {
     public $wishRepo, $messRepo;
 
     public function __construct()
     {
-        guaranteeAdmin("/AdminWish");
+        (new AdminController())->guaranteeAdmin("/AdminWish");
         $this->wishRepo = new WishRepository();
         $this->messRepo = new MessageRepository();
     }
@@ -37,7 +37,7 @@ class AdminwishController
                     $this->refuseWish($_POST["wish_id"]);
                     break;
                 default:
-                    apologize("404 page not found");
+                    $this->apologize("404 page not found");
                     break;
             }
         }
@@ -66,7 +66,7 @@ class AdminwishController
                     $this->renderPage("deleted");
                     break;
                 default:
-                    apologize("404 page not found");
+                    $this->apologize("404 page not found");
                     break;
             }
         }
@@ -85,7 +85,7 @@ class AdminwishController
         $deniedWishes = $this->wishRepo->getDeniedWishes();
         $deletedWishes = $this->wishRepo->getDeletedWishes();
 
-        render("AdminWish.tpl", ["title" => "WensBeheer",
+        $this->render("AdminWish.tpl", ["title" => "WensBeheer",
             "requested" => $requestedWishes,
             "published" => $publishedWishes,
             "matched" => $matchedWishes,

@@ -6,7 +6,7 @@
  * Time: 16:04
  */
 
-class SurveyController
+class SurveyController extends Controller
 {
     // BREEKT MET NIEUWE STRCTUUR TODO
     public $survey;
@@ -29,7 +29,7 @@ class SurveyController
                 $this->survey->surveyGroups[$givenAnswer->positiveGroup] += 1;
                 $this->survey->surveyGroups[$givenAnswer->negativeGroup] -= 1;
             } else {
-                apologize("U heeft vraag: " . $item->id . " niet beantwoord");
+                $this->apologize("U heeft vraag: " . $item->id . " niet beantwoord");
             }
         }
         $highestScore = max($this->survey->surveyGroups);
@@ -39,7 +39,7 @@ class SurveyController
 
     private function showSurvey()
     {
-        render("survey.tpl", ["title" => $_SESSION["user"]->displayName, "questions" => $this->survey->questions]);
+        $this->render("survey.tpl", ["title" => $_SESSION["user"]->displayName, "questions" => $this->survey->questions]);
     }
 
 
@@ -60,7 +60,7 @@ class SurveyController
                 break;
         }
 
-        render("surveyResult.tpl", ["title" => $_SESSION["user"]->displayName , "groupMessage" => $groupMessage]);
+        $this->render("surveyResult.tpl", ["title" => $_SESSION["user"]->displayName , "groupMessage" => $groupMessage]);
     }
 
 }
