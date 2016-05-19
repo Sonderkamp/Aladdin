@@ -14,6 +14,7 @@ class InboxController extends Controller
     {
 
         (new AccountController())->guaranteeLogin("/Inbox");
+
         // page logic
         if (!empty($_GET["p"])) {
             $_GET["p"] = intval($_GET["p"]);
@@ -228,7 +229,7 @@ class InboxController extends Controller
         } catch (Exception $e) {
             // Variable is empty before trim.
         }
-        
+
         if (empty($_POST["recipient"]) ||
             empty($_POST["title"]) ||
             empty($_POST["message"])
