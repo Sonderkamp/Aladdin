@@ -138,8 +138,7 @@ class WishRepository
         $wishId = Database::query_safe($wishIdQuery, $wishIdArray);
 
         $id = $wishId[0]["lastwish"];
-
-
+        
         $this->wishContentQuery($newWish, $id);
     }
 
@@ -159,6 +158,8 @@ class WishRepository
             VALUES (?,?,?)";
         $array = array($description, $wish, $id);
         Database::query_safe($query, $array);
+        
+        
 
         $array = $this->talentRepository->getTalents();
         $allTags = array();
@@ -189,6 +190,10 @@ class WishRepository
 
     public function addTalentToWish($talent, $wishId)
     {
+
+        echo "talent " . $talent;
+        echo "wishId " . $wishId;
+
         $query = "SELECT `Id` as talentId FROM `talent` WHERE `Name`=?";
         $array = array($talent);
         $result = Database::query_safe($query, $array);
@@ -381,4 +386,30 @@ class WishRepository
            return $this->getReturnArray($result);
         }
     }
+    
+    
+    public function sendEditMail($id, $titel,$content,$tags){
+        $head = "Beste, \n\n email test";
+        $msg = "Uw wensweiziging is ingediend, uw wens zal na goedkeuring zichtbaar zijn voor anderen, we houden u hiervan nog op de hoogte.\n\n";
+        $wish = "Uw nieuwe wens is als volgt: \n";
+        $wishName = "Naam van de wens: \t\t" . $titel . " \n";
+        $wishDescription = "Beschrijving van de wens: \t" . $content. "\n";
+        $allTagsForMail = implode(' #', $tags);
+        $wishTags = "Uw tags zijn: \t\t\t\t#" . $allTagsForMail . "\n\n";
+        $end = "Vriendelijke groeten, \n\n Alladin";
+
+        $message = $head . $msg . $wish . $wishName . $wishDescription . $wishTags . $end;
+
+        $mail = new Email();
+        $mail->fromName = "Alladin";
+        $mail->subject = "Wens is gewijzigd";
+        $mail->message = $message;
+        $mail->to = $_SESSION["user"]->email;
+        $mail->sendMail();
+
+        $newmail = new messageRepository();
+        $msgID = $newmail->sendMessage("Admin", $mail->to, $mail->subject, $mail->message);
+        $newmail->setLink($id, "Wens", $msgID);
+    }
+    
 }
