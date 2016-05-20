@@ -29,12 +29,17 @@ class MatchController extends Controller
     {
         /* get my own talents */
         $userTalents = $this->talenRepository->getAddedTalents();
+        print_r($userTalents);
+        exit(1);
 
         /* get all sysnoynms of my talents */
         $synonmys = $this->talenRepository->getSynonymsOfTalents($userTalents);
 
         /* delete multipe talents */
         $allTalents = array_merge($userTalents, $synonmys);
+
+        print_r($allTalents);
+        exit(1);
 
         /* get wishes who match by talents/synonyms */
         $possibleMatches = $this->wishRepository->getAllWishesWithTag($allTalents);

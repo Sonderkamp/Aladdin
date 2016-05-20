@@ -175,7 +175,7 @@ class TalentQueryBuilder
         }
 
         /* my talents */
-        $talents = $this->inCreator($synoymId);
+        $talents = $this->getSQLString($synoymId);
 
         $result = Database::query("select * from synonym where talent_Id IN $talents");
 
@@ -184,7 +184,7 @@ class TalentQueryBuilder
             $id[] = $item["synonym_Id"];
         }
 
-        $id = $this->inCreator($id);
+        $id = $this->getSQLString($id);
 
         $sql = "select * from talent where Id in $id";
         $result = Database::query($sql);
@@ -240,12 +240,36 @@ class TalentQueryBuilder
             array($synonymId, $talentId));
     }
 
+    public function getWishTalents(Wish $wish){
+        $query = "SELECT `talent_id` as talent FROM `talent_has_wish` WHERE `wish_id`=?";
+        $array = array($wish->id);
+        $result = Database::query_safe($query, $array);
+
+        $talentIDArray = array();
+        foreach ($result as $item) {
+            $talentIDArray[] = $item["talent"];
+        }
+
+        $SQLString = $this->getSQLString($talentIDArray);
+
+        $sql = "SELECT * FROM `talent` WHERE `Id` IN $SQLString";
+        return Database::query($sql);
+
+//        $names = Database::query($sql);
+
+//        $returnArray = array();
+//        for ($i = 0; $i < count($names); $i++) {
+//            $returnArray[] = $names[$i]["Name"];
+//        }
+//        return $returnArray;
+    }
+
     // Helping methods
 
     // zorgt ervoor dat je een query kunt maken met een IN, zoals: where IN $list
     // bij het aanroepen van inCreator() geef je een lijst mee met bijvoorbeeld Id's
     // deze return dan tussen () de waardes gevolgd door een komma
-    public function inCreator($array)
+    public function getSQLString($array)
     {
         $string = "(";
         foreach ($array as $item) {
