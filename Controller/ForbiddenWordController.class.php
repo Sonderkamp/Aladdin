@@ -220,19 +220,13 @@ class ForbiddenWordController
         // Check if an error message is set during a POST method
         if(!Empty($_SESSION["wordsError"])) {
 
-            // Set the error message to show in the .tpl
-            $this->error = $_SESSION["wordsError"];
-            // Clear the session so it can not show on accident when the page loads again.
-            $_SESSION["wordsError"] = "";
+            $this->error = $this->getSessionVar("wordsError");
         }
 
         // Check if a succes message is set during a POST method
         if(!Empty($_SESSION["wordsSucces"])) {
 
-            // Set the succes message to show in the .tpl
-            $this->success = $_SESSION["wordsSucces"];
-            // Clear the session so it can not show on accident when the page loads again.
-            $_SESSION["wordsSucces"] = "";
+            $this->success = $this->getSessionVar("wordsSucces");
         }
 
         // Check if the pagination is set or not. If the variable isn't declared yet then set it.
@@ -275,5 +269,14 @@ class ForbiddenWordController
 
         // Return succeeded or failed.
         return $success;
+    }
+
+    // Duplicate code prevent
+    private function getSessionVar($name) {
+
+        // Set temp as the session, than clear session and return temp.
+        $temp = $_SESSION[$name];
+        $_SESSION[$name] = null;
+        return $temp;
     }
 }

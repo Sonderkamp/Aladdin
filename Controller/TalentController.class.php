@@ -8,20 +8,35 @@
  */
 class TalentController
 {
-    private $message_model, $page, $talents, $talents_user, $talent_repository, $talent_numbers, $current_talent_number, $user_talents_number, $current_user_talent_number, $talent_name, $talent_error, $talent_warning, $requested_talents, $requested_talents_number, $current_requested_talent_number, $forbidden_words_repo;
+    private $talentRepo,
+        $wordsRepo,
+        $messageModel,
+        $page,
+        $talents,
+        $talentsUser,
+        $talentCount,
+        $currentTalentCount,
+        $userCount,
+        $currentUserCount,
+        $talentName,
+        $talentError,
+        $talentWarning,
+        $requestedTalents,
+        $requestedCount,
+        $currentRequestedCount;
 
     public function __construct()
     {
         guaranteeLogin("/talents");
 
         $this->page = "m";
-        $this->talent_repository = new TalentRepository();
-        $this->forbidden_words_repo = new ForbiddenWordRepository();
-        $this->message_model = new messageRepository();
+        $this->talentRepo = new TalentRepository();
+        $this->wordsRepo = new ForbiddenWordRepository();
+        $this->messageModel = new messageRepository();
 
-        $this->user_talents_number = ceil(count($this->talent_repository->getAddedTalents())/10);
-        $this->talent_numbers = ceil(count($this->talent_repository->getUnaddedTalents())/10);
-        $this->requested_talents_number = ceil(count($this->talent_repository->getRequestedTalents())/10);
+        $this->userCount = ceil(count($this->talentRepo->getAddedTalents())/10);
+        $this->talentCount = ceil(count($this->talentRepo->getUnaddedTalents())/10);
+        $this->requestedCount = ceil(count($this->talentRepo->getRequestedTalents())/10);
     }
 
     public function run()
@@ -33,20 +48,20 @@ class TalentController
         render("talentOverview.tpl",
             ["title" => "Talenten",
                 "talents" => $this->talents,
-                "user_talents" => $this->talents_user,
-                "number_of_talents" => count($this->talent_repository->getAddedTalents()),
+                "user_talents" => $this->talentsUser,
+                "number_of_talents" => count($this->talentRepo->getAddedTalents()),
                 "talent_error" => "set",
-                "user_talents_number" => $this->user_talents_number,
-                "current_user_talent_number" => $this->current_user_talent_number,
-                "talent_number" => $this->talent_numbers,
-                "current_talent_number" => $this->current_talent_number,
+                "user_talents_number" => $this->userCount,
+                "current_user_talent_number" => $this->currentUserCount,
+                "talent_number" => $this->talentCount,
+                "current_talent_number" => $this->currentTalentCount,
                 "current_page" => $this->page,
-                "talent_name" => $this->talent_name,
-                "added_talent_error" => $this->talent_error,
-                "added_talent_warning" => $this->talent_warning,
-                "requested_talents" => $this->requested_talents,
-                "requested_talents_number" => $this->requested_talents_number,
-                "current_requested_talent_number" => $this->current_requested_talent_number]);
+                "talent_name" => $this->talentName,
+                "added_talent_error" => $this->talentError,
+                "added_talent_warning" => $this->talentWarning,
+                "requested_talents" => $this->requestedTalents,
+                "requested_talents_number" => $this->requestedCount,
+                "current_requested_talent_number" => $this->currentRequestedCount]);
         exit(0);
     }
 
@@ -67,28 +82,22 @@ class TalentController
 
                 $_SESSION["current_talent_page"] = "t";
 
-                header("HTTP/1.1 303 See Other");
-                header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-                exit(0);
+                $this->redirect();
             }
 
             if (!Empty($_POST["remove_id"])) {
-                $this->talent_repository->deleteTalent($_POST["remove_id"]);
+                $this->talentRepo->deleteTalent($_POST["remove_id"]);
 
                 $_SESSION["current_talent_page"] = "m";
 
-                header("HTTP/1.1 303 See Other");
-                header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-                exit(0);
+                $this->redirect();
             }
             else if (!Empty($_POST["add_id"])) {
-                $this->talent_repository->addTalentUser($_POST["add_id"]);
+                $this->talentRepo->addTalentUser($_POST["add_id"]);
 
                 $_SESSION["current_talent_page"] = "a";
 
-                header("HTTP/1.1 303 See Other");
-                header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-                exit(0);
+                $this->redirect();
             }
         }
     }
@@ -98,84 +107,74 @@ class TalentController
 
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
             if (!Empty($_GET["p"])) {
-                if($_GET["p"] == "m"){
-                    $this->page = $_GET["p"];
-                    $_SESSION["current_talent_page"] = $this->page;
-                } elseif($_GET["p"] == "a"){
-                    $this->page = $_GET["p"];
-                    $_SESSION["current_talent_page"] = $this->page;
-                } elseif($_GET["p"] == "t"){
-                    $this->page = $_GET["p"];
-                    $_SESSION["current_talent_page"] = $this->page;
-                } else{
-                    $this->page = "m";
-                    $_SESSION["current_talent_page"] = $this->page;
-                }
+
+                $page = htmlentities(trim($_GET["p"]),ENT_QUOTES);
+                $this->setPage($page);
             }
 
             if (!Empty($_GET["m"])) {
-                if($_GET["m"] > 0 & $_GET["m"] <= $this->user_talents_number) {
-                    $this->talents_user = $this->talent_repository->getAddedTalents($_GET["m"]);
-                    $this->current_user_talent_number = $_GET["m"];
-                    $_SESSION["talent_m"] = $this->current_user_talent_number;
+                if($_GET["m"] > 0 & $_GET["m"] <= $this->userCount) {
+                    $this->talentsUser = $this->talentRepo->getAddedTalents($_GET["m"]);
+                    $this->currentUserCount = $_GET["m"];
+                    $_SESSION["talent_m"] = $this->currentUserCount;
                 } else{
-                    $this->talents_user = $this->talent_repository->getAddedTalents(1);
-                    $this->current_user_talent_number = 1;
-                    $_SESSION["talent_m"] = $this->current_user_talent_number;
+                    $this->talentsUser = $this->talentRepo->getAddedTalents(1);
+                    $this->currentUserCount = 1;
+                    $_SESSION["talent_m"] = $this->currentUserCount;
                 }
             } else {
-                $this->talents_user = $this->talent_repository->getAddedTalents(1);
-                $this->current_user_talent_number = 1;
+                $this->talentsUser = $this->talentRepo->getAddedTalents(1);
+                $this->currentUserCount = 1;
             }
 
             if (!Empty($_GET["a"])) {
-                if($_GET["a"] > 0 & $_GET["a"] <= $this->talent_numbers) {
-                    $this->talents = $this->talent_repository->getUnaddedTalents($_GET["a"]);
-                    $this->current_talent_number = $_GET["a"];
-                    $_SESSION["talent_a"] = $this->current_talent_number;
+                if($_GET["a"] > 0 & $_GET["a"] <= $this->talentCount) {
+                    $this->talents = $this->talentRepo->getUnaddedTalents($_GET["a"]);
+                    $this->currentTalentCount = $_GET["a"];
+                    $_SESSION["talent_a"] = $this->currentTalentCount;
                 } else{
-                    $this->talents = $this->talent_repository->getUnaddedTalents(1);
-                    $this->current_talent_number = 1;
-                    $_SESSION["talent_a"] = $this->current_talent_number;
+                    $this->talents = $this->talentRepo->getUnaddedTalents(1);
+                    $this->currentTalentCount = 1;
+                    $_SESSION["talent_a"] = $this->currentTalentCount;
                 }
             } else {
-                $this->talents = $this->talent_repository->getUnaddedTalents(1);
-                $this->current_talent_number = 1;
+                $this->talents = $this->talentRepo->getUnaddedTalents(1);
+                $this->currentTalentCount = 1;
             }
 
             if (!Empty($_GET["t"])) {
-                if($_GET["t"] > 0 & $_GET["t"] <= $this->requested_talents_number) {
-                    $this->requested_talents = $this->talent_repository->getRequestedTalents($_GET["t"]);
-                    $this->current_requested_talent_number = $_GET["t"];
-                    $_SESSION["talent_t"] = $this->current_requested_talent_number;
+                if($_GET["t"] > 0 & $_GET["t"] <= $this->requestedCount) {
+                    $this->requestedTalents = $this->talentRepo->getRequestedTalents($_GET["t"]);
+                    $this->currentRequestedCount = $_GET["t"];
+                    $_SESSION["talent_t"] = $this->currentRequestedCount;
                 } else{
-                    $this->requested_talents = $this->talent_repository->getRequestedTalents(1);
-                    $this->current_requested_talent_number = 1;
-                    $_SESSION["talent_t"] = $this->current_requested_talent_number;
+                    $this->requestedTalents = $this->talentRepo->getRequestedTalents(1);
+                    $this->currentRequestedCount = 1;
+                    $_SESSION["talent_t"] = $this->currentRequestedCount;
                 }
             } else {
-                $this->requested_talents = $this->talent_repository->getRequestedTalents(1);
-                $this->current_requested_talent_number = 1;
+                $this->requestedTalents = $this->talentRepo->getRequestedTalents(1);
+                $this->currentRequestedCount = 1;
             }
 
             if (!Empty($_GET["search_added"])) {
 
                 $search = htmlentities(trim($_GET["search_added"],ENT_QUOTES));
 
-                $this->talents_user = $this->talent_repository->searchAddedTalents($search);
+                $this->talentsUser = $this->talentRepo->searchAddedTalents($search);
 
-                $this->user_talents_number = 0;
-                $this->current_user_talent_number = 0;
+                $this->userCount = 0;
+                $this->currentUserCount = 0;
 
                 $this->page = "m";
             } else if (!Empty($_GET["search_all"])) {
 
                 $search = htmlentities(trim($_GET["search_all"],ENT_QUOTES));
 
-                $this->talents = $this->talent_repository->searchUnaddedTalents($search);
+                $this->talents = $this->talentRepo->searchUnaddedTalents($search);
 
-                $this->current_talent_number = 0;
-                $this->talent_numbers = 0;
+                $this->currentTalentCount = 0;
+                $this->talentCount = 0;
 
                 $this->page = "a";
             }
@@ -190,57 +189,57 @@ class TalentController
         }
 
         if(!Empty($_SESSION["talent_m"])){
-            if($this->user_talents_number > 1){
-                $this->current_user_talent_number = $_SESSION["talent_m"];
-                $this->talents_user = $this->talent_repository->getAddedTalents($_SESSION["talent_m"]);
+            if($this->userCount > 1){
+                $this->currentUserCount = $_SESSION["talent_m"];
+                $this->talentsUser = $this->talentRepo->getAddedTalents($_SESSION["talent_m"]);
             } else{
-                $_SESSION["talent_m"] = $this->user_talents_number;
+                $_SESSION["talent_m"] = $this->userCount;
             }
         }
 
         if(!Empty($_SESSION["talent_a"])){
-            if($this->talent_numbers > 1){
-                $this->current_talent_number = $_SESSION["talent_a"];
-                $this->talents = $this->talent_repository->getUnaddedTalents($_SESSION["talent_a"]);
+            if($this->talentCount > 1){
+                $this->currentTalentCount = $_SESSION["talent_a"];
+                $this->talents = $this->talentRepo->getUnaddedTalents($_SESSION["talent_a"]);
             } else{
-                $_SESSION["talent_a"] = $this->talent_numbers;
+                $_SESSION["talent_a"] = $this->talentCount;
             }
         }
 
         if(!Empty($_SESSION["talent_t"])){
-            if($this->requested_talents_number > 1){
-                $this->current_requested_talent_number = $_SESSION["talent_t"];
-                $this->requested_talents = $this->talent_repository->getRequestedTalents($_SESSION["talent_t"]);
+            if($this->requestedCount > 1){
+                $this->currentRequestedCount = $_SESSION["talent_t"];
+                $this->requestedTalents = $this->talentRepo->getRequestedTalents($_SESSION["talent_t"]);
             } else{
-                $_SESSION["talent_t"] = $this->requested_talents_number;
+                $_SESSION["talent_t"] = $this->requestedCount;
             }
         }
 
         if(!Empty($_SESSION["talent_name"])){
-            $this->talent_name = $_SESSION["talent_name"];
+            $this->talentName = $_SESSION["talent_name"];
             $_SESSION["talent_name"] = "";
         }
 
         if(!Empty($_SESSION["err_talent"])){
-            $this->talent_error = $_SESSION["err_talent"];
+            $this->talentError = $_SESSION["err_talent"];
             $_SESSION["err_talent"] = "";
         }
 
         if(!Empty($_SESSION["wrn_talent"])){
-            $this->talent_warning = $_SESSION["wrn_talent"];
+            $this->talentWarning = $_SESSION["wrn_talent"];
             $_SESSION["wrn_talent"] = "";
         }
     }
 
     private function addTalent($new_talent) {
 
-        if($this->forbidden_words_repo->isValid($new_talent)) {
+        if($this->wordsRepo->isValid($new_talent)) {
 
             if (strlen($new_talent) > 0 && strlen($new_talent) <= 45) {
 
                 $correct = true;
 
-                foreach ($this->talent_repository->getTalents() as $talent) {
+                foreach ($this->talentRepo->getTalents() as $talent) {
 
                     if (strtolower($talent->name) == strtolower($new_talent)) {
 
@@ -251,7 +250,7 @@ class TalentController
 
                             $_SESSION["wrn_talent"] = "Het talent " . $new_talent . " is al toegevoegd, aangevraagd of geweigerd. Indien het talent is geweigerd wordt deze toegevoegd zodra het nog geaccepteerd word.";
 
-                            $this->talent_repository->addTalentUser($talent->id, $_SESSION["user"]->email);
+                            $this->talentRepo->addTalentUser($talent->id, $_SESSION["user"]->email);
                         }
 
                         $correct = false;
@@ -264,7 +263,7 @@ class TalentController
 
                     if (!preg_match('/[^a-z\s]/i', $new_talent)) {
 
-                        $this->talent_repository->addTalent($new_talent);
+                        $this->talentRepo->addTalent($new_talent);
                     } else {
 
                         $_SESSION["talent_name"] = $new_talent;
@@ -281,5 +280,29 @@ class TalentController
             $_SESSION["err_talent"] = "De ingevoerde talent is verboden, omdat het niet aan de algemene voorwaarden voldoet!";
             $_SESSION["talent_name"] = $new_talent;
         }
+    }
+
+    private function setPage($page) {
+
+        switch ($page) {
+            case "m":
+            case "a":
+            case "t":
+                $this->page = $page;
+                $_SESSION["current_talent_page"] = $page;
+                break;
+            default:
+                $this->page = "m";
+                $_SESSION["current_talent_page"] = $this->page;
+        }
+    }
+
+    private function redirect() {
+
+        // Set header
+        header("HTTP/1.1 303 See Other");
+        header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+        // Exit with succes status
+        exit(0);
     }
 }
