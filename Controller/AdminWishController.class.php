@@ -6,19 +6,22 @@
  * Date: 8-3-2016
  * Time: 17:50
  */
-class AdminWishController
+class AdminwishController extends Controller
 {
-    public $wishRepo , $messRepo;
+    public $wishRepo, $messRepo;
 
     public function __construct()
     {
+        (new AdminController())->guaranteeAdmin("/AdminWish");
         $this->wishRepo = new WishRepository();
         $this->messRepo = new MessageRepository();
     }
 
     public function run()
     {
-        guaranteeAdmin("/AdminWish");
+
+        // BREEKT MET NIEUWE STRCTUUR TODO
+
         if (isset($_GET["action"])) {
             switch (strtolower($_GET["action"])) {
                 case "revert":
@@ -34,13 +37,13 @@ class AdminWishController
                     $this->refuseWish($_POST["wish_id"]);
                     break;
                 default:
-                    apologize("404 page not found");
+                    $this->apologize("404 page not found");
                     break;
             }
         }
 
-        if(isset($_GET["show"])){
-            switch(strtolower($_GET["show"])){
+        if (isset($_GET["show"])) {
+            switch (strtolower($_GET["show"])) {
                 case "requested":
                     $this->renderPage("requested");
                     break;
@@ -63,7 +66,7 @@ class AdminWishController
                     $this->renderPage("deleted");
                     break;
                 default:
-                    apologize("404 page not found");
+                    $this->apologize("404 page not found");
                     break;
             }
         }
@@ -76,47 +79,52 @@ class AdminWishController
     {
         $requestedWishes = $this->wishRepo->getRequestedWishes();
         $publishedWishes = $this->wishRepo->getPublishedWishes();
-        $matchedWishes   = $this->wishRepo->getMatchedWishes();
-        $currentWishes   = $this->wishRepo->getCurrentWishes();
+        $matchedWishes = $this->wishRepo->getMatchedWishes();
+        $currentWishes = $this->wishRepo->getCurrentWishes();
         $completedWishes = $this->wishRepo->getCompletedWishes();
-        $deniedWishes    = $this->wishRepo->getDeniedWishes();
-        $deletedWishes   = $this->wishRepo->getDeletedWishes();
+        $deniedWishes = $this->wishRepo->getDeniedWishes();
+        $deletedWishes = $this->wishRepo->getDeletedWishes();
 
-        render("AdminWish.tpl", ["title" => "WensBeheer",
-            "requested"   => $requestedWishes,
-            "published"   => $publishedWishes,
-            "matched"     => $matchedWishes,
-            "current"     => $currentWishes,
-            "completed"   => $completedWishes,
-            "denied"      => $deniedWishes,
-            "deleted"     => $deletedWishes,
+        $this->render("AdminWish.tpl", ["title" => "WensBeheer",
+            "requested" => $requestedWishes,
+            "published" => $publishedWishes,
+            "matched" => $matchedWishes,
+            "current" => $currentWishes,
+            "completed" => $completedWishes,
+            "denied" => $deniedWishes,
+            "deleted" => $deletedWishes,
             "currentPage" => $currentPage
         ]);
 
         exit(0);
     }
 
-    private function refuseWish($wishId){
+    private function refuseWish($wishId)
+    {
         $this->wishRepo->refuseWish($wishId);
-        $this->sendConfirmationMessage($wishId , false);
+        $this->sendConfirmationMessage($wishId, false);
     }
 
-    private function acceptWish($wishId){
+    private function acceptWish($wishId)
+    {
         $this->wishRepo->acceptWish($wishId);
-        $this->sendConfirmationMessage($wishId , true);
+        $this->sendConfirmationMessage($wishId, true);
     }
 
-    private function deleteWish($wishId){
+    private function deleteWish($wishId)
+    {
         $this->wishRepo->deleteWish($wishId);
     }
 
-    private function revertWish($wishId){
+    private function revertWish($wishId)
+    {
         $this->wishRepo->revertWishAction($wishId);
     }
 
-    private function sendConfirmationMessage($wishId , $accepted){
+    private function sendConfirmationMessage($wishId, $accepted)
+    {
 
-        if($accepted){
+        if ($accepted) {
             $verdict = "geaccepteerd";
         } else {
             $verdict = "geweigerd";
@@ -128,7 +136,7 @@ class AdminWishController
             "\n \n Wij hopen u hiermee voldoende te hebben geinformeerd.";
         $title = "Uw wens is " . $verdict . "!";
 
-        $messageId = $this->messRepo->sendMessage($_SESSION["admin"]->username, $acceptedWish->user->displayName , $title , $message);
-        $this->messRepo->setLink($wishId, 'Wens' , $messageId);
+        $messageId = $this->messRepo->sendMessage($_SESSION["admin"]->username, $acceptedWish->user->displayName, $title, $message);
+        $this->messRepo->setLink($wishId, 'Wens', $messageId);
     }
 }

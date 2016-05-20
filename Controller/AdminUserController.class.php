@@ -6,48 +6,24 @@
  * Date: 21-04-16
  * Time: 14:51
  */
-class AdminUserController
+class AdminuserController extends Controller
 {
 
     private $reportRepository, $userRepository;
 
     public function __construct()
     {
+        (new AdminController())->guaranteeAdmin("/Wishes");
         $this->reportRepository = new ReportRepository();
         $this->userRepository = new UserRepository();
     }
 
     public function run()
     {
-        guaranteeAdmin("/Wishes");
-        if (isset($_GET["action"])) {
-            switch (strtolower($_GET["action"])) {
-                case "home":
-                case "unhandled":
-                    $this->unhandledReports();
-                    break;
-                case "handled":
-                    $this->handledReports();
-                    break;
-                case "check":
-                    $this->check();
-                    break;
-                case "block":
-                    $this->block();
-                    break;
-                case "delete":
-                    $this->delete();
-                    break;
-                default:
-                    apologize("404 not found");
-                    break;
-            }
-        } else {
-            $this->unhandledReports();
-        }
+        $this->unhandled();
     }
 
-    public function unhandledReports()
+    public function unhandled()
     {
         $this->setCurrent("unhandled");
         $report = $this->reportRepository->getRequested();
@@ -59,27 +35,27 @@ class AdminUserController
                     $user = $item->getReported();
                     if ($user instanceof User) {
                         $temp = new UserRepository();
-                        if($temp->isBlocked($user->getEmail())){
+                        if ($temp->isBlocked($user->getEmail())) {
                             $user->setBlocked(true);
                         }
                     };
                 }
             }
         }
-        render("adminUser.tpl", ["reports" => $report, "current" => $this->getCurrent()]);
+        $this->render("adminUser.tpl", ["reports" => $report, "current" => $this->getCurrent()]);
     }
 
-    public function handledReports()
+    public function handled()
     {
         $this->setCurrent("handled");
         $report = $this->reportRepository->getHandled();
 //        $report = $this->reportRepository->get("handled");
-        render("adminUser.tpl", ["reports" => $report, "current" => $this->getCurrent()]);
+        $this->render("adminUser.tpl", ["reports" => $report, "current" => $this->getCurrent()]);
     }
 
     public function check()
     {
-        $this->unhandledReports();
+        $this->unhandled();
     }
 
     public function block()
@@ -115,10 +91,10 @@ class AdminUserController
     {
         switch ($this->getCurrent()) {
             case "handled":
-                $this->handledReports();
+                $this->handled();
                 break;
             case "unhandled":
-                $this->unhandledReports();
+                $this->unhandled();
                 break;
         }
     }

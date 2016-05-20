@@ -6,7 +6,7 @@
  * Date: 27-2-2016
  * Time: 21:15
  */
-class TalentController
+class TalentsController extends Controller
 {
     private $talentRepo,
         $wordsRepo,
@@ -24,10 +24,11 @@ class TalentController
         $requestedTalents,
         $requestedCount,
         $currentRequestedCount;
+    // BREEKT MET NIEUWE STRCTUUR TODO
 
     public function __construct()
     {
-        guaranteeLogin("/talents");
+        (new AccountController())->guaranteeLogin("/talents");
 
         $this->page = "m";
         $this->talentRepo = new TalentRepository();
@@ -45,7 +46,7 @@ class TalentController
         $this->checkGet();
         $this->checkPost();
 
-        render("talentOverview.tpl",
+        $this->render("talentOverview.tpl",
             ["title" => "Talenten",
                 "talents" => $this->talents,
                 "user_talents" => $this->talentsUser,
@@ -82,7 +83,7 @@ class TalentController
 
                 $_SESSION["current_talent_page"] = "t";
 
-                $this->redirect();
+                $this->redirectPost();
             }
 
             if (!Empty($_POST["remove_id"])) {
@@ -90,14 +91,14 @@ class TalentController
 
                 $_SESSION["current_talent_page"] = "m";
 
-                $this->redirect();
+                $this->redirectPost();
             }
             else if (!Empty($_POST["add_id"])) {
                 $this->talentRepo->addTalentUser($_POST["add_id"]);
 
                 $_SESSION["current_talent_page"] = "a";
 
-                $this->redirect();
+                $this->redirectPost();
             }
         }
     }
@@ -159,7 +160,7 @@ class TalentController
 
             if (!Empty($_GET["search_added"])) {
 
-                $search = htmlentities(trim($_GET["search_added"],ENT_QUOTES));
+                $search = htmlentities(trim($_GET["search_added"], ENT_QUOTES));
 
                 $this->talentsUser = $this->talentRepo->searchAddedTalents($search);
 
@@ -169,7 +170,7 @@ class TalentController
                 $this->page = "m";
             } else if (!Empty($_GET["search_all"])) {
 
-                $search = htmlentities(trim($_GET["search_all"],ENT_QUOTES));
+                $search = htmlentities(trim($_GET["search_all"], ENT_QUOTES));
 
                 $this->talents = $this->talentRepo->searchUnaddedTalents($search);
 
@@ -181,9 +182,10 @@ class TalentController
         }
     }
 
-    private function checkSessions(){
+    private function checkSessions()
+    {
 
-        if(!Empty($_SESSION["current_talent_page"])){
+        if (!Empty($_SESSION["current_talent_page"])) {
             $this->page = $_SESSION["current_talent_page"];
             $_SESSION["current_talent_page"] = "";
         }
@@ -231,7 +233,8 @@ class TalentController
         }
     }
 
-    private function addTalent($new_talent) {
+    private function addTalent($new_talent)
+    {
 
         if($this->wordsRepo->isValid($new_talent)) {
 
@@ -243,7 +246,7 @@ class TalentController
 
                     if (strtolower($talent->name) == strtolower($new_talent)) {
 
-                        if(strtolower($talent->user_email) == strtolower($_SESSION["user"]->email)) {
+                        if (strtolower($talent->user_email) == strtolower($_SESSION["user"]->email)) {
 
                             $_SESSION["err_talent"] = "Het talent " . $new_talent . " is al door u toegevoegd of aangevraagd.";
                         } else {
@@ -297,7 +300,7 @@ class TalentController
         }
     }
 
-    private function redirect() {
+    private function redirectPost() {
 
         // Set header
         header("HTTP/1.1 303 See Other");

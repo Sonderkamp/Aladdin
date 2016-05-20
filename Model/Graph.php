@@ -22,7 +22,7 @@ class Graph
 //        echo $csvString;
 //    }
 
-    public function getCats()
+    public function cats()
     {
         $list = Database::query("
         SELECT count(*) AS count,
@@ -51,8 +51,11 @@ class Graph
         echo $csvString;
     }
 
-    public function getCatsMonth($month)
+    public function monthly($month = null)
     {
+        if ($month === null) {
+            $month = $_GET["month"];
+        }
         $list = Database::query_safe("
 
         SELECT count(*) AS count,
@@ -82,7 +85,7 @@ class Graph
         echo $csvString;
     }
 
-    public function getAge()
+    public function age()
     {
         $list = Database::query("SELECT count(*) as count , TIMESTAMPDIFF(YEAR,`Dob`,CURDATE()) as age from `user` group by age");
 
@@ -96,7 +99,7 @@ class Graph
         echo $csvString;
     }
 
-    public function getUsersMonth()
+    public function usersMonth()
     {
         $list = Database::query("
         SELECT count(`Email`) AS amount, EXTRACT( YEAR_MONTH FROM `CreationDate` )  AS 'Date' FROM `user`
