@@ -6,21 +6,22 @@
  * Date: 04/04/2016
  * Time: 16:10
  */
-class DashboardController
+class DashboardController extends Controller
 {
     private $wishRepo, $talentRepo, $wishLimit, $talentLimit;
 
     public function __construct()
     {
+        (new AccountController())->guaranteeLogin("/dashboard");
         $this->wishRepo = new WishRepository();
         $this->talentRepo = new TalentRepository();
-        $this->wishLimit = $this->wishRepo->WISH_LIMIT;
+        $this->wishLimit = $this->wishRepo->wishLimit;
         $this->talentLimit = $this->talentRepo->TALENT_MINIMUM;
     }
 
     public function run()
     {
-        guaranteeLogin("/dashboard");
+
         if (!$this->checkAmounts()) {
             $this->showForcedProfile();
         } else {
@@ -28,7 +29,8 @@ class DashboardController
         }
     }
 
-    public function guaranteeProfile(){
+    public function guaranteeProfile()
+    {
         if (!$this->checkAmounts()) {
             $this->showForcedProfile();
         }
@@ -36,25 +38,25 @@ class DashboardController
 
     public function showForcedProfile()
     {
-            $wishAmount = $this->wishLimit - $this->getWishAmount();
-            $talentAmount = $this->talentLimit - $this->getTalentAmount();
-            $wishCheck = false;
+        $wishAmount = $this->wishLimit - $this->getWishAmount();
+        $talentAmount = $this->talentLimit - $this->getTalentAmount();
+        $wishCheck = false;
 
-            if ($wishAmount <= $this->wishLimit) {
-                $wishCheck = true;
-            }
+        if ($wishAmount <= $this->wishLimit) {
+            $wishCheck = true;
+        }
 
-            render("dashboard.tpl", ["title" => $_SESSION["user"]->displayName,
-                "wishes" => $this->getMyWishes(),
-                "talents" => $this->getMyTalents(),
-                "wishCheck" => $wishCheck,
-                "errorString" => $this->generateErrorSentence($wishAmount, $talentAmount)]);
-            exit(0);
+        $this->render("dashboard.tpl", ["title" => $_SESSION["user"]->displayName,
+            "wishes" => $this->getMyWishes(),
+            "talents" => $this->getMyTalents(),
+            "wishCheck" => $wishCheck,
+            "errorString" => $this->generateErrorSentence($wishAmount, $talentAmount)]);
+        exit(0);
     }
 
     public function showProfile()
     {
-        render("dashboard.tpl", ["title" => $_SESSION["user"]->displayName,
+        $this->render("dashboard.tpl", ["title" => $_SESSION["user"]->displayName,
             "wishes" => $this->getMyWishes(),
             "talents" => $this->getMyTalents(),
             "wishCheck" => false
@@ -101,7 +103,8 @@ class DashboardController
         return $this->wishRepo->getMyWishes();
     }
 
-    private function getMyTalents(){
+    private function getMyTalents()
+    {
         return $this->talentRepo->getAddedTalents();
     }
 
@@ -110,7 +113,8 @@ class DashboardController
         return $this->wishRepo->getWishAmount($_SESSION["user"]->email);
     }
 
-    private function getTalentAmount(){
+    private function getTalentAmount()
+    {
         return count($this->talentRepo->getAddedTalents());
     }
 

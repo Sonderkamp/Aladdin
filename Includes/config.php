@@ -16,7 +16,7 @@ $page = explode("/", $_SERVER["PHP_SELF"])[1];
 
 if ($page != "index.php") {
 
-    redirect("/");
+    $this->redirect("/");
 
 }
 

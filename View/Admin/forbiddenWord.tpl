@@ -1,24 +1,27 @@
 <div class="container">
 
-    {if !empty($success_message)}
+    {* If succes message is not empty than show it *}
+    {if !empty($successMessage)}
         <div class="alert alert-success">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>Succes!</strong> {$success_message}
+            <strong>Succes!</strong> {$successMessage}
         </div>
     {/if}
 
-    {if !empty($error_message)}
+    {* If error message is not empty than show it *}
+    {if !empty($errorMessage)}
         <div class="alert alert-danger">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>Error!</strong> {$error_message}
+            <strong>Error!</strong> {$errorMessage}
         </div>
     {/if}
 
+    {* Add forbidden word *}
     <form class="col-xs-12 col-sm-12 col-md-6 col-lg-6" action="/forbiddenwords" method="post">
         <div class="form-group row">
             <label for="word" class="col-sm-2 form-control-label">Verboden woord</label>
             <div class="col-sm-10">
-                <input type="text" name="add_forbidden_word" class="form-control" id="word" placeholder="Verboden woord">
+                <input type="text" name="addWord" class="form-control" id="word" placeholder="Verboden woord">
                 <small class="text-muted">Dit is het verboden woord. Als dit woord voorkomt in een aanvraag bij wens of talent word deze aanvraag automatisch verwijderd.</small>
             </div>
         </div>
@@ -29,6 +32,7 @@
         </div>
     </form>
 
+    {* Search forbidden word *}
     <form class="col-xs-12 col-sm-12 col-md-6 col-lg-6" action="/forbiddenwords/search" method="get">
         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
             <input class="form-control" name="search" placeholder="Zoek een verboden woord">
@@ -42,7 +46,9 @@
         </div>
     </form>
 
-    {if $number_of_words > 0}
+    {* if there is 1 word or more show table *}
+    {* ELSE show no words found *}
+    {if $wordsCount > 0}
         <h5 class="col-xs-12 col-sm-12 col-md-12 col-lg-12">Verboden woorden</h5>
         <table class="table col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <thead>
@@ -53,7 +59,8 @@
                 </tr>
             </thead>
             <tbody>
-                {foreach from=$forbidden_words item=word}
+                {* loop through all words and show them in the table *}
+                {foreach from=$forbiddenWords item=word}
                     <tr>
                         <td class="col-xs-10 col-sm-10 col-md-10 col-lg-10">{htmlentities(trim($word),ENT_QUOTES)}</td>
                         <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
@@ -71,120 +78,130 @@
             </tbody>
         </table>
 
-        {if $number_of_words > 1}
+        {* if there are more than 10 words show pagination *}
+        {if $wordsCount > 1}
 
             <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                {if $smarty.session.forbidden_words_pagination != "off"}
+
+                {* If pagination is not turned off show pagination *}
+                {if $smarty.session.wordsPagination != "off"}
                     <div class="col-xs-offset-4">
                         <nav>
-                            {if $number_of_words < 7}
-                                <ul class="pagination">
-                                    {if $current_number_of_words <= 1}
-                                        <li class="disabled">
-                                            <a href="#" aria-label="Previous">
-                                                <span aria-hidden="true">&laquo;</span>
-                                            </a>
-                                        </li>
-                                    {else}
-                                        <li>
-                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$current_number_of_words - 1}" aria-label="Previous">
-                                                <span aria-hidden="true">&laquo;</span>
-                                            </a>
-                                        </li>
-                                    {/if}
+                            <ul class="pagination">
 
-                                    {for $number=1 to $number_of_words}
-                                        {if $number == $current_number_of_words}
+                                {* if page is smaller than or same as 1 disable the previous button *}
+                                {* ELSE enable the previous button *}
+                                {if $page <= 1}
+                                    <li class="disabled">
+                                        <a href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                {else}
+                                    <li>
+                                        <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}wordsPage={$page - 1}" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                {/if}
+
+                                {* If wordsCount is smaller than seven show normal pagination (1,2,3,4,5,6) *}
+                                {* ELSE show pagination for larger (first,...,3,4,5,...,last) *}
+                                {if $wordsCount < 7}
+
+                                    {* Loop the number of wordsCount *}
+                                    {for $number=1 to $wordsCount}
+
+                                        {* if the number is the same as page disable the button *}
+                                        {* ELSE enable the button *}
+                                        {if $number == $page}
                                             <li class="active">
                                                 <a href="#">{$number}</a>
                                             </li>
                                         {else}
                                             <li>
-                                                <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$number}">{$number}</a>
+                                                <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}wordsPage={$number}">{$number}</a>
                                             </li>
                                         {/if}
                                     {/for}
+                                {else}
 
-                                    {if $current_number_of_words >= $number_of_words}
-                                        <li class="disabled">
-                                            <a href="#" aria-label="Next">
-                                                <span aria-hidden="true">&raquo;</span>
-                                            </a>
-                                        </li>
-                                    {else}
-                                        <li>
-                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$current_number_of_words + 1}" aria-label="Next">
-                                                <span aria-hidden="true">&raquo;</span>
-                                            </a>
-                                        </li>
-                                    {/if}
-                                </ul>
-                            {else}
-                                <ul class="pagination">
-                                    {if $current_number_of_words <= 1}
-                                        <li class="disabled">
-                                            <a href="#" aria-label="Previous">
-                                                <span aria-hidden="true">&laquo;</span>
-                                            </a>
-                                        </li>
-                                    {else}
-                                        <li>
-                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$current_number_of_words - 1}" aria-label="Previous">
-                                                <span aria-hidden="true">&laquo;</span>
-                                            </a>
-                                        </li>
-                                    {/if}
-                                    {if 1 == $current_number_of_words}
+                                    {* If page equals 1 disable the first button *}
+                                    {* ELSE enable the first button *}
+                                    {if 1 == $page}
                                         <li class="active">
                                             <a href="#">1</a>
                                         </li>
                                     {else}
                                         <li>
-                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page=1">1</a>
+                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}wordsPage=1">1</a>
                                         </li>
                                     {/if}
-                                    {if $current_number_of_words < 4}
+
+                                    {* If page is smaller than 4 show pagination like this (1,2,3,4,...,last) *}
+                                    {if $page < 4}
+
+                                        {* loop from 2 until 4 *}
                                         {for $number=2 to 4}
-                                            {if $number == $current_number_of_words}
+
+                                            {* If the number equals page than disable the button *}
+                                            {* ELSE enable the button *}
+                                            {if $number == $page}
                                                 <li class="active">
                                                     <a href="#">{$number}</a>
                                                 </li>
                                             {else}
                                                 <li>
-                                                    <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$number}">{$number}</a>
+                                                    <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}wordsPage={$number}">{$number}</a>
                                                 </li>
                                             {/if}
                                         {/for}
+
                                         <li class="disabled">
                                             <a href="#">...</a>
                                         </li>
-                                    {elseif $current_number_of_words > ($number_of_words - 3)}
+
+                                    {* if page is greater than wordscount minus 3 (for example page is 8 and wordsCount(10) - 3 is 7) *}
+                                    {elseif $page > ($wordsCount - 3)}
+
                                         <li class="disabled">
                                             <a href="#">...</a>
                                         </li>
-                                        {for $number=($number_of_words - 3) to ($number_of_words - 1)}
-                                            {if $number == $current_number_of_words}
+
+                                        {* Loop through the last four numbers until the last minus one *}
+                                        {for $number=($wordsCount - 3) to ($wordsCount - 1)}
+
+                                            {* if number equals page disable the button *}
+                                            {* ELSE enable the button *}
+                                            {if $number == $page}
                                                 <li class="active">
                                                     <a href="#">{$number}</a>
                                                 </li>
                                             {else}
                                                 <li>
-                                                    <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$number}">{$number}</a>
+                                                    <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}wordsPage={$number}">{$number}</a>
                                                 </li>
                                             {/if}
                                         {/for}
+
+                                    {* ELSE the pagination will be shown like this (first,...,3,4,5,...,last) *}
                                     {else}
                                         <li class="disabled">
                                             <a href="#">...</a>
                                         </li>
-                                        {for $number=($current_number_of_words - 1) to ($current_number_of_words + 1)}
-                                            {if $number == $current_number_of_words}
+
+                                        {* Loop from page minus one until page plus one *}
+                                        {for $number=($page - 1) to ($page + 1)}
+
+                                            {* if number equals page than disable the button *}
+                                            {* ELSE enable the button *}
+                                            {if $number == $page}
                                                 <li class="active">
                                                     <a href="#">{$number}</a>
                                                 </li>
                                             {else}
                                                 <li>
-                                                    <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$number}">{$number}</a>
+                                                    <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}wordsPage={$number}">{$number}</a>
                                                 </li>
                                             {/if}
                                         {/for}
@@ -192,38 +209,44 @@
                                             <a href="#">...</a>
                                         </li>
                                     {/if}
-                                    {if $number_of_words == $current_number_of_words}
+
+                                    {* If wordsCount equals page disable the button *}
+                                    {* ELSE enable the button *}
+                                    {if $wordsCount == $page}
                                         <li class="active">
                                             <a href="#">{$number}</a>
                                         </li>
                                     {else}
                                         <li>
-                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$number_of_words}">
-                                                <span aria-hidden="true">{$number_of_words}</span>
+                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}wordsPage={$page}">
+                                                <span aria-hidden="true">{$wordsCount}</span>
                                             </a>
                                         </li>
                                     {/if}
-                                    {if $current_number_of_words >= $number_of_words}
-                                        <li class="disabled">
-                                            <a href="#" aria-label="Next">
-                                                <span aria-hidden="true">&raquo;</span>
-                                            </a>
-                                        </li>
-                                    {else}
-                                        <li>
-                                            <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}words_page={$current_number_of_words + 1}" aria-label="Next">
-                                                <span aria-hidden="true">&raquo;</span>
-                                            </a>
-                                        </li>
-                                    {/if}
-                                </ul>
-                            {/if}
+                                {/if}
+
+                                {* if page is greater than or the same as wordsCount disable the next button *}
+                                {* ELSE enable the button *}
+                                {if $page >= $wordsCount}
+                                    <li class="disabled">
+                                        <a href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                {else}
+                                    <li>
+                                        <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}wordsPage={$page + 1}" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                {/if}
+                            </ul>
                         </nav>
                     </div>
                 {/if}
                 <form class="pull-right"  action="/forbiddenwords" method="post">
-                    <input type="hidden" value="{if $smarty.session.forbidden_words_pagination == "off"}on{else}off{/if}" name="pagination">
-                    <button type="submit" class="btn btn-primary">Pagination {if $smarty.session.forbidden_words_pagination == "off"}aan{else}uit{/if}</button>
+                    <input type="hidden" value="{if $smarty.session.wordsPagination == "off"}on{else}off{/if}" name="pagination">
+                    <button type="submit" class="btn btn-primary">Pagination {if $smarty.session.wordsPagination == "off"}aan{else}uit{/if}</button>
                 </form>
             </div>
         {/if}
@@ -232,11 +255,10 @@
     {/if}
 </div>
 
-<!-- Modal remove word-->
-{foreach from=$forbidden_words item=word}
+{* Modal for remove forbidden word *}
+{foreach from=$forbiddenWords item=word}
     <div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}Remove" class="modal fade" role="dialog">
         <div class="modal-dialog">
-            <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -246,7 +268,7 @@
                     <button type="button" class="btn btn-default infoLeft" data-dismiss="modal">Sluiten</button>
 
                     <form action="/forbiddenwords" method="post">
-                        <input type="hidden" value="{htmlentities(trim($word),ENT_QUOTES)}" name="remove_forbidden_word">
+                        <input type="hidden" value="{htmlentities(trim($word),ENT_QUOTES)}" name="removeWord">
 
                         <button type="submit" class="btn btn-danger btn-small">
                             <span class="glyphicon glyphicon-trash"></span> verwijderen
@@ -258,8 +280,8 @@
     </div>
 {/foreach}
 
-<!-- Modal edit word-->
-{foreach from=$forbidden_words item=word}
+{* Modal for editing a forbidden word *}
+{foreach from=$forbiddenWords item=word}
     <div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}Edit" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
@@ -274,7 +296,7 @@
                         <div class="form-group row">
                             <label for="edit{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}" class="col-sm-2 form-control-label">Verboden woord</label>
                             <div class="col-sm-10">
-                                <input type="text" name="edit_forbidden_word_new" class="form-control" id="edit{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}" placeholder="Verboden woord" value="{htmlentities(trim($word),ENT_QUOTES)}">
+                                <input type="text" name="editedWord" class="form-control" id="edit{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}" placeholder="Verboden woord" value="{htmlentities(trim($word),ENT_QUOTES)}">
                                 <small class="text-muted">Dit is het verboden woord. Als dit woord voorkomt in een aanvraag bij wens of talent word deze aanvraag automatisch verwijderd.</small>
                             </div>
                         </div>
@@ -282,7 +304,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default infoLeft" data-dismiss="modal">Sluiten</button>
 
-                        <input type="hidden" value="{htmlentities(trim($word),ENT_QUOTES)}" name="edit_forbidden_word_old">
+                        <input type="hidden" value="{htmlentities(trim($word),ENT_QUOTES)}" name="oldWord">
 
                         <button type="submit" class="btn btn-inbox btn-small">
                             <span class="glyphicon glyphicon-edit"></span> wijzigen

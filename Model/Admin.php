@@ -34,6 +34,19 @@ class Admin
 
     }
 
+    public function login()
+    {
+        if (!Empty($_POST["username"]) && !Empty($_POST["password"])) {
+
+            if ($this->validate($_POST["username"], $_POST["password"])) {
+                return true;
+            }
+            return "gebruikersnaam/wachtwoord combinatie is niet geldig";
+
+        }
+        return "Niet alle gegevens zijn ingevuld";
+    }
+
     public function logout()
     {
         $_SESSION["admin"] = null;

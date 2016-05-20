@@ -8,7 +8,7 @@
  */
 class User
 {
-    public $email, $isAdmin, $name, $surname, $token, $address,
+    public $email, $isAdmin, $name, $surname, $token, $address, $hash, $RecoveryHash, $RecoveryDate,
         $handicap, $postalcode, $country, $city, $dob, $gender, $displayName, $initials, $blocked;
 
 

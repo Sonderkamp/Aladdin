@@ -9,46 +9,36 @@
 class UserRepository
 {
 
+    private $UserQueryBuilder;
+
+    function __construct()
+    {
+        $this->UserQueryBuilder = new UserQueryBuilder();
+    }
+
     public function getUser($emailOrDisplayName)
     {
-        $result = Database::query_safe("SELECT * FROM user WHERE Email = ? OR DisplayName = ?", array($emailOrDisplayName, $emailOrDisplayName));
-        return $this->createUser($result);
+        return $this->UserQueryBuilder->getUser($emailOrDisplayName);
     }
 
-    public function blockUser($username)
+    public function blockUser($username, $reason = null)
     {
-        Database::query_safe("INSERT INTO blockedusers (`IsBlocked`, `Reason`, `moderator_Username`, `user_Email`) VALUES (1, 'xxxxx', 'Admin', ?)", array($username));
+
+        // if user is not blocked
+        if (!$this->isBlocked($username) === false)
+            $this->UserQueryBuilder->setblock(1, $username, $reason);
 
 
     }
 
-    public function unblockUser($username)
+    public function unblockUser($username, $reason = null)
     {
-        Database::query_safe("INSERT INTO blockedusers (`IsBlocked`, `Reason`, `moderator_Username`, `user_Email`) VALUES (0, 'xxxxx', 'Admin', ?)", array($username));
+        // if user is blocked
+        if ($this->isBlocked($username) !== false)
+            $this->UserQueryBuilder->setblock(0, $username, $reason);
 
     }
 
-
-    public function createUser($result)
-    {
-        $newUser = new User();
-
-        $newUser->email = $result[0]["Email"];
-        $newUser->isAdmin = $result[0]["Admin"];
-        $newUser->name = $result[0]["Name"];
-        $newUser->surname = $result[0]["Surname"];
-        $newUser->address = $result[0]["Address"];
-        $newUser->handicap = $result[0]["Handicap"];
-        $newUser->postalcode = $result[0]["Postalcode"];
-        $newUser->country = $result[0]["Country"];
-        $newUser->city = $result[0]["City"];
-        $newUser->dob = $result[0]["Dob"];
-        $newUser->gender = $result[0]["Gender"];
-        $newUser->displayName = $result[0]["DisplayName"];
-        $newUser->initials = $result[0]["Initials"];
-
-        return $newUser;
-    }
 
     public function validate($username, $password)
     {
@@ -69,50 +59,13 @@ class UserRepository
 
     public function isBlocked($username)
     {
-        if (Database::query_safe("SELECT count(*) as count  from `blockedusers` where `user_Email` = ?", array($username))[0]["count"] == 0)
-            return false;
-
-        $status = Database::query_safe("SELECT *  from `blockedusers` where `user_Email` = ? order by DateBlocked DESC", array($username))[0];
-        if ($status["IsBlocked"] == 1)
-            return $status["Reason"];
-
-        return false;
+        return $this->UserQueryBuilder->isBlocked($username);
     }
 
-    public function getBlockStatus($username)
-    {
-        // query om alle blocks van een user te zien
-        $result = Database::query_safe("SELECT Block_Id,DateBlocked,user_Email,IsBlocked as IsBlocked
-from blockedusers
- where user_Email = ?
-              order by DateBlocked asc", array($username));
-        $result = $result[0];
-        return $result;
-    }
-
-
-    public function getLastBlockStatus($username)
-    {
-        // query om de laatste block van een user te zien
-        $result = Database::query_safe("SELECT Block_Id,DateBlocked,Reason, user_Email,IsBlocked as IsBlocked
-from blockedusers
-where DateBlocked =
-        (select
-max(blockedusers.DateBlocked) AS max_date
-              FROM blockedusers
-              where user_Email = ?)
-              order by DateBlocked asc", array($username));
-        $result = $result[0];
-        return $result;
-    }
 
     public function getAllBlocks($user)
     {
-        $result = Database::query_safe("SELECT Block_Id ,DateBlocked as bdate,IsBlocked as isblocked
-              from blockedusers
-              where user_Email = ?
-              order by Block_Id desc", array($user));
-        return $result;
+        return $this->UserQueryBuilder->getAllBlocks($user);
     }
 
 
@@ -120,31 +73,24 @@ max(blockedusers.DateBlocked) AS max_date
     {
         if ($this->validateUsername($username)) {
             $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
-            if (Database::query_safe("UPDATE `user` SET `RecoveryHash` = NULL, `RecoveryDate` = NULL WHERE `Email` = ?", array($username)) === false) {
-                echo "Query error: \"UPDATE `user` SET `RecoveryHash` = NULL, `RecoveryDate` = NULL WHERE `Email` = '$username'";
-                exit();
-            }
+            $this->UserQueryBuilder->clearToken($username, "recovery");
+
         }
     }
 
     public function CanRecover()
     {
-        $dayAgo = date('Y-m-d H:i:s', (strtotime('-1 day', strtotime(date('Y-m-d H:i:s')))));
-        $res = Database::query_safe("SELECT count(*) AS Counter FROM `recoveryLog` WHERE IP = ? AND `Date` BETWEEN ? AND ?", array($_SERVER['REMOTE_ADDR'], $dayAgo, date('Y-m-d H:i:s')));
-        $res = $res[0];
-        if ($res["Counter"] > 4)
-            return false;
-        return true;
+        return $this->UserQueryBuilder->IPlog("check");
     }
 
     public function logRecovery()
     {
-        Database::query_safe("INSERT INTO `recoveryLog` (`IP`, `Date`) VALUES (?, ?)", array($_SERVER['REMOTE_ADDR'], date('Y-m-d H:i:s')));
+        return $this->UserQueryBuilder->IPlog();
     }
 
     public function validateToken($token)
     {
-        $res = Database::query_safe("SELECT * FROM `user` WHERE `RecoveryHash` = ?", array($token));
+        $res = $this->UserQueryBuilder->getMailByToken($token, "recovery");
 
         if ($res == null)
             return false;
@@ -154,22 +100,21 @@ max(blockedusers.DateBlocked) AS max_date
         return $res[0]["Email"];
     }
 
-    public function setActivateMail($mail, $username, $token)
+    public function setActivateMail($mail, $username)
     {
         $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
         $val = $this->getUser($username);
         if ($val === false)
             return false;
 
-        // Get
         $mail->to = $username;
-        $mail->toName = $val["Name"] . " " . $val["Surname"];
+        $mail->toName = $val->name . " " . $val->surname;
         $mail->subject = "Activeer Account Webshop";
         $mail->message =
-            "Beste " . $val["Name"] . ",\n
+            "Beste " . $val->name . ",\n
             Deze mail is verstuurd omdat u een nieuw account aan heeft gemaakt.\n
             Om uw account te activeren, ga naar deze link:\n
-            http://" . $_SERVER["SERVER_NAME"] . "/account/action=activate/token=" . $token . "\n
+            http://" . $_SERVER["SERVER_NAME"] . "/account/action=activate/token=" . $this->UserQueryBuilder->getTokenByName($username, "validation")["ValidationHash"] . "\n
 
             Met vriendelijke groet,\n
             Webshop";
@@ -179,15 +124,15 @@ max(blockedusers.DateBlocked) AS max_date
 
     public function validateActivateToken($token)
     {
-        $res = Database::query_safe("SELECT * FROM `user` WHERE `ValidationHash` = ?", array($token));
+
+        $res = $this->UserQueryBuilder->getMailByToken($token, "validation");
         if ($res == null || $res === false)
             return false;
         $res = $res[0];
 
         // Clear
-        if (Database::query_safe("UPDATE `user` SET `ValidationHash` = NULL WHERE `Email` = ?", array($res["Email"])) === false) {
-            exit();
-        }
+        $this->UserQueryBuilder->clearToken($res["Email"], "validation");
+
 
         return $res["Email"];
     }
@@ -234,12 +179,16 @@ max(blockedusers.DateBlocked) AS max_date
         if ($arr["handicap"] != 1) {
             $arr["handicap"] = 0;
         }
+
+
         Database::query_safe("UPDATE user SET `Name`=?, `Surname`=?, `Address`=?,`Postalcode`=?,`Country`=?,`City`=?,`Dob`=?,`Initials`=?,`Gender`=?,`Handicap`=?,`DisplayName`=?  WHERE Email=?", Array($arr["name"], $arr["surname"], $arr["address"], $arr["postalcode"], $arr["country"], $arr["city"], $d->format('Y-m-d'), $arr["initial"], $arr["gender"], $arr["handicap"], $newdisplay, $arr["username"]));
 
         if ($arr["email"] === $_SESSION["user"]->email) {
             // Update
             $_SESSION["user"] = $this->getUser($arr["email"]);
         }
+
+        return null;
     }
 
     public function validateUser($array)
@@ -321,25 +270,48 @@ max(blockedusers.DateBlocked) AS max_date
 
     }
 
-    public function setRecoveryMail($mail, $username)
+    public function checkUsernameJSON($username)
     {
+        header('Content-Type: application/json');
+        if (!Empty($username)) {
+            // htmlspecialchar
+
+            if ($this->getUser($username) !== false) {
+
+                echo json_encode(array('result' => true));
+                exit();
+            }
+            echo json_encode(array('result' => false));
+            exit();
+        }
+        echo json_encode(array('result' => false));
+    }
+
+    public function setRecoveryMail($mail, $username, &$websiteMessage)
+    {
+
+
         if ($this->validateUsername($username)) {
             // getName
             $val = $this->getUser($username);
             $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
             // Get
             $mail->to = $username;
-            $mail->toName = $val["Name"] . " " . $val["Surname"];;
+            $mail->toName = $val->name . " " . $val->surname;
             $mail->subject = "Wachtwoord vergeten Webshop";
             $mail->message =
-                "Beste " . $val["Name"] . ",\n
+                "Beste " . $val->name . ",\n
             Deze mail is verstuurd omdat u uw wachtwoord vergeten bent.\n
             Om een nieuw wachtwoord in te stellen, ga naar deze link:\n
-            http://" . $_SERVER["SERVER_NAME"] . "/account/action=recover/token=" . $val->token . "\n
+            http://" . $_SERVER["SERVER_NAME"] . "/account/action=recover/token=" . $val->RecoveryHash . "\n
             Deze link is 24 uur geldig \n
 
             Met vriendelijke groet,\n
             Webshop";
+
+            $websiteMessage = "Er is een email verstuurd naar " . $username .
+                "met een link om uw wachtwoord te resetten.Deze link verschijnt binnen drie minuten.
+                                als u niks binnenkrijgt, kijk alstublieft in uw spam folder.";
 
             return true;
         } else {
@@ -347,10 +319,37 @@ max(blockedusers.DateBlocked) AS max_date
         }
     }
 
+    public function recover($username)
+    {
+
+        if ((Empty($_POST["username"])
+            || !$this->validateUsername($_POST["username"])
+            || ($username != $_POST["username"]))
+        ) {
+            return "Invalid form.";
+        }
+
+        // check passwords
+        if (Empty($_POST["password1"]) || Empty($_POST["password2"])) {
+            return "Niet alles ingevuld.";
+        }
+        if ($_POST["password1"] != $_POST["password2"]) {
+            return "Wachtwoorden komen niet overeen.";
+        }
+
+        // save password
+        if (!$this->newPassword($_POST["username"], $_POST["password1"])) {
+            return "Wachtwoord moet minimaal 8 tekens lang zijn en
+                        een hoofdletter, een kleine letter, een nummer bevatten.";
+
+        }
+        return true;
+    }
+
 
     public function newHash($username)
     {
-        $this->token = bin2hex(openssl_random_pseudo_bytes(16));
+        $token = bin2hex(openssl_random_pseudo_bytes(16));
         $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
         if ($this->validateUsername($username)) {
 
@@ -358,12 +357,8 @@ max(blockedusers.DateBlocked) AS max_date
             if ($res === false)
                 return false;
 
-            if ($res["RecoveryHash"] == null || $this->hoursPassed($res["RecoveryDate"]) >= 24) {
-                if (Database::query_safe("UPDATE `user` SET `RecoveryHash` = ?, `RecoveryDate` = ? WHERE `Email` = ?", array($res->token, date('Y-m-d H:i:s'), $username)) === false) {
-                    echo "Query error: \"UPDATE `user` SET `RecoveryHash` = '$this->token', `RecoveryDate` = '" . date('Y-m-d H:i:s') . "' WHERE `Email` = '$username'\"";
-                    exit();
-                }
-                return true;
+            if ($res->RecoveryHash == null || $this->hoursPassed($res->RecoveryDate) >= 24) {
+                return $this->UserQueryBuilder->setToken($username, $token, "recovery");
             }
 
         }
@@ -428,27 +423,60 @@ max(blockedusers.DateBlocked) AS max_date
 
         // SQL
         $hashed = password_hash($array["password"], PASSWORD_DEFAULT);
-        $this->token = bin2hex(openssl_random_pseudo_bytes(16));
+        $token = bin2hex(openssl_random_pseudo_bytes(16));
 
+        $this->UserQueryBuilder->addUser(array(strtolower($array["username"]), $hashed, strtolower($array["name"]),
+            $array["surname"], $token, $array["address"],
+            $array["postalcode"], $array["country"], $array["city"],
+            $d->format('Y-m-d'), $array["gender"], $array["handicap"], $displayname, $array["initial"]));
 
-        if (Database::query_safe("INSERT INTO `user` (`Email`, `Password`, `Name`,
-            `Surname`, `RecoveryHash`, `RecoveryDate`,
-            `ValidationHash`, `Address`, `Postalcode`,
-            `Country`, `City`, `Dob`,
-            `Gender`, `Handicap`, `DisplayName`, `Initials`) VALUES (?, ?, ?,?, NULL, NULL, ?, ?,?,?, ?,?,?,?,?,?)"
-                , array(strtolower($array["username"]), $hashed, strtolower($array["name"]),
-                    $array["surname"], $this->token, $array["address"],
-                    $array["postalcode"], $array["country"], $array["city"],
-                    $d->format('Y-m-d'), $array["gender"], $array["handicap"], $displayname, $array["initial"])) === false
-        ) {
-            apologize("Er was een error bij het toevoegen van uw gegevens aan onze database. Probeer dit alstublieft opnieuw. Is dit de tweede keer dat u dit ziet, contacteer de webmaster op: Mariusdv@outlook.com");
-            exit();
-        }
         return true;
+    }
+
+
+    public function login()
+    {
+        if (!Empty($_POST["username"]) && !Empty($_POST["password"])) {
+
+            if ($this->validate(htmlspecialchars($_POST["username"]), htmlspecialchars($_POST["password"]))) {
+
+                if ($this->isBlocked($_POST["username"]) !== false) {
+                    $_SESSION["user"] = null;
+                    return "gebruiker is geblokkeerd. Reden: " . htmlspecialcharsWithNL($this->isBlocked($_POST["username"]));
+                }
+                return true;
+            }
+            return "gebruikersnaam/wachtwoord combinatie is niet geldig";
+
+        }
+        return "Niet alle gegevens zijn ingevuld";
+    }
+
+    public function newRecover($username, &$websiteMessage)
+    {
+        if (!$this->validateUsername($_POST["username"])) {
+            $this->recoverError("Invalid username");
+        }
+
+        if ($this->newHash($_POST["username"])) {
+            $mailer = new Email();
+
+            if ($this->setRecoveryMail($mailer, $_POST["username"], $websiteMessage)) {
+                $mailer->sendMail();
+                return true;
+
+            } else {
+                $this->recoverError("Email send error.");
+            }
+        }
+        return "deze gebruiker heeft afgelopen 24 uur al een recovery aangevraagd.";
     }
 
     public function createDislay($arr)
     {
+
+        // TODO REWRITE
+
         $arr["initial"] = strtoupper(trim($arr["initial"], '.'));
         $name = $arr["initial"] . ". " . ucfirst($arr["surname"]);
 
@@ -472,29 +500,6 @@ max(blockedusers.DateBlocked) AS max_date
     }
 
 
-    public function getAllMatchedDislaynames($user)
-    {
-        $res = Database::query_safe("select `Email`, `DisplayName` from user where Email = ANY (SELECT DISTINCT IF(`user_Receiver` = ? ,`user_Sender`,`user_Receiver`) FROM `message` WHERE `user_Sender` = ? OR `user_Receiver` = ?)", array($user->email, $user->email, $user->email));
-
-        //$res = Database::query("select `Email`, `DisplayName` from user");
-
-        $ret = [];
-        foreach ($res as $val) {
-            $ret[] = $val["DisplayName"];
-        }
-        return $ret;
-    }
-
-    public function getUsername($display)
-    {
-        $res = Database::query_safe("SELECT `Email` FROM `user` WHERE `DisplayName` = ? AND `ValidationHash` IS NULL", array($display));
-        if ($res == null)
-            return false;
-
-        $res = $res[0];
-        return $res["Email"];
-    }
-
     public function validateUsername($username)
     {
         $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
@@ -503,7 +508,7 @@ max(blockedusers.DateBlocked) AS max_date
         if (!filter_var($username, FILTER_VALIDATE_EMAIL) === false) {
 
 
-            $res = Database::query_safe("SELECT * FROM `user` WHERE `Email` = ? AND `ValidationHash` IS NULL", array($username));
+            $res = $this->UserQueryBuilder->checkExistence($username);
             if ($res == null)
                 return false;
             return true;
@@ -512,16 +517,14 @@ max(blockedusers.DateBlocked) AS max_date
 
     }
 
+    public function getAllMatchedDislaynames(User $user)
+    {
+        return $this->UserQueryBuilder->getDisplaynames($user);
+    }
 
     public function getAllDislaynames()
     {
-        $res = Database::query("SELECT `DisplayName` FROM `user`  WHERE `ValidationHash` IS NULL;");
-
-        $ret = [];
-        foreach ($res as $val) {
-            $ret[] = $val["DisplayName"];
-        }
-        return $ret;
+        return $this->UserQueryBuilder->getDisplaynames();
     }
 
     public function newPassword($username, $password)
@@ -536,10 +539,7 @@ max(blockedusers.DateBlocked) AS max_date
 
             // save password
             $hashed = password_hash($password, PASSWORD_DEFAULT);
-            if (Database::query_safe("UPDATE `user` SET `Password` = ?  WHERE `Email` = ?", array($hashed, $username)) === false) {
-                echo "Query error: \"UPDATE `user` SET `Password` = '$hashed'  WHERE `Email` = '$username'\"";
-                exit();
-            }
+            $this->UserQueryBuilder->setPassword($hashed, $username);
             return true;
         }
         return false;

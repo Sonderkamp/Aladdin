@@ -6,13 +6,13 @@
  * Date: 6-4-2016
  * Time: 14:25
  */
-class AdminTalentController
+class AdmintalentsController extends Controller
 {
     private $message_model, $page, $talents, $all_talents, $unaccepted_talents, $current_all_talents_number, $all_talents_number, $talent_repository, $forbidden_words_repo, $synonym_id, $accepted_talents;
 
     public function __construct()
     {
-        guaranteeAdmin("admintalents");
+        (new AdminController())->guaranteeAdmin("admintalents");
 
         $this->page = "m";
         $this->synonym_id = "";
@@ -29,11 +29,12 @@ class AdminTalentController
 
     public function run()
     {
+        // TODO: does not use new structure.
         $this->checkPost();
         $this->checkGet();
         $this->checkSession();
 
-        render("Admin/talent.tpl",
+        $this->render("Admin/talent.tpl",
             ["title" => "Talenten beheer",
                 "all_talents" => $this->all_talents,
                 "all_talent_number" => $this->all_talents_number,

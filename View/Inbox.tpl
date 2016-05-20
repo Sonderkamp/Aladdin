@@ -23,39 +23,69 @@
         <h4>{$folder}</h4>
     {/if}
 
-    <div class="col-sm-3">
-        <a href="/Inbox/p={$page[0]}/action=new" class="btn btn-default" style="width:100%">Nieuw Bericht</a><br>
+    <div class="col-sm-3 hidden-xs">
+        <a href="/Inbox/p={$page[0]}/action=newMessage" class="btn btn-default" style="width:100%">Nieuw Bericht</a><br>
         <br>
-        {if isset($in)}
+        {if $folderShortcut == "inbox"}
             <a href="/Inbox" class="btn btn-default active" style="width:100%">Postvak in</a>
             <br>
         {else}
             <a href="/Inbox" class="btn btn-default" style="width:100%">Postvak in</a>
             <br>
         {/if}
-        {if isset($out)}
+        {if $folderShortcut == "outbox"}
             <a href="/Inbox/folder=outbox" class="btn btn-default active" style="width:100%">Postvak uit</a>
             <br>
         {else}
             <a href="/Inbox/folder=outbox" class="btn btn-default" style="width:100%">Postvak uit</a>
             <br>
         {/if}
-        {if isset($trash)}
+        {if $folderShortcut == "trash"}
             <a href="/Inbox/folder=trash" class="btn btn-default active" style="width:100%">Prullenbak</a>
             <br>
         {else}
             <a href="/Inbox/folder=trash" class="btn btn-default" style="width:100%">Prullenbak</a>
             <br>
         {/if}
-        <br>
+        <br><br>
     </div>
 
     <div class="col-sm-9">
+
+        <div class="col-xs-12 hidden-sm hidden-md hidden-lg">
+            {if $folderShortcut == "inbox"}
+                <a href="/Inbox/p={$page}" class="btn btn-default active" style="width:100%">Postvak in</a>
+                <br>
+            {else}
+                <a href="/Inbox/p={$page}" class="btn btn-default" style="width:100%">Postvak in</a>
+                <br>
+            {/if}
+            {if $folderShortcut == "outbox"}
+                <a href="/Inbox/folder=outbox/p={$page}" class="btn btn-default active" style="width:100%">Postvak
+                    uit</a>
+                <br>
+            {else}
+                <a href="/Inbox/folder=outbox/p={$page}" class="btn btn-default" style="width:100%">Postvak uit</a>
+                <br>
+            {/if}
+            {if $folderShortcut == "trash"}
+                <a href="/Inbox/folder=trash/p={$page}" class="btn btn-default active" style="width:100%">Prullenbak</a>
+                <br>
+            {else}
+                <a href="/Inbox/folder=trash/p={$page}" class="btn btn-default" style="width:100%">Prullenbak</a>
+                <br>
+            {/if}
+            <br><br>
+            <br>
+            <a href="/Inbox/action=newMessage" class="btn btn-default" style="width:100%">Nieuw Bericht</a><br>
+            <br>
+        </div>
+
         <span class="info"><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">
                 <span class="glyphicon glyphicon-info-sign"></span>
             </button></span>
         <div class="hidden-sm hidden-md hidden-lg"><br><br></div>
-        <form class="user-control form-inline" action="/Inbox/folder={$folderShortcut}" method="get">
+        <form class="user-control form-inline" action="/Inbox/folder={$folderShortcut}/action=search" method="get">
             <input class="form-control white" value="{$search}" placeholder="Zoek Criteria" name="search" type="text">
             <button class="form-control btn-inbox" type="submit">Zoek</button>
         </form>
@@ -75,25 +105,25 @@
             <div class="panel panel-default overflowhidden">
                 {/if}
                 <div class="panel-body">
-                    <a href="/Inbox/folder={$folderShortcut}/p={$page[0]}/message={$message->id}"
+                    <a href="/Inbox/action=message/folder={$folderShortcut}/p={$page[0]}/message={$message->id}"
                        class="title">{htmlspecialchars($message->title)}</a> <span
                             class="info">
-                    {if isset($out)}
-                        {$message->receiver}
-                        {else}
+
                         {if $message->adminSender}
                             <span class="glyphicon glyphicon-eye-open"></span>
                             {$message->sender}
+                        {elseif $message->sender == $smarty.session.user -> displayName}
+                            {$message->receiver}
                         {else}
                             {$message->sender}
                         {/if}
-                    {/if}<br>{$message->date}</span>
+                        <br>{$message->date}</span>
                     <br>
                     <span>{$message->content}</span><br><br>
                 </div>
                 <div class="panel-footer">
                     <a href="/Inbox/folder={$folderShortcut}/p={$page[0]}/message={$message->id}" class="btn btn-inbox">Openen</a>
-                    {if isset($trash)}
+                    {if $folderShortcut == "trash"}
                         <form class=noPadding action="/Inbox/folder={$folderShortcut}/p={$page[0]}" method="post">
                             <input type="hidden" name="delete" value="{$message->id}"/>
                             <button type="submit" class="btn btn-inbox">Permanent Verwijderen</button>
@@ -123,7 +153,7 @@
                             {else if $link->action == "PaginaLink"}
                                 <a href="{$link->content}" class="btn btn-inbox">Naar Pagina</a>
                             {else if $link->action == "Bericht"}
-                                <a href="/Inbox/message={$link->content}" class="btn btn-inbox">Naar Pagina</a>
+                                <a href="/Inbox/action=message/message={$link->content}" class="btn btn-inbox">Naar Pagina</a>
                             {/if}
                         {/foreach}
                     {/if}
@@ -137,14 +167,15 @@
             {/if}
             {if $page[0] > 1 && $page[0] != $page[1]}
             <span><a href="/Inbox/folder={$folderShortcut}/p={$page[0]  - 1}?search={$search}" class="btn btn-default">Vorige</a><a
-                        href="/Inbox/folder={$folderShortcut}/p={$page[0]   + 1}?search={$search}"
+                        href="/Inbox/folder={$folderShortcut}/action=search/p={$page[0]   + 1}?search={$search}"
                         class="btn btn-default">Volgende</a></span><span class="info">Pagina {$page[0]}
                 / {$page[1]}</span>
             {else if $page[0] > 1}
-            <span><a href="/Inbox/folder={$folderShortcut}/p={$page[0]  - 1}?search={$search}" class="btn btn-default">Vorige</a><span
+            <span><a href="/Inbox/folder={$folderShortcut}/action=search/p={$page[0]  - 1}?search={$search}"
+                     class="btn btn-default">Vorige</a><span
                         class="info">Pagina {$page[0]} / {$page[1]}</span>
                 {else if $page[1] > 1}
-                <span><a href="/Inbox/folder={$folderShortcut}/p={$page[0]  + 1}?search={$search}"
+                <span><a href="/Inbox/folder={$folderShortcut}/action=search/p={$page[0]  + 1}?search={$search}"
                          class="btn btn-default">Volgende</a></span><span class="info">Pagina 1 / {$page[1]}</span>
                 {else}
                 <span class="info">Pagina 1</span>

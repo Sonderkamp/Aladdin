@@ -6,7 +6,7 @@
  * Date: 3-2-2016
  * Time: 20:17
  */
-class AdminController
+class AdminController extends Controller
 {
 
     public function guaranteeAdmin($link)
@@ -24,88 +24,57 @@ class AdminController
     public function run()
     {
 
-        guaranteeAdmin("/admin");
+        (new AdminController())->guaranteeAdmin("/admin");
 
+        if (!empty($_GET["csv"])) {
+            (new Graph())->$_GET["csv"]();
 
-        if (!Empty($_SESSION["admin"])) {
-
-            if (!empty($_GET["csv"])) {
-
-                $val = new Graph();
-                switch ($_GET["csv"]) {
-                    case "usersMonth":
-                        $val->getUsersMonth();
-                        exit();
-                    case "cats":
-                        $val->getCats();
-                        exit();
-                    case "monthly":
-                        $val->getCatsMonth($_GET["month"]);
-                        exit();
-                }
-
-
-            } else {
-
-                if (empty($_GET["action"])) {
-                    render("adminHome.tpl", ["title" => "Statistiek"]);
-                    exit();
-                } else {
-                    switch (strtolower($_GET["action"])) {
-                        case "logout":
-                            $this->logout();
-                            exit();
-                            break;
-                        default:
-                            apologize("Pagina bestaat niet");
-                            exit();
-                            break;
-                    }
-                }
-
-            }
         } else {
-            // log IP van gebruiker die admin pagina probeert te openen
-            apologize("Niet als admin ingelogd.");
+            $this->render("adminHome.tpl", ["title" => "Statistiek"]);
+            exit();
         }
+
 
     }
 
-    private function logout()
+    public function logout()
     {
         $adminModel = new Admin();
         $adminModel->logout();
         $this->login();
     }
 
-    private function login()
+    public function login()
     {
+
+
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-            if (!Empty($_POST["username"]) && !Empty($_POST["password"])) {
-                // htmlspecialchar
-                $adminModel = new Admin();
-                if ($adminModel->validate(htmlspecialchars($_POST["username"]), htmlspecialchars($_POST["password"]))) {
-                    if (!empty($_SESSION["Redirect"])) {
-                        redirect($_SESSION["Redirect"]);
-                        $_SESSION["Redirect"] = null;
-                        exit(0);
-                    }
-                    redirect("/Admin");
-                    exit();
-                }
-                $this->loginError("gebruikersnaam/wachtwoord combinatie is niet geldig");
 
+            $admin = new Admin();
+            $res = $admin->login();
+            if ($res !== true) {
+                $this->loginError($res);
+                exit();
             }
-            $this->loginError("Niet alle gegevens zijn ingevuld");
+
+            if (!empty($_SESSION["Redirect"])) {
+                $this->redirect($_SESSION["Redirect"]);
+                $_SESSION["Redirect"] = null;
+                exit();
+            }
+            $this->redirect("/Admin");
+            exit();
+
         } else {
-            render("Admin/login.tpl", ["title" => "Log in", "username" => ""]);
+            $this->render("Admin/login.tpl", ["title" => "Log in", "username" => ""]);
         }
     }
 
-    private function loginError($mess)
+    private
+    function loginError($mess)
     {
-        render("Admin/login.tpl", ["title" => "Log in", "error" => $mess, "username" => htmlspecialchars($_POST["username"])]);
+        $this->render("Admin/login.tpl", ["title" => "Log in", "error" => $mess, "username" => htmlspecialchars($_POST["username"])]);
         exit();
     }
 }
