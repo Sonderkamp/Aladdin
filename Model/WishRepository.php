@@ -147,6 +147,7 @@ class WishRepository
     public function editWishTalents(Wish $wish)
     {
         $talents = $this->talentRepository->getAddedTalents();
+
         $tags = array();
         foreach ($talents as $talent) {
             $tags[] = $talent->name;
@@ -155,12 +156,17 @@ class WishRepository
         if (is_array($wish->tags)) {
             $this->deleteWishTalents($wish);
             foreach ($wish->tags as $item) {
-                if (in_array($item, $tags)) {
-                    $this->bindToTalent($item, $wish);
-                } else {
+                if (!in_array($item, $tags)) {
                     $this->talentRepository->addTalent($item);
-                    $this->bindToTalent($item, $wish);
                 }
+                $this->bindToTalent($item, $wish);
+
+//                if (in_array($item, $tags)) {
+//                    $this->bindToTalent($item, $wish);
+//                } else {
+//                    $this->talentRepository->addTalent($item);
+//                    $this->bindToTalent($item, $wish);
+//                }
             }
         }
     }
@@ -174,7 +180,6 @@ class WishRepository
     {
         $this->WishQueryBuilder->bindToTalent($talentName, $wish);
     }
-
 
 
     /**
@@ -264,79 +269,10 @@ class WishRepository
             5 => "Wordt vervuld"]));
     }
 
-    public function wishesByTag($tag){
-        $this->WishQueryBuilder->wishesByTag($tag);
-        
-        
-    }
-
-//    public
-
-    //Rewrite potential?
-    public function getAllWishesWithTag($tag)
+    public function wishesByTalents($talents)
     {
-        $intArray = array();
-        $id = "(";
-        foreach ($tag as $item) {
-            if ($item instanceof Talent) {
-                $id .= $item->getId() . ',';
-            }
-        }
-        $value = substr($id, 0, -1);
-        $value .= ')';
-
-        $rest = substr($value, -2, 1);
-
-        if ($rest == ",") {
-            $value = substr($id, 0, -2);
-            $value .= ')';
-        }
-
-
-        $sql = "SELECT wish_Id FROM `talent_has_wish` where talent_id in $value";
-        $result = Database::query($sql);
-
-        if (!empty($result)) {
-            $string = "(";
-            foreach ($result as $item) {
-                $string .= $item["wish_Id"] . ",";
-            }
-            $value = substr($string, 0, -1);
-            $value .= ')';
-
-
-            $myWishes = $this->getMyWishes();
-            $myWishId = "(";
-            foreach ($myWishes as $item) {
-                if ($item instanceof Wish) {
-                    $myWishId .= $item->id . ",";
-                }
-            }
-
-            $value2 = substr($myWishId, 0, -1);
-            $value2 .= ')';
-
-
-            $result = Database::query
-            ("SELECT *
-              FROM wish AS w
-                JOIN (SELECT wish_Id, MAX(wishContent.Date) AS max_date
-                FROM wishContent
-                WHERE IsAccepted = 1 
-                  AND moderator_username is not null
-                GROUP BY wish_Id) AS wcMax
-                  ON w.Id = wcMax.wish_Id
-                JOIN wishContent AS wc 
-                  ON wcMax.wish_Id = wc.wish_Id
-                WHERE wc.wish_Id in $value 
-                  AND wc.wish_Id NOT IN $value2
-                  AND (w.Status = 'Gepubliceerd' OR w.status='Match gevonden') 
-                  AND wc.Date = wcMax.max_date
-              ORDER BY max_date DESC");
-
-
-            return $this->getReturnArray($result);
-        }
+        $temp = $this->WishQueryBuilder->wishIDByTalents($talents);
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes_($temp, $this->getMyWishes()));
     }
 
 
@@ -365,15 +301,5 @@ class WishRepository
         $newmail->setLink($id, "Wens", $msgID);
     }
 
-    public function getSQLString($array){
-        $string = '(';
-        foreach ($array as $item) {
-            $string .= $item . ',';
-        }
-        $value = substr($string, 0, -1);
-        $value .= ')';
-
-        return $value;
-    }
 
 }

@@ -205,8 +205,66 @@ class WishQueryBuilder
         Database::query_safe($query2, $array2);
     }
 
-    public function wishesByTag($tag){
+    public function wishIDByTalents($talents)
+    {
+        $talentList = array();
+        foreach ($talents as $item) {
+            $talentList[] = $item->id;
+        }
 
+        $tags = $this->getSQLString($talentList);
+
+        $sql = "SELECT wish_Id FROM `talent_has_wish` where talent_id in $tags";
+        $result = $this->executeQuery($sql, array());
+
+        $list = array();
+        foreach ($result as $item) {
+            $list[] = $item["wish_Id"];
+        }
+
+        return $list;
+    }
+
+    public function getWishes_($talents, $myWishes)
+    {
+        $talentList = $this->getSQLString($talents);
+
+        $temp = array();
+        foreach ($myWishes as $item){
+            $temp[] = $item->id;
+        }
+
+        $wishList = $this->getSQLString($temp);
+        
+        $sql = "SELECT *
+              FROM wish AS w
+                JOIN (SELECT wish_Id, MAX(wishContent.Date) AS max_date
+                  FROM wishContent
+                    WHERE IsAccepted = 1 AND moderator_username is not null
+                    GROUP BY wish_Id) AS wcMax
+                ON w.Id = wcMax.wish_Id
+                  JOIN wishContent AS wc 
+                  ON wcMax.wish_Id = wc.wish_Id
+                    WHERE wc.wish_Id in $talentList 
+                    AND wc.wish_Id NOT IN $wishList
+                    AND (w.Status = 'Gepubliceerd' OR w.status='Match gevonden') 
+                    AND wc.Date = wcMax.max_date
+                    ORDER BY max_date DESC";
+        
+        return $this->executeQuery($sql, array());
+    }
+
+
+    public function getSQLString($array)
+    {
+        $string = '(';
+        foreach ($array as $item) {
+            $string .= $item . ',';
+        }
+        $value = substr($string, 0, -1);
+        $value .= ')';
+
+        return $value;
     }
 
 }

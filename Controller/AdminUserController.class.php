@@ -27,7 +27,6 @@ class AdminuserController extends Controller
     {
         $this->setCurrent("unhandled");
         $report = $this->reportRepository->getRequested();
-//        $report = $this->reportRepository->get("new");
 
         if (count($report) > 0) {
             foreach ($report as $item) {
