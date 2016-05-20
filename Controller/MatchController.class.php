@@ -31,48 +31,44 @@ class MatchController extends Controller
 
     public function open_match_view()
     {
-        /* get my own talents */
+        /** get my own talents */
         $userTalents = $this->talenRepository->getAddedTalents();
 
-        /* get all sysnoynms of my talents */
+        /** get all sysnoynms of my talents */
         $synonmys = $this->talenRepository->getSynonymsOfTalents($userTalents);
 
-        /* delete multipe talents */
+        /** delete multipe talents */
         $allTalents = array_merge($userTalents, $synonmys);
 
-        /* get wishes who match by talents/synonyms */
+        /** get wishes who match by talents/synonyms */
         $possibleMatches = $this->wishRepository->wishesByTalents($allTalents);
 
-        print_r($possibleMatches);
-        $this->ex();
-
-//        $possibleMatches = $this->wishRepository->getAllWishesWithTag($allTalents);
-//        print_r($possibleMatches);
-
-        /* Nothing with matching, only check if user can Add a wish and get his DisplayName */
+        /** Nothing with matching, only check if user can add a wish  */
         $canAddWish = $this->wishRepository->canAddWish($_SESSION["user"]->email);
         
-        /* Get users I have reported */
+        /** Get users I have reported */
         $report = $this->reportRepository->getReportedUsers();
 
-        /* Get the displaynames of the users which I have reported */
+        /** Get the displaynames of the users which I have reported */
         $displayNames = array();
         if (count($report) !== 0) {
             foreach ($report as $item) {
-                if ($item instanceof Report) {
+//                if ($item instanceof Report) {
                     $user = $item->getReported();
-                    if ($user instanceof User) {
-                        $displayNames[] = $user->getDisplayName();
-                    };
-                }
+//                    if ($user instanceof User) {
+                        $displayNames[] = $user->displayName;
+//                        getDisplayName();
+//                    };
+//                }
             }
         }
 
-        /* get my own displayname */
+        /** get my own displayname */
         $user = $this->userRepository->getUser($_SESSION["user"]->email);
-        $displayName = $user->getDisplayName();
-
-        /* set current to 'match' so I can go back to the correct page */
+        $displayName = $user->displayName;
+//        getDisplayName();
+        
+        
         $_SESSION["current"] = "matchedWishes";
 
         $this->render("wishOverview.tpl",
