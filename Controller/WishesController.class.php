@@ -6,8 +6,10 @@
  * Date: 25-Feb-16
  * Time: 15:08
  */
-class WishController
+class WishesController extends Controller
 {
+
+    // BREEKT MET NIEUWE STRCTUUR TODO
 
     public
         $completedWishes,
@@ -32,22 +34,24 @@ class WishController
         $this->reportRepository = new ReportRepository();
     }
 
+    //
+
     public function run()
     {
-        guaranteeLogin("/Wishes");
+        (new AccountController())->guaranteeLogin("/Wishes");
 
         if (isset($_GET["show"])) {
             switch (strtolower($_GET["show"])) {
                 case "mywishes":
-                    guaranteeProfile();
+                    (new DashboardController())->guaranteeProfile();
                     $this->renderOverview("myWishes");
                     break;
                 case "incompletedwishes":
-                    guaranteeProfile();
+                    (new DashboardController())->guaranteeProfile();
                     $this->renderOverview("incompletedWishes");
                     break;
                 case "completedwishes":
-                    guaranteeProfile();
+                    (new DashboardController())->guaranteeProfile();
                     $this->renderOverview("completedWishes");
                     break;
                 case "open_edit_wish":
@@ -89,7 +93,7 @@ class WishController
                     $this->back();
                     break;
                 default:
-                    apologize("404 not found, Go back to my wishes");
+                    $this->apologize("404 not found, Go back to my wishes");
                     break;
             }
         } else if (isset($_GET["wish_id"])) {
@@ -105,10 +109,11 @@ class WishController
         if (isset($_GET["search"])) {
             $this->searchWish($_GET["search"]);
         } else if (isset($_POST["match/wish_id"])) {
-            guaranteeProfile();
+
+            (new DashboardController())->guaranteeProfile();
             $this->requestMatch($_POST["match/wish_id"]);
         } else {
-            guaranteeProfile();
+            (new DashboardController())->guaranteeProfile();
             $this->renderOverview("myWishes");
         }
     }
@@ -134,7 +139,8 @@ class WishController
         }
 
 
-        render("wishOverview.tpl", ["title" => "Wensen Overzicht",
+
+        $this->render("wishOverview.tpl", ["title" => "Wensen Overzicht",
             "myWishes" => $myWishes,
             "completedWishes" => $completedWishes,
             "myCompletedWishes" => $myCompletedWishes,
@@ -179,7 +185,7 @@ class WishController
                 exit(1);
             }
 
-            render("addWish.tpl", ["title" => "Wens toevoegen"]);
+            $this->render("addWish.tpl", ["title" => "Wens toevoegen"]);
 
         } else {
             $this->wishContentId = $_GET["editwishbtn"];
@@ -199,7 +205,7 @@ class WishController
             $tempTag = $this->wishRepo->getWishTalent($this->wishContentId);
             $tag = $this->prepend("#", implode(" #", $tempTag));
 
-            render("addWish.tpl", ["wishtitle" => $title,
+            $this->render("addWish.tpl", ["wishtitle" => $title,
                 "description" => $description, "edit" => "isset", "tag" => $tag, "previousPage"]);
         }
     }
@@ -222,7 +228,7 @@ class WishController
             $canAddWish = $this->wishRepo->canAddWish($_SESSION["user"]->email);
 
             if (!$canAddWish) {
-                render("addWish.tpl", ["wishError" => "U heeft al 3 wensen, u kunt geen wensen meer toevoegen."]);
+                $this->render("addWish.tpl", ["wishError" => "U heeft al 3 wensen, u kunt geen wensen meer toevoegen."]);
                 exit(1);
             }
 
@@ -251,14 +257,6 @@ class WishController
             if (!$this->isValid($input) || $size == 0) {
                 $this->renderEdit($title, $description, $tag);
             }
-//            if (Empty($this->title)
-//                || Empty($this->description)
-//                || Empty($this->tag) || $size == 0
-//            ) {
-//                render("addWish.tpl", ["error" => "Vul AUB alles in", "wishtitle" => $this->title,
-//                    "description" => $this->description,"tag" => $this->tag, /*"edit" => "isset"*/]);
-//                exit(1);
-//            }
 
 
             $myWishes = $this->wishRepo->getMyWishes();
@@ -309,14 +307,14 @@ class WishController
     private function getSpecificwish($id, $previousPage)
     {
         $selectedWish = $this->wishRepo->getWish($id);
-        render("wishSpecificView.tpl",
+        $this->render("wishSpecificView.tpl",
             ["title" => "Wens: " . $id, "selectedWish" => $selectedWish, "previousPage" => $previousPage]);
         exit(0);
     }
 
     private function requestMatch($id)
     {
-        apologize($id);
+        $this->apologize($id);
     }
 
 
@@ -337,8 +335,10 @@ class WishController
                 $this->renderEdit($title, $description, $tag);
             }
 
+
             // set a comma , between the tags.
             $myTags = array_map('ucfirst', explode(',', $this->gethashtags($tag)));
+
 
             // create an array with the wish
             $editWish = array();
@@ -393,7 +393,7 @@ class WishController
 
     private function go_back()
     {
-        guaranteeProfile();
+        (new DashboardController())->guaranteeProfile();
         $this->renderOverview("myWishes");
     }
 
@@ -425,11 +425,11 @@ class WishController
     public function back()
     {
         if (!empty($this->getCurrent())) {
-            redirect("/wishes/show=" . $this->getCurrent());
+            $this->redirect("/wishes/show=" . $this->getCurrent());
             exit(0);
         }
 
-        redirect("/wishes");
+        $this->redirect("/wishes");
         exit(0);
     }
 

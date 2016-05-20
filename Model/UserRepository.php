@@ -270,8 +270,27 @@ class UserRepository
 
     }
 
-    public function setRecoveryMail($mail, $username)
+    public function checkUsernameJSON($username)
     {
+        header('Content-Type: application/json');
+        if (!Empty($username)) {
+            // htmlspecialchar
+
+            if ($this->getUser($username) !== false) {
+
+                echo json_encode(array('result' => true));
+                exit();
+            }
+            echo json_encode(array('result' => false));
+            exit();
+        }
+        echo json_encode(array('result' => false));
+    }
+
+    public function setRecoveryMail($mail, $username, &$websiteMessage)
+    {
+
+
         if ($this->validateUsername($username)) {
             // getName
             $val = $this->getUser($username);
@@ -290,10 +309,41 @@ class UserRepository
             Met vriendelijke groet,\n
             Webshop";
 
+            $websiteMessage = "Er is een email verstuurd naar " . $username .
+                "met een link om uw wachtwoord te resetten.Deze link verschijnt binnen drie minuten.
+                                als u niks binnenkrijgt, kijk alstublieft in uw spam folder.";
+
             return true;
         } else {
             return false;
         }
+    }
+
+    public function recover($username)
+    {
+
+        if ((Empty($_POST["username"])
+            || !$this->validateUsername($_POST["username"])
+            || ($username != $_POST["username"]))
+        ) {
+            return "Invalid form.";
+        }
+
+        // check passwords
+        if (Empty($_POST["password1"]) || Empty($_POST["password2"])) {
+            return "Niet alles ingevuld.";
+        }
+        if ($_POST["password1"] != $_POST["password2"]) {
+            return "Wachtwoorden komen niet overeen.";
+        }
+
+        // save password
+        if (!$this->newPassword($_POST["username"], $_POST["password1"])) {
+            return "Wachtwoord moet minimaal 8 tekens lang zijn en
+                        een hoofdletter, een kleine letter, een nummer bevatten.";
+
+        }
+        return true;
     }
 
 
@@ -381,6 +431,45 @@ class UserRepository
             $d->format('Y-m-d'), $array["gender"], $array["handicap"], $displayname, $array["initial"]));
 
         return true;
+    }
+
+
+    public function login()
+    {
+        if (!Empty($_POST["username"]) && !Empty($_POST["password"])) {
+
+            if ($this->validate(htmlspecialchars($_POST["username"]), htmlspecialchars($_POST["password"]))) {
+
+                if ($this->isBlocked($_POST["username"]) !== false) {
+                    $_SESSION["user"] = null;
+                    return "gebruiker is geblokkeerd. Reden: " . htmlspecialcharsWithNL($this->isBlocked($_POST["username"]));
+                }
+                return true;
+            }
+            return "gebruikersnaam/wachtwoord combinatie is niet geldig";
+
+        }
+        return "Niet alle gegevens zijn ingevuld";
+    }
+
+    public function newRecover($username, &$websiteMessage)
+    {
+        if (!$this->validateUsername($_POST["username"])) {
+            $this->recoverError("Invalid username");
+        }
+
+        if ($this->newHash($_POST["username"])) {
+            $mailer = new Email();
+
+            if ($this->setRecoveryMail($mailer, $_POST["username"], $websiteMessage)) {
+                $mailer->sendMail();
+                return true;
+
+            } else {
+                $this->recoverError("Email send error.");
+            }
+        }
+        return "deze gebruiker heeft afgelopen 24 uur al een recovery aangevraagd.";
     }
 
     public function createDislay($arr)

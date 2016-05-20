@@ -12,7 +12,7 @@
     <h1>{$title}</h1>
     <h3>{$folder}</h3>
     <div class="col-sm-3">
-        <a href="\Inbox\action=new" class="btn btn-default active" style="width:100%">Nieuw Bericht</a><br>
+        <a href="\Inbox\action=newMessage" class="btn btn-default active" style="width:100%">Nieuw Bericht</a><br>
         <br>
 
         <a href="\Inbox" class="btn btn-default" style="width:100%">Postvak in</a><br>
@@ -32,7 +32,7 @@
         <p id="err"></p>
         {/if}
 
-        <form id="form" role="form" method="post" action="/Inbox/action=new">
+        <form id="form" role="form" method="post" action="/Inbox/action=newMessage">
 
             <div class="form-group">
                 <label for="rec">Aan:</label>

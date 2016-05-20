@@ -6,13 +6,13 @@
  * Date: 9-3-2016
  * Time: 20:10
  */
-class ProfileCheckController
+class ProfilecheckController extends Controller
 {
-
+    // BREEKT MET NIEUWE STRCTUUR TODO
 
     public function run()
     {
-        guaranteeAdmin("/ProfileCheck");
+        (new AdminController())->guaranteeAdmin("/ProfileCheck");
         if (isset($_GET["user"]) && !isset($_GET["action"])) {
             $this->renderProfilePage($_GET["user"]);
         } elseif (isset($_GET["action"]) || isset($_GET["user"]))
@@ -37,7 +37,7 @@ class ProfileCheckController
         }
         else
         {
-            apologize("404 not found, This user does not exist");
+            $this->apologize("404 not found, This user does not exist");
         }
     }
 
@@ -86,7 +86,7 @@ class ProfileCheckController
     private function renderProfilePage($user)
     {
 
-        render("profilecheck.tpl", ["title" => "Profiel", "cuser" => $this->getUserCheck($user), "blockstatus" => $this->getLastBlockStatus($user),"wishes" => $this->getWishes($user),"talents" => $this->getTalents($user),"blocks" => $this->getBlocks($user)]);
+        $this->render("profilecheck.tpl", ["title" => "Profiel", "cuser" => $this->getUserCheck($user), "blockstatus" => $this->getLastBlockStatus($user),"wishes" => $this->getWishes($user),"talents" => $this->getTalents($user),"blocks" => $this->getBlocks($user)]);
         exit();
     }
 

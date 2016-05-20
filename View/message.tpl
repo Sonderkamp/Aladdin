@@ -21,7 +21,7 @@
     {/if}
 
     <div class="col-sm-3 hidden-xs">
-        <a href="/Inbox/p={$page}/action=new" class="btn btn-default" style="width:100%">Nieuw Bericht</a><br>
+        <a href="/Inbox/p={$page}/action=newMessage" class="btn btn-default" style="width:100%">Nieuw Bericht</a><br>
         <br>
         {if $folderShortcut == "inbox"}
             <a href="/Inbox/p={$page}" class="btn btn-default active" style="width:100%">Postvak in</a>
@@ -52,7 +52,8 @@
                   <span class="glyphicon glyphicon-info-sign"></span>
               </button></span>
         <div class="hidden-xs">
-            <form class="user-control form-inline" action="/Inbox/folder={$folderShortcut}/p={$page}" method="get">
+            <form class="user-control form-inline" action="/Inbox/folder={$folderShortcut}/p={$page}/action=search/"
+                  method="get">
                 <input class="form-control white" value="{$search}" placeholder="Zoek Criteria" name="search"
                        type="text">
                 <button class="form-control btn-inbox" type="submit">Zoek</button>
@@ -121,7 +122,7 @@
                             {else if $link->action == "PaginaLink"}
                                 <a href="{$link->content}" class="btn btn-inbox">Naar Pagina</a>
                             {else if $link->action == "Bericht"}
-                                <a href="/Inbox/p={$page}/message={$link->content}" class="btn btn-inbox">Naar
+                                <a href="/Inbox/p={$page}/action=message/message={$link->content}" class="btn btn-inbox">Naar
                                     Bericht</a>
                             {/if}
                         {/foreach}
@@ -132,35 +133,37 @@
         </div>
 
         <div class="col-xs-12 hidden-sm hidden-md hidden-lg">
-                {if $folderShortcut == "inbox"}
-                    <a href="/Inbox/p={$page}" class="btn btn-default active" style="width:100%">Postvak in</a>
-                    <br>
-                {else}
-                    <a href="/Inbox/p={$page}" class="btn btn-default" style="width:100%">Postvak in</a>
-                    <br>
-                {/if}
-                {if $folderShortcut == "outbox"}
-                    <a href="/Inbox/folder=outbox/p={$page}" class="btn btn-default active" style="width:100%">Postvak uit</a>
-                    <br>
-                {else}
-                    <a href="/Inbox/folder=outbox/p={$page}" class="btn btn-default" style="width:100%">Postvak uit</a>
-                    <br>
-                {/if}
-                {if $folderShortcut == "trash"}
-                    <a href="/Inbox/folder=trash/p={$page}" class="btn btn-default active" style="width:100%">Prullenbak</a>
-                    <br>
-                {else}
-                    <a href="/Inbox/folder=trash/p={$page}" class="btn btn-default" style="width:100%">Prullenbak</a>
-                    <br>
-                {/if}
-                <br><br>
+            {if $folderShortcut == "inbox"}
+                <a href="/Inbox/p={$page}" class="btn btn-default active" style="width:100%">Postvak in</a>
+                <br>
+            {else}
+                <a href="/Inbox/p={$page}" class="btn btn-default" style="width:100%">Postvak in</a>
+                <br>
+            {/if}
+            {if $folderShortcut == "outbox"}
+                <a href="/Inbox/folder=outbox/p={$page}" class="btn btn-default active" style="width:100%">Postvak
+                    uit</a>
+                <br>
+            {else}
+                <a href="/Inbox/folder=outbox/p={$page}" class="btn btn-default" style="width:100%">Postvak uit</a>
+                <br>
+            {/if}
+            {if $folderShortcut == "trash"}
+                <a href="/Inbox/folder=trash/p={$page}" class="btn btn-default active" style="width:100%">Prullenbak</a>
+                <br>
+            {else}
+                <a href="/Inbox/folder=trash/p={$page}" class="btn btn-default" style="width:100%">Prullenbak</a>
+                <br>
+            {/if}
+            <br><br>
             <br>
-            <a href="/Inbox/action=new" class="btn btn-default" style="width:100%">Nieuw Bericht</a><br>
+            <a href="/Inbox/action=newMessage" class="btn btn-default" style="width:100%">Nieuw Bericht</a><br>
             <br>
-            <form class="user-control form-inline" action="/Inbox/folder={$folderShortcut}" method="get">
-                <input class="form-control white" value="{$search}" placeholder="Zoek Criteria" name="search"
-                       type="text">
-                <button class="form-control btn-inbox" type="submit">Zoek</button>
+            <form class="user-control form-inline" action="/Inbox/folder={$folderShortcut}/p={$page}/action=search/"
+                  method="get"
+            <input class="form-control white" value="{$search}" placeholder="Zoek Criteria" name="search"
+                   type="text">
+            <button class="form-control btn-inbox" type="submit">Zoek</button>
             </form>
         </div>
     </div>

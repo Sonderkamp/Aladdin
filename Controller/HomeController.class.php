@@ -1,15 +1,15 @@
 <?php
 
 
-class HomeController
+class HomeController extends Controller
 {
 
-    public function Run()
+    public function run()
     {
         if (isset($_SESSION["user"]) && !(isset($_GET["action"]) && $_GET["action"] == "home"))
-            (new WishController())->run();
+            (new WishesController())->run();
         else
-            render("home.tpl", ["title" => "Aladdin"]);
+            $this->render("home.tpl", ["title" => "Aladdin"]);
         exit(1);
     }
 
