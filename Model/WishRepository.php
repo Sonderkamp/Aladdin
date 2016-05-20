@@ -133,7 +133,7 @@ class WishRepository
         $this->editWishTalents($wish);
     }
 
-    public function addWishContent(Wish $wish)
+    private function addWishContent(Wish $wish)
     {
         $this->WishQueryBuilder->addWishContent($wish);
     }
@@ -278,6 +278,19 @@ class WishRepository
 
     public function sendEditMail($id, $titel, $content, $tags)
     {
+        $mail = new Email();
+        $mail->fromName = "Alladin";
+        $mail->subject = "Wens is gewijzigd";
+        $mail->message = $this->createMessage($titel, $content, $tags);
+        $mail->to = $_SESSION["user"]->email;
+        $mail->sendMail();
+
+        $newmail = new messageRepository();
+        $msgID = $newmail->sendMessage("Admin", $mail->to, $mail->subject, $mail->message);
+        $newmail->setLink($id, "Wens", $msgID);
+    }
+    
+    public function createMessage($titel,$content,$tags){
         $head = "Beste, \n\n email test";
         $msg = "Uw wensweiziging is ingediend, uw wens zal na goedkeuring zichtbaar zijn voor anderen, we houden u hiervan nog op de hoogte.\n\n";
         $wish = "Uw nieuwe wens is als volgt: \n";
@@ -288,17 +301,7 @@ class WishRepository
         $end = "Vriendelijke groeten, \n\n Alladin";
 
         $message = $head . $msg . $wish . $wishName . $wishDescription . $wishTags . $end;
-
-        $mail = new Email();
-        $mail->fromName = "Alladin";
-        $mail->subject = "Wens is gewijzigd";
-        $mail->message = $message;
-        $mail->to = $_SESSION["user"]->email;
-        $mail->sendMail();
-
-        $newmail = new messageRepository();
-        $msgID = $newmail->sendMessage("Admin", $mail->to, $mail->subject, $mail->message);
-        $newmail->setLink($id, "Wens", $msgID);
+        return $message;
     }
 
 
