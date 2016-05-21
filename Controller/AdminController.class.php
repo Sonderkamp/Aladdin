@@ -50,7 +50,6 @@ class AdminController extends Controller
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-
             $admin = new Admin();
             $res = $admin->login();
             if ($res !== true) {
@@ -71,8 +70,7 @@ class AdminController extends Controller
         }
     }
 
-    private
-    function loginError($mess)
+    private function loginError($mess)
     {
         $this->render("Admin/login.tpl", ["title" => "Log in", "error" => $mess, "username" => htmlspecialchars($_POST["username"])]);
         exit();

@@ -86,9 +86,9 @@ class UserQueryBuilder
     {
         switch ($type) {
             case "recovery":
-                return Database::query_safe("SELECT * FROM `user` WHERE `Email` = ?", array($username));
+                return Database::query_safe("SELECT * FROM `user` WHERE `Email` = ?", array($username))[0];
             case "validation":
-                return Database::query_safe("SELECT * FROM `user` WHERE `Email` = ?", array($username));
+                return Database::query_safe("SELECT * FROM `user` WHERE `Email` = ?", array($username))[0];
             default:
                 echo "TYPE DOES NOT EXIST - getTokenByName->UserQueryBuilder()";
                 exit();
