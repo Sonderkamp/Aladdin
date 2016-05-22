@@ -226,15 +226,6 @@ class UserRepository
         if (preg_match("/^[0-9]{4}[\s]{0,1}[a-zA-z]{2}/", $array["postalcode"]) == false)
             return false;
 
-        // COUNTRY
-        //[a-zA-Z][a-zA-Z ]+$
-        if (preg_match("/^[a-zA-Z][a-zA-Z ]+$/", $array["country"]) == false)
-            return false;
-
-        // CITY
-        //[a-zA-Z][a-zA-Z ]+$
-        if (preg_match("/^[a-zA-Z][a-zA-Z ]+$/", $array["city"]) == false)
-            return false;
 
         // INITIALS
         // data-validation-regexp="^([a-zA-Z\.]+)$"

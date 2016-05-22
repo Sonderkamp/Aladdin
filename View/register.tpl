@@ -58,7 +58,7 @@
             </div>
             <div class="panel-body">
 
-                <form name="registerForm" action="/Account/action=register" method="post"
+                <form id="form" name="registerForm" action="/Account/action=register" method="post"
                       onsubmit="return validateEmail()">
 
 
@@ -76,23 +76,22 @@
 
                             <td>Wachtwoord:</td>
                             <td>
-                            {literal}
-                                 <input type="password" name="password1" required
-                                                              required data-validation="custom"
-                                                              data-validation-regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\W]{8,}$"
-                                                              data-validation-error-msg="het wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter en een nummer bevatten.">
-                            {/literal}
+                                {literal}
+                                    <input type="password" name="password1" required
+                                           required data-validation="custom"
+                                           data-validation-regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\W]{8,}$"
+                                           data-validation-error-msg="het wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter en een nummer bevatten.">
+                                {/literal}
                             </td>
                         </tr>
                         <tr>
                             <td>Herhaal wachtwoord:</td>
                             <td>
-                             {literal}
-                                 <input type="password" name="password2" required data-validation="confirmation"
-                                                                    data-validation-confirm="password1"
-                                                                    data-validation-error-msg="wachtwoorden komen niet overeen.">
-
-                            {/literal}
+                                {literal}
+                                    <input type="password" name="password2" required data-validation="confirmation"
+                                           data-validation-confirm="password1"
+                                           data-validation-error-msg="wachtwoorden komen niet overeen.">
+                                {/literal}
                             </td>
                         </tr>
 
@@ -126,7 +125,7 @@
                         <tr>
                             <td>Adress:</td>
                             <td>
-                                <input type="text" name="address" data-validation="custom"
+                                <input type="text" name="address" onblur="validateAddress()" data-validation="custom"
                                        data-validation-regexp="^([a-zA-Z][A-Za-z0-9\- ]+)$"
                                        data-validation-error-msg="Straat en huisnummer kan alleen letters, nummers, spaties en streepjes(-) bevatten"
                                        maxlength="255">
@@ -137,27 +136,19 @@
                             <td>
 
                                 <input type="text" name="postalcode" required
-                                       data-validation="custom"
-                                        {literal}
-                                       data-validation-regexp="^[0-9]{4}[\s]{0,1}[a-zA-z]{2}"
-                                       data-validation-error-msg="invalide postcode gegeven"
-                                       maxlength="6">
-                                {/literal}
+                                       maxlength="6" readonly>
+
                             </td>
                         </tr>
                         <tr>
                             <td>Stad:</td>
-                            <td><input type="text" name="city" required data-validation="custom"
-                                       data-validation-regexp="^[a-zA-Z][a-zA-Z ]+$"
-                                       data-validation-error-msg="Stad kan alleen letters en spaties bevatten"
-                                       maxlength="255"></td>
+                            <td><input type="text" name="city" required maxlength="255" readonly></td>
 
                         </tr>
                         <tr>
                             <td>Land:</td>
-                            <td><input type="text" name="country"
-                                       required data-validation="country"
-                                       data-validation-error-msg="invalide land gekozen." value="netherlands">
+                            <td><input type="text" name="country" required
+                                       data-validation-error-msg="invalide land gekozen." readonly>
                             </td>
                         </tr>
                         <tr>
@@ -211,9 +202,10 @@
 
 </div>
 
-
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
 <script>
 
+    var done = false;
 
     function validateEmail() {
         {literal}
@@ -227,7 +219,6 @@
             dataType: "text",
             success: function (resultData) {
                 resultData = JSON.parse(resultData);
-                console.log(resultData);
                 if (resultData.result == true) {
                     ret = false;
                     $("#error").text("Error: emailadres bestaat al.");
@@ -238,16 +229,85 @@
             async: false
         });
 
+        if ($('input[name=city]').val() === "" ||
+                $('input[name=country]').val() === "" ||
+                $('input[name=postalcode]').val() === "") {
+            $("#error").text("Niet alle gegevens zijn ingevuld.");
+            $("#error").addClass("form-error");
+            return false;
+        }
         return ret;
     }
 
     // http://www.formvalidator.net/
     $.validate({
-        modules: 'location, security, date',
-        onModulesLoaded: function () {
-            $('input[name="country"]').suggestCountry();
-        }
+        modules: 'location, security, date'
     });
 
 
+</script>
+
+
+<script>
+    {literal}
+
+    function validateAddress() {
+
+        $("#error").text("");
+        $("#error").removeClass("form-error");
+
+        $('input[name=city]').val('');
+        $('input[name=country]').val('');
+        $('input[name=postalcode]').val('');
+        var location = $('input[name=address]').val();
+
+        if (location != "")
+            return getAddress(location, false);
+
+        return false;
+    }
+
+    function getAddress(location, submit) {
+        done = false;
+
+        geocoder = new google.maps.Geocoder();
+        geocoder.geocode({"address": location}, function (results, status) {
+            if (status == "OK") {
+
+                if (results[0].types[0] !== "street_address") {
+                    $("#error").text("Error: Geen valide adres ingevuld.");
+                    $("#error").addClass("form-error");
+                }
+                else {
+
+
+                    var city = results[0].address_components[2].long_name;
+                    var country = results[0].address_components[5].long_name;
+                    var postalcode = results[0].address_components[6].long_name.replace(/\s+/g, '');
+
+                    if ($('input[name=city]').val() !== city ||
+                            $('input[name=country]').val() !== country ||
+                            $('input[name=postalcode]').val() !== postalcode) {
+                        $('input[name=city]').val(city);
+                        $('input[name=country]').val(country);
+                        $('input[name=postalcode]').val(postalcode);
+                    }
+
+                    if (submit == true) {
+                        console.log("submit!");
+                        done = true;
+                        $('#form').submit();
+                    }
+                }
+            } else {
+
+                $("#error").text("Adres niet gevonden. Error Code: " + status);
+                $("#error").addClass("form-error");
+            }
+        });
+
+
+    }
+
+    {/literal}
 </script>
