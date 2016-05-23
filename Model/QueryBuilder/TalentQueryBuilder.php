@@ -12,15 +12,26 @@ class TalentQueryBuilder
     public function addTalent($name)
     {
         if (!Empty(trim($name)) || trim($name) != "" || preg_match('/[^a-z\s]/i', $name)) {
-            Database::query_safe
-            ("INSERT INTO `talent` (`Name`,
+
+            foreach ($this->getTalents(null,null,null,null,null,null,null,null,true,$name) as $talentName) {
+                if(strtolower(trim($talentName["Name"])) == strtolower(trim($name))) {
+                    $failed = true;
+                    break;
+                }
+            }
+
+            if(!isset($failed)) {
+
+                Database::query_safe
+                ("INSERT INTO `talent` (`Name`,
                                     `CreationDate`,
                                     `AcceptanceDate`,
                                     `IsRejected`,
                                     `moderator_Username`,
                                     `user_Email`)
               VALUES (?, CURRENT_TIMESTAMP, NULL, NULL, NULL, ?)",
-                array(htmlentities(ucfirst(strtolower(trim($name))), ENT_QUOTES), $_SESSION["user"]->email));
+                    array(htmlentities(ucfirst(strtolower(trim($name))), ENT_QUOTES), $_SESSION["user"]->email));
+            }
         }
     }
 

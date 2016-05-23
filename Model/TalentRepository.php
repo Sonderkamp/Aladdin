@@ -45,7 +45,7 @@ class TalentRepository
         return $this->createTalentArray($this->talentBuilder->getTalents($page),$synonyms);
     }
 
-    public function searchTalentssss($search, $page = null, $synonyms = null) {
+    public function searchTalents($search, $page = null, $synonyms = null) {
         return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, null, null, null, null, null, $search), $synonyms);
     }
 
@@ -81,7 +81,7 @@ class TalentRepository
         return $this->createTalentArray($this->talentBuilder->getTalents(null, null, null, $id), $synonyms);
     }
 
-    // getTalentsOfCurrentUser
+    // getTalentUser
     public function getTalentsUser($user, $page = null, $synonyms = null) {
 
         return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, null, null, null, $user), $synonyms);
