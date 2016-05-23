@@ -74,8 +74,12 @@ class TalentsController extends Controller
             if(Isset($succes)) {
                 $this->talentRepo->deleteTalent($id);
 
-                $talent = $this->talentRepo->getTalent($id)[0];
-                $this->talentSuccess = "Het talent " . $talent->name . " is succesvol verwijderd!";
+                $talent = $this->talentRepo->getTalent($id);
+                if(!Empty($talent)) {
+                    $talent = $talent[0];
+                    
+                    $this->talentSuccess = "Het talent " . $talent->name . " is succesvol verwijderd!";
+                }
             } else {
                 $this->talentError = "Het talent dat u probeert te verwijderen is niet door u toegevoegd!";
             }
@@ -98,8 +102,12 @@ class TalentsController extends Controller
             if(!Isset($failed)) {
                 $this->talentRepo->addTalentUser($id);
 
-                $talent = $this->talentRepo->getTalent($id)[0];
-                $this->talentSuccess = "Het talent " . $talent->name . " is succesvol toegevoegd!";
+                $talent = $this->talentRepo->getTalent($id);
+                if(!Empty($talent)) {
+                    $talent = $talent[0];
+
+                    $this->talentSuccess = "Het talent " . $talent->name . " is succesvol toegevoegd!";
+                }
             } else {
                 $this->talentError = "Het talent dat u probeert toe te voegen is al toegevoegd!";
             }

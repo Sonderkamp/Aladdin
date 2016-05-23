@@ -48,7 +48,7 @@
                         </div>
 
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                            <a href="/talents/p=m" class="btn btn-warning">Alle</a>
+                            <a href="/talents/p=myTalents" class="btn btn-warning">Alle</a>
                         </div>
                     </form>
 
@@ -254,7 +254,7 @@
                         </div>
 
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                            <a href="/talents/p=a" class="btn btn-warning">Alle</a>
+                            <a href="/talents/p=allTalents" class="btn btn-warning">Alle</a>
                         </div>
                     </form>
 
