@@ -229,6 +229,7 @@ class AdmintalentsController extends Controller
 
     private function checkSynonyms()
     {
+        var i = "hammer";
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if (!Empty($_POST["addButton"]) && !Empty($_POST["addSynonym"]) && !Empty($_POST["synonymId"])) {
