@@ -37,6 +37,7 @@ class AdmintalentsController extends Controller
         $this->checkSynonyms();
         $this->fillAllTalents();
         $this->setSynonymId();
+        $this->checkSearch();
 
         $this->render("Admin/talent.tpl",
             ["title" => "Talenten beheer",
@@ -264,7 +265,9 @@ class AdmintalentsController extends Controller
         
         $_SESSION["synonymId"] = $id;
 
-        if(!Empty($_POST["page"])) {
+        if(!Empty($_POST["search"])) {
+            $this->redirect("/admintalents/p=allTalents/search=" . htmlspecialchars($_POST["search"]));
+        } else if(!Empty($_POST["page"])) {
             $this->redirect("/admintalents/p=allTalents/allTalents=" . htmlspecialchars($_POST["page"]));
         } else {
             $this->redirect("/admintalents/p=allTalents/allTalents=1");
@@ -282,6 +285,15 @@ class AdmintalentsController extends Controller
             } else {
                 $this->page = "allTalents";
             }
+        }
+    }
+
+    private function checkSearch() {
+        if(!Empty($_GET["search"])) {
+
+            $this->allTalents = $this->talentRepo->searchTalents(htmlspecialchars($_GET["search"]),null,true);
+            $this->currentTalentsCount = 0;
+            $this->talentsCount = 0;
         }
     }
 }

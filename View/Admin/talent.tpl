@@ -15,6 +15,18 @@
         <div class="col-md-10">
             <div class="tab-content">
                 <div class="tab-pane{if $page == "allTalents"} fade in active{/if}" id="tab1">
+                    <form class="col-xs-12 col-sm-12 col-md-12 col-lg-12" action="/admintalents/p=allTalents" method="get">
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                            <input class="form-control" name="search" placeholder="Zoek een talent">
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                            <button type="submit" class="btn btn-primary">Zoek</button>
+                        </div>
+
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                            <a href="/admintalents/p=allTalents" class="btn btn-warning">Alle</a>
+                        </div>
+                    </form>
                     <table class="table">
                         <thead>
                             <tr>
@@ -307,6 +319,7 @@
                             <form action="/admintalents" method="post">
                                 <input type="hidden" name="synonymId" value="{htmlentities(trim($talent->id),ENT_QUOTES)}">
                                 <input type="hidden" name="page" value="{htmlentities(trim($currentTalentsCount),ENT_QUOTES)}">
+                                {if isset($smarty.get.search)}<input type="hidden" name="search" value="{htmlentities(trim($smarty.get.search),ENT_QUOTES)}">{/if}
                                 <fieldset class="form-group col-xs-5">
                                     <label for="synonym">Wel synoniem</label>
                                     <select name="removeSynonym[]" multiple class="form-control" id="synonym">
