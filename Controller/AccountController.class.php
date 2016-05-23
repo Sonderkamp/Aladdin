@@ -11,7 +11,6 @@ class AccountController extends Controller
     public function run()
     {
         $this->pagepicker();
-
     }
 
     public function guaranteeLogin($s)
