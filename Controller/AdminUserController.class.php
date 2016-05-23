@@ -27,19 +27,19 @@ class AdminuserController extends Controller
     {
         $this->setCurrent("unhandled");
         $report = $this->reportRepository->getRequested();
-//        $report = $this->reportRepository->get("new");
 
         if (count($report) > 0) {
             foreach ($report as $item) {
-                if ($item instanceof Report) {
+//                if ($item instanceof Report) {
                     $user = $item->getReported();
-                    if ($user instanceof User) {
+//                    if ($user instanceof User) {
                         $temp = new UserRepository();
                         if ($temp->isBlocked($user->getEmail())) {
-                            $user->setBlocked(true);
+                            $user->blocked = true;
+//                            $user->setBlocked(true);
                         }
-                    };
-                }
+//                    };
+//                }
             }
         }
         $this->render("adminUser.tpl", ["reports" => $report, "current" => $this->getCurrent()]);
@@ -66,14 +66,16 @@ class AdminuserController extends Controller
 
             $reported = $this->reportRepository->getId($id);
             $reported = $reported[0];
-            if ($reported instanceof Report) {
+//            if ($reported instanceof Report) {
                 $reported = $reported->getReported();
-                if ($reported instanceof User) {
-                    $displayName = $reported->getDisplayName();
-                    $email = $this->userRepository->getUser($displayName)->getEmail();
+//                if ($reported instanceof User) {
+                    $displayName = $reported->displayName;
+//                    getDisplayName();
+                    $email = $this->userRepository->getUser($displayName)->email;
+//                    getEmail();
                     $this->userRepository->blockUser($email);
-                }
-            }
+//                }
+//            }
         }
         $this->back();
     }
