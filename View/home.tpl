@@ -21,7 +21,7 @@
             </blockquote>
 
             <div class="text-center">
-                <a class="btn btn-default start btn-lg" href="/Account/action=register">Registreer</a>
+                <a class="btn btn-register start btn-lg" href="/Account/action=register">Registreer</a>
             </div>
         </div>
 
