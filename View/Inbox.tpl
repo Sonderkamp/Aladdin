@@ -24,27 +24,27 @@
     {/if}
 
     <div class="col-sm-3 hidden-xs">
-        <a href="/Inbox/p={$page[0]}/action=newMessage" class="btn btn-default" style="width:100%">Nieuw Bericht</a><br>
+        <a href="/Inbox/p={$page[0]}/action=newMessage" class="btn btn-default">Nieuw Bericht</a><br>
         <br>
         {if $folderShortcut == "inbox"}
-            <a href="/Inbox" class="btn btn-default active" style="width:100%">Postvak in</a>
+            <a href="/Inbox" class="btn btn-default active fullwidth">Postvak in</a>
             <br>
         {else}
-            <a href="/Inbox" class="btn btn-default" style="width:100%">Postvak in</a>
+            <a href="/Inbox" class="btn btn-default fullwidth">Postvak in</a>
             <br>
         {/if}
         {if $folderShortcut == "outbox"}
-            <a href="/Inbox/folder=outbox" class="btn btn-default active" style="width:100%">Postvak uit</a>
+            <a href="/Inbox/folder=outbox" class="btn btn-default active fullwidth">Postvak uit</a>
             <br>
         {else}
-            <a href="/Inbox/folder=outbox" class="btn btn-default" style="width:100%">Postvak uit</a>
+            <a href="/Inbox/folder=outbox" class="btn btn-default fullwidth">Postvak uit</a>
             <br>
         {/if}
         {if $folderShortcut == "trash"}
-            <a href="/Inbox/folder=trash" class="btn btn-default active" style="width:100%">Prullenbak</a>
+            <a href="/Inbox/folder=trash" class="btn btn-default active fullwidth">Prullenbak</a>
             <br>
         {else}
-            <a href="/Inbox/folder=trash" class="btn btn-default" style="width:100%">Prullenbak</a>
+            <a href="/Inbox/folder=trash" class="btn btn-default fullwidth">Prullenbak</a>
             <br>
         {/if}
         <br><br>
@@ -54,30 +54,30 @@
 
         <div class="col-xs-12 hidden-sm hidden-md hidden-lg">
             {if $folderShortcut == "inbox"}
-                <a href="/Inbox/p={$page}" class="btn btn-default active" style="width:100%">Postvak in</a>
+                <a href="/Inbox/p={$page}" class="btn btn-default active fullwidth">Postvak in</a>
                 <br>
             {else}
-                <a href="/Inbox/p={$page}" class="btn btn-default" style="width:100%">Postvak in</a>
+                <a href="/Inbox/p={$page}" class="btn btn-default fullwidth">Postvak in</a>
                 <br>
             {/if}
             {if $folderShortcut == "outbox"}
-                <a href="/Inbox/folder=outbox/p={$page}" class="btn btn-default active" style="width:100%">Postvak
+                <a href="/Inbox/folder=outbox/p={$page}" class="btn btn-default active fullwidth">Postvak
                     uit</a>
                 <br>
             {else}
-                <a href="/Inbox/folder=outbox/p={$page}" class="btn btn-default" style="width:100%">Postvak uit</a>
+                <a href="/Inbox/folder=outbox/p={$page}" class="btn btn-default fullwidth">Postvak uit</a>
                 <br>
             {/if}
             {if $folderShortcut == "trash"}
-                <a href="/Inbox/folder=trash/p={$page}" class="btn btn-default active" style="width:100%">Prullenbak</a>
+                <a href="/Inbox/folder=trash/p={$page}" class="btn btn-default active fullwidth">Prullenbak</a>
                 <br>
             {else}
-                <a href="/Inbox/folder=trash/p={$page}" class="btn btn-default" style="width:100%">Prullenbak</a>
+                <a href="/Inbox/folder=trash/p={$page}" class="btn btn-default fullwidth">Prullenbak</a>
                 <br>
             {/if}
             <br><br>
             <br>
-            <a href="/Inbox/action=newMessage" class="btn btn-default" style="width:100%">Nieuw Bericht</a><br>
+            <a href="/Inbox/action=newMessage" class="btn btn-default fullwidth">Nieuw Bericht</a><br>
             <br>
         </div>
 
@@ -153,7 +153,8 @@
                             {else if $link->action == "PaginaLink"}
                                 <a href="{$link->content}" class="btn btn-inbox">Naar Pagina</a>
                             {else if $link->action == "Bericht"}
-                                <a href="/Inbox/action=message/message={$link->content}" class="btn btn-inbox">Naar Pagina</a>
+                                <a href="/Inbox/action=message/message={$link->content}" class="btn btn-inbox">Naar
+                                    Pagina</a>
                             {/if}
                         {/foreach}
                     {/if}

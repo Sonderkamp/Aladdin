@@ -105,8 +105,6 @@ class InboxController extends Controller
             $this->renderInbox();
         }
 
-        $folder = "Postvak in";
-        $folderShortcut = "inbox";
         $this->setFolder($folder, $folderShortcut);
         $this->render("message.tpl", ["page" => $this->page, "title" => "Inbox", "folder" => $folder . $this->title, "folderShortcut" => $folderShortcut, "message" => $message, "error" => $this->error, "search" => $this->search]);
         exit();

@@ -71,7 +71,7 @@ class ProfileController extends Controller
         exit();
     }
 
-    private function change()
+    public function change()
     {
         $usermodel = new UserRepository();
 
@@ -122,7 +122,7 @@ class ProfileController extends Controller
         exit();
     }
 
-    private function changepw()
+    public function changepw()
     {
         $userModel = new UserRepository();
         if ($_SERVER["REQUEST_METHOD"] == "POST") {

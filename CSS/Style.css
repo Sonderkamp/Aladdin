@@ -3,6 +3,10 @@
     width: auto;
 }
 
+.fullwidth {
+    width: 100%;
+}
+
 h3 .h3 {
     color: brown;
 }
@@ -67,6 +71,15 @@ h3 .h3 {
 
 .btn-inbox:focus, .btn-inbox:active, .btn-inbox:visited {
     color: white;
+}
+
+.btn-register {
+    color: brown;
+    background-color: white;
+}
+.btn-register:focus, .btn-register:active, .btn-register:hover {
+    color: white;
+    background-color: brown;
 }
 
 .logo {
