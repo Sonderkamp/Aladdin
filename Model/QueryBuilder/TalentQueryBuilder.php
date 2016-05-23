@@ -37,13 +37,14 @@ class TalentQueryBuilder
             array($id, $user));
     }
 
-    public function addSynonym($talentId, $synonymId) {
+    public function addSynonym($talentId, $synonymId)
+    {
 
-        $talent = $this->getTalents(null,null,null,$talentId)[0];
-        $synonym = $this->getTalents(null,null,null,$synonymId)[0];
+        $talent = $this->getTalents(null, null, null, $talentId)[0];
+        $synonym = $this->getTalents(null, null, null, $synonymId)[0];
 
 
-        if($talent["IsRejected"] === 1 && $synonym["IsRejected"] === 1) {
+        if ($talent["IsRejected"] === 1 && $synonym["IsRejected"] === 1) {
 
             Database::query_safe
             ("INSERT INTO `synonym`(`talent_Id`, `synonym_Id`) VALUES (?,?)",
@@ -56,9 +57,10 @@ class TalentQueryBuilder
     }
 
     // Read
-    public function getTalents($limit = null, $accepted = null, $notAdded = null, $id = null, $currentUser = null, $userRequested = null, $allRequested = null, $user = null, $nameOnly = null, $search = null) {
+    public function getTalents($limit = null, $accepted = null, $notAdded = null, $id = null, $currentUser = null, $userRequested = null, $allRequested = null, $user = null, $nameOnly = null, $search = null)
+    {
 
-        if($nameOnly != null) {
+        if ($nameOnly != null) {
 
             $query = "SELECT `talent`.`Name` FROM `talent`";
         } else {
@@ -86,7 +88,7 @@ class TalentQueryBuilder
             $query .= " WHERE `AcceptanceDate` IS NOT NULL AND `IsRejected` = 1 AND `IsRejected` IS NOT NULL AND `moderator_Username` IS NOT NULL";
 
             $where = "on";
-        } else if($notAdded != null) {
+        } else if ($notAdded != null) {
 
             $query .= " WHERE `talent`.`Id` NOT IN (SELECT `talent_Id` FROM `talent_has_user` WHERE `talent_has_user`.`user_Email` = ?) AND `talent`.`AcceptanceDate` IS NOT NULL AND `talent`.`IsRejected` = 1 AND `talent`.`IsRejected` IS NOT NULL AND `talent`.`moderator_Username` IS NOT NULL";
 
@@ -96,10 +98,10 @@ class TalentQueryBuilder
 
             $query .= " WHERE `talent`.`Id` = ?";
             $suffix = " LIMIT 1";
-            
+
             $where = "on";
             $parameters = array($id);
-        } else if($currentUser != null) {
+        } else if ($currentUser != null) {
 
             $query .= " JOIN `talent_has_user` ON `talent`.`Id` = `talent_has_user`.`talent_Id` JOIN `user` ON `talent_has_user`.`user_Email` = `user`.`Email` WHERE `user`.`Email` = ? AND `talent`.`IsRejected` = 1";
 
@@ -116,7 +118,7 @@ class TalentQueryBuilder
             $query .= " WHERE `talent`.`AcceptanceDate` IS NULL AND `talent`.`IsRejected` IS NULL AND `talent`.`moderator_Username` IS NULL";
 
             $where = "on";
-        } else if($user != null) {
+        } else if ($user != null) {
 
             $query .= " INNER JOIN `talent_has_user` AS `tu` ON `t`.`Id` = `tu`.`talent_Id` WHERE `tu`.`user_Email` = ?";
 
@@ -124,39 +126,40 @@ class TalentQueryBuilder
             $parameters = array($user);
         }
 
-        if($search != null) {
+        if ($search != null) {
 
-            if(Isset($where)) {
+            if (Isset($where)) {
 
                 $query .= " AND `talent`.`name` LIKE ?";
 
-                array_push($parameters, "%".$search."%");
+                array_push($parameters, "%" . $search . "%");
             } else {
 
                 $query .= " WHERE `talent`.`name` LIKE ?";
 
-                $parameters = array("%".$search."%");
+                $parameters = array("%" . $search . "%");
             }
         }
 
-        if(isset($parameters)) {
+        if (isset($parameters)) {
 
-            $result = Database::query_safe($query.$suffix, $parameters);
+            $result = Database::query_safe($query . $suffix, $parameters);
         } else {
 
-            $result = Database::query($query.$suffix);
+            $result = Database::query($query . $suffix);
         }
 
         return $result;
     }
 
-    public function getSynonyms($talentId = null) {
+    public function getSynonyms($talentId = null)
+    {
 
         $query = "SELECT * FROM `synonym`";
 
-        if($talentId != null) {
+        if ($talentId != null) {
             $query .= " WHERE `talent_Id` = ?";
-            $result = Database::query_safe($query,array($talentId));
+            $result = Database::query_safe($query, array($talentId));
         } else {
             $result = Database::query($query);
         }
@@ -164,33 +167,74 @@ class TalentQueryBuilder
         return $result;
     }
 
+
+    /** parameter is a list of talent objects */
     public function getSynonymsOfTalents($talent)
     {
-        $synoymId = array();
+        $talentList = $this->getAllID($talent);
+        $talents = $this->getSQLString($talentList);
+        $allTalents = $this->getMatchTalents($talents);
 
-        foreach ($talent as $item) {
-            if ($item instanceof Talent) {
-                $synoymId[] = $item->getId();
-            }
-        }
-
-        /* my talents */
-        $talents = $this->getSQLString($synoymId);
-
-        $result = Database::query("select * from synonym where talent_Id IN $talents");
-
-        $id = array();
-        foreach ($result as $item){
-            $id[] = $item["synonym_Id"];
-        }
-
-        $id = $this->getSQLString($id);
-
-        $sql = "select * from talent where Id in $id";
+        $sql = "SELECT * FROM talent WHERE Id IN $allTalents";
         $result = Database::query($sql);
 
         return $result;
     }
+
+    public function getAllID($talents){
+        $talentList[] = array();
+
+        foreach ($talents as $item) {
+            if ($item instanceof Talent) {
+                $talentList[] = $item->getId();
+            }
+        }
+
+        return $talentList;
+    }
+
+
+    public function getMatchTalents($talents){
+        $id = array();
+        $total = 0;
+        $skip = true;
+        $loopCounter = 0;
+        $maxLoops = 5;
+
+        while (true) {
+            if($loopCounter >= $maxLoops){
+                break;
+            }
+            $result = Database::query("SELECT * FROM synonym WHERE talent_Id IN $talents");
+
+            if (count($result) > 0) {
+                foreach ($result as $item) {
+                    if (!in_array($item["synonym_Id"], $id)) {
+                        $id[] = $item["synonym_Id"];
+                    }
+                }
+
+                $talents = $this->getSQLString($id);
+
+                if (!$skip) {
+                    $temp = count($id);
+                    if ($temp == $total) {
+                        break;
+                    }
+                } else {
+                    $skip = false;
+                }
+
+                $total = count($id);
+            } else {
+                break;
+            }
+            $loopCounter++;
+        }
+
+        return $talents;
+    }
+
 
     // Update
     public function updateTalent($name, $isRejected, $id)
@@ -222,7 +266,8 @@ class TalentQueryBuilder
     }
 
     // Delete
-    public function deleteTalentFromUser($id) {
+    public function deleteTalentFromUser($id)
+    {
 
         Database::query_safe("
           DELETE FROM `talent_has_user`
@@ -231,7 +276,8 @@ class TalentQueryBuilder
             array($id, $_SESSION["user"]->email));
     }
 
-    public function deleteSynonym($talentId, $synonymId) {
+    public function deleteSynonym($talentId, $synonymId)
+    {
 
         Database::query_safe("DELETE FROM `synonym` WHERE `talent_Id` = ? AND `synonym_Id` = ?",
             array($talentId, $synonymId));
@@ -240,7 +286,8 @@ class TalentQueryBuilder
             array($synonymId, $talentId));
     }
 
-    public function getWishTalents(Wish $wish){
+    public function getWishTalents(Wish $wish)
+    {
         $query = "SELECT `talent_id` as talent FROM `talent_has_wish` WHERE `wish_id`=?";
         $array = array($wish->id);
         $result = Database::query_safe($query, $array);

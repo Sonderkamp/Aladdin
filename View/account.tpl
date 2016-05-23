@@ -108,7 +108,8 @@
                             <div class="panel-body text-center">
                                 <div class="row">
                                     <div class="col-xs-10 col-xs-offset-1">
-                                        <form action="/profile/action=change" method="post"><p>
+                                        <form id="form" action="/profile/action=change" method="post"
+                                              onsubmit="return validateEmail()"><p>
                                                 <input name="email" type="hidden" readonly="true"
                                                        value="{$user->email}">
                                             <table class="table table-user-information">
@@ -143,7 +144,8 @@
                                                 <tr>
                                                     <td>Adress:</td>
                                                     <td>
-                                                        <input type="text" name="address" data-validation="custom"
+                                                        <input type="text" name="address" onblur="validateAddress()"
+                                                               data-validation="custom"
                                                                data-validation-regexp="^([a-zA-Z][A-Za-z0-9\- ]+)$"
                                                                data-validation-error-msg="Straat en huisnummer kan alleen letters, nummers, spaties en streepjes(-) bevatten"
                                                                maxlength="255" value="{$user->address}">
@@ -154,30 +156,23 @@
                                                     <td>
 
                                                         <input type="text" name="postalcode" required
-                                                               data-validation="custom" value="{$user->postalcode}"
-                                                                {literal}
-                                                               data-validation-regexp="^[0-9]{4}[\s]{0,1}[a-zA-z]{2}"
-                                                               data-validation-error-msg="invalide postcode gegeven"
-                                                               maxlength="6">
-                                                        {/literal}
+                                                               maxlength="6" readonly value="{$user->postalcode}">
+
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Stad:</td>
-                                                    <td><input type="text" name="city" required data-validation="custom"
-                                                               data-validation-regexp="^[a-zA-Z][a-zA-Z ]+$"
-                                                               data-validation-error-msg="Stad kan alleen letters en spaties bevatten"
-                                                               maxlength="255"
+                                                    <td><input type="text" name="city" required readonly
                                                                value="{$user->city}"></td>
 
                                                 </tr>
                                                 <tr>
                                                     <td>Land:</td>
-                                                    <td><input type="text" name="country" value="{$user->country}"
-                                                               required data-validation="country"
-                                                               data-validation-error-msg="invalide land gekozen.">
+                                                    <td><input type="text" name="country" required
+                                                               readonly value="{$user->country}">
                                                     </td>
                                                 </tr>
+
                                                 <tr>
                                                     <td>Geboortedatum:</td>
                                                     <td><input type="text" data-validation="birthdate"
@@ -322,43 +317,90 @@
 </div>
 
 
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
 <script>
 
-
     function validateEmail() {
-        {literal}
-        var val = {username: document.forms["registerForm"]["username"].value};
-        {/literal}
-        var ret = true;
-        $.ajax({
-            type: 'POST',
-            url: "/Account/action=check",
-            data: val,
-            dataType: "text",
-            success: function (resultData) {
-                resultData = JSON.parse(resultData);
-                console.log(resultData);
-                if (resultData.result == true) {
-                    ret = false;
-                    $("#error").text("Error: emailadres bestaat al.");
-                    $("#error").addClass("form-error");
-                }
-                return false;
-            },
-            async: false
-        });
-
-        return ret;
+        if ($('input[name=city]').val() === "" ||
+                $('input[name=country]').val() === "" ||
+                $('input[name=postalcode]').val() === "") {
+            $("#error").text("Niet alle gegevens zijn ingevuld.");
+            $("#error").addClass("form-error");
+            return false;
+        }
+        return true;
     }
 
     // http://www.formvalidator.net/
     $.validate({
         modules: 'location, security, date',
-        onModulesLoaded: function () {
-            $('input[name="country"]').suggestCountry();
-        }
+        form: '#form'
     });
 
 
+</script>
+
+
+<script>
+    {literal}
+
+    function validateAddress() {
+
+        $("#err").text("");
+        $("#err").removeClass("form-error");
+
+        $('input[name=city]').val('');
+        $('input[name=country]').val('');
+        $('input[name=postalcode]').val('');
+        var location = $('input[name=address]').val();
+
+        if (location != "")
+            return getAddress(location, false);
+
+        return false;
+    }
+
+    function getAddress(location, submit) {
+
+
+        geocoder = new google.maps.Geocoder();
+        geocoder.geocode({"address": location}, function (results, status) {
+            if (status == "OK") {
+
+                if (results[0].types[0] !== "street_address") {
+                    $("#err").text("Error: Geen valide adres ingevuld.");
+                    $("#err").addClass("form-error");
+                }
+                else {
+
+
+                    var city = results[0].address_components[2].long_name;
+                    var country = results[0].address_components[5].long_name;
+                    var postalcode = results[0].address_components[6].long_name.replace(/\s+/g, '');
+
+                    if ($('input[name=city]').val() !== city ||
+                            $('input[name=country]').val() !== country ||
+                            $('input[name=postalcode]').val() !== postalcode) {
+                        $('input[name=city]').val(city);
+                        $('input[name=country]').val(country);
+                        $('input[name=postalcode]').val(postalcode);
+                    }
+
+                    if (submit == true) {
+                        console.log("submit!");
+                        $('#form').submit();
+                    }
+                }
+            } else {
+
+                $("#err").text("Adres niet gevonden. Error Code: " + status);
+                $("#err").addClass("form-error");
+            }
+        });
+
+
+    }
+
+    {/literal}
 </script>
 

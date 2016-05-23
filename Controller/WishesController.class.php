@@ -125,6 +125,7 @@ class WishesController extends Controller
         $myCompletedWishes = $this->wishRepo->getMyCompletedWishes();
         $incompletedWishes = $this->wishRepo->getIncompletedWishes();
         $matchedWishes = $this->wishRepo->getMatchedWishes();
+
         $canAddWish = $this->wishRepo->canAddWish($_SESSION["user"]->email);
         $this->setCurrent($currentPage);
 

@@ -8,6 +8,8 @@
  */
 class MatchController extends Controller
 {
+    
+    // TODO: De hele controller kan als goed is verwijdert worden, voor zekerheid nog even laten staan.
 
     private $wishRepository, $talenRepository, $reportRepository, $userRepository;
 
@@ -33,7 +35,7 @@ class MatchController extends Controller
     {
         /** get my own talents */
         $userTalents = $this->talenRepository->getAddedTalents();
-
+        
         /** get all sysnoynms of my talents */
         $synonmys = $this->talenRepository->getSynonymsOfTalents($userTalents);
 
@@ -70,11 +72,11 @@ class MatchController extends Controller
         
         
         $_SESSION["current"] = "matchedWishes";
+        
 
         $this->render("wishOverview.tpl",
             ["title" => "Vervulde wensen overzicht", "matchedWishes" => $possibleMatches,
                 "canAddWish" => $canAddWish, "currentPage" => "match", "displayName" => $displayName, "reported" => $displayNames]);
-
     }
 
 
