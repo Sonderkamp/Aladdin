@@ -4,7 +4,7 @@ include_once("Includes/config.php");
 
 // auto logout
 if (!empty($_SESSION["user"])) {
-    if ((new UserRepository())->isBlocked($_SESSION["user"]->email)) {
+    if ((new UserRepository())->isBlocked($_SESSION["user"]->email) !== false) {
         (new AccountController())->logout();
     }
 }

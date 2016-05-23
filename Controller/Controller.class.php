@@ -47,7 +47,7 @@ class Controller
     {
         $err = new ErrorController();
         $err->message = $message;
-        $err->render();
+        $err->run();
         exit;
     }
 

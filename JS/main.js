@@ -91,3 +91,43 @@ function userinfo(d) {
     }
     return false;
 }
+
+
+var checkbrowser = function () {
+    // Opera 8.0+
+    var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+    // Firefox 1.0+
+    var isFirefox = typeof InstallTrigger !== 'undefined';
+    // At least Safari 3+: "[object HTMLElementConstructor]"
+    var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+    // Internet Explorer 6-11
+    var isIE = /*@cc_on!@*/false || !!document.documentMode;
+    // Chrome 1+
+    var isChrome = !!window.chrome && !!window.chrome.webstore;
+    // Blink engine detection
+
+    var ua = navigator.userAgent;
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile/i.test(ua)) {
+        swal(
+            {
+                type: "error",
+                title: "Deze pagina is gebouwd voor desktop.",
+                text: "Deze pagina werkt het beste op een desktop computer. Je mag de site natuurlijk wel openenen op telefoon.",
+                showConfirmButton: true
+            }
+        );
+    }
+    else if (!isChrome && !isFirefox && !isOpera && !isSafari) {
+        swal(
+            {
+                type: "error",
+                title: "Deze pagina is gebouwd voor andere browsers.",
+                text: "Deze pagina werkt het beste op een andere browser. Probeer Google Chrome, Mozilla Firefox of Opera. Je mag de site natuurlijk wel openenen op deze browser.",
+                showConfirmButton: true
+            }
+        );
+    }
+
+};
+
+checkbrowser();
