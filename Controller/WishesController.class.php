@@ -55,10 +55,10 @@ class WishesController extends Controller
                     $this->renderOverview("completedWishes");
                     break;
                 case "open_edit_wish":
-                    $this->open_wish_view(false);
+                    $this->openWishView(false);
                     break;
                 case "open_wish":
-                    $this->open_wish_view(true);
+                    $this->openWishView(true);
                     break;
             }
 
@@ -68,11 +68,11 @@ class WishesController extends Controller
             switch (strtolower($_GET["action"])) {
                 //remove refrences to match show=openeditwish
                 case "open_edit_wish":
-                    $this->open_wish_view(false);
+                    $this->openWishView(false);
                     exit(0);
                     break;
                 case "open_wish":
-                    $this->open_wish_view(true);
+                    $this->openWishView(true);
                     exit(0);
                     break;
                 case "addwish":
@@ -109,6 +109,7 @@ class WishesController extends Controller
         if (isset($_GET["search"])) {
             $this->searchWish($_GET["search"]);
         } else if (isset($_POST["match/wish_id"])) {
+
             (new DashboardController())->guaranteeProfile();
             $this->requestMatch($_POST["match/wish_id"]);
         } else {
@@ -124,6 +125,7 @@ class WishesController extends Controller
         $myCompletedWishes = $this->wishRepo->getMyCompletedWishes();
         $incompletedWishes = $this->wishRepo->getIncompletedWishes();
         $matchedWishes = $this->wishRepo->getMatchedWishes();
+
         $canAddWish = $this->wishRepo->canAddWish($_SESSION["user"]->email);
         $this->setCurrent($currentPage);
 
@@ -173,7 +175,7 @@ class WishesController extends Controller
     }
 
 
-    private function open_wish_view($open)
+    private function openWishView($open)
     {
         if ($open) {
             // Check if users has 3 wishes, true if wishes are [<] 3
@@ -190,18 +192,19 @@ class WishesController extends Controller
             $_SESSION["wishcontentid"] = $_GET["editwishbtn"];
 
             $wish = $this->wishRepo->getWish($this->wishContentId);
-
-//            $id = $wish[0]["wish_Id"];
-//            $returnWish = $this->wishRepo->getAllWishesByEmail($_SESSION["user"]->email);
-//
-//            if (!in_array($id, $returnWish)) {
-//                $this->go_back();
-//                exit(1);
-//            }
+            
             $title = $wish->title;
             $description = $wish->content;
-            $tempTag = $this->wishRepo->getWishTalent($this->wishContentId);
-            $tag = $this->prepend("#", implode(" #", $tempTag));
+            $tempTag = $this->talentRepository->getWishTalents($wish);
+            
+            $returnArray = array();
+            foreach ($tempTag as $item){
+                if($item instanceof Talent){
+                    $returnArray[] = $item->name;
+                }
+            }
+
+            $tag = $this->prepend("#", implode(" #", $returnArray));
 
             $this->render("addWish.tpl", ["wishtitle" => $title,
                 "description" => $description, "edit" => "isset", "tag" => $tag, "previousPage"]);
@@ -217,79 +220,62 @@ class WishesController extends Controller
         }
     }
 
+
     private function add_wish()
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-            // boolean if user has less than 3 wishes
-            $canAddWish = $this->wishRepo->canAddWish($_SESSION["user"]->email);
-
-            // check if user has 3 wishes
-            if (!$canAddWish) {
+            // check if user can add a wish
+            if (!($this->wishRepo->canAddWish($_SESSION["user"]->email))) {
                 $this->render("addWish.tpl", ["wishError" => "U heeft al 3 wensen, u kunt geen wensen meer toevoegen."]);
                 exit(1);
             }
 
-            $this->title = $_POST["title"];
-            $this->description = $_POST["description"];
-            $this->tag = $_POST["tag"];
+            $title = $_POST["title"];
+            $description = $_POST["description"];
+            $tag = $this->addHashTag($_POST["tag"]);
 
-            $firstcharOfTag = substr($this->tag, 0, 1);
+            $input = array([$title, $description, $tag]);
+            $size = strlen($this->gethashtags($tag));
 
-            if ($firstcharOfTag != "#") {
-                $tag = "#";
-                $tag .= $this->tag;
-                $this->tag = $tag;
+            if (!$this->isValid($input) || $size == 0) {
+                $this->renderEdit($title, $description, $tag);
             }
-
-            $size = strlen($this->gethashtags($this->tag));
-
-            // check if input of form is not null
-            if (Empty($this->title)
-                || Empty($this->description)
-                || Empty($this->tag) || $size == 0
-            ) {
-                $this->render("addWish.tpl", ["error" => "Vul AUB alles in", "wishtitle" => $this->title,
-                    "description" => $this->description, "tag" => $this->tag, /*"edit" => "isset"*/]);
-                exit(1);
-            }
-
 
             $myWishes = $this->wishRepo->getMyWishes();
-
-            foreach ($myWishes as $item) {
-                if ($item instanceof Wish) {
-                    similar_text($item->title, $this->title, $percent);
-
-                    /* Check the percentage of the matches between the title */
-                    if ($percent > 80) {
-                        $this->render("addWish.tpl", ["error" => "U heeft al een wens met een soort gelijke titel.", "wishtitle" => $this->title,
-                            "description" => $this->description, "tag" => $this->tag, /*"edit" => "isset"*/]);
-                        exit(1);
-                        break;
-                    }
-
-                }
+            if ($this->hasSameWish($myWishes, $title)) {
+                $this->renderEdit($title, $description, $tag, "U heeft al een wens met een soortgelijke titel",true);
             }
 
-            $allTags = $this->gethashtags($this->tag);
-            $myArray = explode(',', $allTags);
-            $new_array = array_map('ucfirst', $myArray);
+            $myTags = array_map('ucfirst', explode(',', $this->gethashtags($tag)));
 
             // create an array with the wish
-            $newWish = array();
-            $newWish["title"] = $this->title;
-            $newWish["description"] = $this->description;
-            $newWish["tag"] = $new_array;
-
-            // send the array to the repository to add to the database
-            $this->wishRepo->addWish($newWish);
+            $wish = new Wish();
+            $wish->title = $title;
+            $wish->content = $description;
+            $wish->tags = $myTags;
+            $this->wishRepo->addWish($wish);
 
             $this->currentPage = "mywishes";
             $this->go_back();
         }
     }
 
+    public function hasSameWish($wishes, $title)
+    {
+        if (count($wishes) > 0) {
+            foreach ($wishes as $item) {
+                if ($item instanceof Wish) {
+                    similar_text($item->title, $title, $percent);
+                    if ($percent > 80) {
+                        return true;
+                    }
+                }
+            }
+        } else {
+            return false;
+        }
+    }
 
     private function getSpecificwish($id, $previousPage)
     {
@@ -304,96 +290,81 @@ class WishesController extends Controller
         $this->apologize($id);
     }
 
+
     private function edit_wish()
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $title = $_POST["title"];
             $description = $_POST["description"];
-            $tag = $_POST["tag"];
+            $tag = $this->addHashTag($_POST["tag"]);
 
-            $firstcharOfTag = substr($tag, 0, 1);
+            $message = "Ongelidige tag #";
+            if (strlen($this->gethashtags($tag)) == 0) {
+                $this->renderEdit($title, $description, $tag, $message);
 
-            if ($firstcharOfTag != "#") {
-                $tempTag = "#";
-                $tempTag .= $tag;
-                $tag = $tempTag;
+            }
+            // Check if fields are filled
+            if (!$this->isValid([$title, $description, $tag])) {
+                $this->renderEdit($title, $description, $tag);
             }
 
-            $valid = true;
-            $validTag = true;
-
-            if (!Empty($title)) {
-                $this->title = $title;
-            } else {
-                $valid = false;
-            }
-            if (!Empty($description)) {
-                $this->description = $description;
-            } else {
-                $valid = false;
-            }
-            if (!Empty($tag)) {
-                $this->tag = $tag;
-                if (strlen($this->gethashtags($this->tag)) == 0) {
-                    $validTag = false;
-                }
-            } else {
-                $validTag = false;
-            }
-
-            $tagErrorMessage = "Ongelidige tag #";
-            if (!$validTag) {
-                $this->render("addWish.tpl", ["error" => "vul AUB alles in!", "wishtitle" => $this->title,
-                    "description" => $this->description, "tag" => $this->tag, "tagerror" => $tagErrorMessage, "edit" => "isset"]);
-                exit(1);
-            }
-
-            if (!$valid) {
-                $this->render("addWish.tpl", ["error" => "vul AUB alles in!", "wishtitle" => $this->title,
-                    "description" => $this->description, "tag" => $this->tag, "edit" => "isset"]);
-                exit(1);
-            }
-
-
-            $allTags = $this->gethashtags($this->tag);
-            $myArray = explode(',', $allTags);
-            $new_array = array_map('ucfirst', $myArray);
-
+            // set a comma , between the tags.
+            $myTags = array_map('ucfirst', explode(',', $this->gethashtags($tag)));
 
             // create an array with the wish
-            $editWish = array();
-            $editWish["title"] = $this->title;
-            $editWish["description"] = $this->description;
-            $editWish["tag"] = $new_array;
+            $wish = new Wish();
+            $wish->title = $title;
+            $wish->content = $description;
+            $wish->tags = $myTags;
 
             if (isset($_SESSION["wishcontentid"])) {
-                $id = $_SESSION["wishcontentid"];
-                $this->wishRepo->wishContentQuery($editWish, $id);
-
-                $head = "Beste, \n\n";
-                $msg = "Uw wensweiziging is ingedient, uw wens zal na goedkeuring zichtbaar zijn voor anderen, we houden u hiervan nog op de hoogte.\n\n";
-                $wish = "Uw nieuwe wens is als volgt: \n";
-                $wishName = "Naam van de wens: \t\t" . $this->title . " \n";
-                $wishDescription = "Beschrijving van de wens: \t" . $this->description . "\n";
-                $allTagsForMail = implode(' #', $new_array);
-                $wishTags = "Uw tags zijn: \t\t\t\t#" . $allTagsForMail . "\n\n";
-                $end = "Vriendelijke groeten, \n\n Alladin";
-
-                $message = $head . $msg . $wish . $wishName . $wishDescription . $wishTags . $end;
-
-                $mail = new Email();
-                $mail->fromName = "Alladin";
-                $mail->subject = "Wens is gewijzigd";
-                $mail->message = $message;
-                $mail->to = $_SESSION["user"]->email;
-                $mail->sendMail();
-
-                $newmail = new messageRepository();
-                $msgID = $newmail->sendMessage("Admin", $mail->to, $mail->subject, $mail->message);
-                $newmail->setLink($id, "Wens", $msgID);
+                $wish->id = $_SESSION["wishcontentid"];
+                $this->wishRepo->editWishContent($wish);
+//                $this->wishRepo->sendEditMail($wish->id, $title, $description, $myTags);
             }
-
             $this->go_back();
+        }
+    }
+
+    public function isValid($array)
+    {
+        foreach ($array as $item) {
+            if (empty($item)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function renderEdit($title, $description, $tag, $message = null, $add = null)
+    {
+        $error = "vul AUB alles in!";
+
+        if(isset($add)){
+            $this->render("addWish.tpl", ["error" => $error, "wishtitle" => $title,
+                "description" => $description, "tag" => $tag, "tagerror" => $message]);
+            exit(0);
+        }
+
+        if (isset($message)) {
+            $this->render("addWish.tpl", ["error" => $error, "wishtitle" => $title,
+                "description" => $description, "tag" => $tag, "tagerror" => $message, "edit" => "isset"]);
+        } else {
+            $this->render("addWish.tpl", ["error" => $error, "wishtitle" => $title,
+                "description" => $description, "tag" => $tag, "edit" => "isset"]);
+        }
+
+        exit(1);
+    }
+
+    public function addHashTag($string)
+    {
+        if (substr($string, 0, 1) != "#") {
+            $tempTag = "#";
+            $tempTag .= $string;
+            return $tempTag;
+        } else {
+            return $string;
         }
     }
 
@@ -408,7 +379,7 @@ class WishesController extends Controller
     {
         $id = $_GET["wishID"];
         if (isset($id)) {
-            $this->wishRepo->DeleteWish($id);
+            $this->wishRepo->deleteWish($id);
         }
         $this->currentPage = "mywishes";
         $this->go_back();
