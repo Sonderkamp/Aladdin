@@ -9,7 +9,7 @@
 class TalentQueryBuilder
 {
     // Create
-    public function addTalent($name)
+    public function addTalent($name, $user)
     {
         if (!Empty(trim($name)) || trim($name) != "" || preg_match('/[^a-z\s]/i', $name)) {
 
@@ -30,18 +30,13 @@ class TalentQueryBuilder
                                     `moderator_Username`,
                                     `user_Email`)
               VALUES (?, CURRENT_TIMESTAMP, NULL, NULL, NULL, ?)",
-                    array(htmlentities(ucfirst(strtolower(trim($name))), ENT_QUOTES), $_SESSION["user"]->email));
+                    array(htmlentities(ucfirst(strtolower(trim($name))), ENT_QUOTES), $user));
             }
         }
     }
 
-    public function addTalentToUser($id, $user = null)
+    public function addTalentToUser($id, $user)
     {
-
-        if ($user == null) {
-            $user = $_SESSION["user"]->email;
-        }
-
         Database::query_safe
         ("INSERT INTO `talent_has_user` (`talent_Id`, `user_Email`)
           VALUES (?, ?)",
@@ -68,7 +63,7 @@ class TalentQueryBuilder
     }
 
     // Read
-    public function getTalents($limit = null, $accepted = null, $notAdded = null, $id = null, $currentUser = null, $userRequested = null, $allRequested = null, $user = null, $nameOnly = null, $search = null)
+    public function getTalents($limit = null, $accepted = null, $notAdded = null, $id = null, $addedUser = null, $userRequested = null, $allRequested = null, $allUser = null, $nameOnly = null, $search = null)
     {
 
         if ($nameOnly != null) {
@@ -104,7 +99,7 @@ class TalentQueryBuilder
             $query .= " WHERE `talent`.`Id` NOT IN (SELECT `talent_Id` FROM `talent_has_user` WHERE `talent_has_user`.`user_Email` = ?) AND `talent`.`AcceptanceDate` IS NOT NULL AND `talent`.`IsRejected` = 1 AND `talent`.`IsRejected` IS NOT NULL AND `talent`.`moderator_Username` IS NOT NULL";
 
             $where = "on";
-            $parameters = array($_SESSION["user"]->email);
+            $parameters = array($notAdded);
         } else if ($id != null) {
 
             $query .= " WHERE `talent`.`Id` = ?";
@@ -112,29 +107,29 @@ class TalentQueryBuilder
 
             $where = "on";
             $parameters = array($id);
-        } else if ($currentUser != null) {
+        } else if ($addedUser != null) {
 
-            $query .= " JOIN `talent_has_user` ON `talent`.`Id` = `talent_has_user`.`talent_Id` JOIN `user` ON `talent_has_user`.`user_Email` = `user`.`Email` WHERE `user`.`Email` = ? AND `talent`.`IsRejected` = 1";
+            $query .= " JOIN `talent_has_user` ON `talent`.`Id` = `talent_has_user`.`talent_Id` WHERE `talent_has_user`.`user_Email` = ? AND `talent`.`IsRejected` = 1";
 
             $where = "on";
-            $parameters = array($_SESSION["user"]->email);
+            $parameters = array($addedUser);
         } else if ($userRequested != null) {
 
             $query .= " WHERE `talent`.`AcceptanceDate` IS NULL AND `talent`.`user_Email` = ? AND `talent`.`IsRejected` IS NULL AND `talent`.`moderator_Username` IS NULL";
 
             $where = "on";
-            $parameters = array($_SESSION["user"]->email);
+            $parameters = array($userRequested);
         } else if ($allRequested != null) {
 
             $query .= " WHERE `talent`.`AcceptanceDate` IS NULL AND `talent`.`IsRejected` IS NULL AND `talent`.`moderator_Username` IS NULL";
 
             $where = "on";
-        } else if ($user != null) {
+        } else if ($allUser != null) {
 
             $query .= " INNER JOIN `talent_has_user` AS `tu` ON `t`.`Id` = `tu`.`talent_Id` WHERE `tu`.`user_Email` = ?";
 
             $where = "on";
-            $parameters = array($user);
+            $parameters = array($allUser);
         }
 
         if ($search != null) {
@@ -248,7 +243,7 @@ class TalentQueryBuilder
 
 
     // Update
-    public function updateTalent($name, $isRejected, $id)
+    public function updateTalent($name, $isRejected, $id, $admin)
     {
         if (!preg_match('/[^a-z\s]/i', $name)) {
 
@@ -258,14 +253,14 @@ class TalentQueryBuilder
                   UPDATE `talent`
                   SET `Name`=?,`IsRejected`=?,`moderator_Username`=?,`AcceptanceDate`=CURRENT_TIMESTAMP
                   WHERE `Id`=?",
-                    Array($name, $isRejected, $_SESSION["admin"]->username, $id));
+                    Array($name, $isRejected, $admin, $id));
             } else {
 
                 Database::query_safe("
                   UPDATE `talent`
                   SET `Name`=?,`IsRejected`=?,`moderator_Username`=?,`AcceptanceDate`=NULL
                   WHERE `Id`=?",
-                    Array($name, $isRejected, $_SESSION["admin"]->username, $id));
+                    Array($name, $isRejected, $admin, $id));
 
                 Database::query_safe("DELETE FROM `synonym` WHERE `talent_Id` = ?",
                     array($id));
@@ -277,14 +272,14 @@ class TalentQueryBuilder
     }
 
     // Delete
-    public function deleteTalentFromUser($id)
+    public function deleteTalentFromUser($id, $user)
     {
 
         Database::query_safe("
           DELETE FROM `talent_has_user`
           WHERE `talent_has_user`.`talent_Id` = ?
           AND `talent_has_user`.`user_Email` = ?",
-            array($id, $_SESSION["user"]->email));
+            array($id, $user));
     }
 
     public function deleteSynonym($talentId, $synonymId)

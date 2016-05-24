@@ -10,7 +10,8 @@ class TalentsController extends Controller
 {
     private $talentRepo,
         $wordsRepo,
-        $messageModel,
+        $userRepo,
+        $messageRepo,
         $page,
         $talents,
         $talentsUser,
@@ -31,7 +32,8 @@ class TalentsController extends Controller
 
         $this->talentRepo = new TalentRepository();
         $this->wordsRepo = new ForbiddenWordRepository();
-        $this->messageModel = new messageRepository();
+        $this->messageRepo = new messageRepository();
+        $this->userRepo = new UserRepository();
 
         $this->userCount = ceil(count($this->talentRepo->getAddedTalents())/10);
         $this->talentCount = ceil(count($this->talentRepo->getUnaddedTalents())/10);
@@ -241,14 +243,14 @@ class TalentsController extends Controller
             $myTalents = htmlspecialchars($_GET["myTalents"]);
 
             if($myTalents > 0 && $myTalents <= $this->userCount) {
-                $this->talentsUser = $this->talentRepo->getAddedTalents($myTalents);
+                $this->talentsUser = $this->talentRepo->getAddedTalents($this->userRepo->getCurrentUser()->email, $myTalents);
                 $this->currentUserCount = $myTalents;
             } else{
-                $this->talentsUser = $this->talentRepo->getAddedTalents(1);
+                $this->talentsUser = $this->talentRepo->getAddedTalents($this->userRepo->getCurrentUser()->email, 1);
                 $this->currentUserCount = 1;
             }
         } else {
-            $this->talentsUser = $this->talentRepo->getAddedTalents(1);
+            $this->talentsUser = $this->talentRepo->getAddedTalents($this->userRepo->getCurrentUser()->email, 1);
             $this->currentUserCount = 1;
         }
     }
@@ -259,14 +261,14 @@ class TalentsController extends Controller
             $allTalents = htmlspecialchars($_GET["allTalents"]);
             
             if($allTalents > 0 && $allTalents <= $this->talentCount) {
-                $this->talents = $this->talentRepo->getUnaddedTalents($allTalents);
+                $this->talents = $this->talentRepo->getUnaddedTalents($this->userRepo->getCurrentUser()->email, $allTalents);
                 $this->currentTalentCount = $allTalents;
             } else{
-                $this->talents = $this->talentRepo->getUnaddedTalents(1);
+                $this->talents = $this->talentRepo->getUnaddedTalents($this->userRepo->getCurrentUser()->email, 1);
                 $this->currentTalentCount = 1;
             }
         } else {
-            $this->talents = $this->talentRepo->getUnaddedTalents(1);
+            $this->talents = $this->talentRepo->getUnaddedTalents($this->userRepo->getCurrentUser()->email, 1);
             $this->currentTalentCount = 1;
         }
     }
@@ -277,14 +279,14 @@ class TalentsController extends Controller
             $requestedTalents = htmlspecialchars($_GET["createTalent"]);
 
             if($requestedTalents > 0 & $requestedTalents <= $this->requestedCount) {
-                $this->requestedTalents = $this->talentRepo->getRequestedTalents($requestedTalents);
+                $this->requestedTalents = $this->talentRepo->getRequestedTalents($this->userRepo->getCurrentUser()->email, $requestedTalents);
                 $this->currentRequestedCount = $requestedTalents;
             } else{
-                $this->requestedTalents = $this->talentRepo->getRequestedTalents(1);
+                $this->requestedTalents = $this->talentRepo->getRequestedTalents($this->userRepo->getCurrentUser()->email, 1);
                 $this->currentRequestedCount = 1;
             }
         } else {
-            $this->requestedTalents = $this->talentRepo->getRequestedTalents(1);
+            $this->requestedTalents = $this->talentRepo->getRequestedTalents($this->userRepo->getCurrentUser()->email, 1);
             $this->currentRequestedCount = 1;
         }
     }
@@ -295,7 +297,7 @@ class TalentsController extends Controller
 
             $search = htmlentities(trim($_GET["searchAdded"], ENT_QUOTES));
 
-            $this->talentsUser = $this->talentRepo->searchAddedTalents($search);
+            $this->talentsUser = $this->talentRepo->searchAddedTalents($this->userRepo->getCurrentUser()->email, $search);
 
             $this->userCount = 0;
             $this->currentUserCount = 0;
@@ -305,7 +307,7 @@ class TalentsController extends Controller
 
             $search = htmlentities(trim($_GET["searchAll"], ENT_QUOTES));
 
-            $this->talents = $this->talentRepo->searchUnaddedTalents($search);
+            $this->talents = $this->talentRepo->searchUnaddedTalents($this->userRepo->getCurrentUser()->email, $search);
 
             $this->currentTalentCount = 0;
             $this->talentCount = 0;

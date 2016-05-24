@@ -9,7 +9,7 @@
 class TalentRepository
 {
     // Instant variables
-    private $talentBuilder;
+    private $talentBuilder, $userRepo;
 
     // Constants
     public $TALENT_MINIMUM = 3;
@@ -18,6 +18,7 @@ class TalentRepository
     public function __construct()
     {
         $this->talentBuilder = new TalentQueryBuilder();
+        $this->userRepo = new UserRepository();
     }
 
     // ###### Create ######
@@ -25,13 +26,19 @@ class TalentRepository
     // addTalent
     public function addTalent($name)
     {
-        $this->talentBuilder->addTalent($name);
+        $this->talentBuilder->addTalent($name, $this->userRepo->getCurrentUser()->email);
     }
 
     // addTalentToUser
     public function addTalentUser($talentId, $user = null)
     {
-        $this->talentBuilder->addTalentToUser($talentId, $user);
+        if($user != null) {
+
+            $this->talentBuilder->addTalentToUser($talentId, $user);
+        } else {
+
+            $this->talentBuilder->addTalentToUser($talentId, $this->userRepo->getCurrentUser()->email);
+        }
     }
 
     // addSynonym
@@ -65,24 +72,37 @@ class TalentRepository
     }
 
     // getNotAddedTalents
-    public function getUnaddedTalents($page = null, $synonyms = null)
+    public function getUnaddedTalents($user = null, $page = null, $synonyms = null)
     {
-        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, true), $synonyms);
+        if($user == null) {
+            $user = $this->userRepo->getCurrentUser()->email;
+        }
+        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, $user), $synonyms);
     }
 
-    public function searchUnaddedTalents($search, $page = null, $synonyms = null)
+    public function searchUnaddedTalents($user = null, $search, $page = null, $synonyms = null)
     {
-        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, true, null, null, null, null, null, null, $search), $synonyms);
+        if($user == null) {
+            $user = $this->userRepo->getCurrentUser()->email;
+        }
+        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, $user, null, null, null, null, null, null, $search), $synonyms);
     }
 
     // getAddedTalents
-    public function getAddedTalents($page = null, $synonyms = null) {
-        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, true), $synonyms);
+    public function getAddedTalents($user = null, $page = null, $synonyms = null) {
+        if($user == null) {
+            $user = $this->userRepo->getCurrentUser()->email;
+        }
+        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, $user), $synonyms);
+
     }
 
-    public function searchAddedTalents($search, $page = null, $synonyms = null)
+    public function searchAddedTalents($user = null, $search, $page = null, $synonyms = null)
     {
-        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, true, null, null, null, null, $search), $synonyms);
+        if($user == null) {
+            $user = $this->userRepo->getCurrentUser()->email;
+        }
+        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, $user, null, null, null, null, $search), $synonyms);
     }
 
     // getTalentById
@@ -91,26 +111,22 @@ class TalentRepository
         return $this->createTalentArray($this->talentBuilder->getTalents(null, null, null, $id), $synonyms);
     }
 
-    // getTalentUser
-    public function getTalentsUser($user, $page = null, $synonyms = null) {
-
-        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, null, null, null, $user), $synonyms);
-    }
-
-    public function searchTalentsUser($user, $search, $page = null, $synonyms = null)
-    {
-        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, null, null, null, $user, null, $search), $synonyms);
-    }
-
     // getTalentsRequestedByCurrentUser
-    public function getRequestedTalents($page = null, $synonyms = null)
+    public function getRequestedTalents($user = null, $page = null, $synonyms = null)
     {
-        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, null, true), $synonyms);
+        if($user == null) {
+            $user = $this->userRepo->getCurrentUser()->email;
+        }
+        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, null, $user), $synonyms);
+
     }
 
-    public function searchRequestedTalents($search, $page = null, $synonyms = null)
+    public function searchRequestedTalents($user = null, $search, $page = null, $synonyms = null)
     {
-        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, null, true, null, null, null, $search), $synonyms);
+        if($user == null) {
+            $user = $this->userRepo->getCurrentUser()->email;
+        }
+        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, null, $user, null, null, null, $search), $synonyms);
     }
 
     // getAllRequestedTalents
@@ -134,18 +150,24 @@ class TalentRepository
     // ###### Update ######
 
     // updateTalent
-    public function updateTalent($name, $isRejected, $id)
+    public function updateTalent($name, $isRejected, $id, $admin = null)
     {
-        $this->talentBuilder->updateTalent($name, $isRejected, $id);
+        if($admin == null) {
+            $admin = (new Admin())->getCurrentAdmin()->username;
+        }
+        $this->talentBuilder->updateTalent($name, $isRejected, $id, $admin);
     }
 
 
     // ###### Delete ######
 
     // deleteTalentFromCurrentUser
-    public function deleteTalent($talentId)
+    public function deleteTalent($talentId, $user = null)
     {
-        $this->talentBuilder->deleteTalentFromUser($talentId);
+        if($user == null) {
+            $user = $this->userRepo->getCurrentUser()->email;
+        }
+        $this->talentBuilder->deleteTalentFromUser($talentId,$user);
     }
 
     // deleteSynonymFromTalent
