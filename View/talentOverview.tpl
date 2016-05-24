@@ -64,7 +64,7 @@
                                 <tr>
                                     <td class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{htmlentities(trim($talent->name),ENT_QUOTES)}</td>
                                     <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                                        {if $userCount <= 3}
+                                        {if $talentsNumber <= 3}
                                             <button type="button" class="btn btn-inbox disabled btn-sm">
                                                 <span class="glyphicon glyphicon-remove"></span>
                                             </button>
