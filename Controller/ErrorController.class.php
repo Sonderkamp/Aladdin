@@ -4,7 +4,7 @@ class ErrorController extends Controller
 {
     public $message = "ERROR MESSGAGE!!!";
 
-    public function render() {
+    public function run() {
         $this->render("error_view.tpl" , ["title" => "ErrorMessage",
             "message" => $this->message ]);
         exit(2);

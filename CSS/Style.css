@@ -215,7 +215,9 @@ body {
     text-align: center;
     padding: 3px;
 }
-
+.danger{
+    color: darkred;
+}
 .col-centered{
     float: none;
     margin: 0 auto;

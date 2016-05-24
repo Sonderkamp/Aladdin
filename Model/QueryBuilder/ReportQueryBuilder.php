@@ -64,6 +64,16 @@ class ReportQueryBuilder
         return Database::query_safe($sql, $parameters);
     }
 
+    public function getMyReports($email = null)
+    {
+        if ($email == null) $email = $_SESSION["user"]->email;
+
+        $sql = "SELECT * FROM `reportedusers` WHERE `user_Reported` = ?";
+        $parameters = array($email);
+
+        return Database::query_safe($sql, $parameters);
+    }
+
     public function getReportArray($result)
     {
         if (count($result) <= 0) return;

@@ -44,15 +44,19 @@ class WishQueryBuilder
      * All gets from admin
      *
      */
-    public function getWishes($user = null, array $status = null, $searchKey = null, $admin = false)
+    public function getWishes($user = null, array $status = null, $searchKey = null, $admin = false, $allowBlock = false)
     {
         $query = "SELECT *
                   FROM `wish`
                   LEFT JOIN `wishContent`
                   ON `wish`.Id = `wishContent`.wish_Id
                   JOIN `user` ON `wish`.User = `user`.Email
-                  WHERE `wish`.User IS NOT NULL AND
-                  NOT EXISTS(SELECT NULL FROM blockedusers AS b WHERE b.user_Email = `wish`.User AND b.IsBlocked = 1) AND ";
+                  WHERE `wish`.User IS NOT NULL AND ";
+
+        if(!$allowBlock){
+            $query .= "NOT EXISTS(SELECT NULL FROM blockedusers AS b WHERE b.user_Email = `wish`.User AND b.IsBlocked = 1 AND
+                   b.Id = (SELECT Id FROM blockedusers as c WHERE c.user_Email = `wish`.User ORDER BY DateBlocked DESC LIMIT 1)) AND ";
+        }
 
         //Used in queries by User
         if ($user != null) {
@@ -110,6 +114,7 @@ class WishQueryBuilder
         if ($searchKey != null) {
             $params[] = $searchKey;
         }
+
 
         return $this->executeQuery($query, $params);
     }

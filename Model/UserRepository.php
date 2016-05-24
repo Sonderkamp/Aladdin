@@ -25,7 +25,7 @@ class UserRepository
     {
 
         // if user is not blocked
-        if (!$this->isBlocked($username) === false)
+        if (!$this->isBlocked($username) !== false)
             $this->UserQueryBuilder->setblock(1, $username, $reason);
 
 
@@ -535,6 +535,15 @@ class UserRepository
         }
         return false;
 
+    }
+
+    public function getCurrentUser()
+    {
+
+        if (empty($_SESSION["user"])) {
+            return false;
+        }
+        return $_SESSION["user"];
     }
 
 }

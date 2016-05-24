@@ -61,5 +61,10 @@ class ReportRepository
         $reported = $this->reportQueryBuilder->getReportedUsers($email);
         return $this->reportQueryBuilder->getReportArray($reported);
     }
+
+    public function getMyReports($email = null){
+        $reported = $this->reportQueryBuilder->getMyReports($email);
+        return $this->reportQueryBuilder->getReportArray($reported);
+    }
     
 }
