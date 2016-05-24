@@ -24,21 +24,21 @@ class TalentRepository
     // ###### Create ######
 
     // addTalent
-    public function addTalent($name)
+    public function addTalent($name, $userEmail)
     {
-        $this->talentBuilder->addTalent($name, $this->userRepo->getCurrentUser()->email);
+        if($userEmail == null) {
+            $userEmail = $this->userRepo->getCurrentUser()->email;
+        }
+        $this->talentBuilder->addTalent($name, $userEmail);
     }
 
     // addTalentToUser
-    public function addTalentUser($talentId, $user = null)
+    public function addTalentUser($talentId, $userEmail = null)
     {
-        if($user != null) {
-
-            $this->talentBuilder->addTalentToUser($talentId, $user);
-        } else {
-
-            $this->talentBuilder->addTalentToUser($talentId, $this->userRepo->getCurrentUser()->email);
+        if($userEmail == null) {
+            $userEmail = $this->userRepo->getCurrentUser()->email;
         }
+        $this->talentBuilder->addTalentToUser($talentId, $userEmail);
     }
 
     // addSynonym
@@ -72,37 +72,37 @@ class TalentRepository
     }
 
     // getNotAddedTalents
-    public function getUnaddedTalents($user = null, $page = null, $synonyms = null)
+    public function getUnaddedTalents($userEmail = null, $page = null, $synonyms = null)
     {
-        if($user == null) {
-            $user = $this->userRepo->getCurrentUser()->email;
+        if($userEmail == null) {
+            $userEmail = $this->userRepo->getCurrentUser()->email;
         }
-        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, $user), $synonyms);
+        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, $userEmail), $synonyms);
     }
 
-    public function searchUnaddedTalents($user = null, $search, $page = null, $synonyms = null)
+    public function searchUnaddedTalents($userEmail = null, $search, $page = null, $synonyms = null)
     {
-        if($user == null) {
-            $user = $this->userRepo->getCurrentUser()->email;
+        if($userEmail == null) {
+            $userEmail = $this->userRepo->getCurrentUser()->email;
         }
-        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, $user, null, null, null, null, null, null, $search), $synonyms);
+        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, $userEmail, null, null, null, null, null, null, $search), $synonyms);
     }
 
     // getAddedTalents
-    public function getAddedTalents($user = null, $page = null, $synonyms = null) {
-        if($user == null) {
-            $user = $this->userRepo->getCurrentUser()->email;
+    public function getAddedTalents($userEmail = null, $page = null, $synonyms = null) {
+        if($userEmail == null) {
+            $userEmail = $this->userRepo->getCurrentUser()->email;
         }
-        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, $user), $synonyms);
+        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, $userEmail), $synonyms);
 
     }
 
-    public function searchAddedTalents($user = null, $search, $page = null, $synonyms = null)
+    public function searchAddedTalents($userEmail = null, $search, $page = null, $synonyms = null)
     {
-        if($user == null) {
-            $user = $this->userRepo->getCurrentUser()->email;
+        if($userEmail == null) {
+            $userEmail = $this->userRepo->getCurrentUser()->email;
         }
-        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, $user, null, null, null, null, $search), $synonyms);
+        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, $userEmail, null, null, null, null, $search), $synonyms);
     }
 
     // getTalentById
@@ -112,21 +112,21 @@ class TalentRepository
     }
 
     // getTalentsRequestedByCurrentUser
-    public function getRequestedTalents($user = null, $page = null, $synonyms = null)
+    public function getRequestedTalents($userEmail = null, $page = null, $synonyms = null)
     {
-        if($user == null) {
-            $user = $this->userRepo->getCurrentUser()->email;
+        if($userEmail == null) {
+            $userEmail = $this->userRepo->getCurrentUser()->email;
         }
-        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, null, $user), $synonyms);
+        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, null, $userEmail), $synonyms);
 
     }
 
-    public function searchRequestedTalents($user = null, $search, $page = null, $synonyms = null)
+    public function searchRequestedTalents($userEmail = null, $search, $page = null, $synonyms = null)
     {
-        if($user == null) {
-            $user = $this->userRepo->getCurrentUser()->email;
+        if($userEmail == null) {
+            $userEmail = $this->userRepo->getCurrentUser()->email;
         }
-        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, null, $user, null, null, null, $search), $synonyms);
+        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, null, $userEmail, null, null, null, $search), $synonyms);
     }
 
     // getAllRequestedTalents
@@ -150,24 +150,24 @@ class TalentRepository
     // ###### Update ######
 
     // updateTalent
-    public function updateTalent($name, $isRejected, $id, $admin = null)
+    public function updateTalent($name, $isRejected, $id, $adminUsername = null)
     {
-        if($admin == null) {
-            $admin = (new Admin())->getCurrentAdmin()->username;
+        if($adminUsername == null) {
+            $adminUsername = (new Admin())->getCurrentAdmin()->username;
         }
-        $this->talentBuilder->updateTalent($name, $isRejected, $id, $admin);
+        $this->talentBuilder->updateTalent($name, $isRejected, $id, $adminUsername);
     }
 
 
     // ###### Delete ######
 
     // deleteTalentFromCurrentUser
-    public function deleteTalent($talentId, $user = null)
+    public function deleteTalent($talentId, $userEmail = null)
     {
-        if($user == null) {
-            $user = $this->userRepo->getCurrentUser()->email;
+        if($userEmail == null) {
+            $userEmail = $this->userRepo->getCurrentUser()->email;
         }
-        $this->talentBuilder->deleteTalentFromUser($talentId,$user);
+        $this->talentBuilder->deleteTalentFromUser($talentId,$userEmail);
     }
 
     // deleteSynonymFromTalent
