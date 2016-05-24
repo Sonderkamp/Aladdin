@@ -276,7 +276,7 @@ class WishRepository
             1 => "Gepubliceerd",
             2 => "Geweigerd",
             3 => "Match gevonden",
-            5 => "Wordt vervuld"], null, null, true));
+            5 => "Wordt vervuld"] , null, null, true));
     }
 
     public function wishesByTalents($talents)

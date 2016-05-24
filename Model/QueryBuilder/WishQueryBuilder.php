@@ -53,7 +53,7 @@ class WishQueryBuilder
                   JOIN `user` ON `wish`.User = `user`.Email
                   WHERE `wish`.User IS NOT NULL AND ";
 
-        if (!$allowBlock) {
+        if(!$allowBlock){
             $query .= "NOT EXISTS(SELECT NULL FROM blockedusers AS b WHERE b.user_Email = `wish`.User AND b.IsBlocked = 1 AND
                    b.Id = (SELECT Id FROM blockedusers as c WHERE c.user_Email = `wish`.User ORDER BY DateBlocked DESC LIMIT 1)) AND ";
         }
