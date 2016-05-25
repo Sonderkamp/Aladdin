@@ -161,6 +161,12 @@ class UserQueryBuilder
         return $result;
     }
 
+    public function getAllUsers(){
+        $result = Database::query("SELECT *
+              from `user`");
+        return $this->createUsers($result);
+    }
+
     private function createUser($result)
     {
 
@@ -188,5 +194,15 @@ class UserQueryBuilder
         $newUser->RecoveryDate = $result[0]["RecoveryDate"];
 
         return $newUser;
+    }
+
+    /** creates multipe user objects */
+    public function createUsers($result){
+        $users = array();
+        foreach ($result as $item){
+            $users[] = $this->createUser(array($item));
+        }
+
+        return $users;
     }
 }

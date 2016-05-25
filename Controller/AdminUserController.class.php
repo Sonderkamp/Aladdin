@@ -20,8 +20,25 @@ class AdminuserController extends Controller
 
     public function run()
     {
-        $this->unhandled();
+        $this->renderPage("users");
+//        $this->unhandled();
     }
+
+
+    public function renderPage($currentPage)
+    {
+        $unhandled = $this->unhandled();
+        $handled = $this->handled();
+        $allUsers = $this->userRepository->getAllUsers();
+
+        $this->render("adminUser.tpl", ["title" => "Gebruikers overzicht",
+            "handled" => $handled,
+            "unhandled" => $unhandled,
+            "users" => $allUsers,
+            "currentPage" => $currentPage
+        ]);
+    }
+
 
     public function unhandled()
     {
@@ -30,32 +47,39 @@ class AdminuserController extends Controller
 
         if (count($report) > 0) {
             foreach ($report as $item) {
-//                if ($item instanceof Report) {
-                    $user = $item->getReported();
-//                    if ($user instanceof User) {
-                        $temp = new UserRepository();
-                        if ($temp->isBlocked($user->getEmail())) {
-                            $user->blocked = true;
-//                            $user->setBlocked(true);
-                        }
-//                    };
-//                }
+                $user = $item->getReported();
+                $temp = new UserRepository();
+                if ($temp->isBlocked($user->getEmail())) {
+                    $user->blocked = true;
+                }
             }
         }
-        $this->render("adminUser.tpl", ["reports" => $report, "current" => $this->getCurrent()]);
+        return $report;
+//        $this->render("adminUser.tpl", ["reports" => $report, "current" => $this->getCurrent()]);
     }
 
     public function handled()
     {
         $this->setCurrent("handled");
         $report = $this->reportRepository->getHandled();
+        return $report;
+
 //        $report = $this->reportRepository->get("handled");
-        $this->render("adminUser.tpl", ["reports" => $report, "current" => $this->getCurrent()]);
+//        $this->render("adminUser.tpl", ["reports" => $report, "current" => $this->getCurrent()]);
     }
 
     public function check()
     {
         $this->unhandled();
+    }
+    
+    public function blockUser(){
+        if(isset($_GET["email"])){
+            echo "set: " . $_GET["email"];
+            $this->userRepository->blockUser($_GET["email"]);
+        }
+
+        $this->back();
     }
 
     public function block()
@@ -66,16 +90,10 @@ class AdminuserController extends Controller
 
             $reported = $this->reportRepository->getId($id);
             $reported = $reported[0];
-//            if ($reported instanceof Report) {
-                $reported = $reported->getReported();
-//                if ($reported instanceof User) {
-                    $displayName = $reported->displayName;
-//                    getDisplayName();
-                    $email = $this->userRepository->getUser($displayName)->email;
-//                    getEmail();
-                    $this->userRepository->blockUser($email);
-//                }
-//            }
+            $reported = $reported->getReported();
+            $displayName = $reported->displayName;
+            $email = $this->userRepository->getUser($displayName)->email;
+            $this->userRepository->blockUser($email);
         }
         $this->back();
     }
@@ -91,6 +109,7 @@ class AdminuserController extends Controller
 
     public function back()
     {
+        $this->run();
         switch ($this->getCurrent()) {
             case "handled":
                 $this->handled();

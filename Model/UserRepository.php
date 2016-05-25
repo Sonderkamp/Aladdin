@@ -545,5 +545,9 @@ class UserRepository
         }
         return $_SESSION["user"];
     }
+    
+    public function getAllUsers(){
+        return $this->UserQueryBuilder->getAllUsers();
+    }
 
 }
