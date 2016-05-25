@@ -8,196 +8,292 @@
  */
 class AdmintalentsController extends Controller
 {
-    private $message_model, $page, $talents, $all_talents, $unaccepted_talents, $current_all_talents_number, $all_talents_number, $talent_repository, $forbidden_words_repo, $synonym_id, $accepted_talents;
+    private $messageModel,
+        $page,
+        $allTalents,
+        $currentTalentsCount,
+        $talentsCount,
+        $talentRepo,
+        $wordsRepo,
+        $synonymId;
 
     public function __construct()
     {
         (new AdminController())->guaranteeAdmin("admintalents");
 
-        $this->page = "m";
-        $this->synonym_id = "";
+        $this->page = "allTalents";
+        $this->synonymId = "";
         
-        $this->talent_repository = new TalentRepository();
-        $this->forbidden_words_repo = new ForbiddenWordRepository();
-        $this->message_model = new messageRepository();
+        $this->talentRepo = new TalentRepository();
+        $this->wordsRepo = new ForbiddenWordRepository();
+        $this->messageModel = new messageRepository();
 
-        $this->talents = $this->talent_repository->getTalents();
-        $this->all_talents_number = ceil(count($this->talent_repository->getTalents())/10);
-        $this->unaccepted_talents = $this->talent_repository->getAllRequestedTalents();
-        $this->accepted_talents = $this->talent_repository->getAcceptedTalents();
+        $this->talentsCount = ceil(count($this->talentRepo->getTalents())/10);
     }
 
     public function run()
     {
-        // TODO: does not use new structure.
-        $this->checkPost();
-        $this->checkGet();
-        $this->checkSession();
+        $this->checkPage();
+        $this->checkSynonyms();
+        $this->fillAllTalents();
+        $this->setSynonymId();
+        $this->checkSearch();
 
         $this->render("Admin/talent.tpl",
             ["title" => "Talenten beheer",
-                "all_talents" => $this->all_talents,
-                "all_talent_number" => $this->all_talents_number,
-                "current_all_talents_number" => $this->current_all_talents_number,
-                "unaccepted_talents" => $this->unaccepted_talents,
-                "talents" => $this->talents,
-                "synonym_id" => $this->synonym_id,
-                "accepted_talents" => $this->accepted_talents]);
+                "allTalents" => $this->allTalents,
+                "talentsCount" => $this->talentsCount,
+                "currentTalentsCount" => $this->currentTalentsCount,
+                "unacceptedTalents" => $this->talentRepo->getAllRequestedTalents(),
+                "talents" => $this->talentRepo->getTalents(),
+                "synonymId" => $this->synonymId,
+                "acceptedTalents" => $this->talentRepo->getAcceptedTalents(),
+                "page" => $this->page]);
         exit(0);
     }
 
-    private function checkSession()
-    {
-        if(!Empty($_SESSION["talent_admin"])){
-            if($this->all_talents_number > 1){
-                $this->current_all_talents_number = $_SESSION["talent_admin"];
-                $this->all_talents = $this->talent_repository->getTalents($_SESSION["talent_admin"],true);
-            } else{
-                $_SESSION["talent_admin"] = $this->all_talents_number;
-            }
-        }
+    public function acceptTalent() {
 
-        if(!Empty($_SESSION["synonym_id"])){
-            
-            $this->synonym_id = $_SESSION["synonym_id"];
-            $_SESSION["synonym_id"] = "";
-        }
-    }
+        if(!Empty($_GET["talent"])) {
+            $id = htmlspecialchars($_GET["talent"]);
 
-    private function checkGet()
-    {
-        if (!Empty($_GET["admin_a"])) {
-            if($_GET["admin_a"] > 0 & $_GET["admin_a"] <= $this->all_talents_number) {
-                $this->all_talents = $this->talent_repository->getTalents($_GET["admin_a"],true);
-                $this->current_all_talents_number = $_GET["admin_a"];
-                $_SESSION["talent_admin"] = $this->current_all_talents_number;
-            } else{
-                $this->all_talents = $this->talent_repository->getTalents(1,true);
-                $this->current_all_talents_number = 1;
-                $_SESSION["talent_admin"] = $this->current_all_talents_number;
-            }
-        } else {
-            $this->all_talents = $this->talent_repository->getTalents(1,true);
-            $this->current_all_talents_number = 1;
-        }
-    }
+            if (is_numeric($id)) {
 
-    private function checkPost()
-    {
-        if (!Empty($_POST["admin_talent_id"]) && !Empty($this->talent_repository->getTalent($_POST["admin_talent_id"])[0]->moderator_username)) {
+                $talent = $this->talentRepo->getTalent($id);
 
-            $correct = true;
+                if (!Empty($talent)) {
+                    $talent = $talent[0];
 
-            if(!Isset($_POST["admin_talent_name"])) {
+                    if (Empty($talent->isRejected)) {
+                        $this->talentRepo->updateTalent($talent->name, 1, $id);
 
-                $name = $this->talent_repository->getTalent($_POST["admin_talent_id"])[0]->name;
-            } else{
+                        $this->talentRepo->addTalentUser($id, $talent->user_email);
 
-                $name = $_POST["admin_talent_name"];
-
-                $talent2 = $this->talent_repository->getTalent($_POST["admin_talent_id"])[0];
-
-                if($name != $talent2->name) {
-                    if ($this->forbidden_words_repo->isValid($name)) {
-
-                        if (strlen($name) > 0 && strlen($name) <= 45) {
-
-                            foreach ($this->talent_repository->getTalents() as $talent) {
-
-                                if (strtolower($talent->name) == strtolower($name)) {
-
-                                    //De ingevoegde naam is al toegevoegd, aangevraagd of geweigerd.
-                                    $correct = false;
-                                    break;
-                                }
-                            }
-                        }
-                    } else {
-
-                        // De ingevoerde naam voldoet niet aan de algemene voorwaarden en is daarom verboden.
-                        $name = $this->talent_repository->getTalent($_POST["admin_talent_id"])[0]->name;
+                        $messageId = $this->messageModel->sendMessage("Admin", $talent->user_email, "Het talent '" . $talent->name . "' is geaccepteerd", "Het talent '" . $talent->name . "' is geaccepteerd, omdat het voldoet aan de algemene voorwaarden. Het talent is toegevoegt aan 'mijn talenten'.");
+                        $this->messageModel->setLink("", "Talent", $messageId);
                     }
                 }
             }
+        }
 
-            if($correct == true){
+        $this->run();
+    }
 
-                if(isset($_POST["admin_talent_is_rejected"])){
+    public function denyTalent() {
 
-                    $accepted = 1;
-                } else {
+        if(!Empty($_GET["talent"])) {
+            $id = htmlspecialchars($_GET["talent"]);
 
-                    $accepted = 0;
+            if (isset($_GET["denyMessage"])) {
+                $message = htmlspecialchars($_GET["denyMessage"]);
+            } else {
+                $message = "";
+            }
+
+            if(is_numeric($id)) {
+                $talent = $this->talentRepo->getTalent($id);
+
+                if(!Empty($talent)) {
+                    $talent = $talent[0];
+
+                    if (Empty($talent->isRejected)) {
+                        $this->talentRepo->updateTalent($talent->name, 0, $id);
+
+                        if(!Empty($message)) {
+                            $messageId = $this->messageModel->sendMessage("Admin", $talent->user_email, "Het talent '" . $talent->name . "' is afgewezen", $message);
+                        } else {
+
+                            $messageId = $this->messageModel->sendMessage("Admin", $talent->user_email, "Het talent '" . $talent->name . "' is afgewezen", "Het talent '" . $talent->name . "' is afgewezen, omdat het niet voldoet aan de algemene voorwaarden.");
+                        }
+
+                        $this->messageModel->setLink("", "Talent", $messageId);
+                    }
+                }
+            }
+        }
+
+        $this->run();
+    }
+
+    public function editTalent() {
+
+        if(isset($_GET["talent"])) {
+            $id = htmlspecialchars($_GET["talent"]);
+            if(isset($talentName)) {
+                $talentName = htmlspecialchars($_GET["talentName"]);
+            } else {
+                $talentName = "";
+            }
+            if (isset($_GET["accepted"])) {
+                $accepted = htmlspecialchars($_GET["accepted"]);
+            } else {
+                $accepted = "";
+            }
+
+            $talent = $this->talentRepo->getTalent($id);
+            if(!Empty($talent)) {
+
+                $talent = $talent[0];
+                if (!Empty($talent->moderator_username)) {
+
+                    $correct = true;
+
+                    if (Empty($talentName)) {
+
+                        $name = $this->talentRepo->getTalent($id)[0]->name;
+                    } else {
+
+                        $name = $talentName;
+
+                        if ($name != $talent->name) {
+                            if ($this->wordsRepo->isValid($name)) {
+
+                                if (strlen($name) > 0 && strlen($name) <= 45) {
+
+                                    foreach ($this->talentRepo->getTalents() as $item) {
+
+                                        if (strtolower($item->name) == strtolower($name)) {
+
+                                            //De ingevoegde naam is al toegevoegd, aangevraagd of geweigerd.
+                                            $correct = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                            } else {
+
+                                // De ingevoerde naam voldoet niet aan de algemene voorwaarden en is daarom verboden.
+                                $name = $talent->name;
+                            }
+                        }
+                    }
+
+                    if ($correct == true) {
+
+                        if (!Empty($accepted) && $accepted == "on") {
+
+                            $accepted = 1;
+                        } else {
+
+                            $accepted = 0;
+                        }
+
+                        if (!preg_match('/[^a-z\s]/i', $name)) {
+
+                            $this->talentRepo->updateTalent($name, $accepted, $id);
+                        } else {
+
+                            //Er mogen alleen letters en spaties worden gebruikt in het talent!
+                        }
+                    }
+                }
+            }
+        }
+
+        $this->run();
+    }
+
+    private function setSynonymId()
+    {
+
+        if(!Empty($_SESSION["synonymId"])){
+            
+            $this->synonymId = $_SESSION["synonymId"];
+            $_SESSION["synonymId"] = "";
+        }
+    }
+
+    private function fillAllTalents()
+    {
+        if(!Empty($_SESSION["pageTalentAdmin"])){
+            
+            $this->allTalents = $this->talentRepo->getTalents($_SESSION["pageTalentAdmin"],true);
+            $this->currentTalentsCount = $_SESSION["pageTalentAdmin"];
+            $_SESSION["pageTalentAdmin"] = null;
+        } else if (!Empty($_GET["allTalents"])) {
+
+            $page = htmlspecialchars($_GET["allTalents"]);
+
+            if($page > 0 & $page <= $this->talentsCount) {
+                $this->allTalents = $this->talentRepo->getTalents($page,true);
+                $this->currentTalentsCount = $page;
+            } else{
+                $this->allTalents = $this->talentRepo->getTalents(1,true);
+                $this->currentTalentsCount = 1;
+            }
+        } else {
+            $this->allTalents = $this->talentRepo->getTalents(1,true);
+            $this->currentTalentsCount = 1;
+        }
+    }
+
+    private function checkSynonyms()
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+            if (!Empty($_POST["addButton"]) && !Empty($_POST["addSynonym"]) && !Empty($_POST["synonymId"])) {
+
+                $id = htmlspecialchars($_POST["synonymId"]);
+
+                foreach ($_POST["addSynonym"] as $synonym) {
+
+                    $synonym = htmlspecialchars($synonym);
+
+                    $this->talentRepo->addSynonym($id, $synonym);
                 }
 
-                if(!preg_match('/[^a-z\s]/i', $name)) {
+                $this->setSessions($id);
+            }
 
-                    $this->talent_repository->updateTalent($name, $accepted, $_POST["admin_talent_id"]);
-                } else{
+            if (!Empty($_POST["removeButton"]) && !Empty($_POST["removeSynonym"]) && !Empty($_POST["synonymId"])) {
 
-                    //Er mogen alleen letters en spaties worden gebruikt in het talent!
+                $id = htmlspecialchars($_POST["synonymId"]);
+
+                foreach ($_POST["removeSynonym"] as $synonym) {
+
+                    $synonym = htmlspecialchars($synonym);
+
+                    $this->talentRepo->deleteSynonym($id, $synonym);
                 }
+
+                $this->setSessions($id);
             }
+        }
+    }
 
-            header("HTTP/1.1 303 See Other");
-            header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-            exit(0);
+    private function setSessions($id) {
+        
+        $_SESSION["synonymId"] = $id;
+
+        if(!Empty($_POST["search"])) {
+            $this->redirect("/admintalents/p=allTalents/search=" . htmlspecialchars($_POST["search"]));
+        } else if(!Empty($_POST["page"])) {
+            $this->redirect("/admintalents/p=allTalents/allTalents=" . htmlspecialchars($_POST["page"]));
+        } else {
+            $this->redirect("/admintalents/p=allTalents/allTalents=1");
         }
 
-        if(!Empty($_POST["deny_message"]) && !Empty($_POST["deny_id"])){
+    }
 
-            $talent = $this->talent_repository->getTalent($_POST["deny_id"])[0];
+    private function checkPage() {
+        if(!Empty($_GET["p"])) {
 
-            $this->talent_repository->updateTalent($talent->name,0,$talent->id);
+            $page = htmlspecialchars($_GET["p"]);
 
-//            $message_id = $this->message_model->sendMessage("Admin", $talent->user_email, "Het talent '" . $talent->name . "' is afgewezen", $_POST["deny_message"]);
-//            $this->message_model->setLink("", "Talent", $message_id);
-
-            header("HTTP/1.1 303 See Other");
-            header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-            exit(0);
-        }
-
-        if(!Empty($_POST["accept_id"])){
-            
-            $talent = $this->talent_repository->getTalent($_POST["accept_id"])[0];
-            
-            $this->talent_repository->updateTalent($talent->name,1,$_POST["accept_id"]);
-
-            $this->talent_repository->addTalentUser($_POST["accept_id"],$talent->user_email);
-
-//            $message_id = $this->message_model->sendMessage("Admin", $talent->user_email, "Het talent '" . $talent->name . "' is geaccepteerd", "Het talent '" . $talent->name . "' is geaccepteerd, omdat het voldoet aan de algemene voorwaarden. Het talent is toegevoegt aan 'mijn talenten'.");
-//            $this->message_model->setLink("", "Talent", $message_id);
-
-            header("HTTP/1.1 303 See Other");
-            header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-            exit(0);
-        }
-
-        if(!Empty($_POST["add_synonym_button"]) && !Empty($_POST["synonym_add"]) && !Empty($_POST["talent_synonym_id"])){
-            
-            foreach($_POST["synonym_add"] as $synonym) {
-                $this->talent_repository->addSynonym($_POST["talent_synonym_id"],$synonym);
+            if($page == "allTalents" || $page == "unacceptedTalents") {
+                $this->page = htmlspecialchars($_GET["p"]);
+            } else {
+                $this->page = "allTalents";
             }
-
-            $_SESSION["synonym_id"] = $_POST["talent_synonym_id"];
-
-            header("HTTP/1.1 303 See Other");
-            header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-            exit(0);
         }
+    }
 
-        if(!Empty($_POST["remove_synonym_button"]) && !Empty($_POST["synonym_remove"]) && !Empty($_POST["talent_synonym_id"])){
+    private function checkSearch() {
+        if(!Empty($_GET["search"])) {
 
-            foreach($_POST["synonym_remove"] as $synonym) {
-                $this->talent_repository->deleteSynonym($_POST["talent_synonym_id"],$synonym);
-            }
-
-            $_SESSION["synonym_id"] = $_POST["talent_synonym_id"];
-
-            header("HTTP/1.1 303 See Other");
-            header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-            exit(0);
+            $this->allTalents = $this->talentRepo->searchTalents(htmlspecialchars($_GET["search"]),null,true);
+            $this->currentTalentsCount = 0;
+            $this->talentsCount = 0;
         }
     }
 }

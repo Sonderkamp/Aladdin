@@ -17,11 +17,11 @@
     {/if}
 
     {* Add forbidden word *}
-    <form class="col-xs-12 col-sm-12 col-md-6 col-lg-6" action="/forbiddenwords" method="post">
+    <form class="col-xs-12 col-sm-12 col-md-6 col-lg-6" action="/forbiddenwords/action=addWord" method="get">
         <div class="form-group row">
             <label for="word" class="col-sm-2 form-control-label">Verboden woord</label>
             <div class="col-sm-10">
-                <input type="text" name="addWord" class="form-control" id="word" placeholder="Verboden woord">
+                <input type="text" name="newWord" class="form-control" id="word" placeholder="Verboden woord">
                 <small class="text-muted">Dit is het verboden woord. Als dit woord voorkomt in een aanvraag bij wens of talent word deze aanvraag automatisch verwijderd.</small>
             </div>
         </div>
@@ -246,6 +246,7 @@
                 {/if}
                 <form class="pull-right"  action="/forbiddenwords" method="post">
                     <input type="hidden" value="{if $smarty.session.wordsPagination == "off"}on{else}off{/if}" name="pagination">
+                    <input type="hidden" value="{if isset($smarty.get.wordsPage)}{$smarty.get.wordsPage}{else}1{/if}" name="page">
                     <button type="submit" class="btn btn-primary">Pagination {if $smarty.session.wordsPagination == "off"}aan{else}uit{/if}</button>
                 </form>
             </div>
@@ -267,8 +268,8 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default infoLeft" data-dismiss="modal">Sluiten</button>
 
-                    <form action="/forbiddenwords" method="post">
-                        <input type="hidden" value="{htmlentities(trim($word),ENT_QUOTES)}" name="removeWord">
+                    <form action="/forbiddenwords/action=removeWord" method="get">
+                        <input type="hidden" value="{htmlentities(trim($word),ENT_QUOTES)}" name="word">
 
                         <button type="submit" class="btn btn-danger btn-small">
                             <span class="glyphicon glyphicon-trash"></span> verwijderen
@@ -291,7 +292,7 @@
                     <h4 class="modal-title">Het verboden woord "{htmlentities(trim($word),ENT_QUOTES)}" wijzigen:</h4>
                 </div>
 
-                <form action="/forbiddenwords" method="post">
+                <form action="/forbiddenwords/action=editWord" method="get">
                     <div class="modal-body">
                         <div class="form-group row">
                             <label for="edit{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}" class="col-sm-2 form-control-label">Verboden woord</label>

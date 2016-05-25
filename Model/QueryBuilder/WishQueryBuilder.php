@@ -192,7 +192,14 @@ class WishQueryBuilder
         $query = "INSERT INTO `wishContent` (`Content`, `Title`, `wish_Id`)
             VALUES (?,?,?)";
         $array = array($wish->content, $wish->title, $wish->id);
+
         $this->executeQuery($query, $array);
+    }
+
+    public function editWishStatus($wishId, $status)
+    {
+        $query = "UPDATE `wish` SET Status = ? WHERE id = ?;";
+        $this->executeQuery($query, array($status, $wishId));
     }
 
     public function deleteWishTalents(Wish $wish)
@@ -203,6 +210,13 @@ class WishQueryBuilder
         $this->executeQuery($query, $value);
     }
 
+    public function deleteWishContent(Wish $wish)
+    {
+        $query = "DELETE FROM `wishcontent` WHERE `wish_Id` = ?";
+        $value = array($wish->id);
+
+        $this->executeQuery($query, $value);
+    }
 
     public function bindToTalent($talentName, Wish $wish)
     {
@@ -242,12 +256,12 @@ class WishQueryBuilder
         $talentList = $this->getSQLString($talents);
 
         $temp = array();
-        foreach ($myWishes as $item){
+        foreach ($myWishes as $item) {
             $temp[] = $item->id;
         }
 
         $wishList = $this->getSQLString($temp);
-        
+
         $sql = "SELECT *
               FROM wish AS w
                 JOIN (SELECT wish_Id, MAX(wishContent.Date) AS max_date
@@ -262,7 +276,7 @@ class WishQueryBuilder
                     AND (w.Status = 'Gepubliceerd' OR w.status='Match gevonden') 
                     AND wc.Date = wcMax.max_date
                     ORDER BY max_date DESC";
-        
+
         return $this->executeQuery($sql, array());
     }
 
