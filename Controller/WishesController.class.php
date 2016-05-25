@@ -76,10 +76,10 @@ class WishesController extends Controller
                     exit(0);
                     break;
                 case "addwish":
-                    $this->add_wish();
+                    $this->addWish();
                     break;
                 case "editwish":
-                    $this->edit_wish();
+                    $this->editWish();
                     break;
                 case "remove":
                     $this->remove();
@@ -221,7 +221,7 @@ class WishesController extends Controller
     }
 
 
-    private function add_wish()
+    private function addWish()
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -291,7 +291,7 @@ class WishesController extends Controller
     }
 
 
-    private function edit_wish()
+    private function editWish()
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $title = $_POST["title"];
