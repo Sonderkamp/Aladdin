@@ -40,29 +40,29 @@ class WishesController extends Controller
     {
         (new AccountController())->guaranteeLogin("/Wishes");
 
-        if (isset($_GET["show"])) {
-            switch (strtolower($_GET["show"])) {
-                case "mywishes":
-                    (new DashboardController())->guaranteeProfile();
-                    $this->renderOverview("myWishes");
-                    break;
-                case "incompletedwishes":
-                    (new DashboardController())->guaranteeProfile();
-                    $this->renderOverview("incompletedWishes");
-                    break;
-                case "completedwishes":
-                    (new DashboardController())->guaranteeProfile();
-                    $this->renderOverview("completedWishes");
-                    break;
-                case "open_edit_wish":
-                    $this->openWishView(false);
-                    break;
-                case "open_wish":
-                    $this->openWishView(true);
-                    break;
-            }
-
-        }
+//        if (isset($_GET["show"])) {
+//            switch (strtolower($_GET["show"])) {
+//                case "mywishes":
+//                    (new DashboardController())->guaranteeProfile();
+//                    $this->renderOverview("myWishes");
+//                    break;
+//                case "incompletedwishes":
+//                    (new DashboardController())->guaranteeProfile();
+//                    $this->renderOverview("incompletedWishes");
+//                    break;
+//                case "completedwishes":
+//                    (new DashboardController())->guaranteeProfile();
+//                    $this->renderOverview("completedWishes");
+//                    break;
+//                case "open_edit_wish":
+//                    $this->openWishView(false);
+//                    break;
+//                case "open_wish":
+//                    $this->openWishView(true);
+//                    break;
+//            }
+//
+//        }
 
         if (isset($_GET["action"])) {
             switch (strtolower($_GET["action"])) {
@@ -120,6 +120,8 @@ class WishesController extends Controller
 
     private function renderOverview($currentPage)
     {
+        (new DashboardController())->guaranteeProfile();
+
         $myWishes = $this->wishRepo->getMyWishes();
         $completedWishes = $this->wishRepo->getCompletedWishes();
         $myCompletedWishes = $this->wishRepo->getMyCompletedWishes();
