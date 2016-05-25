@@ -192,14 +192,14 @@ class WishesController extends Controller
             $_SESSION["wishcontentid"] = $_GET["editwishbtn"];
 
             $wish = $this->wishRepo->getWish($this->wishContentId);
-            
+
             $title = $wish->title;
             $description = $wish->content;
             $tempTag = $this->talentRepository->getWishTalents($wish);
-            
+
             $returnArray = array();
-            foreach ($tempTag as $item){
-                if($item instanceof Talent){
+            foreach ($tempTag as $item) {
+                if ($item instanceof Talent) {
                     $returnArray[] = $item->name;
                 }
             }
@@ -244,7 +244,7 @@ class WishesController extends Controller
 
             $myWishes = $this->wishRepo->getMyWishes();
             if ($this->hasSameWish($myWishes, $title)) {
-                $this->renderEdit($title, $description, $tag, "U heeft al een wens met een soortgelijke titel",true);
+                $this->renderEdit($title, $description, $tag, "U heeft al een wens met een soortgelijke titel", true);
             }
 
             $myTags = array_map('ucfirst', explode(',', $this->gethashtags($tag)));
@@ -308,6 +308,11 @@ class WishesController extends Controller
                 $this->renderEdit($title, $description, $tag);
             }
 
+            $myWishes = $this->wishRepo->getMyWishes();
+            if ($this->hasSameWish($myWishes, $title)) {
+                $this->renderEdit($title, $description, $tag, "U heeft al een wens met een soortgelijke titel", null, true);
+            }
+
             // set a comma , between the tags.
             $myTags = array_map('ucfirst', explode(',', $this->gethashtags($tag)));
 
@@ -339,15 +344,22 @@ class WishesController extends Controller
         return true;
     }
 
-    public function renderEdit($title, $description, $tag, $message = null, $add = null)
+    public function renderEdit($title, $description, $tag, $message = null, $add = null, $edit = null)
     {
-        $error = "vul AUB alles in!";
 
-        if(isset($add)){
-            $this->render("addWish.tpl", ["error" => $error, "wishtitle" => $title,
+        if (isset($add)) {
+            $this->render("addWish.tpl", ["wishtitle" => $title,
                 "description" => $description, "tag" => $tag, "tagerror" => $message]);
             exit(0);
         }
+
+        if (isset($edit)) {
+            $this->render("addWish.tpl", ["error" => $message, "wishtitle" => $title,
+                "description" => $description, "tag" => $tag, "edit" => "isset"]);
+            exit(0);
+        }
+
+        $error = "Vul aub alles in!";
 
         if (isset($message)) {
             $this->render("addWish.tpl", ["error" => $error, "wishtitle" => $title,
