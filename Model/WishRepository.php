@@ -215,11 +215,14 @@ class WishRepository
 
     public function getMatchedWishes()
     {
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Match gevonden"], null, true));
+    }
+
+    public function getPossibleMatches(){
         $userTalents = $this->talentRepository->getAddedTalents();
         $synonyms = $this->talentRepository->getSynonymsOfTalents($userTalents);
         $allTalents = array_merge($userTalents, $synonyms);
         return $this->wishesByTalents($allTalents);
-//        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Match gevonden"], null, true));
     }
 
     public function getCurrentWishes()

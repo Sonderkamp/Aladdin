@@ -124,7 +124,7 @@ class WishesController extends Controller
         $completedWishes = $this->wishRepo->getCompletedWishes();
         $myCompletedWishes = $this->wishRepo->getMyCompletedWishes();
         $incompletedWishes = $this->wishRepo->getIncompletedWishes();
-        $matchedWishes = $this->wishRepo->getMatchedWishes();
+        $matchedWishes = $this->wishRepo->getPossibleMatches();
 
         $canAddWish = $this->wishRepo->canAddWish($_SESSION["user"]->email);
         $this->setCurrent($currentPage);
@@ -311,7 +311,7 @@ class WishesController extends Controller
             // set a comma , between the tags.
             $myTags = array_map('ucfirst', explode(',', $this->gethashtags($tag)));
 
-            // create a wish 
+            // create a wish
             $wish = new Wish();
             $wish->title = $title;
             $wish->content = $description;
