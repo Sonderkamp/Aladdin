@@ -83,13 +83,6 @@
 
                     <div class="col-xs-12 info-row">
                         <button class="btn btn-sm">
-                            <span class="glyphicon glyphicon glyphicon-refresh"></span>
-                        </button>
-                        <span class="info-text">Gekozen wens gaat terug naar aangevraagde wensen</span>
-                    </div>
-
-                    <div class="col-xs-12 info-row">
-                        <button class="btn btn-sm">
                             <span class="glyphicon glyphicon glyphicon glyphicon-trash"></span>
                         </button>
                         <span class="info-text">Verwijderd wens</span>
@@ -134,6 +127,66 @@
                                 <td>{$wish->status}</td>
                                 <td>
                                     {include file='view/adminWishModals.tpl'}
+                                    <div class="dropdown">
+                                        <a href="#"
+                                           class="dropdown-toggle"
+                                           data-toggle="dropdown"
+                                           role="button"
+                                           aria-haspopup="true"
+                                           aria-expanded="false">
+                                            <span class="glyphicon glyphicon-chevron-down"></span>
+                                        </a>
+                                        <ul class="dropdown-menu small-dropdown-menu">
+
+                                            <li>
+                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#wishModal{$wish->id}">
+                                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                                </button>
+                                            </li>
+
+                                            <li>
+                                                <form class='noPadding' method="post">
+                                                    <button class="btn btn-sm"
+                                                            formaction="/AdminWish/action=accept"
+                                                            value="{$wish->id}"
+                                                            type="submit"
+                                                            name="wish_id">
+                                                        <span class="glyphicon glyphicon-ok"></span>
+                                                    </button>
+                                                </form>
+                                            </li>
+
+                                            <li>
+                                                <form class='noPadding' method="post">
+                                                    <button class="btn btn-sm"
+                                                            formaction="/AdminWish/action=refuse"
+                                                            value="{$wish->id}"
+                                                            type="submit"
+                                                            name="wish_id">
+                                                        <span class="glyphicon glyphicon-remove"></span>
+                                                    </button>
+                                                </form>
+                                            </li>
+
+                                            <li>
+                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#profileModal{$wish->id}">
+                                                    <span class="glyphicon glyphicon-user"></span>
+                                                </button>
+                                            </li>
+
+                                            <li>
+                                                <form class='noPadding' method="post">
+                                                    <button class="btn btn-sm"
+                                                            formaction="/AdminWish/action=delete"
+                                                            value="{$wish->id}"
+                                                            type="submit"
+                                                            name="wish_id">
+                                                        <span class="glyphicon glyphicon glyphicon-trash"></span>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </td>
                             </tr>
                         {/foreach}
@@ -165,6 +218,42 @@
                                 <td>{$wish->status}</td>
                                 <td>
                                     {include file='view/adminWishModals.tpl'}
+                                    <div class="dropdown">
+                                        <a href="#"
+                                           class="dropdown-toggle"
+                                           data-toggle="dropdown"
+                                           role="button"
+                                           aria-haspopup="true"
+                                           aria-expanded="false">
+                                            <span class="glyphicon glyphicon-chevron-down"></span>
+                                        </a>
+                                        <ul class="dropdown-menu small-dropdown-menu">
+
+                                            <li>
+                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#wishModal{$wish->id}">
+                                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                                </button>
+                                            </li>
+
+                                            <li>
+                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#profileModal{$wish->id}">
+                                                    <span class="glyphicon glyphicon-user"></span>
+                                                </button>
+                                            </li>
+
+                                            <li>
+                                                <form class='noPadding' method="post">
+                                                    <button class="btn btn-sm"
+                                                            formaction="/AdminWish/action=delete"
+                                                            value="{$wish->id}"
+                                                            type="submit"
+                                                            name="wish_id">
+                                                        <span class="glyphicon glyphicon glyphicon-trash"></span>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </td>
                             </tr>
                         {/foreach}
@@ -196,6 +285,54 @@
                                 <td>{$wish->status}</td>
                                 <td>
                                     {include file='view/adminWishModals.tpl'}
+                                    <div class="dropdown">
+                                        <a href="#"
+                                           class="dropdown-toggle"
+                                           data-toggle="dropdown"
+                                           role="button"
+                                           aria-haspopup="true"
+                                           aria-expanded="false">
+                                            <span class="glyphicon glyphicon-chevron-down"></span>
+                                        </a>
+                                        <ul class="dropdown-menu small-dropdown-menu">
+
+                                            <li>
+                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#wishModal{$wish->id}">
+                                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                                </button>
+                                            </li>
+
+                                            <li>
+                                                <form class='noPadding' method="post">
+                                                    <button class="btn btn-sm"
+                                                            formaction="/AdminWish/action=accept"
+                                                            value="{$wish->id}"
+                                                            type="submit"
+                                                            name="wish_id">
+                                                        <span class="glyphicon glyphicon-ok"></span>
+                                                    </button>
+                                                </form>
+                                            </li>
+
+                                            <li>
+                                                <form class='noPadding' method="post">
+                                                    <button class="btn btn-sm"
+                                                            formaction="/AdminWish/action=refuse"
+                                                            value="{$wish->id}"
+                                                            type="submit"
+                                                            name="wish_id">
+                                                        <span class="glyphicon glyphicon-remove"></span>
+                                                    </button>
+                                                </form>
+                                            </li>
+
+                                            <li>
+                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#profileModal{$wish->id}">
+                                                    <span class="glyphicon glyphicon-user"></span>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </td>
                             </tr>
                         {/foreach}
@@ -227,6 +364,42 @@
                                 <td>{$wish->status}</td>
                                 <td>
                                     {include file='view/adminWishModals.tpl'}
+                                    <div class="dropdown">
+                                        <a href="#"
+                                           class="dropdown-toggle"
+                                           data-toggle="dropdown"
+                                           role="button"
+                                           aria-haspopup="true"
+                                           aria-expanded="false">
+                                            <span class="glyphicon glyphicon-chevron-down"></span>
+                                        </a>
+                                        <ul class="dropdown-menu small-dropdown-menu">
+
+                                            <li>
+                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#wishModal{$wish->id}">
+                                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                                </button>
+                                            </li>
+
+                                            <li>
+                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#profileModal{$wish->id}">
+                                                    <span class="glyphicon glyphicon-user"></span>
+                                                </button>
+                                            </li>
+
+                                            <li>
+                                                <form class='noPadding' method="post">
+                                                    <button class="btn btn-sm"
+                                                            formaction="/AdminWish/action=delete"
+                                                            value="{$wish->id}"
+                                                            type="submit"
+                                                            name="wish_id">
+                                                        <span class="glyphicon glyphicon glyphicon-trash"></span>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </td>
                             </tr>
                         {/foreach}
@@ -259,6 +432,31 @@
                                 <td>{$wish->status}</td>
                                 <td>
                                     {include file='view/adminWishModals.tpl'}
+                                    <div class="dropdown">
+                                        <a href="#"
+                                           class="dropdown-toggle"
+                                           data-toggle="dropdown"
+                                           role="button"
+                                           aria-haspopup="true"
+                                           aria-expanded="false">
+                                            <span class="glyphicon glyphicon-chevron-down"></span>
+                                        </a>
+                                        <ul class="dropdown-menu small-dropdown-menu">
+
+                                            <li>
+                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#wishModal{$wish->id}">
+                                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                                </button>
+                                            </li>
+
+                                            <li>
+                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#profileModal{$wish->id}">
+                                                    <span class="glyphicon glyphicon-user"></span>
+                                                </button>
+                                            </li>
+
+                                        </ul>
+                                    </div>
                                 </td>
                             </tr>
                         {/foreach}
@@ -290,6 +488,54 @@
                                 <td>{$wish->status}</td>
                                 <td>
                                     {include file='view/adminWishModals.tpl'}
+                                    <div class="dropdown">
+                                        <a href="#"
+                                           class="dropdown-toggle"
+                                           data-toggle="dropdown"
+                                           role="button"
+                                           aria-haspopup="true"
+                                           aria-expanded="false">
+                                            <span class="glyphicon glyphicon-chevron-down"></span>
+                                        </a>
+                                        <ul class="dropdown-menu small-dropdown-menu">
+
+                                            <li>
+                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#wishModal{$wish->id}">
+                                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                                </button>
+                                            </li>
+
+                                            <li>
+                                                <form class='noPadding' method="post">
+                                                    <button class="btn btn-sm"
+                                                            formaction="/AdminWish/action=accept"
+                                                            value="{$wish->id}"
+                                                            type="submit"
+                                                            name="wish_id">
+                                                        <span class="glyphicon glyphicon-ok"></span>
+                                                    </button>
+                                                </form>
+                                            </li>
+
+                                            <li>
+                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#profileModal{$wish->id}">
+                                                    <span class="glyphicon glyphicon-user"></span>
+                                                </button>
+                                            </li>
+
+                                            <li>
+                                                <form class='noPadding' method="post">
+                                                    <button class="btn btn-sm"
+                                                            formaction="/AdminWish/action=delete"
+                                                            value="{$wish->id}"
+                                                            type="submit"
+                                                            name="wish_id">
+                                                        <span class="glyphicon glyphicon glyphicon-trash"></span>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </td>
                             </tr>
                         {/foreach}
@@ -321,6 +567,43 @@
                                 <td>{$wish->status}</td>
                                 <td>
                                     {include file='view/adminWishModals.tpl'}
+                                    <div class="dropdown">
+                                        <a href="#"
+                                           class="dropdown-toggle"
+                                           data-toggle="dropdown"
+                                           role="button"
+                                           aria-haspopup="true"
+                                           aria-expanded="false">
+                                            <span class="glyphicon glyphicon-chevron-down"></span>
+                                        </a>
+                                        <ul class="dropdown-menu small-dropdown-menu">
+
+                                            <li>
+                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#wishModal{$wish->id}">
+                                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                                </button>
+                                            </li>
+
+                                            <li>
+                                                <form class='noPadding' method="post">
+                                                    <button class="btn btn-sm"
+                                                            formaction="/AdminWish/action=accept"
+                                                            value="{$wish->id}"
+                                                            type="submit"
+                                                            name="wish_id">
+                                                        <span class="glyphicon glyphicon-ok"></span>
+                                                    </button>
+                                                </form>
+                                            </li>
+
+                                            <li>
+                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#profileModal{$wish->id}">
+                                                    <span class="glyphicon glyphicon-user"></span>
+                                                </button>
+                                            </li>
+
+                                        </ul>
+                                    </div>
                                 </td>
                             </tr>
                         {/foreach}

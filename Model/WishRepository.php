@@ -97,12 +97,12 @@ class WishRepository
      */
     public function getCurrentCompletedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes([0 => "Vervuld", 1 => "Wordt vervuld"]));
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes([0 => "Vervuld", 1 => "Wordt vervuld"] , null, false));
     }
 
     public function getMyCompletedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes($this->userRepository->getCurrentUser()->email, [0 => "Vervuld", 1 => "Wordt vervuld"]));
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes($this->userRepository->getCurrentUser()->email, [0 => "Vervuld", 1 => "Wordt vervuld"], null));
     }
 
     /**
@@ -110,7 +110,7 @@ class WishRepository
      */
     public function getIncompletedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Gepubliceerd", 1 => "Match gevonden"]));
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Gepubliceerd", 1 => "Match gevonden"] , null, false));
     }
 
     /**
@@ -257,12 +257,6 @@ class WishRepository
     public function deleteWish($id)
     {
         $this->WishQueryBuilder->executeAdminAction($id, 0, $this->admin->getCurrentAdmin()->username, "Verwijderd");
-    }
-    
-
-    public function revertWishAction($id)
-    {
-        $this->WishQueryBuilder->executeAdminAction($id, 0, null, "Aangemaakt");
     }
 
     public function getWish($id)
