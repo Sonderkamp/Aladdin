@@ -140,6 +140,11 @@ class WishRepository
 
     public function editWishContent(Wish $wish)
     {
+        $temp = $this->WishQueryBuilder->getSingleWish($wish->id);
+        if($temp[0]["moderator_Username"] === null){
+            $this->WishQueryBuilder->deleteWishContent($wish);
+        }
+
         $this->WishQueryBuilder->addWishContent($wish);
         $this->editWishTalents($wish);
     }
@@ -251,6 +256,7 @@ class WishRepository
     {
         $this->WishQueryBuilder->executeAdminAction($id, 0, $_SESSION["admin"]->username, "Verwijderd");
     }
+    
 
     public function revertWishAction($id)
     {
@@ -279,6 +285,10 @@ class WishRepository
         return $this->getReturnArray($this->WishQueryBuilder->getWishes_($temp, $this->getMyWishes()));
     }
 
+    public function deleteMyWish($id)
+    {
+        $this->WishQueryBuilder->editWishStatus($id, "Verwijderd");
+    }
 
     public function sendEditMail($id, $titel, $content, $tags)
     {
@@ -293,8 +303,9 @@ class WishRepository
         $msgID = $newmail->sendMessage("Admin", $mail->to, $mail->subject, $mail->message);
         $newmail->setLink($id, "Wens", $msgID);
     }
-    
-    public function createMessage($titel,$content,$tags){
+
+    public function createMessage($titel, $content, $tags)
+    {
         $head = "Beste, \n\n email test";
         $msg = "Uw wensweiziging is ingediend, uw wens zal na goedkeuring zichtbaar zijn voor anderen, we houden u hiervan nog op de hoogte.\n\n";
         $wish = "Uw nieuwe wens is als volgt: \n";
@@ -307,6 +318,8 @@ class WishRepository
         $message = $head . $msg . $wish . $wishName . $wishDescription . $wishTags . $end;
         return $message;
     }
+    
+    
 
 
 }

@@ -311,7 +311,7 @@ class WishesController extends Controller
             // set a comma , between the tags.
             $myTags = array_map('ucfirst', explode(',', $this->gethashtags($tag)));
 
-            // create an array with the wish
+            // create a wish 
             $wish = new Wish();
             $wish->title = $title;
             $wish->content = $description;
@@ -320,7 +320,10 @@ class WishesController extends Controller
             if (isset($_SESSION["wishcontentid"])) {
                 $wish->id = $_SESSION["wishcontentid"];
                 $this->wishRepo->editWishContent($wish);
-//                $this->wishRepo->sendEditMail($wish->id, $title, $description, $myTags);
+
+                /* uitgecomment anders wordt je volgespamt
+                $this->wishRepo->sendEditMail($wish->id, $title, $description, $myTags);
+                */
             }
             $this->go_back();
         }
@@ -379,8 +382,9 @@ class WishesController extends Controller
     {
         $id = $_GET["wishID"];
         if (isset($id)) {
-            $this->wishRepo->deleteWish($id);
+            $this->wishRepo->deleteMyWish($id);
         }
+
         $this->currentPage = "mywishes";
         $this->go_back();
     }
