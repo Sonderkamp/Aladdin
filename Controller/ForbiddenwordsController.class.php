@@ -27,13 +27,10 @@ class ForbiddenwordsController extends Controller
 
     public function run()
     {
-
-        // TODO BREEKT MET NIEUWE STRUCTUUR
-
         // Check the session variables
-        $this->checkSession();
+        $this->checkPaginationSession();
         // Check if a post method is sent
-        $this->checkPost();
+        $this->checkPaginationStatus();
         // Set the words variable
         $this->setWords();
 
@@ -49,88 +46,88 @@ class ForbiddenwordsController extends Controller
         exit(0);
     }
 
-    private function checkPost()
+    public function addWord() {
+
+        if(!Empty($_GET["newWord"])) {
+            // Secure the value sent by get
+            $word = htmlspecialchars(trim($_GET["newWord"]));
+
+            // Set succes succeeded or failed depending on the result of checkWord
+            $success = $this->checkWord($word);
+
+            // if $succes is succeeded create the word.
+            if ($success == "succeeded") {
+
+                // Set the word in the database
+                $this->wordRepo->createForbiddenWord($word);
+                // Create a succes message
+                $this->success = 'Het woord "' . $word . '" is succesvol toegevoegd!';
+            }
+        }
+
+        $this->run();
+    }
+
+    public function removeWord() {
+
+        if(!Empty($_GET["word"])) {
+            // Secure the value sent by get
+            $word = htmlentities(trim($_GET["word"]), ENT_QUOTES);
+
+            // Delete the word from the database
+            $this->wordRepo->deleteForbiddenWord($word);
+
+            // Check if the word cannot be received from the database
+            // ELSE set error message
+            if (Empty($this->wordRepo->getForbiddenWord($word))) {
+
+                // Set the succes message
+                $this->success = 'Het woord "' . $word . '" is succesvol verwijderd!';
+            } else {
+
+                // Set the error message
+                $this->error = 'Het woord "' . $word . '" is niet verwijderd!';
+            }
+        }
+
+        $this->run();
+    }
+
+    public function editWord() {
+
+        if (!Empty($_GET["editedWord"]) && !Empty($_GET["oldWord"])) {
+
+            // Secure the edited word sent by POST
+            $newWord = htmlentities(trim($_GET["editedWord"]), ENT_QUOTES);
+            // Secure the old word sent by POST
+            $oldWord = htmlentities(trim($_GET["oldWord"]), ENT_QUOTES);
+
+            // Set succes succeeded or failed depending on the result of checkWord
+            $succes = $this->checkWord($newWord);
+
+            // if $succes is succeeded than continue
+            // ELSE set error message
+            if ($succes == "succeeded") {
+
+                // Update the word in the database
+                $this->wordRepo->updateForbiddenWord($oldWord, $newWord);
+                // Set the succes message
+                $this->success = 'Het woord "' . $oldWord . '" is succesvol gewijzigd naar "' . $newWord . '"!';
+            } else {
+
+                // Set the error message
+                $this->success .= ' Het woord "' . $oldWord . '" blijft ongewijzigd!';
+            }
+        }
+
+        $this->run();
+    }
+
+    private function checkPaginationStatus()
     {
 
         // Check if request method of the server is POST
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-            // Check if the request sent is a word to be added
-            if (!Empty($_POST["addWord"])) {
-
-                // Secure the value sent by post
-                $word = htmlentities(trim($_POST["addWord"]), ENT_QUOTES);
-
-                // Set succes succeeded or failed depending on the result of checkWord
-                $succes = $this->checkWord($word);
-
-                // if $succes is succeeded create the word.
-                if ($succes == "succeeded") {
-
-                    // Set the word in the database
-                    $this->wordRepo->createForbiddenWord($word);
-                    // Create a succes message
-                    $_SESSION["wordsSucces"] = 'Het woord "' . $word . '" is succesvol toegevoegd!';
-                }
-
-                // Reload page without post requests
-                $this->refresh();
-            }
-
-            // Check if the request is a word to be removed
-            if (!Empty($_POST["removeWord"])) {
-
-                // Secure the value sent by post
-                $word = htmlentities(trim($_POST["removeWord"]), ENT_QUOTES);
-
-                // Delete the word from the database
-                $this->wordRepo->deleteForbiddenWord($word);
-
-                // Check if the word cannot be received from the database
-                // ELSE set error message
-                if (Empty($this->wordRepo->getForbiddenWord($word))) {
-
-                    // Set the succes message
-                    $_SESSION["wordsSucces"] = 'Het woord "' . $word . '" is succesvol verwijderd!';
-                } else {
-
-                    // Set the error message
-                    $_SESSION["wordsError"] = 'Het woord "' . $word . '" is niet verwijderd!';
-                }
-
-                // Reload page without post requests
-                $this->refresh();
-            }
-
-            // Check if the request method is a word to be edited and the old word is send as well
-            // The old word is needed, because forbidden words is a look up table without keys, so the old word is the key.
-            if (!Empty($_POST["editedWord"]) && !Empty($_POST["oldWord"])) {
-
-                // Secure the edited word sent by POST
-                $newWord = htmlentities(trim($_POST["editedWord"]), ENT_QUOTES);
-                // Secure the old word sent by POST
-                $oldWord = htmlentities(trim($_POST["oldWord"]), ENT_QUOTES);
-
-                // Set succes succeeded or failed depending on the result of checkWord
-                $succes = $this->checkWord($newWord);
-
-                // if $succes is succeeded than continue
-                // ELSE set error message
-                if ($succes == "succeeded") {
-
-                    // Update the word in the database
-                    $this->wordRepo->updateForbiddenWord($oldWord, $newWord);
-                    // Set the succes message
-                    $_SESSION["wordsSucces"] = 'Het woord "' . $oldWord . '" is succesvol gewijzigd naar "' . $newWord . '"!';
-                } else {
-
-                    // Set the error message
-                    $_SESSION["wordsError"] .= ' Het woord "' . $oldWord . '" blijft ongewijzigd!';
-                }
-
-                // Reload page without post requests
-                $this->refresh();
-            }
 
             // Check if the request method sent is for pagination
             if (!Empty($_POST["pagination"])) {
@@ -146,21 +143,15 @@ class ForbiddenwordsController extends Controller
                     // Set pagination on
                     $_SESSION["wordsPagination"] = "on";
                 }
-
+                
                 // Reload page without post requests
-                $this->refresh();
+                if(!Empty($_POST["page"])) {
+                    $this->redirect("/forbiddenwords/wordsPage=" . htmlspecialchars(trim($_POST["page"])));
+                } else {
+                    $this->redirect("/forbiddenwords/wordsPage=1");
+                }
             }
         }
-    }
-
-    private function refresh()
-    {
-
-        // Set header
-        header("HTTP/1.1 303 See Other");
-        header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-        // Exit with succes status
-        exit(0);
     }
 
     private function setWords()
@@ -222,27 +213,8 @@ class ForbiddenwordsController extends Controller
         }
     }
 
-    private function checkSession()
+    private function checkPaginationSession()
     {
-
-        // Check if an error message is set during a POST method
-        if (!Empty($_SESSION["wordsError"])) {
-
-            // Set the error message to show in the .tpl
-            $this->error = $_SESSION["wordsError"];
-            // Clear the session so it can not show on accident when the page loads again.
-            $_SESSION["wordsError"] = "";
-        }
-
-        // Check if a succes message is set during a POST method
-        if (!Empty($_SESSION["wordsSucces"])) {
-
-            // Set the succes message to show in the .tpl
-            $this->success = $_SESSION["wordsSucces"];
-            // Clear the session so it can not show on accident when the page loads again.
-            $_SESSION["wordsSucces"] = "";
-        }
-
         // Check if the pagination is set or not. If the variable isn't declared yet then set it.
         if (Empty($_SESSION["wordsPagination"])) {
 
@@ -266,7 +238,7 @@ class ForbiddenwordsController extends Controller
                 // Set succes on failed.
                 $success = "failed";
                 // Set error message to show in the .tpl
-                $_SESSION["wordsError"] = 'Het woord "' . $forbiddenWord . '" bestaat al!';
+                $this->error = 'Het woord "' . $forbiddenWord . '" bestaat al!';
 
                 // Break free from the loop.
                 break;
@@ -279,7 +251,7 @@ class ForbiddenwordsController extends Controller
             // Set succes on failed.
             $success = "failed";
             // Add to the error message to show in the .tpl
-            $_SESSION["wordsError"] .= ' Het woord "' . $forbiddenWord . '" is ' . (strlen($forbiddenWord) - 150) . ' karakters te lang! Het woord mag maar 150 lang zijn!';
+            $this->error .= ' Het woord "' . $forbiddenWord . '" is ' . (strlen($forbiddenWord) - 150) . ' karakters te lang! Het woord mag maar 150 lang zijn!';
         }
 
         // Return succeeded or failed.

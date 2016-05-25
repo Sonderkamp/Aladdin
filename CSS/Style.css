@@ -518,6 +518,14 @@ blockquote footer, blockquote small, blockquote .small {
     border-color: brown;
 }
 
+.pagination>li>a, .pagination>li>span {
+    color: brown;
+}
+
+.pagination>li>a:hover, .pagination>li>span:hover {
+    color: brown;
+}
+
 .list-arrows {
     padding-top: 50px;
 }
