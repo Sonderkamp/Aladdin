@@ -9,7 +9,7 @@
 class WishRepository
 {
 
-    private $talentRepository, $userRepository, $WishQueryBuilder;
+    private $talentRepository, $userRepository, $WishQueryBuilder , $admin;
     public $wishLimit = 3;
 
     public function __construct()
@@ -17,6 +17,7 @@ class WishRepository
         $this->WishQueryBuilder = new WishQueryBuilder();
         $this->talentRepository = new TalentRepository();
         $this->userRepository   = new UserRepository();
+        $this->admin            = new Admin();
     }
 
     /**
@@ -119,7 +120,7 @@ class WishRepository
      */
     public function searchMyWishes($key)
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes($_SESSION["user"]->email, null, $key));
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes($this->userRepository->getCurrentUser()->email, null, $key));
     }
 
 
@@ -245,17 +246,17 @@ class WishRepository
 
     public function acceptWish($id)
     {
-        $this->WishQueryBuilder->executeAdminAction($id, 1, $_SESSION["admin"]->username, "Gepubliceerd");
+        $this->WishQueryBuilder->executeAdminAction($id, 1, $this->admin->getCurrentAdmin()->username, "Gepubliceerd");
     }
 
     public function refuseWish($id)
     {
-        $this->WishQueryBuilder->executeAdminAction($id, 0, $_SESSION["admin"]->username, "Geweigerd");
+        $this->WishQueryBuilder->executeAdminAction($id, 0, $this->admin->getCurrentAdmin()->username, "Geweigerd");
     }
 
     public function deleteWish($id)
     {
-        $this->WishQueryBuilder->executeAdminAction($id, 0, $_SESSION["admin"]->username, "Verwijderd");
+        $this->WishQueryBuilder->executeAdminAction($id, 0, $this->admin->getCurrentAdmin()->username, "Verwijderd");
     }
     
 
@@ -270,10 +271,10 @@ class WishRepository
     }
 
 
-    public function getWishesByUser($user)
+    public function getWishesByUser($username)
     {
         return $this->getReturnArray($this->WishQueryBuilder->getWishes
-        ($user, [0 => "Aangemaakt",
+        ($username, [0 => "Aangemaakt",
             1 => "Gepubliceerd",
             2 => "Geweigerd",
             3 => "Match gevonden",
