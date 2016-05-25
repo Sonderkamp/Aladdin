@@ -44,7 +44,7 @@ class WishQueryBuilder
      * All gets from admin
      *
      */
-    public function getWishes($user = null, array $status = null, $searchKey = null, $admin = false, $allowBlock = false)
+    public function getWishes($user = null, array $status = null, $searchKey = null, $admin = null, $allowBlock = false, $wishIdList = null, $talentIdList = null)
     {
         $query = "SELECT *
                   FROM `wish`
@@ -56,6 +56,15 @@ class WishQueryBuilder
         if(!$allowBlock){
             $query .= "NOT EXISTS(SELECT NULL FROM blockedusers AS b WHERE b.user_Email = `wish`.User AND b.IsBlocked = 1 AND
                    b.Id = (SELECT Id FROM blockedusers as c WHERE c.user_Email = `wish`.User ORDER BY DateBlocked DESC LIMIT 1)) AND ";
+        }
+
+        if($admin){
+            $query .= "`wishContent`.moderator_Username IS NULL AND ";
+        }
+
+        if(isset($wishIdList , $talentIdList)){
+            $query .= "`wishContent`.wish_Id in $talentIdList
+                    AND `wishContent`.wish_Id NOT IN $wishIdList AND ";
         }
 
         //Used in queries by User
@@ -72,12 +81,15 @@ class WishQueryBuilder
                 if ($item == "Aangemaakt") {
                     $query .= ")";
                 } else {
-                    $query .= " AND `wishContent`.`IsAccepted` = ";
-                    if ($admin) {
-                        $query .= "0)";
-                    } else {
-                        $query .= "1)";
+                    if(empty($admin)){
+                        $query .= " AND `wishContent`.`IsAccepted` = ";
+                        if ($admin) {
+                            $query .= "0";
+                        } else {
+                            $query .= "1";
+                        }
                     }
+                    $query .= ")";
                 }
                 $query .= " OR ";
 
@@ -102,7 +114,7 @@ class WishQueryBuilder
             $query = substr_replace($query, '', -3);
         }
 
-        $query .= "GROUP BY `wish`.Id";
+        $query .= " GROUP BY `wish`.Id";
 
         //acquire params if any
         $params = array();
@@ -114,7 +126,6 @@ class WishQueryBuilder
         if ($searchKey != null) {
             $params[] = $searchKey;
         }
-
 
         return $this->executeQuery($query, $params);
     }
@@ -254,23 +265,23 @@ class WishQueryBuilder
         }
 
         $wishList = $this->getSQLString($temp);
-
-        $sql = "SELECT *
-              FROM wish AS w
-                JOIN (SELECT wish_Id, MAX(wishContent.Date) AS max_date
-                  FROM wishContent
-                    WHERE IsAccepted = 1 AND moderator_username is not null
-                    GROUP BY wish_Id) AS wcMax
-                ON w.Id = wcMax.wish_Id
-                  JOIN wishContent AS wc 
-                  ON wcMax.wish_Id = wc.wish_Id
-                    WHERE wc.wish_Id in $talentList 
-                    AND wc.wish_Id NOT IN $wishList
-                    AND (w.Status = 'Gepubliceerd' OR w.status='Match gevonden') 
-                    AND wc.Date = wcMax.max_date
-                    ORDER BY max_date DESC";
-
-        return $this->executeQuery($sql, array());
+        return $this->getWishes(null, array("Gepubliceerd", "Match gevonden"), null, null, false, $wishList, $talentList);
+//        $sql = "SELECT *
+//              FROM wish AS w
+//                JOIN (SELECT wish_Id, MAX(wishContent.Date) AS max_date
+//                  FROM wishContent
+//                    WHERE IsAccepted = 1 AND moderator_username is not null
+//                    GROUP BY wish_Id) AS wcMax
+//                ON w.Id = wcMax.wish_Id
+//                  JOIN wishContent AS wc
+//                  ON wcMax.wish_Id = wc.wish_Id
+//                    WHERE wc.wish_Id in $talentList
+//                    AND wc.wish_Id NOT IN $wishList
+//                    AND (w.Status = 'Gepubliceerd' OR w.status='Match gevonden')
+//                    AND wc.Date = wcMax.max_date
+//                    ORDER BY max_date DESC";
+//
+//        return $this->executeQuery($sql, array());
     }
 
 
