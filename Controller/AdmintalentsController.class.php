@@ -121,8 +121,6 @@ class AdmintalentsController extends Controller
             $id = htmlspecialchars($_GET["talent"]);
             if(isset($_GET["talentName"])) {
                 $talentName = htmlspecialchars($_GET["talentName"]);
-                print_r($talentName);
-                exit(1);
             } else {
                 $talentName = "";
             }
