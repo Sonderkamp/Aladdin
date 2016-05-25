@@ -267,6 +267,8 @@ class WishQueryBuilder
         $wishList = $this->getSQLString($temp);
         return $this->getWishes(null, array("Gepubliceerd", "Match gevonden"), null, null, false, $wishList, $talentList);
 
+
+        // uitgecomment ff laten staan voor zkrheid
 //        $sql = "SELECT *
 //              FROM wish AS w
 //                JOIN (SELECT wish_Id, MAX(wishContent.Date) AS max_date

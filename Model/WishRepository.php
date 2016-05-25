@@ -8,16 +8,17 @@
  */
 class WishRepository
 {
+    
+    private $talentRepository, $userRepository, $WishQueryBuilder , $admin;
 
-    private $talentRepository, $userRepository, $WishQueryBuilder, $admin;
     public $wishLimit = 3;
 
     public function __construct()
     {
         $this->WishQueryBuilder = new WishQueryBuilder();
         $this->talentRepository = new TalentRepository();
-        $this->userRepository = new UserRepository();
-        $this->admin = new Admin();
+        $this->userRepository   = new UserRepository();
+        $this->admin            = new Admin();
     }
 
     /**
