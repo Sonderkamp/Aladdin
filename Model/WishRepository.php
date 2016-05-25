@@ -9,13 +9,14 @@
 class WishRepository
 {
 
-    private $talentRepository, $WishQueryBuilder;
+    private $talentRepository, $userRepository, $WishQueryBuilder;
     public $wishLimit = 3;
 
     public function __construct()
     {
         $this->WishQueryBuilder = new WishQueryBuilder();
         $this->talentRepository = new TalentRepository();
+        $this->userRepository   = new UserRepository();
     }
 
     /**
@@ -82,7 +83,7 @@ class WishRepository
     public function getMyWishes()
     {
         return $this->getReturnArray($this->WishQueryBuilder->getWishes
-        ($_SESSION["user"]->email, [0 => "Aangemaakt",
+        ($this->userRepository->getCurrentUser()->email, [0 => "Aangemaakt",
             1 => "Gepubliceerd",
             2 => "Geweigerd",
             3 => "Match gevonden",
@@ -100,7 +101,7 @@ class WishRepository
 
     public function getMyCompletedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes($_SESSION["user"]->email, [0 => "Vervuld", 1 => "Wordt vervuld"]));
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes($this->userRepository->getCurrentUser()->email, [0 => "Vervuld", 1 => "Wordt vervuld"]));
     }
 
     /**
@@ -205,7 +206,7 @@ class WishRepository
 
     public function getPublishedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Gepubliceerd"], null, false));
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Gepubliceerd"], null, null));
     }
 
     public function getMatchedWishes()
@@ -219,22 +220,22 @@ class WishRepository
 
     public function getCurrentWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Wordt vervuld"], null, true));
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Wordt vervuld"], null, null));
     }
 
     public function getCompletedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Vervuld"], null, true));
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Vervuld"], null, null));
     }
 
     public function getDeniedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Geweigerd"], null, true));
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Geweigerd"], null, null));
     }
 
     public function getDeletedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Verwijderd"], null, true));
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Verwijderd"], null, null));
     }
 
     public function acceptWish($id)
@@ -286,7 +287,7 @@ class WishRepository
         $mail->fromName = "Alladin";
         $mail->subject = "Wens is gewijzigd";
         $mail->message = $this->createMessage($titel, $content, $tags);
-        $mail->to = $_SESSION["user"]->email;
+        $mail->to = $this->userRepository->getCurrentUser()->email;
         $mail->sendMail();
 
         $newmail = new messageRepository();

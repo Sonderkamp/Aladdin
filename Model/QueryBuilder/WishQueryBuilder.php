@@ -44,7 +44,7 @@ class WishQueryBuilder
      * All gets from admin
      *
      */
-    public function getWishes($user = null, array $status = null, $searchKey = null, $admin = false, $allowBlock = false)
+    public function getWishes($user = null, array $status = null, $searchKey = null, $admin = null, $allowBlock = false)
     {
         $query = "SELECT *
                   FROM `wish`
@@ -57,6 +57,11 @@ class WishQueryBuilder
             $query .= "NOT EXISTS(SELECT NULL FROM blockedusers AS b WHERE b.user_Email = `wish`.User AND b.IsBlocked = 1 AND
                    b.Id = (SELECT Id FROM blockedusers as c WHERE c.user_Email = `wish`.User ORDER BY DateBlocked DESC LIMIT 1)) AND ";
         }
+
+        if($admin){
+            $query .= "`wishContent`.moderator_Username IS NULL AND ";
+        }
+
 
         //Used in queries by User
         if ($user != null) {
@@ -72,12 +77,15 @@ class WishQueryBuilder
                 if ($item == "Aangemaakt") {
                     $query .= ")";
                 } else {
-                    $query .= " AND `wishContent`.`IsAccepted` = ";
-                    if ($admin) {
-                        $query .= "0)";
-                    } else {
-                        $query .= "1)";
+                    if(empty($admin)){
+                        $query .= " AND `wishContent`.`IsAccepted` = ";
+                        if ($admin) {
+                            $query .= "0";
+                        } else {
+                            $query .= "1";
+                        }
                     }
+                    $query .= ")";
                 }
                 $query .= " OR ";
 
@@ -102,7 +110,7 @@ class WishQueryBuilder
             $query = substr_replace($query, '', -3);
         }
 
-        $query .= "GROUP BY `wish`.Id";
+        $query .= " GROUP BY `wish`.Id";
 
         //acquire params if any
         $params = array();
@@ -114,7 +122,6 @@ class WishQueryBuilder
         if ($searchKey != null) {
             $params[] = $searchKey;
         }
-
 
         return $this->executeQuery($query, $params);
     }
