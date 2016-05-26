@@ -86,9 +86,9 @@ class UserQueryBuilder
     {
         switch ($type) {
             case "recovery":
-                return Database::query_safe("SELECT * FROM `user` WHERE `Email` = ?", array($username));
+                return Database::query_safe("SELECT * FROM `user` WHERE `Email` = ?", array($username))[0];
             case "validation":
-                return Database::query_safe("SELECT * FROM `user` WHERE `Email` = ?", array($username));
+                return Database::query_safe("SELECT * FROM `user` WHERE `Email` = ?", array($username))[0];
             default:
                 echo "TYPE DOES NOT EXIST - getTokenByName->UserQueryBuilder()";
                 exit();
@@ -131,12 +131,7 @@ class UserQueryBuilder
 
     public function setblock($block, $username, $reason = null)
     {
-        $blockBool = 0;
-        if ($block) {
-            $blockBool = 1;
-
-        }
-        Database::query_safe("INSERT INTO blockedusers (`IsBlocked`, `Reason`, `moderator_Username`, `user_Email`) VALUES (?, ?, ?, ?)", array($blockBool, $reason, $_SESSION["admin"]->username, $username));
+        Database::query_safe("INSERT INTO blockedusers (`IsBlocked`, `Reason`, `moderator_Username`, `user_Email`) VALUES (?, ?, ?, ?)", array($block, $reason, $_SESSION["admin"]->username, $username));
     }
 
     public function getUser($emailOrDisplayName)
@@ -157,12 +152,12 @@ class UserQueryBuilder
     }
 
 
-    public function getAllBlocks($user)
+    public function getAllBlocks($username)
     {
-        $result = Database::query_safe("SELECT Block_Id ,DateBlocked as bdate,IsBlocked as isblocked
+        $result = Database::query_safe("SELECT *
               from blockedusers
               where user_Email = ?
-              order by Block_Id desc", array($user));
+              order by DateBlocked desc", array($username));
         return $result;
     }
 

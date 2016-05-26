@@ -51,4 +51,13 @@ class Admin
     {
         $_SESSION["admin"] = null;
     }
+
+    public function getCurrentAdmin()
+    {
+
+        if (empty($_SESSION["admin"])) {
+            return false;
+        }
+        return $_SESSION["admin"];
+    }
 }

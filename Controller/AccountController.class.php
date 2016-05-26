@@ -11,7 +11,6 @@ class AccountController extends Controller
     public function run()
     {
         $this->pagepicker();
-
     }
 
     public function guaranteeLogin($s)
@@ -72,7 +71,7 @@ class AccountController extends Controller
                 $userRepo = new UserRepository();
                 $res = $userRepo->recover($username);
                 if ($res !== true) {
-                    $this->renderNewPassword($username, $res);
+                    $this->newPasswordError($username, $res);
                 }
 
                 // reset hash & date
@@ -105,7 +104,7 @@ class AccountController extends Controller
 
     }
 
-    private function renderNewPassword($username, $error)
+    private function newPasswordError($username, $error)
     {
         $this->render("newPassword.tpl", [
             "error" => $error,

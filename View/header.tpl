@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
     <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/theme-default.min.css" rel="stylesheet"
           type="text/css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
     <link rel="stylesheet" type="text/css" href="/CSS/Style.css">
     <link rel="stylesheet" type="text/css" href="/CSS/charts.css">
 
@@ -36,6 +37,8 @@
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/jquery.form-validator.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+
 
 <nav class="navbar navbar-default">
     <div class="container-fluid">
@@ -80,7 +83,7 @@
                             <li><a href="/AdminWish">Wens beheer</a></li>
                             <li><a href="/AdminTalents">Talent beheer</a></li>
                             <li><a href="/AdminUser">Gebruikersbeheer</a></li>
-                            <li><a href="/ForbiddenWords/words_page=1">Verboden woorden beheer</a></li>
+                            <li><a href="/ForbiddenWords">Verboden woorden beheer</a></li>
                             <li role="separator" class="divider">
                             <li><a href="/Admin/action=logout">Log uit als {$admin->username}</a></li>
                         </ul>
@@ -94,6 +97,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="/profile">Mijn profiel</a></li>
                             <li><a href="/dashboard">Dashboard</a></li>
+                            <li role="separator" class="divider">
                             <li><a href="/account/action=logout">Log uit</a></li>
                         </ul>
                     </li>
