@@ -24,7 +24,7 @@ class TalentRepository
     // ###### Create ######
 
     // addTalent
-    public function addTalent($name, $userEmail)
+    public function addTalent($name, $userEmail = null)
     {
         if($userEmail == null) {
             $userEmail = $this->userRepo->getCurrentUser()->email;

@@ -8,8 +8,9 @@
  */
 class WishRepository
 {
-
+    
     private $talentRepository, $userRepository, $WishQueryBuilder , $admin;
+
     public $wishLimit = 3;
 
     public function __construct()
@@ -143,7 +144,7 @@ class WishRepository
     public function editWishContent(Wish $wish)
     {
         $temp = $this->WishQueryBuilder->getSingleWish($wish->id);
-        if($temp[0]["moderator_Username"] === null){
+        if ($temp[0]["moderator_Username"] === null) {
             $this->WishQueryBuilder->deleteWishContent($wish);
         }
 
@@ -217,11 +218,22 @@ class WishRepository
 
     public function getMatchedWishes()
     {
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Match gevonden"], null, true));
+    }
+
+    public function getPossibleMatches()
+    {
         $userTalents = $this->talentRepository->getAddedTalents();
         $synonyms = $this->talentRepository->getSynonymsOfTalents($userTalents);
         $allTalents = array_merge($userTalents, $synonyms);
-        return $this->wishesByTalents($allTalents);
-//        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Match gevonden"], null, true));
+
+
+        $temp = $this->WishQueryBuilder->wishIDByTalents($allTalents);
+        $result = $this->WishQueryBuilder->getPossibleMatches($temp, $this->getMyWishes());
+        return $this->getReturnArray($result);
+
+
+//        return $this->wishesByTalents($allTalents);
     }
 
     public function getCurrentWishes()
@@ -258,7 +270,7 @@ class WishRepository
     {
         $this->WishQueryBuilder->executeAdminAction($id, 0, $this->admin->getCurrentAdmin()->username, "Verwijderd");
     }
-    
+
 
     public function revertWishAction($id)
     {
@@ -278,13 +290,15 @@ class WishRepository
             1 => "Gepubliceerd",
             2 => "Geweigerd",
             3 => "Match gevonden",
-            5 => "Wordt vervuld"] , null, null, true));
+            5 => "Wordt vervuld"], null, null, true));
     }
 
+    // nog even laten staan, kan wss binnekort verwijdert worden
     public function wishesByTalents($talents)
     {
         $temp = $this->WishQueryBuilder->wishIDByTalents($talents);
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes_($temp, $this->getMyWishes()));
+        $result = $this->WishQueryBuilder->getPossibleMatches($temp, $this->getMyWishes());
+        return $this->getReturnArray($result);
     }
 
     public function deleteMyWish($id)
@@ -320,8 +334,6 @@ class WishRepository
         $message = $head . $msg . $wish . $wishName . $wishDescription . $wishTags . $end;
         return $message;
     }
-    
-    
 
 
 }

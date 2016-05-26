@@ -44,7 +44,7 @@ class WishQueryBuilder
      * All gets from admin
      *
      */
-    public function getWishes($user = null, array $status = null, $searchKey = null, $admin = null, $allowBlock = false, $wishIdList = null, $talentIdList = null)
+    public function getWishes($user = null, array $status = null, $searchKey = null, $admin = null, $allowBlock = false, $myWishesID = null, $matchWishesID = null)
     {
         $query = "SELECT *
                   FROM `wish`
@@ -62,9 +62,9 @@ class WishQueryBuilder
             $query .= "`wishContent`.moderator_Username IS NULL AND ";
         }
 
-        if(isset($wishIdList , $talentIdList)){
-            $query .= "`wishContent`.wish_Id in $talentIdList
-                    AND `wishContent`.wish_Id NOT IN $wishIdList AND ";
+        if(isset($myWishesID , $matchWishesID)){
+            $query .= "`wishContent`.wish_Id in $matchWishesID
+                    AND `wishContent`.wish_Id NOT IN $myWishesID AND ";
         }
 
         //Used in queries by User
@@ -255,7 +255,7 @@ class WishQueryBuilder
         return $list;
     }
 
-    public function getWishes_($talents, $myWishes)
+    public function getPossibleMatches($talents, $myWishes)
     {
         $talentList = $this->getSQLString($talents);
 
@@ -265,7 +265,10 @@ class WishQueryBuilder
         }
 
         $wishList = $this->getSQLString($temp);
-        return $this->getWishes(null, array("Gepubliceerd", "Match gevonden"), null, null, false, $wishList, $talentList);
+        return $this->getWishes(null, array("Gepubliceerd", "Match gevonden"), null, false, false, $wishList, $talentList);
+
+//
+//        /** uitgecomment ff laten staan voor zkrheid */
 //        $sql = "SELECT *
 //              FROM wish AS w
 //                JOIN (SELECT wish_Id, MAX(wishContent.Date) AS max_date
