@@ -30,6 +30,8 @@ class AdminuserController extends Controller
         $unhandled = $this->unhandled();
         $handled = $this->handled();
         $allUsers = $this->userRepository->getAllUsers();
+//        print_r($allUsers);
+//        exit();
 
         $this->render("adminUser.tpl", ["title" => "Gebruikers overzicht",
             "handled" => $handled,
@@ -75,11 +77,21 @@ class AdminuserController extends Controller
     
     public function blockUser(){
         if(isset($_GET["email"])){
-            echo "set: " . $_GET["email"];
             $this->userRepository->blockUser($_GET["email"]);
         }
 
-        $this->back();
+        $this->redirect("/AdminUser");
+//        $this->back();
+    }
+
+    public function unblockUser(){
+        if (isset($_GET["email"])){
+            $this->userRepository->unblockUser($_GET["email"]);
+        }
+
+        $this->redirect("/AdminUser");
+//        $this->back();
+
     }
 
     public function block()

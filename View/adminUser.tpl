@@ -45,6 +45,7 @@
                             <th>E-mail</th>
                             <th>Land</th>
                             <th>Plaats</th>
+                            <th>Status</th>
                             <th>Actie</th>
                         </tr>
                         </thead>
@@ -55,6 +56,13 @@
                                 <td>{$user->email}</td>
                                 <td>{$user->country|ucfirst}</td>
                                 <td>{$user->city|ucfirst}</td>
+
+                                <td>{if $user->blocked === 1}
+                                        Geblokeerd
+                                    {else}
+                                        Niet geblokeerd
+                                    {/if}
+                                </td>
                                 <td>
                                     <div class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
@@ -67,7 +75,12 @@
                                                 <a href="#">Bekijk profiel</a>
                                             </li>
                                             <li>
-                                                <a href="/AdminUser/action=blockUser/email={$user->email}">Blokkeren</a>
+                                                {if $user->blocked === 1}
+                                                    <a href="/AdminUser/action=unblockUser/email={$user->email}">Deblokkeren</a>
+                                                {else}
+                                                    <a href="/AdminUser/action=blockUser/email={$user->email}">Blokkeren</a>
+                                                {/if}
+
                                             </li>
                                         </ul>
                                     </div>
@@ -235,11 +248,11 @@
                                 class="glyphicon glyphicon-remove"></span> Blokkeren</a>
                 </div>
                 {*<form action="/report/action=report" method="post">*}
-                    {*<div class="modal-footer">*}
-                        {*<button type="submit" name="submit" class="btn btn-inbox info">*}
-                            {*<span class="glyphicon glyphicon-remove"></span> Gebruiker blokkeren*}
-                        {*</button>*}
-                    {*</div>*}
+                {*<div class="modal-footer">*}
+                {*<button type="submit" name="submit" class="btn btn-inbox info">*}
+                {*<span class="glyphicon glyphicon-remove"></span> Gebruiker blokkeren*}
+                {*</button>*}
+                {*</div>*}
                 {*</form>*}
             </div>
         </div>
@@ -261,16 +274,16 @@
                     </h6>
 
                     <h6 class="modal-title"><span class="glyphicon glyphicon-calendar"></span> Aangevraagd
-                    op: {htmlspecialcharsWithNL($report -> getDate())}
+                        op: {htmlspecialcharsWithNL($report -> getDate())}
                     </h6>
 
                     <h6 class="modal-title"><span
-                    class="glyphicon glyphicon-user"></span>
-                    Gebruiker: {htmlspecialcharsWithNL($report -> getReported() -> getDisplayName())}
+                                class="glyphicon glyphicon-user"></span>
+                        Gebruiker: {htmlspecialcharsWithNL($report -> getReported() -> getDisplayName())}
                     </h6>
                     <h6 class="modal-title"><span
-                    class="glyphicon glyphicon-eye-open"></span>
-                    Status: {htmlspecialcharsWithNL($report -> getStatus())}
+                                class="glyphicon glyphicon-eye-open"></span>
+                        Status: {htmlspecialcharsWithNL($report -> getStatus())}
                     </h6>
                     <br>
                     <h6 class="modal-title"><b>Reden:</b> <br> {htmlspecialcharsWithNL($report -> getMessage())}

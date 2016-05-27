@@ -161,9 +161,26 @@ class UserQueryBuilder
         return $result;
     }
 
-    public function getAllUsers(){
-        $result = Database::query("SELECT *
-              from `user`");
+    public function getAllUsers()
+    {
+        $sql = "
+          SELECT u.*, bx.isBlocked, bx.dateBlocked
+          FROM user u
+            LEFT OUTER JOIN (
+    		  SELECT b.isBlocked, b.dateBlocked, b.user_email 
+    		  FROM blockedUsers b            
+            INNER JOIN (
+    		  SELECT user_email, MAX(dateBlocked) AS MaxDate
+    		  FROM blockedUsers
+    		  GROUP BY user_email) AS b2    
+              ON (b.user_email = b2.user_email AND b.dateBlocked= b2.MaxDate)) bx 
+            ON u.email = bx.user_email";
+
+        $result = Database::query($sql);
+
+//        print_r($result);
+//        exit(1);
+
         return $this->createUsers($result);
     }
 
@@ -193,13 +210,18 @@ class UserQueryBuilder
         $newUser->RecoveryHash = $result[0]["RecoveryHash"];
         $newUser->RecoveryDate = $result[0]["RecoveryDate"];
 
+        if (isset($result[0]["isBlocked"])) {
+            $newUser->blocked = $result[0]["isBlocked"];
+        }
+
         return $newUser;
     }
 
     /** creates multipe user objects */
-    public function createUsers($result){
+    public function createUsers($result)
+    {
         $users = array();
-        foreach ($result as $item){
+        foreach ($result as $item) {
             $users[] = $this->createUser(array($item));
         }
 

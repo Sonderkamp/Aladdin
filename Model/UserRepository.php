@@ -23,11 +23,9 @@ class UserRepository
 
     public function blockUser($username, $reason = null)
     {
-
         // if user is not blocked
         if (!$this->isBlocked($username) !== false)
             $this->UserQueryBuilder->setblock(1, $username, $reason);
-
 
     }
 

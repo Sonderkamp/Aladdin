@@ -31,13 +31,13 @@
             <div class="form-group row">
                 <label class="col-sm-2 form-control-label">Uitgebreide wens beschrijving:</label>
                 <div class="col-sm-10">
-                    {if isset($description)}
+
                     <textarea class="form-control" rows="5" name="description"
-                              placeholder="Beschrijf hier uw wens uitgebreid">{($description)}</textarea>
-                    {else}
-                    <textarea class="form-control" rows="5" name="description"
-                              placeholder="Beschrijf hier uw wens uitgebreid"></textarea>
-                    {/if}
+                              placeholder="Beschrijf hier uw wens uitgebreid">{if isset($description)}{($description)}{/if}</textarea>
+                    {*{else}*}
+                    {*<textarea class="form-control" rows="5" name="description"*}
+                              {*placeholder="Beschrijf hier uw wens uitgebreid"></textarea>*}
+                    {*{/if}*}
                 </div>
             </div>
 
@@ -45,11 +45,11 @@
             <div class="form-group row authors-list">
                 <label class="col-sm-2 form-control-label">Tags:</label>
                 <div class="col-sm-10">
-                    {if isset($tag)}
-                    <input class="form-control" name="tag" placeholder="Tag" value="{($tag)}">
-                    {else}
-                    <input class="form-control" name="tag" placeholder="Tag"">
-                    {/if}
+
+                    <input class="form-control" name="tag" placeholder="Tag" {if isset($tag)}value="{($tag)}{/if}">
+                    {*{else}*}
+                    {*<input class="form-control" name="tag" placeholder="Tag"">*}
+                    {*{/if}*}
                     <small class="text-muted-primary">voorbeelden: #voetbal #boer.</small>
                 </div>
             </div>
