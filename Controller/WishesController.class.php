@@ -277,14 +277,19 @@ class WishesController extends Controller
         } else {
             return false;
         }
+        return false;
     }
 
     private function getSpecificwish($id, $previousPage)
     {
         $selectedWish = $this->wishRepo->getWish($id);
-        $this->render("wishSpecificView.tpl",
-            ["title" => "Wens: " . $id, "selectedWish" => $selectedWish, "previousPage" => $previousPage]);
-        exit(0);
+        if(!empty($selectedWish)){
+            $this->render("wishSpecificView.tpl",
+                ["title" => "Wens: " . $id, "selectedWish" => $selectedWish, "previousPage" => $previousPage]);
+            exit(0);
+        } else {
+            $this->apologize("This wish doesn't exist");
+        }
     }
 
     private function requestMatch($id)

@@ -203,7 +203,12 @@ class WishRepository
 
     public function getWishAmount($email)
     {
-        return count($this->getWishesByUser($email));
+        $wishByUser = $this->getWishesByUser($email);
+        if(!empty($wishByUser)){
+            return count($wishByUser);
+        } else {
+            return 0;
+        }
     }
 
     public function getRequestedWishes()
