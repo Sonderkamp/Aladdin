@@ -262,14 +262,14 @@ class WishQueryBuilder
     public function getPossibleMatches($talents, $myWishes)
     {
         $talentList = $this->getSQLString($talents);
-
+        $published = "gepubliseerd";
         $temp = array();
         foreach ($myWishes as $item) {
             $temp[] = $item->id;
         }
 
         $wishList = $this->getSQLString($temp);
-        return $this->getWishes(null, array("Gepubliceerd", "Match gevonden"), null, false, false, $wishList, $talentList);
+        return $this->getWishes(null, array($published, "Match gevonden"), null, false, false, $wishList, $talentList);
 
 //
 //        /** uitgecomment ff laten staan voor zkrheid */

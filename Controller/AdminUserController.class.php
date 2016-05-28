@@ -90,7 +90,7 @@ class AdminuserController extends Controller
                 if ($temp->isBlocked($user->getEmail())) {
                     $user->blocked = true;
                 }
-            }
+            }   
         }
         return $report;
     }
