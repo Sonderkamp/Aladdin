@@ -52,7 +52,7 @@
         {/if}
     </div>
     <div class="row dashboard-row">
-        {if isset($wishes)}
+        {if !empty($wishes)}
             {if $wishCheck}
                 <div class="col-md-4 hidden-sm hidden-xs">
                     <div class="thumbnail">
