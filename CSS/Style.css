@@ -335,10 +335,6 @@ a:hover {
     margin: 0px !important;
 }
 
-#wishcontaier {
-    padding-top: 30px;
-}
-
 .form-control::-webkit-input-placeholder {
     color: brown;
 }
@@ -532,4 +528,19 @@ blockquote footer, blockquote small, blockquote .small {
 
 .small-margin-bottom {
     margin-bottom: 5px;
+}
+
+.content-wrapper{
+
+}
+
+.btn-side{
+    min-width: 75px;
+    max-width: 75%;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+
+.btn-confirm{
+    width: 75px;
 }
