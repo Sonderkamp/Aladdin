@@ -9,7 +9,7 @@
 class AdminuserController extends Controller
 {
 
-    private $reportRepository, $userRepository;
+    private $reportRepository, $userRepository, $wishRepository, $talentRepository;
     private $searchResult;
 
     public function __construct()
@@ -17,6 +17,8 @@ class AdminuserController extends Controller
         (new AdminController())->guaranteeAdmin("/Wishes");
         $this->reportRepository = new ReportRepository();
         $this->userRepository = new UserRepository();
+        $this->wishRepository = new WishRepository();
+        $this->talentRepository = new TalentRepository();
     }
 
     public function run()
@@ -139,6 +141,18 @@ class AdminuserController extends Controller
             }
         }
         $this->redirect("/AdminUser");
+    }
+
+    public function showProfile(){
+        if (isset($_GET["email"])) {
+            $wishes = $this->wishRepository->getWishesByUser($_GET["email"]);
+
+            // TODO: get all talents of user
+            // $talents = $this->talentRepository->get
+
+            // TODO: show all talents and wishes of user
+
+        }
     }
 
 

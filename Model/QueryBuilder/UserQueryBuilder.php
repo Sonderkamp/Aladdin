@@ -182,45 +182,16 @@ class UserQueryBuilder
                   OR u.Surname SOUNDS LIKE ?
                   OR u.Country SOUNDS LIKE ?
                   OR u.City SOUNDS LIKE ?";
+
             $result = Database::query_safe($sql, array($keyword,$keyword,$keyword,$keyword,$keyword));
+
             return $this->userCreator($result);
-//            return $this->createUsers($result);
         } else {
-            return $this->createUsers(Database::query($sql));
+            return $this->userCreator(Database::query($sql));
         }
     }
 
     public function userCreator($result){
-        if (count(($result)) === 0) {
-            return null;
-        }
-
-        if (count($result) === 1) {
-            return $this->createUser($result);
-        } else {
-            return $this->createUsers($result);
-        }
-    }
-
-    public function searchUsers($keyword)
-    {
-        $sql = "
-          SELECT u.*, bx.isBlocked, bx.dateBlocked
-          FROM user u
-            LEFT OUTER JOIN (
-    		  SELECT b.isBlocked, b.dateBlocked, b.user_email 
-    		  FROM blockedUsers b  
-            INNER JOIN (
-    		  SELECT user_email, MAX(dateBlocked) AS MaxDate
-    		  FROM blockedUsers
-    		  GROUP BY user_email) AS b2    
-              ON (b.user_email = b2.user_email AND b.dateBlocked= b2.MaxDate)) bx 
-            ON u.email = bx.user_email
-             ";
-        $params = array($keyword, $keyword, $keyword, $keyword, $keyword);
-
-        $result = Database::query_safe($sql, $params);
-
         if (count(($result)) === 0) {
             return null;
         }

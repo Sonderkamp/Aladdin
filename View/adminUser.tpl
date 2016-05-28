@@ -42,11 +42,7 @@
             {htmlspecialchars($error)}
         </div>
         {/if}
-        {*{if isset($error)}*}
-            {*<div class="form-error" id="err">{htmlspecialchars($error)}</div>*}
-        {*{else}*}
-            {*<div id="err"></div>*}
-        {*{/if}*}
+
     </div>
 
     <div class="col-md-10">
@@ -74,9 +70,9 @@
                                 <td>{$user->country|ucfirst}</td>
                                 <td>{$user->city|ucfirst}</td>
                                 <td>{if $user->blocked === 1}
-                                        Geblokeerd
+                                        Geblokkeerd
                                     {else}
-                                        Niet geblokeerd
+                                        Niet geblokkeerd
                                     {/if}
                                 </td>
                                 <td>
@@ -88,7 +84,7 @@
 
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a href="#">Bekijk profiel</a>
+                                                <a href="/AdminUser/action=showProfile/email={$user->email}">Bekijk profiel</a>
                                             </li>
                                             <li>
                                                 {if $user->blocked === 1}
@@ -209,7 +205,7 @@
                                         <span class="glyphicon glyphicon-calendar"></span> {htmlspecialcharsWithNL($report -> getDate())}
                                     </td>
                                     <td>
-                                        <a href="/profilecheck/action=viewProfile/user={$report -> getReported() -> getEmail()}">
+                                        <a href="/AdminUser/action=showProfile/email={$report -> getReported() -> getEmail()}">
                                             <span>Bekijk profiel</span>
                                         </a>
                                     </td>
