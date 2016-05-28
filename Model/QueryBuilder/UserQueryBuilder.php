@@ -183,12 +183,12 @@ class UserQueryBuilder
 
     public function searchUsers($keyword)
     {
-        $sql = "SELECT * FROM `user` 
+        $sql = "SELECT *, FROM `user` 
                   WHERE user.Email SOUNDS LIKE ?
                   OR user.Name SOUNDS LIKE ?
                   OR user.Surname SOUNDS LIKE ?
-                  OR user.Country sounds like ?
-                  OR user.City sounds like ?";
+                  OR user.Country SOUNDS LIKE ?
+                  OR user.City SOUNDS LIKE ?";
         $params = array($keyword,$keyword,$keyword,$keyword,$keyword);
 
         $result = Database::query_safe($sql, $params);
