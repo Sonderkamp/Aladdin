@@ -548,8 +548,8 @@ class UserRepository
         return $this->UserQueryBuilder->getAllUsers();
     }
     
-    public function search($keyword){
-        return $this->UserQueryBuilder->searchUsers($keyword);
+    public function searchUsers($keyword){
+        return $this->UserQueryBuilder->getAllUsers($keyword);
     }
 
 }

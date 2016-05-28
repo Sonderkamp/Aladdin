@@ -130,7 +130,7 @@ class AdminuserController extends Controller
             $temp = $_GET["search"];
             $search = str_replace(' ', '', $temp);
             if (strlen($search) > 1) {
-                $result = $this->userRepository->search($search);
+                $result = $this->userRepository->searchUsers($search);
                 if (count($result) > 0) {
                     $_SESSION["search"] = $result;
                 } else {
