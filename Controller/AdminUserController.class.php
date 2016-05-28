@@ -151,6 +151,7 @@ class AdminuserController extends Controller
     }
 
 
+    // kijken of in die blockUser kan verwerken
     public function block()
     {
         if (isset($_GET["id"])) {
@@ -164,7 +165,9 @@ class AdminuserController extends Controller
             $email = $this->userRepository->getUser($displayName)->email;
             $this->userRepository->blockUser($email);
         }
-        $this->back();
+
+        $this->redirect("/AdminUser");
+//        $this->back();
     }
 
     public function delete()
@@ -173,7 +176,9 @@ class AdminuserController extends Controller
             $id = $_GET["id"];
             $this->reportRepository->delete($id);
         }
-        $this->back();
+
+        $this->redirect("/AdminUser");
+//        $this->back();
     }
 
     public function back()
