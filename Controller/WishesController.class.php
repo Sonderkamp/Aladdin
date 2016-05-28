@@ -258,14 +258,19 @@ class WishesController extends Controller
             $wish->tags = $myTags;
             $this->wishRepo->addWish($wish);
 
-            $this->currentPage = "mywishes";
-            $this->go_back();
+            $this->redirect("/wishes");
+//            $this->currentPage = "mywishes";
+//            $this->go_back();
         }
     }
 
     public function hasSameWish($wishes, $title)
     {
         if (count($wishes) > 0) {
+            if(count($wishes) === 1){
+                $wishes = array($wishes);
+            }
+//            print_r($wishes);
             foreach ($wishes as $item) {
                 if ($item instanceof Wish) {
                     similar_text($item->title, $title, $percent);
@@ -274,7 +279,9 @@ class WishesController extends Controller
                     }
                 }
             }
+//            exit(1);
         } else {
+//            exit(1);
             return false;
         }
         return false;
