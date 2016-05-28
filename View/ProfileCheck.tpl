@@ -7,10 +7,10 @@
         <div class="col-sm-3">
             <div class="profile-usertitle">
                 <div class="text-center">
-                    <b>{$user->displayName}</b>
+                    <b>{$curUser->displayName}</b>
                 </div>
                 <div class="text-center">
-                    {$user->email}
+                    {$curUser->email}
                 </div>
                 <div class="text-center danger">
                     {if $blockstatus !== false}
@@ -70,49 +70,49 @@
                                             <tbody>
                                             <tr>
                                                 <td>Naam:</td>
-                                                <td>{$user->name} {$user->surname}</td>
+                                                <td>{$curUser->name} {$curUser->surname}</td>
                                             </tr>
                                             <tr>
                                                 <td>E-Mail</td>
-                                                <td>{$user->email}</td>
+                                                <td>{$curUser->email}</td>
                                             </tr>
                                             <tr>
                                                 <td>Initialen</td>
-                                                <td>{$user->initials}</td>
+                                                <td>{$curUser->initials}</td>
                                             </tr>
                                             <tr>
                                                 <td>Adress</td>
-                                                <td>{$user->address}</td>
+                                                <td>{$curUser->address}</td>
                                             </tr>
                                             <tr>
                                                 <td>Postcode</td>
-                                                <td>{$user->postalcode}</td>
+                                                <td>{$curUser->postalcode}</td>
                                             </tr>
                                             <tr>
                                                 <td>Plaats</td>
-                                                <td>{$user->city}</td>
+                                                <td>{$curUser->city}</td>
                                             </tr>
                                             <tr>
                                                 <td>Land</td>
-                                                <td>{$user->country}</td>
+                                                <td>{$curUser->country}</td>
                                             </tr>
                                             <tr>
                                                 <td>Geboortedatum</td>
-                                                <td>{$user->dob|date_format:"%d-%m-%Y"}</td>
+                                                <td>{$curUser->dob|date_format:"%d-%m-%Y"}</td>
                                             </tr>
                                             <tr>
                                                 <td>Geslacht</td>
-                                                {if $user->gender eq 'male'}
+                                                {if $curUser->gender eq 'male'}
                                                     <td>Man</td>
-                                                {elseif $user->gender eq 'female'}
+                                                {elseif $curUser->gender eq 'female'}
                                                     <td>Vrouw</td>
-                                                {elseif $user->gender eq 'other'}
+                                                {elseif $curUser->gender eq 'other'}
                                                     <td>-</td>
                                                 {/if}
                                             </tr>
                                             <tr>
                                                 <td>Handicap</td>
-                                                {if $user->handicap}
+                                                {if $curUser->handicap}
                                                     <td>Ja</td>
                                                 {else}
                                                     <td>Nee</td>
@@ -329,7 +329,7 @@
                 <h4 class="modal-title">Blokkeer gebruiker</h4>
             </div>
             <div class="modal-body">
-                <form action="/profileoverview/action=block/user={$user->email}" method="get">
+                <form action="/profileoverview/action=block/user={$curUser->email}" method="get">
                     <fieldset class="form-group">
                         <input type="text" class="form-control" name="reason"
                                placeholder="Reden">
@@ -358,7 +358,7 @@
                 <h4 class="modal-title">Delokkeer gebruiker</h4>
             </div>
             <div class="modal-body">
-                <form action="/profileoverview/action=deblock/user={$user->email}" method="get">
+                <form action="/profileoverview/action=deblock/user={$curUser->email}" method="get">
                     <fieldset class="form-group">
                         <input type="text" class="form-control" name="reason"
                                placeholder="Reden">

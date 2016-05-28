@@ -23,17 +23,34 @@ class UserRepository
 
     public function blockUser($username, $reason = null)
     {
+<<<<<<< HEAD
         // if user is not blocked
         if (!$this->isBlocked($username) !== false)
             $this->UserQueryBuilder->setblock(1, $username, $reason);
+=======
+
+        $current = $this->getCurrentUser();
+
+        if ($current === false || $current->email !== $username) {
+
+            // if user is not blocked
+            if (!$this->isBlocked($username) !== false)
+                $this->UserQueryBuilder->setblock(1, $username, $reason);
+        }
+>>>>>>> mariusdv/development
 
     }
 
     public function unblockUser($username, $reason = null)
     {
-        // if user is blocked
-        if ($this->isBlocked($username) !== false)
-            $this->UserQueryBuilder->setblock(0, $username, $reason);
+        $current = $this->getCurrentUser();
+
+        if ($current === false || $current->email !== $username) {
+
+            // if user is blocked
+            if ($this->isBlocked($username) !== false)
+                $this->UserQueryBuilder->setblock(0, $username, $reason);
+        }
 
     }
 
