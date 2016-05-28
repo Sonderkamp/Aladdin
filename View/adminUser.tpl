@@ -62,14 +62,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {foreach from=$users item=user}
+                        {foreach from=$users item=selectedUser}
                             <tr>
-                                <td>{$user->name|ucfirst}</td>
-                                <td>{$user->displayName}</td>
-                                <td>{$user->email}</td>
-                                <td>{$user->country|ucfirst}</td>
-                                <td>{$user->city|ucfirst}</td>
-                                <td>{if $user->blocked === 1}
+                                <td>{$selectedUser->name|ucfirst}</td>
+                                <td>{$selectedUser->displayName}</td>
+                                <td>{$selectedUser->email}</td>
+                                <td>{$selectedUser->country|ucfirst}</td>
+                                <td>{$selectedUser->city|ucfirst}</td>
+                                <td>{if $selectedUser->blocked === 1}
                                         Geblokkeerd
                                     {else}
                                         Niet geblokkeerd
@@ -84,13 +84,13 @@
 
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a href="/AdminUser/action=showProfile/email={$user->email}">Bekijk profiel</a>
+                                                <a href="/AdminUser/action=showProfile/email={$selectedUser->email}">Bekijk profiel</a>
                                             </li>
                                             <li>
-                                                {if $user->blocked === 1}
-                                                    <a href="/AdminUser/action=unblockUser/email={$user->email}">Deblokkeren</a>
+                                                {if $selectedUser->blocked === 1}
+                                                    <a href="/AdminUser/action=unblockUser/email={$selectedUser->email}">Deblokkeren</a>
                                                 {else}
-                                                    <a href="/AdminUser/action=blockUser/email={$user->email}">Blokkeren</a>
+                                                    <a href="/AdminUser/action=blockUser/email={$selectedUser->email}">Blokkeren</a>
                                                 {/if}
 
                                             </li>
@@ -270,6 +270,34 @@
         </div>
     </div>
 {/foreach}
+
+<div class="modal fade" id="block" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Blokkeer gebruiker</h4>
+            </div>
+            <div class="modal-body">
+                <form action="/profileoverview/action=block/user={$curUser->email}" method="get">
+                    <fieldset class="form-group">
+                        <input type="text" class="form-control" name="reason"
+                               placeholder="Reden">
+                        <small class="text-muted">Geef de reden op die de gebruiker ziet als hij probeert in te loggen
+                        </small>
+                    </fieldset>
+                    <button type="submit" class="btn btn-default">Blokkeer</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 
 {foreach from=$users item=user}

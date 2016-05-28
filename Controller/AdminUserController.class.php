@@ -10,7 +10,6 @@ class AdminuserController extends Controller
 {
 
     private $reportRepository, $userRepository, $wishRepository, $talentRepository;
-    private $searchResult;
 
     public function __construct()
     {
@@ -148,29 +147,6 @@ class AdminuserController extends Controller
         if (isset($_GET["email"])) {
             $_GET["user"] = $_GET["email"];
             (new ProfileoverviewController())->viewProfile();
-
-            
-//            http://localhost/profileoverview/action=viewProfile/user=EMAILDIEJEWIL
-
-//            $wishes = $this->wishRepository->getWishesByUser($email);
-//            $talents = $this->talentRepository->getAddedTalents($email);
-//            $user = $this->userRepository->getUser($email);
-//
-//            // TODO: create page to show userinfo, wishes and talents.
-//
-//            if ($user === false) {
-//                $this->apologize("Gebruiker bestaat niet.");
-//            }
-//
-//            $blocks = $this->userRepository->getAllBlocks($email);
-//            $blockStatus = $this->userRepository->isBlocked($email);
-//            $wishes = $this->wishRepository->getWishesByUser($email);
-//            $talents = $this->talentRepository->getAddedTalents($email);
-//            $reports = $this->reportRepository->getMyReports($email);
-//            $reports2 = $this->reportRepository->getReportedUsers($email);
-//
-//            $this->render("ProfileCheck.tpl", ["title" => "Profiel", "userr" => $user, "blockstatus" => $blockStatus, "wishes" => $wishes, "talents" => $talents, "blocks" => $blocks, "reports" => $reports, "reports2" => $reports2]);
-//            exit();
         }
     }
 
