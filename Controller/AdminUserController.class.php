@@ -143,15 +143,34 @@ class AdminuserController extends Controller
         $this->redirect("/AdminUser");
     }
 
-    public function showProfile(){
+    public function showProfile()
+    {
         if (isset($_GET["email"])) {
-            $wishes = $this->wishRepository->getWishesByUser($_GET["email"]);
+            $_GET["user"] = $_GET["email"];
+            (new ProfileoverviewController())->viewProfile();
 
-            // TODO: get all talents of user
-            // $talents = $this->talentRepository->get
+            
+//            http://localhost/profileoverview/action=viewProfile/user=EMAILDIEJEWIL
 
-            // TODO: show all talents and wishes of user
-
+//            $wishes = $this->wishRepository->getWishesByUser($email);
+//            $talents = $this->talentRepository->getAddedTalents($email);
+//            $user = $this->userRepository->getUser($email);
+//
+//            // TODO: create page to show userinfo, wishes and talents.
+//
+//            if ($user === false) {
+//                $this->apologize("Gebruiker bestaat niet.");
+//            }
+//
+//            $blocks = $this->userRepository->getAllBlocks($email);
+//            $blockStatus = $this->userRepository->isBlocked($email);
+//            $wishes = $this->wishRepository->getWishesByUser($email);
+//            $talents = $this->talentRepository->getAddedTalents($email);
+//            $reports = $this->reportRepository->getMyReports($email);
+//            $reports2 = $this->reportRepository->getReportedUsers($email);
+//
+//            $this->render("ProfileCheck.tpl", ["title" => "Profiel", "userr" => $user, "blockstatus" => $blockStatus, "wishes" => $wishes, "talents" => $talents, "blocks" => $blocks, "reports" => $reports, "reports2" => $reports2]);
+//            exit();
         }
     }
 
