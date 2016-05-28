@@ -21,7 +21,6 @@ class DashboardController extends Controller
 
     public function run()
     {
-
         if (!$this->checkAmounts()) {
             $this->showForcedProfile();
         } else {

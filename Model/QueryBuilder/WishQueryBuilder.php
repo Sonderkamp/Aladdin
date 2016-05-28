@@ -46,6 +46,7 @@ class WishQueryBuilder
      */
     public function getWishes($user = null, array $status = null, $searchKey = null, $admin = null, $allowBlock = false, $myWishesID = null, $matchWishesID = null)
     {
+
         $query = "SELECT *
                   FROM `wish`
                   LEFT JOIN `wishContent`
@@ -57,6 +58,8 @@ class WishQueryBuilder
             $query .= "NOT EXISTS(SELECT NULL FROM blockedusers AS b WHERE b.user_Email = `wish`.User AND b.IsBlocked = 1 AND
                    b.Id = (SELECT Id FROM blockedusers as c WHERE c.user_Email = `wish`.User ORDER BY DateBlocked DESC LIMIT 1)) AND ";
         }
+
+
 
         if($admin){
             $query .= "`wishContent`.moderator_Username IS NULL AND ";
@@ -72,6 +75,7 @@ class WishQueryBuilder
             $query .= "User = ? AND ";
         }
 
+        $query .= " `wishContent`.Date = (SELECT max(Date) FROM `wishContent` WHERE wish_id = `wish`.Id AND ";
 
         //Used in queries by status
         if ($status != null) {
@@ -81,7 +85,7 @@ class WishQueryBuilder
                 if ($item == "Aangemaakt") {
                     $query .= ")";
                 } else {
-                    if(empty($admin)){
+                    if(isset($admin)){
                         $query .= " AND `wishContent`.`IsAccepted` = ";
                         if ($admin) {
                             $query .= "0";
@@ -95,7 +99,7 @@ class WishQueryBuilder
 
             }
             $query = substr_replace($query, '', -3);
-            $query .= ")";
+            $query .= "))";
         }
 
         //Used in searching wish
