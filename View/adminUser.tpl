@@ -6,6 +6,7 @@
 
 <div class="container">
 
+
     <h5>Wensen Beheer</h5>
     <div class="col-md-2">
         <ul class="nav nav-pills nav-stacked">
@@ -24,15 +25,29 @@
         </ul>
     </div>
 
-    <form class="col-xs-10 row" action="/#/#" method="get">
-        <div class="col-lg-7 col-md-7 col-sm-9 col-xs-9">
-            <input class="form-control" name="search" placeholder="Zoek gebruiker">
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+
+    <form action="/AdminUser/action=search/" method="get">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><input class="form-control" name="search"
+                                                                placeholder="Zoeken.."></div>
+        <div>
             <button type="submit" class="btn btn-primary">Zoek</button>
+            <button type="submit" class="btn btn-primary pull-right">Toon alle</button>
         </div>
     </form>
 
+    <div class="col-md-10">
+        {if isset($error)}
+        <div class="alert  form-error alert-dismissible " role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {htmlspecialchars($error)}
+        </div>
+        {/if}
+        {*{if isset($error)}*}
+            {*<div class="form-error" id="err">{htmlspecialchars($error)}</div>*}
+        {*{else}*}
+            {*<div id="err"></div>*}
+        {*{/if}*}
+    </div>
 
     <div class="col-md-10">
         <div class="tab-content">
@@ -41,7 +56,8 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th>Gebruiker</th>
+                            <th>Naam</th>
+                            <th>Displayname</th>
                             <th>E-mail</th>
                             <th>Land</th>
                             <th>Plaats</th>
@@ -52,11 +68,11 @@
                         <tbody>
                         {foreach from=$users item=user}
                             <tr>
+                                <td>{$user->name|ucfirst}</td>
                                 <td>{$user->displayName}</td>
                                 <td>{$user->email}</td>
                                 <td>{$user->country|ucfirst}</td>
                                 <td>{$user->city|ucfirst}</td>
-
                                 <td>{if $user->blocked === 1}
                                         Geblokeerd
                                     {else}

@@ -10,6 +10,7 @@ class AdminuserController extends Controller
 {
 
     private $reportRepository, $userRepository;
+    private $searchResult;
 
     public function __construct()
     {
@@ -20,25 +21,59 @@ class AdminuserController extends Controller
 
     public function run()
     {
-        $this->renderPage("users");
-//        $this->unhandled();
+        $this->renderPrepare("users");
     }
 
 
-    public function renderPage($currentPage)
+    public function renderPrepare($currentPage)
     {
+        $users = $this->getUsers();
         $unhandled = $this->unhandled();
         $handled = $this->handled();
-        $allUsers = $this->userRepository->getAllUsers();
-//        print_r($allUsers);
-//        exit();
 
-        $this->render("adminUser.tpl", ["title" => "Gebruikers overzicht",
-            "handled" => $handled,
-            "unhandled" => $unhandled,
-            "users" => $allUsers,
-            "currentPage" => $currentPage
-        ]);
+        if (count($users) === 0) {
+            $error = "Er zijn geen gebruikers gevonden";
+            $users = $this->userRepository->getAllUsers();
+            $this->renderPage($users, $unhandled, $handled, $currentPage, $error);
+        } else {
+            $this->renderPage($users, $unhandled, $handled, $currentPage);
+        }
+    }
+
+    public function renderPage($users, $unhandled, $handled, $currentPage, $error = null)
+    {
+        if (isset($error)) {
+            $this->render("adminUser.tpl", ["title" => "Gebruikers overzicht",
+                "handled" => $handled,
+                "unhandled" => $unhandled,
+                "users" => $users,
+                "currentPage" => $currentPage,
+                "error" => $error
+            ]);
+        } else {
+            $this->render("adminUser.tpl", ["title" => "Gebruikers overzicht",
+                "handled" => $handled,
+                "unhandled" => $unhandled,
+                "users" => $users,
+                "currentPage" => $currentPage
+            ]);
+        }
+    }
+
+    public function getUsers()
+    {
+        $users = null;
+        if (isset($_SESSION["search"])) {
+            $users = $_SESSION["search"];
+            if (count($users) === 1) {
+                $users = array($_SESSION["search"]);
+            }
+            unset($_SESSION["search"]);
+        } else {
+            $users = $this->userRepository->getAllUsers();
+        }
+
+        return $users;
     }
 
 
@@ -57,7 +92,6 @@ class AdminuserController extends Controller
             }
         }
         return $report;
-//        $this->render("adminUser.tpl", ["reports" => $report, "current" => $this->getCurrent()]);
     }
 
     public function handled()
@@ -65,34 +99,48 @@ class AdminuserController extends Controller
         $this->setCurrent("handled");
         $report = $this->reportRepository->getHandled();
         return $report;
-
-//        $report = $this->reportRepository->get("handled");
-//        $this->render("adminUser.tpl", ["reports" => $report, "current" => $this->getCurrent()]);
     }
 
     public function check()
     {
         $this->unhandled();
     }
-    
-    public function blockUser(){
-        if(isset($_GET["email"])){
+
+    public function blockUser()
+    {
+        if (isset($_GET["email"])) {
             $this->userRepository->blockUser($_GET["email"]);
         }
 
         $this->redirect("/AdminUser");
-//        $this->back();
     }
 
-    public function unblockUser(){
-        if (isset($_GET["email"])){
+    public function unblockUser()
+    {
+        if (isset($_GET["email"])) {
             $this->userRepository->unblockUser($_GET["email"]);
         }
 
         $this->redirect("/AdminUser");
-//        $this->back();
-
     }
+
+    public function search()
+    {
+        if (isset($_GET["search"])) {
+            $temp = $_GET["search"];
+            $search = str_replace(' ', '', $temp);
+            if (strlen($search) > 1) {
+                $result = $this->userRepository->search($search);
+                if (count($result) > 0) {
+                    $_SESSION["search"] = $result;
+                } else {
+                    $_SESSION["search"] = array();
+                }
+            }
+        }
+        $this->redirect("/AdminUser");
+    }
+
 
     public function block()
     {

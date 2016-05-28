@@ -178,10 +178,30 @@ class UserQueryBuilder
 
         $result = Database::query($sql);
 
-//        print_r($result);
-//        exit(1);
-
         return $this->createUsers($result);
+    }
+
+    public function searchUsers($keyword)
+    {
+        $sql = "SELECT * FROM `user` 
+                  WHERE user.Email SOUNDS LIKE ?
+                  OR user.Name SOUNDS LIKE ?
+                  OR user.Surname SOUNDS LIKE ?
+                  OR user.Country sounds like ?
+                  OR user.City sounds like ?";
+        $params = array($keyword,$keyword,$keyword,$keyword,$keyword);
+
+        $result = Database::query_safe($sql, $params);
+
+        if(count(($result)) === 0){
+            return null;
+        }
+
+        if(count($result) === 1){
+            return $this->createUser($result);
+        } else {
+            return $this->createUsers($result);
+        }
     }
 
     private function createUser($result)
