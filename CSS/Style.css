@@ -544,3 +544,8 @@ blockquote footer, blockquote small, blockquote .small {
 .btn-confirm{
     width: 75px;
 }
+
+.inner-border{
+    border-bottom: solid;
+    border-bottom: 2px;
+}

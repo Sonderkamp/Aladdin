@@ -108,7 +108,15 @@
         </div>
 
         <div class="col-xs-4">
-            matches
+            <div class="col-md-10 col-md-offset-1 panel panel-default">
+                <h5>Geïnteresseerde gebruikers</h5>
+                <div class="inner-border">
+                    lol
+                </div>
+                <div class="inner-border">
+                    lol
+                </div>
+            </div>
         </div>
     </div>
 
