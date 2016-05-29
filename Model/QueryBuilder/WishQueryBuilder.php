@@ -168,24 +168,15 @@ class WishQueryBuilder
     }
 
 
-    public function getLatestWish($user = null)
+    public function getLatestWish($user)
     {
         $sql = "SELECT * FROM `wish` where `User` = ? ORDER BY `Date` DESC LIMIT 1";
-
-        if ($user == null) {
-            return $this->executeQuery($sql, array($_SESSION["user"]->email));
-        } else {
-            return $this->executeQuery($sql, array($user));
-        }
+        return $this->executeQuery($sql, array($user));
     }
 
 
-    public function addWish($email = null)
+    public function addWish($email)
     {
-        if ($email == null) {
-            $email = $_SESSION["user"]->email;
-        }
-
         $status = "Aangemaakt";
 
         $query = "INSERT INTO `wish` (`Status`,`User`) VALUES (?,?)";
