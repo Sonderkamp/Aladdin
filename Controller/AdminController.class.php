@@ -39,19 +39,17 @@ class AdminController extends Controller
 
     public function logout()
     {
-        $adminModel = new Admin();
-        $adminModel->logout();
+        $adminRepo = new AdminRepository();
+        $adminRepo->logout();
         $this->login();
     }
 
     public function login()
     {
-
-
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-            $admin = new Admin();
-            $res = $admin->login();
+            $adminRepo = new AdminRepository();
+            $res = $adminRepo->login();
             if ($res !== true) {
                 $this->loginError($res);
                 exit();

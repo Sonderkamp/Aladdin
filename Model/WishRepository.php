@@ -9,7 +9,7 @@
 class WishRepository
 {
     
-    private $talentRepository, $userRepository, $WishQueryBuilder , $admin;
+    private $talentRepository, $userRepository, $WishQueryBuilder , $adminRepo;
 
     public $wishLimit = 3;
 
@@ -18,7 +18,7 @@ class WishRepository
         $this->WishQueryBuilder = new WishQueryBuilder();
         $this->talentRepository = new TalentRepository();
         $this->userRepository   = new UserRepository();
-        $this->admin            = new Admin();
+        $this->adminRepo        = new AdminRepository();
     }
 
     /**
@@ -263,17 +263,17 @@ class WishRepository
 
     public function acceptWish($id)
     {
-        $this->WishQueryBuilder->executeAdminAction($id, 1, $this->admin->getCurrentAdmin()->username, "Gepubliceerd");
+        $this->WishQueryBuilder->executeAdminAction($id, 1, $this->adminRepo->getCurrentAdmin()->username, "Gepubliceerd");
     }
 
     public function refuseWish($id)
     {
-        $this->WishQueryBuilder->executeAdminAction($id, 0, $this->admin->getCurrentAdmin()->username, "Geweigerd");
+        $this->WishQueryBuilder->executeAdminAction($id, 0, $this->adminRepo->getCurrentAdmin()->username, "Geweigerd");
     }
 
     public function deleteWish($id)
     {
-        $this->WishQueryBuilder->executeAdminAction($id, 0, $this->admin->getCurrentAdmin()->username, "Verwijderd");
+        $this->WishQueryBuilder->executeAdminAction($id, 0, $this->adminRepo->getCurrentAdmin()->username, "Verwijderd");
     }
 
     public function getWish($id)

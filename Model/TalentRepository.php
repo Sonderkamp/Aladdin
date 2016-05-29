@@ -153,7 +153,7 @@ class TalentRepository
     public function updateTalent($name, $isRejected, $id, $adminUsername = null)
     {
         if($adminUsername == null) {
-            $adminUsername = (new Admin())->getCurrentAdmin()->username;
+            $adminUsername = (new AdminRepository())->getCurrentAdmin()->username;
         }
         $this->talentBuilder->updateTalent($name, $isRejected, $id, $adminUsername);
     }
