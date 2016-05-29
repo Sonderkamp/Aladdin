@@ -1,3 +1,4 @@
+php_value upload_max_filesize 15M
 RewriteEngine On
 RewriteBase /
 RewriteRule ^(CSS|JS|phpmyadmin|Resources|Files)($|/) - [L]
