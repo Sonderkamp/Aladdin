@@ -241,14 +241,6 @@ class WishRepository
 //        return $this->wishesByTalents($allTalents);
     }
 
-    public function getMatches($wishId){
-        return $this->getReturnArray($this->WishQueryBuilder->getMatches($wishId));
-    }
-
-    public function setMatch($wishId , $username){
-        $this->WishQueryBuilder->addMatch();
-    }
-
     public function getCurrentWishes()
     {
         return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Wordt vervuld"], null, null));

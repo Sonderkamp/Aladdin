@@ -18,6 +18,7 @@ class WishesController extends Controller
         $talentRepository,
         $reportRepository,
         $userRepostitory,
+        $matchRepository,
         $title,
         $description,
         $tag,
@@ -32,6 +33,7 @@ class WishesController extends Controller
         $this->talentRepository = new TalentRepository();
         $this->userRepostitory = new UserRepository();
         $this->reportRepository = new ReportRepository();
+        $this->matchRepository = new MatchRepository();
     }
 
     //
@@ -280,16 +282,21 @@ class WishesController extends Controller
         return false;
     }
 
-    private function getSpecificwish($id, $previousPage)
+    public function getSpecificWish($id = null)
     {
+        if($id = null && empty($_POST["wishId"])){
+            $this->apologize("Please provide a valid id");
+        } else {
+            $id = $_POST["wishId"];
+        }
+
         $selectedWish = $this->wishRepo->getWish($id);
-        $matches = $this->wishRepo->getMatches($id);
+        $matches = $this->matchRepository->getMatches($id);
 
         if(!empty($selectedWish)){
             $this->render("wishSpecificView.tpl",
                 ["title" => "Wens: " . $id,
                     "selectedWish" => $selectedWish,
-                    "previousPage" => $previousPage,
                     "matches" => $matches]);
             exit(0);
         } else {
@@ -297,9 +304,16 @@ class WishesController extends Controller
         }
     }
 
-    private function requestMatch($id)
+    public function requestMatch()
     {
-        $this->apologize($id);
+        if(!empty($_POST["wishId"]) && !empty($this->userRepostitory->getCurrentUser())){
+            $this->matchRepository->setMatch($_POST["wishId"] , $this->userRepostitory->getCurrentUser()->email);
+
+        } else {
+            $this->apologize("Please supply a valid wishId and make sure to be logged in");
+        }
+
+        $this->getSpecificWish($_POST["wishId"]);
     }
 
 

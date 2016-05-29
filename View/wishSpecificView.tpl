@@ -29,10 +29,9 @@
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3 row">
                             <div class="col-xs-6">
-                                <form method="post">
-                                    <button class="btn btn-confirm btn-default" data-dismiss="modal"
-                                            formaction="/Wishes/match/wish_id={$selectedWish->id}"
-                                            type="submit">
+                                <form action="/wishes/action=requestMatch" method="post">
+                                    <input type="hidden" value="{$selectedWish->id}" name="wishId">
+                                    <button class="btn btn-confirm btn-default" type="submit">
                                         Ja
                                     </button>
                                 </form>
@@ -110,12 +109,14 @@
         <div class="col-xs-4">
             <div class="col-md-10 col-md-offset-1 panel panel-default">
                 <h5>Geïnteresseerde gebruikers</h5>
-                <div class="inner-border">
-                    M. De Vogel
-                </div>
-                <div class="inner-border">
-                    M. Beekmans
-                </div>
+                {foreach from=$matches item=match}
+                    <div class="inner-border">
+                        {$match->user->displayName}
+                        {if $match->isSelected}
+                            <span class="glyphicon glyphicon-ok"></span>
+                        {/if}
+                    </div>
+                {/foreach}
             </div>
         </div>
     </div>

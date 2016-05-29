@@ -92,12 +92,9 @@
                                         </a>
                                     {/if}
 
-                                    <form class='noPadding' method="post">
-                                        <button class="btn btn-default"
-                                                formaction="/Wishes/wish_id={$wish->id}"
-                                                value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
-                                                type="submit"
-                                                name="page">
+                                    <form class='noPadding' action="/wishes/action=getSpecificWish" method="post">
+                                        <input type="hidden" value="{$wish->id}" name="wishId">
+                                        <button class="btn btn-default" type="submit">
                                             <span class="glyphicon glyphicon-menu-right"></span>
                                         </button>
                                     </form>
@@ -131,12 +128,9 @@
                                 </div>
 
                                 <div class="panel-footer right">
-                                    <form class='noPadding' method="post">
-                                        <button class="btn btn-default"
-                                                formaction="/Wishes/wish_id={$wish->id}"
-                                                value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
-                                                type="submit"
-                                                name="page">
+                                    <form class='noPadding' action="/wishes/action=getSpecificWish" method="post">
+                                        <input type="hidden" value="{$wish->id}" name="wishId">
+                                        <button class="btn btn-default" type="submit">
                                             <span class="glyphicon glyphicon-menu-right"></span>
                                         </button>
                                     </form>
@@ -168,12 +162,9 @@
                                 </div>
 
                                 <div class="panel-footer right">
-                                    <form class='noPadding' method="post">
-                                        <button class="btn btn-default"
-                                                formaction="/Wishes/wish_id={$wish->id}"
-                                                value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
-                                                type="submit"
-                                                name="page">
+                                    <form class='noPadding' action="/wishes/action=getSpecificWish" method="post">
+                                        <input type="hidden" value="{$wish->id}" name="wishId">
+                                        <button class="btn btn-default" type="submit">
                                             <span class="glyphicon glyphicon-menu-right"></span>
                                         </button>
                                     </form>
@@ -205,12 +196,9 @@
                                 </div>
 
                                 <div class="panel-footer right">
-                                    <form class='noPadding' method="post">
-                                        <button class="btn btn-default"
-                                                formaction="/Wishes/wish_id={$wish->id}"
-                                                value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
-                                                type="submit"
-                                                name="page">
+                                    <form class='noPadding' action="/wishes/action=getSpecificWish" method="post">
+                                        <input type="hidden" value="{$wish->id}" name="wishId">
+                                        <button class="btn btn-default" type="submit">
                                             <span class="glyphicon glyphicon-menu-right"></span>
                                         </button>
                                     </form>
@@ -242,15 +230,9 @@
                                 </div>
 
                                 <div class="panel-footer right">
-                                    {*<button type="button" class="btn btn-default" data-toggle="modal" data-target="#wishModal{$wish->id}">*}
-                                        {*<span class="glyphicon glyphicon-menu-right"></span>*}
-                                    {*</button>*}
-                                    <form class='noPadding' method="post">
-                                        <button class="btn btn-default"
-                                                formaction="/Wishes/wish_id={$wish->id}"
-                                                value="{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
-                                                type="submit"
-                                                name="page">
+                                    <form class='noPadding' action="/wishes/action=getSpecificWish" method="post">
+                                        <input type="hidden" value="{$wish->id}" name="wishId">
+                                        <button class="btn btn-default" type="submit">
                                             <span class="glyphicon glyphicon-menu-right"></span>
                                         </button>
                                     </form>
