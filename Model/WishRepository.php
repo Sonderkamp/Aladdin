@@ -86,7 +86,7 @@ class WishRepository
     {
         return $this->getReturnArray($this->WishQueryBuilder->getWishes
         ($this->userRepository->getCurrentUser()->email, [0 => "Aangemaakt",
-            1 => "Gepubliceerd",
+            1 => "Gepubliseerd",
             2 => "Geweigerd",
             3 => "Match gevonden",
             4 => "Vervuld",
@@ -111,7 +111,7 @@ class WishRepository
      */
     public function getIncompletedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Gepubliceerd", 1 => "Match gevonden"] , null, false));
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Gepubliseerd", 1 => "Match gevonden"] , null, false));
     }
 
     /**
@@ -213,12 +213,12 @@ class WishRepository
 
     public function getRequestedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Aangemaakt", 1 => "Gepubliceerd"], null, true));
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Aangemaakt", 1 => "Gepublieerd"], null, true));
     }
 
     public function getPublishedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Gepubliceerd"], null, null));
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Gepubliseerd"], null, null));
     }
 
     public function getMatchedWishes()
@@ -263,7 +263,7 @@ class WishRepository
 
     public function acceptWish($id)
     {
-        $this->WishQueryBuilder->executeAdminAction($id, 1, $this->admin->getCurrentAdmin()->username, "Gepubliceerd");
+        $this->WishQueryBuilder->executeAdminAction($id, 1, $this->admin->getCurrentAdmin()->username, "Gepubliseerd");
     }
 
     public function refuseWish($id)
@@ -286,7 +286,7 @@ class WishRepository
     {
         return $this->getReturnArray($this->WishQueryBuilder->getWishes
         ($username, [0 => "Aangemaakt",
-            1 => "Gepubliceerd",
+            1 => "Gepubliseerd",
             2 => "Geweigerd",
             3 => "Match gevonden",
             5 => "Wordt vervuld"], null, null, true));

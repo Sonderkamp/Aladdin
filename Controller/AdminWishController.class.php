@@ -119,12 +119,6 @@ class AdminwishController extends Controller
         $this->redirect("/AdminWish");
     }
 
-    private function revertWish($wishId)
-    {
-        $this->wishRepo->revertWishAction($wishId);
-        $this->redirect("/AdminWish");
-    }
-
     private function sendConfirmationMessage($wishId, $accepted)
     {
 
