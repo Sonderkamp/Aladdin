@@ -123,9 +123,9 @@
                         </li>
                     {/foreach}
                 </ul>
-                <form class="form-inline" role="form" enctype="multipart/form-data"  action="/Wishes/wish_id=7?action=AddComment" method="post">
+                <form class="form-inline" action="/Wishes/wish_id=7?action=AddComment" method="post" enctype="multipart/form-data">
                     <div class="form-group">
-                        <input class="form-control" name="img" size="35" type="file"/><br/>
+                        <input class="form-control" name="img" type="file"/><br/>
                         <input class="form-control" type="text" name="comment" placeholder="Nieuwe Reactie"/>
 
                     </div>

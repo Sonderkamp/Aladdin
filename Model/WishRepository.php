@@ -348,29 +348,38 @@ class WishRepository
 
 
         // if there has been a comment < 3 minutes ago
-        $res = $this->WishQueryBuilder->lastCommentMinutes($wishID, $user);
-        if ($res < 3 && $res != -1) {
-            return "U moet minstens drie minuten wachten tussen reacties.";
-        }
+//        $res = $this->WishQueryBuilder->lastCommentMinutes($wishID, $user);
+//        if ($res < 3 && $res != -1) {
+//            return "U moet minstens drie minuten wachten tussen reacties.";
+//        }
 
-        // validate comment
-        $forbiddenRepo = new ForbiddenWordRepository();
-        $wordArray = explode(" ", trim(preg_replace("/[^0-9a-z]+/i", " ", $comment)));
-        foreach ($wordArray as $word) {
+        if (strlen(trim($comment)) <= 1) {
+            $comment = null;
+        } else {
+            // validate comment
+            $forbiddenRepo = new ForbiddenWordRepository();
+            $wordArray = explode(" ", trim(preg_replace("/[^0-9a-z]+/i", " ", $comment)));
+            foreach ($wordArray as $word) {
 
-            // if word is not valid
-            if (!$forbiddenRepo->isValid($word)) {
-                return "Er zijn woorden in uw reactie die niet zijn toegestaan. Eerste verboden woord dat is gevonden: " . $word;
+                // if word is not valid
+                if (!$forbiddenRepo->isValid($word)) {
+                    return "Er zijn woorden in uw reactie die niet zijn toegestaan. Eerste verboden woord dat is gevonden: " . $word;
+                }
             }
         }
 
-        if ($img != null) {
-            $url = $this->upload($img);
-        }
 
-        if($img != null && $url == null)
-        {
-            return "Er is een invalide bestand meegegeven. Alleen foto bestanden worden geaccepteerd.";
+        if ($img != null) {
+            if (!empty($img['tmp_name']))
+            {
+
+
+                $url = $this->upload($img);
+
+                if ($url == null) {
+                    return "Er is een invalide bestand meegegeven. Alleen foto bestanden worden geaccepteerd tot 10MB";
+                }
+            }
         }
 
         // Add comment
@@ -398,6 +407,12 @@ class WishRepository
     private function upload($img)
     {
 
+
+        // if to big
+        if ($img["size"] > 10000000) {
+            return null;
+        }
+
         $client_id = "c21da4b5fe373f9";
         $image = file_get_contents($img['tmp_name']);
 
@@ -409,8 +424,6 @@ class WishRepository
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Client-ID ' . $client_id));
         curl_setopt($ch, CURLOPT_POSTFIELDS, array('image' => base64_encode($image)));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-
 
 
         $reply = curl_exec($ch);
@@ -427,9 +440,8 @@ class WishRepository
 
         $reply = json_decode($reply);
 
-        if($reply != null && $reply->data != null && $reply->data->link != null)
-        {
-            return  $reply->data->link;
+        if ($reply != null && $reply->data != null && $reply->data->link != null) {
+            return $reply->data->link;
         }
         return null;
 
