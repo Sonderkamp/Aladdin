@@ -235,6 +235,7 @@ class WishRepository
 
         $temp = $this->WishQueryBuilder->wishIDByTalents($allTalents);
         $result = $this->WishQueryBuilder->getPossibleMatches($temp, $this->getMyWishes());
+        $result = $this->WishQueryBuilder->getPossibleMatches($temp, $this->getMyWishes());
         
         return $this->getReturnArray($result);
 
