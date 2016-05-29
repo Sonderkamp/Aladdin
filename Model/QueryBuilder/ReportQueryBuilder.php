@@ -71,6 +71,7 @@ class ReportQueryBuilder
         return Database::query_safe($sql, $parameters);
     }
 
+    // TODO: [MEVLUT] check of reporter en reported samen in zelfde query kunnen 
     public function getReportArray($result)
     {
         if (count($result) <= 0) return;
