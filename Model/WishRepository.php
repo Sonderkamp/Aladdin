@@ -8,8 +8,8 @@
  */
 class WishRepository
 {
-    
-    private $talentRepository, $userRepository, $WishQueryBuilder , $admin;
+
+    private $talentRepository, $userRepository, $WishQueryBuilder, $admin;
 
     public $wishLimit = 3;
 
@@ -17,8 +17,8 @@ class WishRepository
     {
         $this->WishQueryBuilder = new WishQueryBuilder();
         $this->talentRepository = new TalentRepository();
-        $this->userRepository   = new UserRepository();
-        $this->admin            = new Admin();
+        $this->userRepository = new UserRepository();
+        $this->admin = new Admin();
     }
 
     /**
@@ -98,7 +98,7 @@ class WishRepository
      */
     public function getCurrentCompletedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes([0 => "Vervuld", 1 => "Wordt vervuld"] , null, false));
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes([0 => "Vervuld", 1 => "Wordt vervuld"], null, false));
     }
 
     public function getMyCompletedWishes()
@@ -111,7 +111,7 @@ class WishRepository
      */
     public function getIncompletedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Gepubliseerd", 1 => "Match gevonden"] , null, false));
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Gepubliseerd", 1 => "Match gevonden"], null, false));
     }
 
     /**
@@ -204,7 +204,7 @@ class WishRepository
     public function getWishAmount($email)
     {
         $wishByUser = $this->getWishesByUser($email);
-        if(!empty($wishByUser)){
+        if (!empty($wishByUser)) {
             return count($wishByUser);
         } else {
             return 0;
@@ -312,7 +312,8 @@ class WishRepository
         $mail->subject = "Wens is gewijzigd";
         $mail->message = $this->createMessage($titel, $content, $tags);
         $mail->to = $this->userRepository->getCurrentUser()->email;
-        $mail->sendMail();
+//      $mail->sendMail();
+//      MARIUS: Nu krijg je 2 mailtjes. Zie inhoud sendMessage.
 
         $newmail = new messageRepository();
         $msgID = $newmail->sendMessage("Admin", $mail->to, $mail->subject, $mail->message);
@@ -334,5 +335,56 @@ class WishRepository
         return $message;
     }
 
+    public function getComments($wishID)
+    {
+        return $this->WishQueryBuilder->getComments($wishID);
+    }
+
+    public function addComment($comment, $wishID, $user)
+    {
+
+        // if user can comment this wish (alleen als de wens klaar is && de gebruiker de wenser is of de match)
+        // TODO
+
+
+        // if there has been a comment < 3 minutes ago
+        $res = $this->WishQueryBuilder->lastCommentMinutes($wishID, $user);
+        if ($res < 3 && $res != -1) {
+            return "U moet minstens drie minuten wachten tussen reacties.";
+        }
+
+        // validate comment
+        $forbiddenRepo = new ForbiddenWordRepository();
+        $wordArray = explode(" ", trim(preg_replace("/[^0-9a-z]+/i", " ", $comment)));
+        foreach ($wordArray as $word) {
+
+            // if word is not valid
+            if (!$forbiddenRepo->isValid($word)) {
+                return "Er zijn woorden in uw reactie die niet zijn toegestaan. Eerste verboden woord dat is gevonden: " . $word;
+            }
+        }
+
+        // Add comment
+        $this->WishQueryBuilder->addComment($comment, $wishID, $user);
+
+        // get email from wish creator
+        $wish = $this->getWish($wishID);
+
+        if( $wish->user->email != $user->email)
+        {
+            // Set mail
+            $mail = new Email();
+            $mail->fromName = "Alladin";
+            $mail->subject = "Nieuwe Reactie";
+            $mail->message = "Hallo " . $wish->user->name . ", \n Er is gereageerd op uw wens. Ga naar de website om uw wens te bekijken.";
+            $mail->to = $wish->user->email;
+
+            $newmail = new messageRepository();
+            $msgID = $newmail->sendMessage($user->email, $mail->to, $mail->subject, $mail->message);
+            $newmail->setLink($wishID, "Wens", $msgID);
+        }
+
+
+    }
 
 }

@@ -103,9 +103,32 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-8">
-            reacties
-        </div>
+        <div class="col-xs-8 detailBox">
+                <div class="titleBox">
+                    <label>Reacties</label>
+                </div>
+                <div class="actionBox">
+                    <ul class="commentList">
+                        {foreach from=$comments item=comment}
+                        <li>
+                            <div class="commentText">
+                                <p class="">{$comment->message}</p> <span class="date sub-text">{$comment->displayName} op {$comment->creationDate}</span>
+
+                            </div>
+                        </li>
+                        {/foreach}
+                    </ul>
+                    <form class="form-inline" role="form" action="/Wishes/wish_id=7?action=AddComment" method="post">
+                        <div class="form-group">
+                            <input class="form-control" type="text" name="comment" placeholder="Nieuwe Reactie"/>
+
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-default">Add</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
         <div class="col-xs-4">
             matches

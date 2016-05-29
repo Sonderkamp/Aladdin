@@ -98,11 +98,8 @@ class WishesController extends Controller
             }
         } else if (isset($_GET["wish_id"])) {
 //            guaranteeProfile();
-            if (isset($_POST["page"])) {
-                $this->getSpecificWish($_GET["wish_id"], $_POST["page"]);
-            } else {
-                $this->getSpecificWish($_GET["wish_id"], null);
-            }
+            $this->getSpecificWish($_GET["wish_id"]);
+
         }
 
         //werkt nog niet todat de hosting gefixt is
@@ -280,12 +277,18 @@ class WishesController extends Controller
         return false;
     }
 
-    private function getSpecificwish($id, $previousPage)
+    private function getSpecificwish($id, $error = null)
     {
+        $previousPage = null;
+        if (isset($_POST["page"])) {
+            $previousPage = $_GET["wish_id"];
+        }
+
         $selectedWish = $this->wishRepo->getWish($id);
-        if(!empty($selectedWish)){
+        $comments = $this->wishRepo->getComments($id);
+        if (!empty($selectedWish)) {
             $this->render("wishSpecificView.tpl",
-                ["title" => "Wens: " . $id, "selectedWish" => $selectedWish, "previousPage" => $previousPage]);
+                ["title" => "Wens: " . $id, "selectedWish" => $selectedWish, "previousPage" => $previousPage, "comments" => $comments, "wishError" => $error ]);
             exit(0);
         } else {
             $this->apologize("This wish doesn't exist");
@@ -442,6 +445,24 @@ class WishesController extends Controller
     public function getCurrent()
     {
         return $_SESSION["current"];
+    }
+
+    public function AddComment()
+    {
+
+        $user = $this->userRepostitory->getCurrentUser();
+
+        // not logged in
+        if ($user instanceof User) {
+            $err = $this->wishRepo->addComment($_POST["comment"], $_GET["wish_id"], $user);
+
+        }
+        if ($err != null) {
+            $this->getSpecificwish($_GET["wish_id"], $err);
+        }
+        $this->redirect("/Wishes/wish_id=" . $_GET["wish_id"]);
+        exit();
+
     }
 
 
