@@ -348,10 +348,10 @@ class WishRepository
 
 
         // if there has been a comment < 3 minutes ago
-//        $res = $this->WishQueryBuilder->lastCommentMinutes($wishID, $user);
-//        if ($res < 3 && $res != -1) {
-//            return "U moet minstens drie minuten wachten tussen reacties.";
-//        }
+        $res = $this->WishQueryBuilder->lastCommentMinutes($wishID, $user);
+        if ($res < 3 && $res != -1) {
+            return "U moet minstens drie minuten wachten tussen reacties.";
+        }
 
         if (strlen(trim($comment)) <= 1) {
             $comment = null;
