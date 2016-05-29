@@ -327,9 +327,9 @@ WHERE `wish_Id` = ?", array($wishID));
 
     }
 
-    public function addComment($comment, $wishID, $user)
+    public function addComment($comment, $wishID, $user, $img = null)
     {
-        Database::query_safe("INSERT INTO `wishmessage` (`Message`, `Image`, `CreationDate`, `user_Email`, `wish_Id`) VALUES (?, NULL, CURRENT_TIMESTAMP, ?, ?);", array($comment, $user->email, $wishID));
+        Database::query_safe("INSERT INTO `wishmessage` (`Message`, `Image`, `CreationDate`, `user_Email`, `wish_Id`) VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?);", array($comment, $img, $user->email, $wishID));
     }
 
     public function lastCommentMinutes($wishID, $user)

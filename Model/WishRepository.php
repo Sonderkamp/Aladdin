@@ -340,7 +340,7 @@ class WishRepository
         return $this->WishQueryBuilder->getComments($wishID);
     }
 
-    public function addComment($comment, $wishID, $user)
+    public function addComment($comment, $wishID, $user, $img = null)
     {
 
         // if user can comment this wish (alleen als de wens klaar is && de gebruiker de wenser is of de match)
@@ -364,14 +364,22 @@ class WishRepository
             }
         }
 
+        if ($img != null) {
+            $url = $this->upload($img);
+        }
+
+        if($img != null && $url == null)
+        {
+            return "Er is een invalide bestand meegegeven. Alleen foto bestanden worden geaccepteerd.";
+        }
+
         // Add comment
-        $this->WishQueryBuilder->addComment($comment, $wishID, $user);
+        $this->WishQueryBuilder->addComment($comment, $wishID, $user, $url);
 
         // get email from wish creator
         $wish = $this->getWish($wishID);
 
-        if( $wish->user->email != $user->email)
-        {
+        if ($wish->user->email != $user->email) {
             // Set mail
             $mail = new Email();
             $mail->fromName = "Alladin";
@@ -384,6 +392,46 @@ class WishRepository
             $newmail->setLink($wishID, "Wens", $msgID);
         }
 
+
+    }
+
+    private function upload($img)
+    {
+
+        $client_id = "c21da4b5fe373f9";
+        $image = file_get_contents($img['tmp_name']);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://api.imgur.com/3/image.json');
+        curl_setopt($ch, CURLOPT_POST, TRUE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Client-ID ' . $client_id));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, array('image' => base64_encode($image)));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+
+
+
+        $reply = curl_exec($ch);
+
+        // DIE if imgur breaks.
+        if (curl_errno($ch)) {
+            echo "IMGUR ERROR. Please try again: ";
+            print_r(curl_error($ch));
+            exit();
+        }
+
+        curl_close($ch);
+
+
+        $reply = json_decode($reply);
+
+        if($reply != null && $reply->data != null && $reply->data->link != null)
+        {
+            return  $reply->data->link;
+        }
+        return null;
 
     }
 

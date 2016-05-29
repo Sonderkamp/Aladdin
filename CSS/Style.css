@@ -548,6 +548,11 @@ blockquote footer, blockquote small, blockquote .small {
 .detailBox {
     border:1px solid #bbb;
 }
+
+.commentImage{
+    max-height: 200px;
+    max-width: 200px;
+}
 .titleBox {
     background-color:#fdfdfd;
     padding:10px;
@@ -577,7 +582,7 @@ blockquote footer, blockquote small, blockquote .small {
 .commentList {
     padding:0;
     list-style:none;
-    max-height:200px;
+    max-height:400px;
     overflow:auto;
 }
 .commentList li {

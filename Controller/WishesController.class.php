@@ -452,9 +452,17 @@ class WishesController extends Controller
 
         $user = $this->userRepostitory->getCurrentUser();
 
+
         // not logged in
         if ($user instanceof User) {
-            $err = $this->wishRepo->addComment($_POST["comment"], $_GET["wish_id"], $user);
+            if(!empty($_FILES["img"]))
+            {
+                $err = $this->wishRepo->addComment($_POST["comment"], $_GET["wish_id"], $user, $_FILES["img"]);
+            }
+            else
+                {
+                $err = $this->wishRepo->addComment($_POST["comment"], $_GET["wish_id"], $user);
+            }
 
         }
         if ($err != null) {
