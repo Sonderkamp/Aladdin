@@ -283,9 +283,14 @@ class WishesController extends Controller
     private function getSpecificwish($id, $previousPage)
     {
         $selectedWish = $this->wishRepo->getWish($id);
+        $matches = $this->wishRepo->getMatches($id);
+
         if(!empty($selectedWish)){
             $this->render("wishSpecificView.tpl",
-                ["title" => "Wens: " . $id, "selectedWish" => $selectedWish, "previousPage" => $previousPage]);
+                ["title" => "Wens: " . $id,
+                    "selectedWish" => $selectedWish,
+                    "previousPage" => $previousPage,
+                    "matches" => $matches]);
             exit(0);
         } else {
             $this->apologize("This wish doesn't exist");

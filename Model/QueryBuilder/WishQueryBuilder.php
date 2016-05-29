@@ -168,6 +168,19 @@ class WishQueryBuilder
 
     }
 
+    public function getMatches($wishId){
+        $query = "SELECT * FROM `matches` WHERE wish_Id = ? AND
+         user_Email IS NOT NULL AND NOT EXISTS(
+         SELECT NULL FROM blockedusers AS b WHERE b.user_Email = `wish`.User AND b.IsBlocked = 1 AND
+         b.Id = (SELECT Id FROM blockedusers as c WHERE c.user_Email = `wish`.User ORDER BY DateBlocked DESC LIMIT 1))";
+
+        return $this->executeQuery($query , array($wishId));
+    }
+
+    public function addMatch($wishId , $username){
+        $query = "INSERT INTO `matches` (`wish_Id`, `user_Email`, `IsActive`, `IsSelected`) VALUES (?, ?, 1, 0);";
+        return $this->executeQuery($query , array($wishId , $username));
+    }
 
     public function getLatestWish($user = null)
     {

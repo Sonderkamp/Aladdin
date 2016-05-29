@@ -111,10 +111,10 @@
             <div class="col-md-10 col-md-offset-1 panel panel-default">
                 <h5>Geïnteresseerde gebruikers</h5>
                 <div class="inner-border">
-                    lol
+                    M. De Vogel
                 </div>
                 <div class="inner-border">
-                    lol
+                    M. Beekmans
                 </div>
             </div>
         </div>

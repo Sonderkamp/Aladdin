@@ -546,6 +546,13 @@ blockquote footer, blockquote small, blockquote .small {
 }
 
 .inner-border{
-    border-bottom: solid;
-    border-bottom: 2px;
+    border-bottom-style: solid;
+    border-bottom-color: lightgrey;
+    border-bottom-width: 1px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
+.panel > :last-child{
+    border-bottom: none;
 }
