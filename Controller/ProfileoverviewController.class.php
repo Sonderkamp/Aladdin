@@ -59,6 +59,13 @@ class ProfileoverviewController extends Controller
         $blocks = $userRepo->getAllBlocks($user->email);
         $blockStatus = $userRepo->isBlocked($user->email);
         $wishes = $wishRepo->getWishesByUser($user->email);
+
+        // quikfix, als user geen wensen heeft krijg ik error in de profilecheck.tpl
+        // met count($wishes) krijg ik dan ook als resultaat 1, ook al heeft deze persoon geen wensen.
+        if($wishes[0] === null){
+            $wishes = null;
+        }
+
         $talents = $talentRepo->getAddedTalents($user->email);
         $reports = $reportRepo->getMyReports($user->email);
         $reports2 = $reportRepo->getReportedUsers($user->email);

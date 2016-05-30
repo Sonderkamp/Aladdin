@@ -126,9 +126,10 @@ class WishRepository
 
     public function addWish(Wish $wish)
     {
-        $this->WishQueryBuilder->addWish();
+        $user = $this->userRepository->getCurrentUser()->email;
 
-        $temp = $this->WishQueryBuilder->getLatestWish();
+        $this->WishQueryBuilder->addWish($user);
+        $temp = $this->WishQueryBuilder->getLatestWish($user);
         $wish->id = $temp[0]["Id"];
 
         $this->addWishContent($wish);
@@ -234,10 +235,8 @@ class WishRepository
 
         $temp = $this->WishQueryBuilder->wishIDByTalents($allTalents);
         $result = $this->WishQueryBuilder->getPossibleMatches($temp, $this->getMyWishes());
+        
         return $this->getReturnArray($result);
-
-
-//        return $this->wishesByTalents($allTalents);
     }
 
     public function getCurrentWishes()

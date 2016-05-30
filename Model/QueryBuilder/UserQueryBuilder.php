@@ -161,6 +161,48 @@ class UserQueryBuilder
         return $result;
     }
 
+    public function getAllUsers($keyword = null)
+    {
+        $sql = "
+          SELECT u.*, bx.isBlocked, bx.dateBlocked
+          FROM user u
+            LEFT OUTER JOIN (
+    		  SELECT b.isBlocked, b.dateBlocked, b.user_email 
+    		  FROM blockedUsers b            
+            INNER JOIN (
+    		  SELECT user_email, MAX(dateBlocked) AS MaxDate
+    		  FROM blockedUsers
+    		  GROUP BY user_email) AS b2    
+              ON (b.user_email = b2.user_email AND b.dateBlocked= b2.MaxDate)) bx 
+            ON u.email = bx.user_email";
+        
+        if(isset($keyword)){
+            $sql .= " WHERE u.Email SOUNDS LIKE ? 
+                  OR u.Name SOUNDS LIKE ?
+                  OR u.Surname SOUNDS LIKE ?
+                  OR u.Country SOUNDS LIKE ?
+                  OR u.City SOUNDS LIKE ?";
+
+            $result = Database::query_safe($sql, array($keyword,$keyword,$keyword,$keyword,$keyword));
+
+            return $this->userCreator($result);
+        } else {
+            return $this->userCreator(Database::query($sql));
+        }
+    }
+
+    public function userCreator($result){
+        if (count(($result)) === 0) {
+            return null;
+        }
+
+        if (count($result) === 1) {
+            return $this->createUser($result);
+        } else {
+            return $this->createUsers($result);
+        }
+    }
+
     private function createUser($result)
     {
 
@@ -187,6 +229,21 @@ class UserQueryBuilder
         $newUser->RecoveryHash = $result[0]["RecoveryHash"];
         $newUser->RecoveryDate = $result[0]["RecoveryDate"];
 
+        if (isset($result[0]["isBlocked"])) {
+            $newUser->blocked = $result[0]["isBlocked"];
+        }
+
         return $newUser;
+    }
+
+    /** creates multipe user objects */
+    public function createUsers($result)
+    {
+        $users = array();
+        foreach ($result as $item) {
+            $users[] = $this->createUser(array($item));
+        }
+
+        return $users;
     }
 }
