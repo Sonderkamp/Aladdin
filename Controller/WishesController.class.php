@@ -100,11 +100,8 @@ class WishesController extends Controller
             }
         } else if (isset($_GET["wish_id"])) {
 //            guaranteeProfile();
-            if (isset($_POST["page"])) {
-                $this->getSpecificWish($_GET["wish_id"], $_POST["page"]);
-            } else {
-                $this->getSpecificWish($_GET["wish_id"], null);
-            }
+            $this->getSpecificWish($_GET["wish_id"]);
+
         }
 
         //werkt nog niet todat de hosting gefixt is
@@ -282,7 +279,7 @@ class WishesController extends Controller
         return false;
     }
 
-    public function getSpecificWish($id = null)
+    public function getSpecificWish($id = null,  $error = null)
     {
 
         if($id = null && empty($_POST["wishId"])){
@@ -293,12 +290,14 @@ class WishesController extends Controller
         
         $selectedWish = $this->wishRepo->getWish($id);
         $matches = $this->matchRepository->getMatches($id);
+        $comments = $this->wishRepo->getComments($id);
 
         if(!empty($selectedWish)){
             $this->render("wishSpecificView.tpl",
                 ["title" => "Wens: " . $id,
                     "selectedWish" => $selectedWish,
-                    "matches" => $matches]);
+                    "matches" => $matches,
+                    "comments" => $comments]);
             exit(0);
         } else {
             $this->apologize("This wish doesn't exist");
@@ -462,6 +461,45 @@ class WishesController extends Controller
     public function getCurrent()
     {
         return $_SESSION["current"];
+    }
+
+    public function AddComment()
+    {
+
+        if (!isset($_POST["comment"])) {
+            $this->redirect("/Wishes/wish_id=" . $_GET["wish_id"]);
+            exit();
+        }
+
+        $check = getimagesize($_FILES["img"]["tmp_name"]);
+        if (!($check !== false)) {
+            if (strlen(trim($_POST["comment"])) <= 1) {
+                $this->getSpecificwish($_GET["wish_id"], "Vul een reactie in of stuur een plaatje in.");
+                exit();
+            }
+        }
+
+
+        $user = $this->userRepostitory->getCurrentUser();
+
+
+        // not logged in
+        if ($user instanceof User) {
+
+            if (($check !== false)) {
+
+                $err = $this->wishRepo->addComment($_POST["comment"], $_GET["wish_id"], $user, $_FILES["img"]);
+            } else {
+                $err = $this->wishRepo->addComment($_POST["comment"], $_GET["wish_id"], $user);
+            }
+            if ($err != null) {
+                $this->getSpecificwish($_GET["wish_id"], $err);
+            }
+        }
+
+        $this->redirect("/Wishes/wish_id=" . $_GET["wish_id"]);
+        exit();
+
     }
 
 

@@ -102,8 +102,37 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-8">
-            reacties
+        <div class="col-xs-8 detailBox">
+            <div class="titleBox">
+                <label>Reacties</label>
+            </div>
+            <div class="actionBox">
+                <ul class="commentList">
+                    {foreach from=$comments item=comment}
+                        <li>
+                            <div class="commentText">
+                                <p class="">{$comment->message}
+                                    {if !empty($comment->image)}
+                                        <img class="thumbnail commentImage" src="{$comment->image}">
+                                    {/if}
+                                </p>
+                                <span class="date sub-text">{$comment->displayName} op {$comment->creationDate}</span>
+
+                            </div>
+                        </li>
+                    {/foreach}
+                </ul>
+                <form class="form-inline" action="/Wishes/wish_id=7?action=AddComment" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input class="form-control" name="img" type="file"/><br/>
+                        <input class="form-control" type="text" name="comment" placeholder="Nieuwe Reactie"/>
+
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-default">Add</button>
+                    </div>
+                </form>
+            </div>
         </div>
 
         <div class="col-xs-4">

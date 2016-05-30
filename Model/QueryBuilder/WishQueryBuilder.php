@@ -37,18 +37,17 @@ class WishQueryBuilder extends QueryBuilder
                   JOIN `user` ON `wish`.User = `user`.Email
                   WHERE `wish`.User IS NOT NULL AND ";
 
-        if(!$allowBlock){
+        if (!$allowBlock) {
             $query .= "NOT EXISTS(SELECT NULL FROM blockedusers AS b WHERE b.user_Email = `wish`.User AND b.IsBlocked = 1 AND
                    b.Id = (SELECT Id FROM blockedusers as c WHERE c.user_Email = `wish`.User ORDER BY DateBlocked DESC LIMIT 1)) AND ";
         }
 
 
-
-        if($admin){
+        if ($admin) {
             $query .= "`wishContent`.moderator_Username IS NULL AND ";
         }
 
-        if(isset($myWishesID , $matchWishesID)){
+        if (isset($myWishesID, $matchWishesID)) {
             $query .= "`wishContent`.wish_Id in $matchWishesID
                     AND `wishContent`.wish_Id NOT IN $myWishesID AND ";
         }
@@ -68,7 +67,7 @@ class WishQueryBuilder extends QueryBuilder
                 if ($item == "Aangemaakt") {
                     $query .= ")";
                 } else {
-                    if(isset($admin)){
+                    if (isset($admin)) {
                         $query .= " AND `wishContent`.`IsAccepted` = ";
                         if ($admin) {
                             $query .= "0";
@@ -284,6 +283,49 @@ class WishQueryBuilder extends QueryBuilder
         $value .= ')';
 
         return $value;
+    }
+
+
+    public function getComments($wishID)
+    {
+
+        setlocale(LC_TIME, 'Dutch');
+        $array = Database::query_safe("SELECT `wishmessage`.`Message`, `wishmessage`.`Image`,  `wishmessage`.`CreationDate`, `wishmessage`.`user_Email`, `wishmessage`.`wish_Id`, `user`.`DisplayName` FROM `wishmessage` join `user` on `email` = `user_Email`
+WHERE `wish_Id` = ?", array($wishID));
+
+        $comments = array();
+        foreach ($array as $row) {
+            $comment = new Comment();
+            $comment->message = $row["Message"];
+            $comment->image = $row["Image"];
+            $comment->creationDate = strftime("%#d %B %Y", strtotime($row["CreationDate"]));
+            $comment->userEmail = $row["user_Email"];
+            $comment->wishId = $row["wish_Id"];
+            $comment->displayName = $row["DisplayName"];
+
+            $comments[] = $comment;
+        }
+        return $comments;
+
+    }
+
+    public function addComment($comment, $wishID, $user, $img = null)
+    {
+        Database::query_safe("INSERT INTO `wishmessage` (`Message`, `Image`, `CreationDate`, `user_Email`, `wish_Id`) VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?);", array($comment, $img, $user->email, $wishID));
+    }
+
+    public function lastCommentMinutes($wishID, $user)
+    {
+        $array = Database::query_safe("SELECT `wishmessage`.`CreationDate` FROM `wishmessage` WHERE `wish_Id` = ? AND user_Email = ? order by `wishmessage`.`CreationDate` DESC LIMIT 1", array($wishID, $user->email));
+
+        if(count($array) < 1 || empty($array[0]["CreationDate"]))
+        {
+            return -1;
+        }
+        else
+        {
+            return ( time() - strtotime($array[0]["CreationDate"])) / 60;
+        }
     }
 
 }
