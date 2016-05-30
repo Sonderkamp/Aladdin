@@ -14,7 +14,6 @@ class ReportController extends Controller
 
     public function __construct()
     {
-
         (new AccountController())->guaranteeLogin("/Wishes");
         $this->reportRepository = new ReportRepository();
         $this->wishRepository = new WishRepository();
@@ -25,21 +24,19 @@ class ReportController extends Controller
         $this->redirect("/wishes");
     }
 
+    /** creates a report  */
     public function report()
     {
         if (!empty($_POST["wish_id"])) {
             $id = $_POST["wish_id"];
             $reporter = $_SESSION["user"]->email;
             $reported = $this->wishRepository->getWish($id)->user->email;
-//            $reported = $this->wishRepository->getUserOfWish($id);
             $status = "aangevraagd";
             $message = $_POST["report_message"];
             $report = new Report($reporter, $reported, $status, $id, $message);
             $this->reportRepository->add($report);
         }
-
-        /* LATEN STAAN */
-        (new WishesController())->back();
+        $this->redirect("/wishes");
     }
 
 

@@ -26,6 +26,8 @@ class AdminuserController extends Controller
     }
 
 
+    /** loads page if clicked on the Administrator -> Gebruikersbeehr
+     * @param the page to redirect to */
     public function renderPrepare($currentPage)
     {
         $users = $this->getUsers();
@@ -41,6 +43,13 @@ class AdminuserController extends Controller
         }
     }
 
+    /** Renders to adminUser.tpl by checking if there is an error
+     * @param $users -> all users
+     * @param $unhandled -> all unhandled reports
+     * @param $handled -> all handled reports
+     * @param $currentPage -> sets the current page
+     * @param $error -> shows the error thats given
+     */
     public function renderPage($users, $unhandled, $handled, $currentPage, $error = null)
     {
         if (isset($error)) {
@@ -78,6 +87,7 @@ class AdminuserController extends Controller
     }
 
 
+    /** Get all unhandled reports */
     public function unhandled()
     {
         $this->setCurrent("unhandled");
@@ -95,6 +105,7 @@ class AdminuserController extends Controller
         return $report;
     }
 
+    /** Get all handled reports */
     public function handled()
     {
         $this->setCurrent("handled");
@@ -125,6 +136,7 @@ class AdminuserController extends Controller
         $this->redirect("/AdminUser");
     }
 
+    /** search the users thats given in the searchfield: Admin Gebruikersbeheer */
     public function search()
     {
         if (isset($_GET["search"])) {
@@ -141,7 +153,8 @@ class AdminuserController extends Controller
         }
         $this->redirect("/AdminUser");
     }
-
+    
+    /** Renders to profile page of selected user */
     public function showProfile()
     {
         if (isset($_GET["email"])) {
@@ -170,6 +183,7 @@ class AdminuserController extends Controller
 //        $this->back();
     }
 
+    /** delete report */
     public function delete()
     {
         if (isset($_GET["id"])) {
@@ -181,18 +195,18 @@ class AdminuserController extends Controller
 //        $this->back();
     }
 
-    public function back()
-    {
-        $this->run();
-        switch ($this->getCurrent()) {
-            case "handled":
-                $this->handled();
-                break;
-            case "unhandled":
-                $this->unhandled();
-                break;
-        }
-    }
+//    public function back()
+//    {
+//        $this->run();
+//        switch ($this->getCurrent()) {
+//            case "handled":
+//                $this->handled();
+//                break;
+//            case "unhandled":
+//                $this->unhandled();
+//                break;
+//        }
+//    }
 
     public function setCurrent($page)
     {

@@ -161,6 +161,9 @@ class UserQueryBuilder
         return $result;
     }
 
+    /** get all users
+     * @param $keyword | optional, set for searching users 
+     * @return array with User objects */
     public function getAllUsers($keyword = null)
     {
         $sql = "
@@ -191,6 +194,10 @@ class UserQueryBuilder
         }
     }
 
+    
+    /** check before creating user objects
+     * @param $result = result of database query
+     * @return user object */
     public function userCreator($result){
         if (count(($result)) === 0) {
             return null;
@@ -203,6 +210,9 @@ class UserQueryBuilder
         }
     }
 
+    /** creates a single user
+     * @param $result = result of database query 
+     * @return User object */
     private function createUser($result)
     {
 
@@ -236,7 +246,9 @@ class UserQueryBuilder
         return $newUser;
     }
 
-    /** creates multipe user objects */
+    /** creates multiple user objects
+     * @param $result = result of database query
+     * @return array with user object */
     public function createUsers($result)
     {
         $users = array();

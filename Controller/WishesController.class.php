@@ -260,14 +260,17 @@ class WishesController extends Controller
 //            $this->go_back();
         }
     }
-
+    
+    /** check if user has a wish with the same title
+     * @param $wishes = all wishes of user
+     * @param $title = title to check 
+     */
     public function hasSameWish($wishes, $title)
     {
         if (count($wishes) > 0) {
             if(count($wishes) === 1){
                 $wishes = array($wishes);
             }
-//            print_r($wishes);
             foreach ($wishes as $item) {
                 if ($item instanceof Wish) {
                     similar_text($item->title, $title, $percent);
@@ -276,14 +279,12 @@ class WishesController extends Controller
                     }
                 }
             }
-//            exit(1);
         } else {
-//            exit(1);
             return false;
         }
         return false;
     }
-
+    
     private function getSpecificwish($id, $error = null)
     {
         $previousPage = null;
@@ -307,7 +308,7 @@ class WishesController extends Controller
         $this->apologize($id);
     }
 
-
+    
     private function editWish()
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -351,6 +352,10 @@ class WishesController extends Controller
         }
     }
 
+    /** check if there are empty values in an array
+     * @param $array = the array to check
+     * @return true if there are no empty values
+     */
     public function isValid($array)
     {
         foreach ($array as $item) {
@@ -361,6 +366,14 @@ class WishesController extends Controller
         return true;
     }
 
+    /** renders to edit page
+     * @param $title = title of the wish
+     * @param $description = content of the wish
+     * @param $tag = the tag's of the wish
+     * @param $message = to show
+     * @param $add (optional), set if users want to add a wish
+     * @param $edit (optional), set if users want to edit a wish
+     */
     public function renderEdit($title, $description, $tag, $message = null, $add = null, $edit = null)
     {
 
@@ -389,6 +402,8 @@ class WishesController extends Controller
         exit(1);
     }
 
+    /** adds hashtags to a string with spaces
+     * @return string with hashtags */
     public function addHashTag($string)
     {
         if (substr($string, 0, 1) != "#") {
@@ -407,6 +422,7 @@ class WishesController extends Controller
         $this->renderOverview("myWishes");
     }
 
+    /** removes a wish with id */
     private function remove()
     {
         $id = $_GET["wishID"];
@@ -417,7 +433,7 @@ class WishesController extends Controller
         $this->currentPage = "mywishes";
         $this->go_back();
     }
-
+    
     function gethashtags($text)
     {
         //Match the hashtags
