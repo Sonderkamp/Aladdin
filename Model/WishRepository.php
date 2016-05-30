@@ -8,7 +8,6 @@
  */
 class WishRepository
 {
-    
     private $talentRepository, $userRepository, $WishQueryBuilder , $adminRepo;
 
     public $wishLimit = 3;
@@ -86,7 +85,7 @@ class WishRepository
     {
         return $this->getReturnArray($this->WishQueryBuilder->getWishes
         ($this->userRepository->getCurrentUser()->email, [0 => "Aangemaakt",
-            1 => "Gepubliceerd",
+            1 => "Gepubliseerd",
             2 => "Geweigerd",
             3 => "Match gevonden",
             4 => "Vervuld",
@@ -98,7 +97,7 @@ class WishRepository
      */
     public function getCurrentCompletedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes([0 => "Vervuld", 1 => "Wordt vervuld"] , null, false));
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes([0 => "Vervuld", 1 => "Wordt vervuld"], null, false));
     }
 
     public function getMyCompletedWishes()
@@ -111,7 +110,7 @@ class WishRepository
      */
     public function getIncompletedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Gepubliceerd", 1 => "Match gevonden"] , null, false));
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Gepubliseerd", 1 => "Match gevonden"], null, false));
     }
 
     /**
@@ -204,7 +203,7 @@ class WishRepository
     public function getWishAmount($email)
     {
         $wishByUser = $this->getWishesByUser($email);
-        if(!empty($wishByUser)){
+        if (!empty($wishByUser)) {
             return count($wishByUser);
         } else {
             return 0;
@@ -213,12 +212,12 @@ class WishRepository
 
     public function getRequestedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Aangemaakt", 1 => "Gepubliceerd"], null, true));
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Aangemaakt", 1 => "Gepublieerd"], null, true));
     }
 
     public function getPublishedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Gepubliceerd"], null, null));
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Gepubliseerd"], null, null));
     }
 
     public function getMatchedWishes()
@@ -263,7 +262,7 @@ class WishRepository
 
     public function acceptWish($id)
     {
-        $this->WishQueryBuilder->executeAdminAction($id, 1, $this->adminRepo->getCurrentAdmin()->username, "Gepubliceerd");
+        $this->WishQueryBuilder->executeAdminAction($id, 1, $this->adminRepo->getCurrentAdmin()->username, "Gepubliseerd");
     }
 
     public function refuseWish($id)
@@ -286,7 +285,7 @@ class WishRepository
     {
         return $this->getReturnArray($this->WishQueryBuilder->getWishes
         ($username, [0 => "Aangemaakt",
-            1 => "Gepubliceerd",
+            1 => "Gepubliseerd",
             2 => "Geweigerd",
             3 => "Match gevonden",
             5 => "Wordt vervuld"], null, null, true));
@@ -312,7 +311,8 @@ class WishRepository
         $mail->subject = "Wens is gewijzigd";
         $mail->message = $this->createMessage($titel, $content, $tags);
         $mail->to = $this->userRepository->getCurrentUser()->email;
-        $mail->sendMail();
+//      $mail->sendMail();
+//      MARIUS: Nu krijg je 2 mailtjes. Zie inhoud sendMessage.
 
         $newmail = new messageRepository();
         $msgID = $newmail->sendMessage("Admin", $mail->to, $mail->subject, $mail->message);
@@ -334,5 +334,116 @@ class WishRepository
         return $message;
     }
 
+    public function getComments($wishID)
+    {
+        return $this->WishQueryBuilder->getComments($wishID);
+    }
+
+    public function addComment($comment, $wishID, $user, $img = null)
+    {
+
+        // if user can comment this wish (alleen als de wens klaar is && de gebruiker de wenser is of de match)
+        // TODO
+
+
+        // if there has been a comment < 3 minutes ago
+        $res = $this->WishQueryBuilder->lastCommentMinutes($wishID, $user);
+        if ($res < 3 && $res != -1) {
+            return "U moet minstens drie minuten wachten tussen reacties.";
+        }
+
+        if (strlen(trim($comment)) <= 1) {
+            $comment = null;
+        } else {
+            // validate comment
+            $forbiddenRepo = new ForbiddenWordRepository();
+            $wordArray = explode(" ", trim(preg_replace("/[^0-9a-z]+/i", " ", $comment)));
+            foreach ($wordArray as $word) {
+
+                // if word is not valid
+                if (!$forbiddenRepo->isValid($word)) {
+                    return "Er zijn woorden in uw reactie die niet zijn toegestaan. Eerste verboden woord dat is gevonden: " . $word;
+                }
+            }
+        }
+
+
+        if ($img != null) {
+            if (!empty($img['tmp_name']))
+            {
+
+
+                $url = $this->upload($img);
+
+                if ($url == null) {
+                    return "Er is een invalide bestand meegegeven. Alleen foto bestanden worden geaccepteerd tot 10MB";
+                }
+            }
+        }
+
+        // Add comment
+        $this->WishQueryBuilder->addComment($comment, $wishID, $user, $url);
+
+        // get email from wish creator
+        $wish = $this->getWish($wishID);
+
+        if ($wish->user->email != $user->email) {
+            // Set mail
+            $mail = new Email();
+            $mail->fromName = "Alladin";
+            $mail->subject = "Nieuwe Reactie";
+            $mail->message = "Hallo " . $wish->user->name . ", \n Er is gereageerd op uw wens. Ga naar de website om uw wens te bekijken.";
+            $mail->to = $wish->user->email;
+
+            $newmail = new messageRepository();
+            $msgID = $newmail->sendMessage($user->email, $mail->to, $mail->subject, $mail->message);
+            $newmail->setLink($wishID, "Wens", $msgID);
+        }
+
+
+    }
+
+    private function upload($img)
+    {
+
+
+        // if to big
+        if ($img["size"] > 10000000) {
+            return null;
+        }
+
+        $client_id = "c21da4b5fe373f9";
+        $image = file_get_contents($img['tmp_name']);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://api.imgur.com/3/image.json');
+        curl_setopt($ch, CURLOPT_POST, TRUE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Client-ID ' . $client_id));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, array('image' => base64_encode($image)));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+
+        $reply = curl_exec($ch);
+
+        // DIE if imgur breaks.
+        if (curl_errno($ch)) {
+            echo "IMGUR ERROR. Please try again: ";
+            print_r(curl_error($ch));
+            exit();
+        }
+
+        curl_close($ch);
+
+
+        $reply = json_decode($reply);
+
+        if ($reply != null && $reply->data != null && $reply->data->link != null) {
+            return $reply->data->link;
+        }
+        return null;
+
+    }
 
 }
