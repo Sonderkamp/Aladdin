@@ -46,7 +46,7 @@
     <div class="row">
         <h3 class="col-xs-6 col-sm-4 col-md-12 dashboard-header">Mijn wensen</h3>
         {if $wishCheck}
-        <a href="/Wishes/action=open_wish" class="btn btn-info col-xs-1 visible-sm visible-xs">
+        <a href="/wishes/action=openAddView" class="btn btn-info col-xs-1 visible-sm visible-xs">
             <i class="fa fa-plus" aria-hidden="true"></i>
         </a>
         {/if}
@@ -59,7 +59,7 @@
                         <div class="caption">
                             <div class="row">
                                 <h4 class="col-md-12">Nieuwe Wens</h4>
-                                <a href="/Wishes/action=open_wish" class="btn btn-info btn-dashboard">
+                                <a href="/wishes/action=openAddView" class="btn btn-info btn-dashboard">
                                     Voeg wens toe
                                     <i class="fa fa-plus" aria-hidden="true"></i>
                                 </a>
@@ -94,7 +94,7 @@
             {/foreach}
         {else}
             <div class="center-block text-center"><p>Je hebt geen wensen<br>
-                    <a href="/Wishes/action=open_wish">Voeg wensen toe</a></p></div>
+                    <a href="/wishes/action=openAddView">Voeg wensen toe</a></p></div>
         {/if}
     </div>
     <div class="row">

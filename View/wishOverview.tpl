@@ -47,8 +47,9 @@
                         <button type="submit" class="btn btn-primary">Zoek</button>
                     </div>
                 </form>
-                <form class="col-xs-2 info" action="/wishes/action=open_wish">
-                    <button type="button" {if !$canAddWish}disabled{/if} class="btn btn-primary">
+
+                <form class="col-xs-2 info" action="/wishes/action=openAddView">
+                    <button type="submit" {if !$canAddWish}disabled{/if} class="btn btn-primary">
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
                 </form>
@@ -76,28 +77,18 @@
 
                                 <div class="panel-footer right">
 
-                                    {if $currentPage == "myWishes"}
-                                        {if {htmlspecialcharsWithNL($wish -> status) != "Geweigerd"}}
-                                            <form class='noPadding infoLeft' action="/Wishes/action=open_edit_wish"
-                                                  method="get">
-                                                <button name="editwishbtn" value="{$wish -> id}" type="sumbit"
-                                                        class="btn btn-inbox" data-toggle="modal">
-                                                    <span class="glyphicon glyphicon-edit"></span>
-                                                </button>
-                                            </form>
-                                        {/if}
-                                        <a class="btn btn-danger infoLeft margLeft"
-                                           href="/Wishes/action=remove/wishID={$wish->id}">
-                                            <span class="glyphicon glyphicon-trash"></span>
+                                    {if {htmlspecialcharsWithNL($wish -> status) != "Geweigerd"}}
+                                        <a href="/wishes/action=openEditView?Id={$wish->id}"
+                                           class="btn btn-inbox infoLeft">
+                                            <span class="glyphicon glyphicon-edit"></span>
                                         </a>
                                     {/if}
-
-                                    <form class='noPadding' action="/wishes/Id={$wish->id}?action=getSpecificWish" method="get">
-                                        <button class="btn btn-default" type="submit">
-                                            <span class="glyphicon glyphicon-menu-right"></span>
-                                        </button>
-                                    </form>
-
+                                    <a href="/Wishes/action=remove?Id={$wish->id}" class="btn btn-danger infoLeft">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                    <a href="/wishes/action=getSpecificWish?Id={$wish->id}" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-menu-right"></span>
+                                    </a>
                                 </div>
                             </div>
                         {/foreach}
@@ -113,7 +104,7 @@
                             <div class="panel panel-default">
 
                                 <div class="panel-heading">
-                                    <a href="/Wishes/Id={$wish->id}"
+                                    <a href="/Wishes/Id={$wish->id}?action=getSpecificWish"
                                        class="h3">{htmlspecialcharsWithNL($wish -> title)}</a>
                                 </div>
 
@@ -127,12 +118,9 @@
                                 </div>
 
                                 <div class="panel-footer right">
-                                    <form class='noPadding' action="/wishes/action=getSpecificWish" method="post">
-                                        <input type="hidden" value="{$wish->id}" name="wishId">
-                                        <button class="btn btn-default" type="submit">
-                                            <span class="glyphicon glyphicon-menu-right"></span>
-                                        </button>
-                                    </form>
+                                    <a href="/wishes/action=getSpecificWish?Id={$wish->id}" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-menu-right"></span>
+                                    </a>
                                 </div>
                             </div>
                         {/foreach}
@@ -147,7 +135,7 @@
                             <div class="panel panel-default">
 
                                 <div class="panel-heading">
-                                    <a href="/Wishes/Id={$wish->id}"
+                                    <a href="/Wishes/Id={$wish->id}?action=getSpecificWish"
                                        class="h3">{htmlspecialcharsWithNL($wish -> title)}</a>
                                 </div>
 
@@ -161,12 +149,9 @@
                                 </div>
 
                                 <div class="panel-footer right">
-                                    <form class='noPadding' action="/wishes/action=getSpecificWish" method="post">
-                                        <input type="hidden" value="{$wish->id}" name="wishId">
-                                        <button class="btn btn-default" type="submit">
-                                            <span class="glyphicon glyphicon-menu-right"></span>
-                                        </button>
-                                    </form>
+                                    <a href="/wishes/action=getSpecificWish?Id={$wish->id}" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-menu-right"></span>
+                                    </a>
                                 </div>
                             </div>
                         {/foreach}
@@ -181,7 +166,7 @@
                             <div class="panel panel-default">
 
                                 <div class="panel-heading">
-                                    <a href="/Wishes/Id={$wish->id}"
+                                    <a href="/Wishes/Id={$wish->id}?action=getSpecificWish"
                                        class="h3">{htmlspecialcharsWithNL($wish -> title)}</a>
                                 </div>
 
@@ -195,12 +180,9 @@
                                 </div>
 
                                 <div class="panel-footer right">
-                                    <form class='noPadding' action="/wishes/action=getSpecificWish" method="post">
-                                        <input type="hidden" value="{$wish->id}" name="wishId">
-                                        <button class="btn btn-default" type="submit">
-                                            <span class="glyphicon glyphicon-menu-right"></span>
-                                        </button>
-                                    </form>
+                                    <a href="/wishes/action=getSpecificWish?Id={$wish->id}" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-menu-right"></span>
+                                    </a>
                                 </div>
                             </div>
                         {/foreach}
@@ -229,12 +211,9 @@
                                 </div>
 
                                 <div class="panel-footer right">
-                                    <form class='noPadding' action="/wishes/action=getSpecificWish" method="post">
-                                        <input type="hidden" value="{$wish->id}" name="wishId">
-                                        <button class="btn btn-default" type="submit">
-                                            <span class="glyphicon glyphicon-menu-right"></span>
-                                        </button>
-                                    </form>
+                                    <a href="/wishes/action=getSpecificWish?Id={$wish->id}" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-menu-right"></span>
+                                    </a>
                                 </div>
                             </div>
                         {/foreach}

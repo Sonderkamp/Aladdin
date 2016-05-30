@@ -139,6 +139,7 @@ a:hover {
 
 .infoLeft {
     float: left;
+    margin-right: 10px;
 }
 
 .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
@@ -284,8 +285,9 @@ body {
     color: white;
 }
 
-.margLeft {
-    margin-left: 10px;
+.not-active {
+    pointer-events: none;
+    cursor: default;
 }
 
 .form-success {
