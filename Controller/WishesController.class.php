@@ -29,36 +29,6 @@ class WishesController extends Controller
         (new AccountController())->guaranteeLogin("/Wishes");
         (new DashboardController())->guaranteeProfile();
         $this->renderOverview("myWishes");
-
-//        if (isset($_GET["action"])) {
-//            switch (strtolower($_GET["action"])) {
-//                //remove refrences to match show=openeditwish
-//                case "addwish":
-//                    $this->addWish();
-//                    break;
-//                case "editwish":
-//                    $this->editWish();
-//                    break;
-//                case "remove":
-//                    $this->remove();
-//                    break;
-//                case "go_back":
-//                    $this->back();
-//                    break;
-//                case "report":
-//                    break;
-//                default:
-//                    $this->apologize("404 not found, Go back to my wishes");
-//                    break;
-//            }
-//        }
-//        //werkt nog niet todat de hosting gefixt is
-//        if (isset($_GET["search"])) {
-//            $this->searchWish($_GET["search"]);
-//        } else {
-//            (new DashboardController())->guaranteeProfile();
-//            $this->renderOverview("myWishes");
-//        }
     }
 
     private function renderOverview($currentPage)
@@ -92,8 +62,6 @@ class WishesController extends Controller
             "matchedWishes" => $matchedWishes,
             "currentPage" => $currentPage,
             "canAddWish" => $canAddWish,
-
-            //Might be deprecated
             "reported" => $displayNames
         ]);
 
