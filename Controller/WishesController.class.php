@@ -125,7 +125,7 @@ class WishesController extends Controller
         $incompletedWishes = $this->wishRepo->getIncompletedWishes();
         $matchedWishes = $this->wishRepo->getPossibleMatches();
 
-        $canAddWish = $this->wishRepo->canAddWish($_SESSION["user"]->email);
+        $canAddWish = $this->wishRepo->canAddWish($this->userRepostitory->getCurrentUser()->email);
         $this->setCurrent($currentPage);
 
         $report = $this->reportRepository->getReportedUsers();
@@ -178,7 +178,7 @@ class WishesController extends Controller
     {
         if ($open) {
             // Check if users has 3 wishes, true if wishes are [<] 3
-            $canAddWish = $this->wishRepo->canAddWish($_SESSION["user"]->email);
+            $canAddWish = $this->wishRepo->canAddWish($this->userRepostitory->getCurrentUser()->email);
             if (!$canAddWish) {
                 $this->go_back();
                 exit(1);
@@ -225,7 +225,7 @@ class WishesController extends Controller
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // check if user can add a wish
-            if (!($this->wishRepo->canAddWish($_SESSION["user"]->email))) {
+            if (!($this->wishRepo->canAddWish($this->userRepostitory->getCurrentUser()->email))) {
                 $this->render("addWish.tpl", ["wishError" => "U heeft al 3 wensen, u kunt geen wensen meer toevoegen."]);
                 exit(1);
             }
@@ -255,14 +255,19 @@ class WishesController extends Controller
             $wish->tags = $myTags;
             $this->wishRepo->addWish($wish);
 
-            $this->currentPage = "mywishes";
-            $this->go_back();
+            $this->redirect("/wishes");
+//            $this->currentPage = "mywishes";
+//            $this->go_back();
         }
     }
 
     public function hasSameWish($wishes, $title)
     {
         if (count($wishes) > 0) {
+            if(count($wishes) === 1){
+                $wishes = array($wishes);
+            }
+//            print_r($wishes);
             foreach ($wishes as $item) {
                 if ($item instanceof Wish) {
                     similar_text($item->title, $title, $percent);
@@ -271,7 +276,9 @@ class WishesController extends Controller
                     }
                 }
             }
+//            exit(1);
         } else {
+//            exit(1);
             return false;
         }
         return false;

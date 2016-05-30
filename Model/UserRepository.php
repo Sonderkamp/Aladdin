@@ -23,7 +23,6 @@ class UserRepository
 
     public function blockUser($username, $reason = null)
     {
-
         $current = $this->getCurrentUser();
 
         if ($current === false || $current->email !== $username) {
@@ -32,8 +31,6 @@ class UserRepository
             if (!$this->isBlocked($username) !== false)
                 $this->UserQueryBuilder->setblock(1, $username, $reason);
         }
-
-
     }
 
     public function unblockUser($username, $reason = null)
@@ -554,6 +551,14 @@ class UserRepository
             return false;
         }
         return $_SESSION["user"];
+    }
+    
+    public function getAllUsers(){
+        return $this->UserQueryBuilder->getAllUsers();
+    }
+    
+    public function searchUsers($keyword){
+        return $this->UserQueryBuilder->getAllUsers($keyword);
     }
 
 }

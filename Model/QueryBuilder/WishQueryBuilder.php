@@ -168,24 +168,15 @@ class WishQueryBuilder
     }
 
 
-    public function getLatestWish($user = null)
+    public function getLatestWish($user)
     {
         $sql = "SELECT * FROM `wish` where `User` = ? ORDER BY `Date` DESC LIMIT 1";
-
-        if ($user == null) {
-            return $this->executeQuery($sql, array($_SESSION["user"]->email));
-        } else {
-            return $this->executeQuery($sql, array($user));
-        }
+        return $this->executeQuery($sql, array($user));
     }
 
 
-    public function addWish($email = null)
+    public function addWish($email)
     {
-        if ($email == null) {
-            $email = $_SESSION["user"]->email;
-        }
-
         $status = "Aangemaakt";
 
         $query = "INSERT INTO `wish` (`Status`,`User`) VALUES (?,?)";
@@ -261,14 +252,14 @@ class WishQueryBuilder
     public function getPossibleMatches($talents, $myWishes)
     {
         $talentList = $this->getSQLString($talents);
-
+        $published = "gepubliseerd";
         $temp = array();
         foreach ($myWishes as $item) {
             $temp[] = $item->id;
         }
 
         $wishList = $this->getSQLString($temp);
-        return $this->getWishes(null, array("Gepubliceerd", "Match gevonden"), null, false, false, $wishList, $talentList);
+        return $this->getWishes(null, array($published, "Match gevonden"), null, false, false, $wishList, $talentList);
 
 //
 //        /** uitgecomment ff laten staan voor zkrheid */

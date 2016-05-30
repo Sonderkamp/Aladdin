@@ -54,26 +54,24 @@ class ReportQueryBuilder
         return Database::query_safe($query, $parameters);
     }
 
-    public function getReportedUsers($email = null)
+    // TODO: control for duplicate with getMyReports
+    public function getReportedUsers($email)
     {
-        if ($email == null) $email = $_SESSION["user"]->email;
-
         $sql = "SELECT * FROM `reportedusers` WHERE `user_Reporter` = ?";
         $parameters = array($email);
 
         return Database::query_safe($sql, $parameters);
     }
 
-    public function getMyReports($email = null)
+    public function getMyReports($email)
     {
-        if ($email == null) $email = $_SESSION["user"]->email;
-
         $sql = "SELECT * FROM `reportedusers` WHERE `user_Reported` = ?";
         $parameters = array($email);
 
         return Database::query_safe($sql, $parameters);
     }
 
+    // TODO: [MEVLUT] check of reporter en reported samen in zelfde query kunnen 
     public function getReportArray($result)
     {
         if (count($result) <= 0) return;
