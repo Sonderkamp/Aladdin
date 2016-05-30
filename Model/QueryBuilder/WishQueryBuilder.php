@@ -6,25 +6,8 @@
  * Date: 13-May-16
  * Time: 11:24
  */
-class WishQueryBuilder
+class WishQueryBuilder extends QueryBuilder
 {
-
-
-    /**
-     * @param $query
-     * @param null $params
-     * @return array|bool
-     *
-     * if params is not empty will execute safe query. Otherwise regular query
-     */
-    private function executeQuery($query, array $params)
-    {
-        if (!empty($params)) {
-            return Database::query_safe($query, $params);
-        } else {
-            return Database::query($query);
-        }
-    }
 
     /**
      * @param null $user
@@ -170,6 +153,7 @@ class WishQueryBuilder
         $this->executeQuery($query3, array($status, $wishId));
 
     }
+
 
     /** returns the last wish from the user given in the param
      * @param $user = email of the user

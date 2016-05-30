@@ -17,9 +17,9 @@
     {/if}
 
     {if isset($edit)}
-    <form action="/wishes/action=editwish" method="post">
+    <form action="/wishes/action=editWish" method="post">
         {else}
-        <form action="/wishes/action=addwish" method="post">
+        <form action="/wishes/action=addWish" method="post">
             {/if}
             <div class="form-group row">
                 <label class="col-sm-2 form-control-label">Title:</label>
