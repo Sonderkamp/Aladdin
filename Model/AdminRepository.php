@@ -18,7 +18,7 @@ class AdminRepository
     // Create
     public function addAdmin()
     {
-        if (empty($_POST["username"]) && empty($_POST["password"]) && empty($_POST["verifyPassword"])) {
+        if (empty($_POST["username"]) || empty($_POST["password"]) || empty($_POST["verifyPassword"])) {
             return "Vul a.u.b. alle velden in!";
         }
 
@@ -30,27 +30,26 @@ class AdminRepository
             return "De wachtwoorden komen niet overeen!";
         }
 
-        if(!$this->validPass($password)) {
-            return "Het wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter en
+        if (!$this->validPass($password)) {
+            return "Het wachtwoord moet minimaal 8 tekens en maximaal 60 tekens lang zijn, een hoofdletter, een kleine letter en
             een nummer bevatten!";
         }
 
-        $admins = $this->adminQueryBuilder->getAdmin();
-        foreach ($admins as $item) {
-            if (strtolower($item["Username"]) == strtolower($username)) {
-                return 'De gebruikersnaam "' . $username . '" word al gebruikt!';
-            }
+        if (!$this->validUsername($username, $message)) {
+            return $message;
         }
 
-        if (!preg_match("/^[A-Za-z\\- ]+$/", $username) || !preg_match("/^[A-Za-z\\- ]+$/", $username)) {
-            return "De gebruikersnaam mag alleen alphabetische characters, spaties en streepjes(-) bevatten!";
-        }
+        $hashed = password_hash($password, PASSWORD_DEFAULT);
+
+        $this->adminQueryBuilder->addAdmin($username, $hashed);
+
+        return true;
     }
 
 
     private function validPass($password)
     {
-        if (strlen($password) < 8
+        if (strlen($password) < 8 || strlen($password) > 60
             || !preg_match('/[0-9]/', $password)
             || !preg_match('/[A-Z]/', $password)
             || !preg_match('/[a-z]/', $password)
@@ -59,7 +58,29 @@ class AdminRepository
         return true;
     }
 
-// Read
+    private function validUsername($username, &$message)
+    {
+        $admins = $this->adminQueryBuilder->getAdmin();
+        foreach ($admins as $item) {
+            if (strtolower($item["Username"]) == strtolower($username)) {
+                $message = 'De gebruikersnaam "' . $username . '" word al gebruikt!';
+                return false;
+            }
+        }
+
+        if (strlen($username) > 45) {
+            $message = "De gebruikernaam mag maximaal 45 tekens lang zijn!";
+            return false;
+        }
+
+        if (!preg_match("/^[A-Za-z\\- ]+$/", $username) || !preg_match("/^[A-Za-z\\- ]+$/", $username)) {
+            $message = "De gebruikersnaam mag alleen alphabetische characters, spaties en streepjes(-) bevatten!";
+            return false;
+        }
+        return true;
+    }
+
+    // Read
     public function getCurrentAdmin()
     {
 
@@ -74,6 +95,71 @@ class AdminRepository
         return $this->createAdminArray($this->adminQueryBuilder->getAdmin());
     }
 
+    // Update
+    public function changePassword()
+    {
+        if (empty($_POST["oldUsername"])) {
+            return "Oeps... Er ging iets fout...";
+        } else {
+            $oldUsername = htmlspecialchars(trim($_POST["oldUsername"]));
+        }
+
+        $admin = $this->adminQueryBuilder->getAdmin($oldUsername);
+        if (empty($admin)) {
+            return "Oeps... Er ging iets fout...";
+        }
+
+        $date1 = strftime(" %H:%M %#d %B %Y", strtotime($admin[0]["CreationDate"]));
+        $date2 = strftime(" %H:%M %#d %B %Y", strtotime($this->getCurrentAdmin()->creationDate));
+        if ($date1 <= $date2) {
+            return "Deze admin kan niet door u gewijzigd worden";
+        }
+
+        if (empty($_POST["password"]) && empty(!$_POST["verifyPassword"])) {
+            return "Vul een wachtwoord in!";
+        }
+
+        $password = htmlspecialchars(trim($_POST["password"]));
+        $verify = htmlspecialchars(trim($_POST["verifyPassword"]));
+
+        if ($password !== $verify) {
+            return "De wachtwoorden komen niet overeen!";
+        }
+
+        if (!$this->validPass($password)) {
+            return "Het wachtwoord moet minimaal 8 tekens en maximaal 60 tekens lang zijn, een hoofdletter, een kleine letter en
+            een nummer bevatten!";
+        }
+
+        $hashed = password_hash($password, PASSWORD_DEFAULT);
+
+        $this->adminQueryBuilder->changePassword($hashed, $oldUsername);
+
+        return true;
+    }
+
+    public function blockAdmin()
+    {
+        if(empty($_GET["admin"]))
+            return false;
+        
+        $username = htmlspecialchars($_GET["admin"]);
+        
+        $this->adminQueryBuilder->blockAdmin($username);
+        return true;
+    }
+
+    public function unblockAdmin()
+    {
+        if(empty($_GET["admin"]))
+            return false;
+
+        $username = htmlspecialchars($_GET["admin"]);
+
+        $this->adminQueryBuilder->unblockAdmin($username);
+        return true;
+    }
+
     private function createAdminArray($result)
     {
 
@@ -85,7 +171,8 @@ class AdminRepository
 
                 $admin = new Admin(
                     $item["Username"],
-                    $item["CreationDate"]
+                    $item["CreationDate"],
+                    $item["IsActive"]
                 );
 
                 array_push($returnArray, $admin);
@@ -103,10 +190,10 @@ class AdminRepository
             $username = htmlspecialchars($_POST["username"]);
             $password = htmlspecialchars($_POST["password"]);
 
-            if ($this->validate($username, $password)) {
+            if ($this->validate($username, $password, $message)) {
                 return true;
             }
-            return "gebruikersnaam/wachtwoord combinatie is niet geldig";
+            return $message;
 
         }
         return "Niet alle gegevens zijn ingevuld";
@@ -117,24 +204,32 @@ class AdminRepository
         $_SESSION["admin"] = null;
     }
 
-    public function validate($username, $password)
+    public function validate($username, $password, &$message)
     {
 
         $res = $this->adminQueryBuilder->getAdmin($username);
 
-        if (count($res) != 1)
+        if (count($res) != 1) {
+            $message = "gebruikersnaam/wachtwoord combinatie is niet geldig";
             return false;
+        }
+
+        if ($res[0]["IsActive"] == 0) {
+            $message = "Dit account is op non-actief gesteld";
+            return false;
+        }
 
         if (password_verify($password, $res[0]["Password"])) {
-            $this->setAdmin($res[0]["Username"], $res[0]["CreationDate"]);
+            $this->setAdmin($res[0]["Username"], $res[0]["CreationDate"], $res[0]["IsActive"]);
             return true;
         }
 
+        $message = "gebruikersnaam/wachtwoord combinatie is niet geldig";
         return false;
     }
 
-    private function setAdmin($username, $creationDate)
+    private function setAdmin($username, $creationDate, $isActive)
     {
-        $_SESSION["admin"] = new Admin($username, $creationDate);
+        $_SESSION["admin"] = new Admin($username, $creationDate, $isActive);
     }
 }

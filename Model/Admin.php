@@ -9,11 +9,12 @@
 class Admin
 {
 
-    public $username, $creationDate;
+    public $username, $creationDate, $isActive;
 
-    public function __construct($username, $creationDate)
+    public function __construct($username, $creationDate, $isActive)
     {
         $this->username = $username;
         $this->creationDate = $creationDate;
+        $this->isActive = $isActive;
     }
 }
