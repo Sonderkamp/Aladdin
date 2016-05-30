@@ -98,19 +98,15 @@ class WishesController extends Controller
                     $this->apologize("404 not found, Go back to my wishes");
                     break;
             }
-        } else if (isset($_GET["wish_id"])) {
+        } else if (isset($_GET["Id"])) {
 //            guaranteeProfile();
-            $this->getSpecificWish($_GET["wish_id"]);
+            $this->getSpecificWish($_GET["Id"]);
 
         }
 
         //werkt nog niet todat de hosting gefixt is
         if (isset($_GET["search"])) {
             $this->searchWish($_GET["search"]);
-        } else if (isset($_POST["match/wish_id"])) {
-
-            (new DashboardController())->guaranteeProfile();
-            $this->requestMatch($_POST["match/wish_id"]);
         } else {
             (new DashboardController())->guaranteeProfile();
             $this->renderOverview("myWishes");
@@ -282,10 +278,12 @@ class WishesController extends Controller
     public function getSpecificWish($id = null,  $error = null)
     {
 
-        if($id = null && empty($_POST["wishId"])){
+        // TODO: Error?
+
+        if($id = null && empty($_GET["Id"])){
             $this->apologize("Please provide a valid id");
-        } else if(!empty($_POST["wishId"])){
-            $id = $_POST["wishId"];
+        } else if(!empty($_GET["Id"])){
+            $id = $_GET["Id"];
         }
         
         $selectedWish = $this->wishRepo->getWish($id);
@@ -306,14 +304,14 @@ class WishesController extends Controller
 
     public function requestMatch()
     {
-        if(!empty($_POST["wishId"]) && !empty($this->userRepostitory->getCurrentUser())){
-            $this->matchRepository->setMatch($_POST["wishId"] , $this->userRepostitory->getCurrentUser()->email);
+        if(!empty($_POST["Id"]) && !empty($this->userRepostitory->getCurrentUser())){
+            $this->matchRepository->setMatch($_POST["Id"] , $this->userRepostitory->getCurrentUser()->email);
 
         } else {
             $this->apologize("Please supply a valid wishId and make sure to be logged in");
         }
 
-        $this->getSpecificWish($_POST["wishId"]);
+        $this->getSpecificWish($_POST["Id"]);
     }
 
 
@@ -467,19 +465,25 @@ class WishesController extends Controller
     {
 
         if (!isset($_POST["comment"])) {
-            $this->redirect("/Wishes/wish_id=" . $_GET["wish_id"]);
+            $this->redirect("/Wishes/Id=" . $_GET["Id"]);
             exit();
         }
 
-        $check = getimagesize($_FILES["img"]["tmp_name"]);
+        if(empty($_FILES["img"]["tmp_name"]))
+        {
+            $check = false;
+        }
+        else
+        {
+            $check = getimagesize($_FILES["img"]["tmp_name"]);
+        }
+
         if (!($check !== false)) {
             if (strlen(trim($_POST["comment"])) <= 1) {
-                $this->getSpecificwish($_GET["wish_id"], "Vul een reactie in of stuur een plaatje in.");
+                $this->getSpecificwish($_GET["Id"], "Vul een reactie in of stuur een plaatje in.");
                 exit();
             }
         }
-
-
         $user = $this->userRepostitory->getCurrentUser();
 
 
@@ -488,16 +492,16 @@ class WishesController extends Controller
 
             if (($check !== false)) {
 
-                $err = $this->wishRepo->addComment($_POST["comment"], $_GET["wish_id"], $user, $_FILES["img"]);
+                $err = $this->wishRepo->addComment($_POST["comment"], $_GET["Id"], $user, $_FILES["img"]);
             } else {
-                $err = $this->wishRepo->addComment($_POST["comment"], $_GET["wish_id"], $user);
+                $err = $this->wishRepo->addComment($_POST["comment"], $_GET["Id"], $user);
             }
             if ($err != null) {
-                $this->getSpecificwish($_GET["wish_id"], $err);
+                $this->getSpecificwish($_GET["Id"], $err);
             }
         }
 
-        $this->redirect("/Wishes/wish_id=" . $_GET["wish_id"]);
+        $this->redirect("/Wishes/Id=" . $_GET["Id"]);
         exit();
 
     }

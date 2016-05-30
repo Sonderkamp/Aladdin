@@ -61,7 +61,7 @@
                             <div class="panel panel-default">
 
                                 <div class="panel-heading">
-                                    <a href="/Wishes/wish_id={$wish->id}"
+                                    <a href="/Wishes/Id={$wish->id}?action=getSpecificWish"
                                        class="h3">{htmlspecialcharsWithNL($wish -> title)}</a>
                                 </div>
 
@@ -92,8 +92,7 @@
                                         </a>
                                     {/if}
 
-                                    <form class='noPadding' action="/wishes/action=getSpecificWish" method="post">
-                                        <input type="hidden" value="{$wish->id}" name="wishId">
+                                    <form class='noPadding' action="/wishes/Id={$wish->id}?action=getSpecificWish" method="get">
                                         <button class="btn btn-default" type="submit">
                                             <span class="glyphicon glyphicon-menu-right"></span>
                                         </button>
@@ -114,7 +113,7 @@
                             <div class="panel panel-default">
 
                                 <div class="panel-heading">
-                                    <a href="/Wishes/wish_id={$wish->id}"
+                                    <a href="/Wishes/Id={$wish->id}"
                                        class="h3">{htmlspecialcharsWithNL($wish -> title)}</a>
                                 </div>
 
@@ -148,7 +147,7 @@
                             <div class="panel panel-default">
 
                                 <div class="panel-heading">
-                                    <a href="/Wishes/wish_id={$wish->id}"
+                                    <a href="/Wishes/Id={$wish->id}"
                                        class="h3">{htmlspecialcharsWithNL($wish -> title)}</a>
                                 </div>
 
@@ -182,7 +181,7 @@
                             <div class="panel panel-default">
 
                                 <div class="panel-heading">
-                                    <a href="/Wishes/wish_id={$wish->id}"
+                                    <a href="/Wishes/Id={$wish->id}"
                                        class="h3">{htmlspecialcharsWithNL($wish -> title)}</a>
                                 </div>
 
@@ -216,7 +215,7 @@
                             <div class="panel panel-default">
 
                                 <div class="panel-heading">
-                                    <a href="/Wishes/wish_id={$wish->id}"
+                                    <a href="/Wishes/Id={$wish->id}?action=getSpecificWish"
                                        class="h3">{htmlspecialcharsWithNL($wish -> title)}</a>
                                 </div>
 
