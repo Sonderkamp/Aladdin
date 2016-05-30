@@ -55,11 +55,15 @@
                     </a>
                 </li>
 
-                {if !$selectedWish->completed}
+                {if $canMatch}
                     <li>
                         <a class="btn btn-side btn-default" data-toggle="modal" data-target="#matchModal">
                             Match
                         </a>
+                    </li>
+                    {else}
+                    <li>
+                        <strong>Het is niet mogelijk om met deze wens te matchen</strong>
                     </li>
                 {/if}
             </ul>
@@ -141,11 +145,24 @@
                 <h5>Geïnteresseerde gebruikers</h5>
                 {foreach from=$matches item=match}
                     {if !empty($matches)}
-                    <div class="inner-border">
-                        {$match->user->displayName}
+                    <div class="inner-border match-controls row">
+                        <p class="col-xs-6">{$match->user->displayName}</p>
+                        {if $selectedWish->user->email == $currentUser->email && $canMatch}
+
+                            {*<button type="button" class="col-xs-3 btn btn-confirm btn-default" data-toggle="modal" data-target="#profileModal{$wish->id}">*}
+                                {*<span class="glyphicon glyphicon-user"></span>*}
+                            {*</button>*}
+
+                            <a href="/wishes/action=selectMatch?wish={$match->wishId}" class="col-xs-3 btn btn-confirm btn-default">
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </a>
+
+                        {/if}
+
                         {if $match->isSelected}
                             <span class="glyphicon glyphicon-ok"></span>
                         {/if}
+
                     </div>
                         {else}
                         <div class="inner-border">

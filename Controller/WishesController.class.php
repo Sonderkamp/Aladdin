@@ -92,7 +92,8 @@ class WishesController extends Controller
     /**
      * Receives call from view and calls right method for Edit
      */
-    public function openEditView(){
+    public function openEditView()
+    {
         (new AccountController())->guaranteeLogin("/Wishes");
         (new DashboardController())->guaranteeProfile();
         $this->openWishView(false);
@@ -101,7 +102,8 @@ class WishesController extends Controller
     /**
      * Receives call from view and calls right method for Add
      */
-    public function openAddView(){
+    public function openAddView()
+    {
         (new AccountController())->guaranteeLogin("/Wishes");
         $this->openWishView(true);
     }
@@ -370,22 +372,29 @@ class WishesController extends Controller
 
         // TODO: Error?
 
-        if($id = null && empty($_GET["Id"])){
+        if ($id = null && empty($_GET["Id"])) {
             $this->apologize("Please provide a valid id");
-        } else if(!empty($_GET["Id"])){
+        } else if (!empty($_GET["Id"])) {
             $id = $_GET["Id"];
         }
-        
+
         $selectedWish = $this->wishRepo->getWish($id);
         $matches = $this->matchRepo->getMatches($id);
         $comments = $this->wishRepo->getComments($id);
+        $canMatch = false;
 
-        if(!empty($selectedWish)){
+        if($selectedWish->status == "Aangemaakt" || $selectedWish->status == "Gepubliseerd" ){
+            $canMatch = true;
+        }
+
+        if (!empty($selectedWish)) {
             $this->render("wishSpecificView.tpl",
                 ["title" => "Wens: " . $id,
                     "selectedWish" => $selectedWish,
                     "matches" => $matches,
-                    "comments" => $comments]);
+                    "comments" => $comments,
+                    "canMatch" => $canMatch,
+                    "currentUser" => $this->userRepo->getCurrentUser()]);
             exit(0);
         } else {
             $this->apologize("This wish doesn't exist");
@@ -405,12 +414,9 @@ class WishesController extends Controller
             exit();
         }
 
-        if(empty($_FILES["img"]["tmp_name"]))
-        {
+        if (empty($_FILES["img"]["tmp_name"])) {
             $check = false;
-        }
-        else
-        {
+        } else {
             $check = getimagesize($_FILES["img"]["tmp_name"]);
         }
 
@@ -444,14 +450,31 @@ class WishesController extends Controller
 
     public function requestMatch()
     {
-        if(!empty($_GET["Id"]) && !empty($this->userRepo->getCurrentUser())){
-            $this->matchRepo->setMatch($_GET["Id"] , $this->userRepo->getCurrentUser()->email);
-
+        if (!empty($_GET["Id"]) && !empty($this->userRepo->getCurrentUser())) {
+            if (!$this->matchRepo->setMatch($_GET["Id"], $this->userRepo->getCurrentUser()->email)) {
+                $this->apologize("You can't match with your own wishes");
+            }
         } else {
             $this->apologize("Please supply a valid wishId and make sure to be logged in");
         }
 
         $this->getSpecificWish($_GET["Id"]);
+    }
+
+    public function selectMatch()
+    {
+//        if (!empty($_GET["user"]) && !empty($_GET["wish"])) {
+//            $this->matchRepo->selectMatch($_GET["wish"], $_GET["user"]);
+//        } else {
+//            $this->apologize("Please supply a valid wishId and User email");
+//        }
+
+        if ($this->userRepo->getCurrentUser()->email && !empty($_GET["wish"])) {
+            $this->matchRepo->selectMatch($_GET["wish"], $this->userRepo->getCurrentUser());
+            $this->redirect("/wishes//wishes/action=getSpecificWish?Id=" . $_GET["wish"]);
+        } else {
+            $this->apologize("Please supply a valid wishId and User email");
+        }
     }
 
     // utility methods
