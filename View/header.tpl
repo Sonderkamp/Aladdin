@@ -76,7 +76,7 @@
                     <li class="dropdown dropdown-admin">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">
-                            <span class="glyphicon glyphicon-eye-open"></span> Administrator<span class="caret"></span></a>
+                            <span class="glyphicon glyphicon-eye-open"></span> {$admin->username}<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="/admin">Statistiek</a></li>
                             <li role="separator" class="divider"></li>
@@ -84,6 +84,7 @@
                             <li><a href="/AdminTalents">Talent beheer</a></li>
                             <li><a href="/AdminUser">Gebruikersbeheer</a></li>
                             <li><a href="/ForbiddenWords">Verboden woorden beheer</a></li>
+                            <li><a href="/AdminManage">Moderator beheer</a></li>
                             <li role="separator" class="divider">
                             <li><a href="/Admin/action=logout">Log uit als {$admin->username}</a></li>
                         </ul>

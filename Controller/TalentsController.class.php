@@ -35,11 +35,12 @@ class TalentsController extends Controller
         $this->messageRepo = new messageRepository();
         $this->userRepo = new UserRepository();
 
-        $this->userCount = ceil(count($this->talentRepo->getAddedTalents())/10);
-        $this->talentCount = ceil(count($this->talentRepo->getUnaddedTalents())/10);
-        $this->requestedCount = ceil(count($this->talentRepo->getRequestedTalents())/10);
+        $this->userCount = ceil(count($this->talentRepo->getAddedTalents()) / 10);
+        $this->talentCount = ceil(count($this->talentRepo->getUnaddedTalents()) / 10);
+        $this->requestedCount = ceil(count($this->talentRepo->getRequestedTalents()) / 10);
     }
 
+    // Render page
     public function run()
     {
         $this->checkGet();
@@ -63,23 +64,25 @@ class TalentsController extends Controller
         exit(0);
     }
 
-    public function removeTalent() {
+    // Remove talent if given values are correct, otherwise set error message
+    public function removeTalent()
+    {
         $id = $this->checkTalentId();
-        if($id !== false) {
-            foreach($this->talentRepo->getAddedTalents() as $talent) {
-                if($talent->id == $id) {
+        if ($id !== false) {
+            foreach ($this->talentRepo->getAddedTalents() as $talent) {
+                if ($talent->id == $id) {
                     $succes = true;
                     break;
                 }
             }
 
-            if(Isset($succes)) {
+            if (Isset($succes)) {
                 $this->talentRepo->deleteTalent($id);
 
                 $talent = $this->talentRepo->getTalent($id);
-                if(!Empty($talent)) {
+                if (!Empty($talent)) {
                     $talent = $talent[0];
-                    
+
                     $this->talentSuccess = "Het talent " . $talent->name . " is succesvol verwijderd!";
                 }
             } else {
@@ -91,21 +94,23 @@ class TalentsController extends Controller
         $this->run();
     }
 
-    public function addTalent() {
+    // Add talent if values are given correctly
+    public function addTalent()
+    {
         $id = $this->checkTalentId();
-        if($id !== false) {
-            foreach($this->talentRepo->getAddedTalents() as $talent) {
-                if($talent->id == $id) {
+        if ($id !== false) {
+            foreach ($this->talentRepo->getAddedTalents() as $talent) {
+                if ($talent->id == $id) {
                     $failed = true;
                     break;
                 }
             }
 
-            if(!Isset($failed)) {
+            if (!Isset($failed)) {
                 $this->talentRepo->addTalentUser($id);
 
                 $talent = $this->talentRepo->getTalent($id);
-                if(!Empty($talent)) {
+                if (!Empty($talent)) {
                     $talent = $talent[0];
 
                     $this->talentSuccess = "Het talent " . $talent->name . " is succesvol toegevoegd!";
@@ -119,19 +124,25 @@ class TalentsController extends Controller
         $this->run();
     }
 
+    // Create talent if name is given correctly
     public function createTalent()
     {
-
-        if(isset($_GET["talent"])) {
+        // Check if isset, if not set set the error message
+        if (isset($_GET["talent"])) {
+            // If it is set, then check if it is not empty
+            // Isset is first to check if the user wanted to create a talent
             if (!Empty($_GET["talent"])) {
                 $newTalent = htmlspecialchars($_GET["talent"]);
 
+                // Check if the name is valid and not a forbidden word
                 if ($this->wordsRepo->isValid($newTalent)) {
 
+                    // Check length
                     if (strlen($newTalent) > 0 && strlen($newTalent) <= 45) {
 
                         $correct = true;
 
+                        // Check if the talent is also requested by a user or by the current user.
                         foreach ($this->talentRepo->getTalents() as $talent) {
 
                             if (strtolower($talent->name) == strtolower($newTalent)) {
@@ -151,7 +162,7 @@ class TalentsController extends Controller
                                 break;
                             }
                         }
-
+                        // if everything is correct than add talent
                         if ($correct == true) {
 
                             if (!preg_match('/[^a-z\s]/i', $newTalent)) {
@@ -165,10 +176,10 @@ class TalentsController extends Controller
                         $this->talentError = "Het tekstbox moet minimaal 1 en maximaal 45 characters bevatten!";
                     }
                 } else {
-                    $this->talentError  = "De ingevoerde talent is verboden, omdat het niet aan de algemene voorwaarden voldoet!";
+                    $this->talentError = "De ingevoerde talent is verboden, omdat het niet aan de algemene voorwaarden voldoet!";
                 }
 
-                if(!Empty($this->talentError)) {
+                if (!Empty($this->talentError)) {
                     $this->talentName = $newTalent;
                 }
             } else {
@@ -180,9 +191,10 @@ class TalentsController extends Controller
         $this->run();
     }
 
-    private function checkTalentId() {
-
-        if(isset($_GET["talent"])) {
+    // Check if the id is given correctly
+    private function checkTalentId()
+    {
+        if (isset($_GET["talent"])) {
             if (!Empty($_GET["talent"])) {
 
                 $id = htmlspecialchars($_GET["talent"]);
@@ -202,14 +214,15 @@ class TalentsController extends Controller
         }
     }
 
+    // Check which page and which pagination values are requested in the URL
     private function checkGet()
     {
 
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
             if (Empty($this->page)) {
-                if(!Empty($_GET["p"])) {
+                if (!Empty($_GET["p"])) {
 
-                    $page = htmlentities(trim($_GET["p"]),ENT_QUOTES);
+                    $page = htmlentities(trim($_GET["p"]), ENT_QUOTES);
                     $this->setPage($page);
                 } else {
                     $this->page = "myTalents";
@@ -224,7 +237,9 @@ class TalentsController extends Controller
         }
     }
 
-    private function setPage($page) {
+    // Set the pill to load on startup
+    private function setPage($page)
+    {
 
         switch ($page) {
             case "myTalents":
@@ -237,15 +252,17 @@ class TalentsController extends Controller
         }
     }
 
-    private function fillMyTalents() {
+    // Fill talents added by the user
+    private function fillMyTalents()
+    {
 
         if (!Empty($_GET["myTalents"])) {
             $myTalents = htmlspecialchars($_GET["myTalents"]);
 
-            if($myTalents > 0 && $myTalents <= $this->userCount) {
+            if ($myTalents > 0 && $myTalents <= $this->userCount) {
                 $this->talentsUser = $this->talentRepo->getAddedTalents($this->userRepo->getCurrentUser()->email, $myTalents);
                 $this->currentUserCount = $myTalents;
-            } else{
+            } else {
                 $this->talentsUser = $this->talentRepo->getAddedTalents($this->userRepo->getCurrentUser()->email, 1);
                 $this->currentUserCount = 1;
             }
@@ -255,15 +272,17 @@ class TalentsController extends Controller
         }
     }
 
-    private function fillAllTalents() {
+    // Fill allTalents with all the talents minus the talents which has been added by the user
+    private function fillAllTalents()
+    {
 
         if (!Empty($_GET["allTalents"])) {
             $allTalents = htmlspecialchars($_GET["allTalents"]);
-            
-            if($allTalents > 0 && $allTalents <= $this->talentCount) {
+
+            if ($allTalents > 0 && $allTalents <= $this->talentCount) {
                 $this->talents = $this->talentRepo->getUnaddedTalents($this->userRepo->getCurrentUser()->email, $allTalents);
                 $this->currentTalentCount = $allTalents;
-            } else{
+            } else {
                 $this->talents = $this->talentRepo->getUnaddedTalents($this->userRepo->getCurrentUser()->email, 1);
                 $this->currentTalentCount = 1;
             }
@@ -273,15 +292,17 @@ class TalentsController extends Controller
         }
     }
 
-    private function fillRequestedTalents() {
+    // Fill requestedTalents with the requested talents BY THE USER
+    private function fillRequestedTalents()
+    {
 
         if (!Empty($_GET["createTalent"])) {
             $requestedTalents = htmlspecialchars($_GET["createTalent"]);
 
-            if($requestedTalents > 0 & $requestedTalents <= $this->requestedCount) {
+            if ($requestedTalents > 0 & $requestedTalents <= $this->requestedCount) {
                 $this->requestedTalents = $this->talentRepo->getRequestedTalents($this->userRepo->getCurrentUser()->email, $requestedTalents);
                 $this->currentRequestedCount = $requestedTalents;
-            } else{
+            } else {
                 $this->requestedTalents = $this->talentRepo->getRequestedTalents($this->userRepo->getCurrentUser()->email, 1);
                 $this->currentRequestedCount = 1;
             }
@@ -291,7 +312,9 @@ class TalentsController extends Controller
         }
     }
 
-    private function checkSearch() {
+    // Check if the user wanted to search an added or unadded talent
+    private function checkSearch()
+    {
 
         if (!Empty($_GET["searchAdded"])) {
 

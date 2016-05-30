@@ -13,14 +13,15 @@ class TalentQueryBuilder
     {
         if (!Empty(trim($name)) || trim($name) != "" || preg_match('/[^a-z\s]/i', $name)) {
 
-            foreach ($this->getTalents(null,null,null,null,null,null,null,null,true,$name) as $talentName) {
-                if(strtolower(trim($talentName["Name"])) == strtolower(trim($name))) {
+            // Last check on duplicates
+            foreach ($this->getTalents(null, null, null, null, null, null, null, null, true, $name) as $talentName) {
+                if (strtolower(trim($talentName["Name"])) == strtolower(trim($name))) {
                     $failed = true;
                     break;
                 }
             }
 
-            if(!isset($failed)) {
+            if (!isset($failed)) {
 
                 Database::query_safe
                 ("INSERT INTO `talent` (`Name`,
@@ -43,6 +44,7 @@ class TalentQueryBuilder
             array($id, $user));
     }
 
+    // This method add the synonym to the talent, but also the talent to the synonym
     public function addSynonym($talentId, $synonymId)
     {
 
@@ -63,6 +65,8 @@ class TalentQueryBuilder
     }
 
     // Read
+    // This function returns all talents, limited talents, acceptedTalents, notAdded talents by given user, talent by id, added talents by user,
+    // requested talents by user, all requested talents, all talents added by user (also denied talents), only names or searched talents
     public function getTalents($limit = null, $accepted = null, $notAdded = null, $id = null, $addedUser = null, $userRequested = null, $allRequested = null, $allUser = null, $nameOnly = null, $search = null)
     {
 
@@ -158,6 +162,7 @@ class TalentQueryBuilder
         return $result;
     }
 
+    // Get all synonyms or only from one talent
     public function getSynonyms($talentId = null)
     {
 
@@ -187,7 +192,8 @@ class TalentQueryBuilder
         return $result;
     }
 
-    public function getAllID($talents){
+    public function getAllID($talents)
+    {
         $talentList[] = array();
 
         foreach ($talents as $item) {
@@ -200,7 +206,8 @@ class TalentQueryBuilder
     }
 
 
-    public function getMatchTalents($talents){
+    public function getMatchTalents($talents)
+    {
         $id = array();
         $total = 0;
         $skip = true;
@@ -208,7 +215,7 @@ class TalentQueryBuilder
         $maxLoops = 5;
 
         while (true) {
-            if($loopCounter >= $maxLoops){
+            if ($loopCounter >= $maxLoops) {
                 break;
             }
             $result = Database::query("SELECT * FROM synonym WHERE talent_Id IN $talents");

@@ -46,9 +46,10 @@ class ForbiddenwordsController extends Controller
         exit(0);
     }
 
-    public function addWord() {
+    public function addWord()
+    {
 
-        if(!Empty($_GET["newWord"])) {
+        if (!Empty($_GET["newWord"])) {
             // Secure the value sent by get
             $word = htmlspecialchars(trim($_GET["newWord"]));
 
@@ -68,9 +69,10 @@ class ForbiddenwordsController extends Controller
         $this->run();
     }
 
-    public function removeWord() {
+    public function removeWord()
+    {
 
-        if(!Empty($_GET["word"])) {
+        if (!Empty($_GET["word"])) {
             // Secure the value sent by get
             $word = htmlentities(trim($_GET["word"]), ENT_QUOTES);
 
@@ -93,7 +95,8 @@ class ForbiddenwordsController extends Controller
         $this->run();
     }
 
-    public function editWord() {
+    public function editWord()
+    {
 
         if (!Empty($_GET["editedWord"]) && !Empty($_GET["oldWord"])) {
 
@@ -143,9 +146,9 @@ class ForbiddenwordsController extends Controller
                     // Set pagination on
                     $_SESSION["wordsPagination"] = "on";
                 }
-                
+
                 // Reload page without post requests
-                if(!Empty($_POST["page"])) {
+                if (!Empty($_POST["page"])) {
                     $this->redirect("/forbiddenwords/wordsPage=" . htmlspecialchars(trim($_POST["page"])));
                 } else {
                     $this->redirect("/forbiddenwords/wordsPage=1");
