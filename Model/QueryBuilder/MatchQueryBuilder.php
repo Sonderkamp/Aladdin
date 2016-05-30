@@ -28,4 +28,11 @@ class MatchQueryBuilder extends QueryBuilder
         $query = "SELECT * FROM `matches` WHERE ? = $username";
         return $this->executeQuery($query , array($username));
     }
+
+    public function selectMatch($wishId , $username){
+        $query = "UPDATE `matches` SET IsSelected = 1 WHERE wish_Id = ? AND user_Email = ?; ";
+        $query .= "UPDATE `wish` SET Status = 'Match gevonden' WHERE `wish`.Id = ?;";
+
+        $this->executeQuery($query , array($wishId , $username , $wishId));
+    }
 }

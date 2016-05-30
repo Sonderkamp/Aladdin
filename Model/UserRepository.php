@@ -18,7 +18,7 @@ class UserRepository
 
     public function getUser($emailOrDisplayName)
     {
-        return $this->UserQueryBuilder->getUser($emailOrDisplayName);
+        return $this->userCreator($this->UserQueryBuilder->getUser($emailOrDisplayName));
     }
 
     public function blockUser($username, $reason = null)
@@ -178,8 +178,7 @@ class UserRepository
         $us = $this->getUser($arr["email"]);
         if (!(strtolower($us->initials) == strtolower($arr["initial"]) && strtolower($us->surname) == strtolower($arr["surname"]))) {
 
-            $newname = array("initial" => $arr["initial"], "surname" => $arr["surname"]);
-            $newdisplay = $this->createDislay($newname);
+            $newdisplay = $this->createDislay($arr);
         } else {
             $newdisplay = $us->displayName;
         }
@@ -473,20 +472,38 @@ class UserRepository
     public function createDislay($arr)
     {
 
-        // TODO REWRITE
-
         $arr["initial"] = strtoupper(trim($arr["initial"], '.'));
-        $name = $arr["initial"] . ". " . ucfirst($arr["surname"]);
-
+        $names = explode(" ", $arr["surname"]);
+        $name = $arr["initial"];
+        foreach ($names as $str) {
+            $name .= strtoupper($str[0]);
+        }
+        $from = new DateTime($arr["dob"]);
+        $name .= " - " . $from->format('Y');
         // first try
         $res = Database::query_safe("SELECT count(*) AS Counter FROM `user` WHERE DisplayName LIKE ? ", array($name));
         $res = $res[0];
-        if ($res["Counter"] == 0)
+        $count = $res["Counter"];
+        if ($count == 0)
             return $name;
-        return $name . $res["Counter"];
+
+        $i = 0;
+        while (true) {
+            $tmp = $name . " (" .($count + $i). ")";
+
+            $res = Database::query_safe("SELECT count(*) AS Counter FROM `user` WHERE DisplayName = ? ", array($tmp));
+            $res = $res[0];
+            if ($res["Counter"] == 0)
+                return $tmp;
+
+            $i++;
+
+        }
+
     }
 
-    private function validPass($password)
+    private
+    function validPass($password)
     {
         if (strlen($password) < 8
             || !preg_match('/[0-9]/', $password)
@@ -498,7 +515,8 @@ class UserRepository
     }
 
 
-    public function validateUsername($username)
+    public
+    function validateUsername($username)
     {
         $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
 
@@ -515,17 +533,20 @@ class UserRepository
 
     }
 
-    public function getAllMatchedDislaynames(User $user)
+    public
+    function getAllMatchedDislaynames(User $user)
     {
         return $this->UserQueryBuilder->getDisplaynames($user);
     }
 
-    public function getAllDislaynames()
+    public
+    function getAllDislaynames()
     {
         return $this->UserQueryBuilder->getDisplaynames();
     }
 
-    public function newPassword($username, $password)
+    public
+    function newPassword($username, $password)
     {
         if ($this->validateUsername($username)) {
 
@@ -544,7 +565,8 @@ class UserRepository
 
     }
 
-    public function getCurrentUser()
+    public
+    function getCurrentUser()
     {
 
         if (empty($_SESSION["user"])) {
@@ -553,16 +575,88 @@ class UserRepository
         return $_SESSION["user"];
     }
 
+//<<<<<<< HEAD
+//    /** returns all users */
+//    public function getAllUsers(){
+//        return $this->UserQueryBuilder->getAllUsers();
+//    }
+//
+//    /** search users
+//     * @param $keyword = keyword to search user this can be a name for example
+//     * @return array with user objects */
+//    public function searchUsers($keyword){
+//=======
+
     /** returns all users */
-    public function getAllUsers(){
-        return $this->UserQueryBuilder->getAllUsers();
+    public
+    function getAllUsers()
+    {
+        return $this->createUsers($this->UserQueryBuilder->getAllUsers());
     }
 
     /** search users
      * @param $keyword = keyword to search user this can be a name for example
      * @return array with user objects */
-    public function searchUsers($keyword){
-        return $this->UserQueryBuilder->getAllUsers($keyword);
+    public
+    function searchUsers($keyword)
+    {
+        return $this->userCreator($this->UserQueryBuilder->getAllUsers($keyword));
+    }
+
+    private function userCreator($result){
+        if (count(($result)) === 0) {
+            return null;
+        }
+
+        if (count($result) === 1) {
+            return $this->createUser($result);
+        } else {
+            return $this->createUsers($result);
+        }
+    }
+
+    private function createUser($result)
+    {
+
+        if ($result == null || $result == false || count($result) == 0) {
+            return false;
+        }
+
+        $newUser = new User();
+
+        $newUser->email = $result[0]["Email"];
+        $newUser->isAdmin = $result[0]["Admin"];
+        $newUser->name = $result[0]["Name"];
+        $newUser->surname = $result[0]["Surname"];
+        $newUser->address = $result[0]["Address"];
+        $newUser->handicap = $result[0]["Handicap"];
+        $newUser->postalcode = $result[0]["Postalcode"];
+        $newUser->country = $result[0]["Country"];
+        $newUser->city = $result[0]["City"];
+        $newUser->dob = $result[0]["Dob"];
+        $newUser->gender = $result[0]["Gender"];
+        $newUser->hash = $result[0]["ValidationHash"];
+        $newUser->displayName = $result[0]["DisplayName"];
+        $newUser->initials = $result[0]["Initials"];
+        $newUser->RecoveryHash = $result[0]["RecoveryHash"];
+        $newUser->RecoveryDate = $result[0]["RecoveryDate"];
+
+        if (isset($result[0]["isBlocked"])) {
+            $newUser->blocked = $result[0]["isBlocked"];
+        }
+
+        return $newUser;
+    }
+
+    /** creates multipe user objects */
+    public function createUsers($result)
+    {
+        $users = array();
+        foreach ($result as $item) {
+            $users[] = $this->createUser(array($item));
+        }
+
+        return $users;
     }
 
 }
