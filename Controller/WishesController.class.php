@@ -237,7 +237,7 @@ class WishesController extends Controller
         }
     }
 
-    private function editWish()
+    public function editWish()
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $title = $_POST["title"];
