@@ -163,7 +163,7 @@ class WishesController extends Controller
 
 
     /**
-     *
+     * add's wish to database 
      */
     public function addWish()
     {
@@ -203,59 +203,9 @@ class WishesController extends Controller
             $this->back();
         }
     }
-//<<<<<<< HEAD
-//
-//    /** check if user has a wish with the same title
-//     * @param $wishes = all wishes of user
-//     * @param $title = title to check
-//     */
-//    public function hasSameWish($wishes, $title)
-//    {
-//        if (count($wishes) > 0) {
-//            if(count($wishes) === 1){
-//                $wishes = array($wishes);
-//            }
-//            foreach ($wishes as $item) {
-//                if ($item instanceof Wish) {
-//                    similar_text($item->title, $title, $percent);
-//                    if ($percent > 80) {
-//                        return true;
-//                    }
-//                }
-//            }
-//        } else {
-//            return false;
-//        }
-//        return false;
-//    }
-//
-//    private function getSpecificwish($id, $error = null)
-//    {
-//        $previousPage = null;
-//        if (isset($_POST["page"])) {
-//            $previousPage = $_GET["wish_id"];
-//        }
-//
-//        $selectedWish = $this->wishRepo->getWish($id);
-//        $comments = $this->wishRepo->getComments($id);
-//        if (!empty($selectedWish)) {
-//            $this->render("wishSpecificView.tpl",
-//                ["title" => "Wens: " . $id, "selectedWish" => $selectedWish, "previousPage" => $previousPage, "comments" => $comments, "wishError" => $error]);
-//            exit(0);
-//        } else {
-//            $this->apologize("This wish doesn't exist");
-//        }
-//    }
-//
-//    private function requestMatch($id)
-//    {
-//        $this->apologize($id);
-//    }
-//
-//
-//    private function editWish()
-//=======
-
+    
+    
+    /** edit's wish */
     public function editWish()
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -313,15 +263,7 @@ class WishesController extends Controller
         return true;
     }
 
-//<<<<<<< HEAD
-//    /** renders to edit page
-//     * @param $title = title of the wish
-//     * @param $description = content of the wish
-//     * @param $tag = the tag's of the wish
-//     * @param $message = to show
-//     * @param $add (optional), set if users want to add a wish
-//     * @param $edit (optional), set if users want to edit a wish
-//=======
+
     /**
     //    ** renders to edit page
     //     * @param $title = title of the wish
@@ -359,14 +301,9 @@ class WishesController extends Controller
         exit(1);
     }
 
-//<<<<<<< HEAD
-//    /** adds hashtags to a string with spaces
-//     * @return string with hashtags */
-//=======
-    /**
-     * @param $string
-     * @return string
-     */
+
+    /** adds hashtags to a string with spaces
+     * @return string with hashtags */
     public function addHashTag($string)
     {
         if (substr($string, 0, 1) != "#") {
@@ -378,28 +315,6 @@ class WishesController extends Controller
         }
     }
 
-//<<<<<<< HEAD
-//
-//    private function go_back()
-//    {
-//        (new DashboardController())->guaranteeProfile();
-//        $this->renderOverview("myWishes");
-//    }
-//
-//    /** removes a wish with id */
-//    private function remove()
-//    {
-//        $id = $_GET["wishID"];
-//        if (isset($id)) {
-//            $this->wishRepo->deleteMyWish($id);
-//        }
-//
-//        $this->currentPage = "mywishes";
-//        $this->go_back();
-//    }
-//
-//    function gethashtags($text)
-//=======
     /**
      * @param $text
      * @return string
@@ -419,12 +334,10 @@ class WishesController extends Controller
         return rtrim($hashtag, ',');
     }
 
-    /**
-     * @param $wishes
-     * @param $title
-     * @return bool
-     *
-     * ?
+    /** check if user has a wish with the same title
+     * @param $wishes = all wishes of user
+     * @param $title = title to check
+     * @return true if title is similar for more then 80%
      */
     public function hasSameWish($wishes, $title)
     {
@@ -550,7 +463,7 @@ class WishesController extends Controller
     }
 
     /**
-     *
+     * Remove wish with id
      */
     public function remove()
     {

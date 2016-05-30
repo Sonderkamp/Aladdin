@@ -169,13 +169,6 @@ class WishRepository
                     $this->talentRepository->addTalent($item);
                 }
                 $this->bindToTalent($item, $wish);
-
-//                if (in_array($item, $tags)) {
-//                    $this->bindToTalent($item, $wish);
-//                } else {
-//                    $this->talentRepository->addTalent($item);
-//                    $this->bindToTalent($item, $wish);
-//                }
             }
         }
     }

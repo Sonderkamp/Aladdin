@@ -43,7 +43,7 @@
 
 
             <div class="form-group row authors-list">
-                <label class="col-sm-2 form-control-label">Tags:</label>
+                <label class="col-sm-2 form-control-label">Kernwoorden:</label>
                 <div class="col-sm-10">
 
                     <input class="form-control" name="tag" placeholder="Tag" {if isset($tag)}value="{($tag)}{/if}">
