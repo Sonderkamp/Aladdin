@@ -24,9 +24,6 @@ class AdminwishController extends Controller
 
         if (isset($_GET["action"])) {
             switch (strtolower($_GET["action"])) {
-                case "revert":
-                    $this->revertWish($_POST["wish_id"]);
-                    break;
                 case "delete":
                     $this->deleteWish($_POST["wish_id"]);
                     break;
