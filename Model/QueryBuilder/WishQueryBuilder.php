@@ -100,6 +100,9 @@ class WishQueryBuilder extends QueryBuilder
             $query = substr_replace($query, '', -3);
         }
 
+
+
+
         $query .= " GROUP BY `wish`.Id";
 
         //acquire params if any

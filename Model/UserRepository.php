@@ -178,8 +178,7 @@ class UserRepository
         $us = $this->getUser($arr["email"]);
         if (!(strtolower($us->initials) == strtolower($arr["initial"]) && strtolower($us->surname) == strtolower($arr["surname"]))) {
 
-            $newname = array("initial" => $arr["initial"], "surname" => $arr["surname"]);
-            $newdisplay = $this->createDislay($newname);
+            $newdisplay = $this->createDislay($arr);
         } else {
             $newdisplay = $us->displayName;
         }
@@ -473,20 +472,38 @@ class UserRepository
     public function createDislay($arr)
     {
 
-        // TODO REWRITE
-
         $arr["initial"] = strtoupper(trim($arr["initial"], '.'));
-        $name = $arr["initial"] . ". " . ucfirst($arr["surname"]);
-
+        $names = explode(" ", $arr["surname"]);
+        $name = $arr["initial"];
+        foreach ($names as $str) {
+            $name .= strtoupper($str[0]);
+        }
+        $from = new DateTime($arr["dob"]);
+        $name .= " - " . $from->format('Y');
         // first try
         $res = Database::query_safe("SELECT count(*) AS Counter FROM `user` WHERE DisplayName LIKE ? ", array($name));
         $res = $res[0];
-        if ($res["Counter"] == 0)
+        $count = $res["Counter"];
+        if ($count == 0)
             return $name;
-        return $name . $res["Counter"];
+
+        $i = 0;
+        while (true) {
+            $tmp = $name . " (" .($count + $i). ")";
+
+            $res = Database::query_safe("SELECT count(*) AS Counter FROM `user` WHERE DisplayName = ? ", array($tmp));
+            $res = $res[0];
+            if ($res["Counter"] == 0)
+                return $tmp;
+
+            $i++;
+
+        }
+
     }
 
-    private function validPass($password)
+    private
+    function validPass($password)
     {
         if (strlen($password) < 8
             || !preg_match('/[0-9]/', $password)
@@ -498,7 +515,8 @@ class UserRepository
     }
 
 
-    public function validateUsername($username)
+    public
+    function validateUsername($username)
     {
         $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
 
@@ -515,17 +533,20 @@ class UserRepository
 
     }
 
-    public function getAllMatchedDislaynames(User $user)
+    public
+    function getAllMatchedDislaynames(User $user)
     {
         return $this->UserQueryBuilder->getDisplaynames($user);
     }
 
-    public function getAllDislaynames()
+    public
+    function getAllDislaynames()
     {
         return $this->UserQueryBuilder->getDisplaynames();
     }
 
-    public function newPassword($username, $password)
+    public
+    function newPassword($username, $password)
     {
         if ($this->validateUsername($username)) {
 
@@ -544,7 +565,8 @@ class UserRepository
 
     }
 
-    public function getCurrentUser()
+    public
+    function getCurrentUser()
     {
 
         if (empty($_SESSION["user"])) {
@@ -552,12 +574,16 @@ class UserRepository
         }
         return $_SESSION["user"];
     }
-    
-    public function getAllUsers(){
+
+    public
+    function getAllUsers()
+    {
         return $this->UserQueryBuilder->getAllUsers();
     }
-    
-    public function searchUsers($keyword){
+
+    public
+    function searchUsers($keyword)
+    {
         return $this->UserQueryBuilder->getAllUsers($keyword);
     }
 

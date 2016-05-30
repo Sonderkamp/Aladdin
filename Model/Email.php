@@ -13,7 +13,7 @@ class Email
     public function __construct()
     {
         $this->from = "webs2eindopdracht@gmail.com";
-        $this->fromName = "Webs2 Webshop";
+        $this->fromName = "Aladdin no-reply";
         $this->to = "webs2eindopdracht@gmail.com";
         $this->toName = "Webs2 Webshop";
         $this->subject = "not set.";

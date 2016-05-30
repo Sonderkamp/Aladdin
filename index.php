@@ -2,6 +2,8 @@
 include_once("Includes/config.php");
 
 
+(new WishRepository())->cleanWishes();
+
 // auto logout
 if (!empty($_SESSION["user"])) {
     if ((new UserRepository())->isBlocked($_SESSION["user"]->email) !== false) {
