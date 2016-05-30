@@ -444,14 +444,14 @@ class WishesController extends Controller
 
     public function requestMatch()
     {
-        if(!empty($_POST["Id"]) && !empty($this->userRepo->getCurrentUser())){
-            $this->matchRepo->setMatch($_POST["Id"] , $this->userRepo->getCurrentUser()->email);
+        if(!empty($_GET["Id"]) && !empty($this->userRepo->getCurrentUser())){
+            $this->matchRepo->setMatch($_GET["Id"] , $this->userRepo->getCurrentUser()->email);
 
         } else {
             $this->apologize("Please supply a valid wishId and make sure to be logged in");
         }
 
-        $this->getSpecificWish($_POST["Id"]);
+        $this->getSpecificWish($_GET["Id"]);
     }
 
     // utility methods
