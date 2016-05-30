@@ -29,10 +29,9 @@
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3 row">
                             <div class="col-xs-6">
-                                <form method="post">
-                                    <button class="btn btn-confirm btn-default" data-dismiss="modal"
-                                            formaction="/Wishes/match/wish_id={$selectedWish->id}"
-                                            type="submit">
+                                <form action="/wishes/action=requestMatch" method="post">
+                                    <input type="hidden" value="{$selectedWish->id}" name="wishId">
+                                    <button class="btn btn-confirm btn-default" type="submit">
                                         Ja
                                     </button>
                                 </form>
@@ -114,7 +113,9 @@
                             <div class="commentText">
                                 <p class="">{$comment->message}
                                     {if !empty($comment->image)}
-                                        <img class="thumbnail commentImage" src="{$comment->image}">
+                                        <a href="{$comment->image}" target="_blank">
+                                            <img class="thumbnail commentImage" src="{$comment->image}">
+                                        </a>
                                     {/if}
                                 </p>
                                 <span class="date sub-text">{$comment->displayName} op {$comment->creationDate}</span>
@@ -123,11 +124,13 @@
                         </li>
                     {/foreach}
                 </ul>
-                <form class="form-inline" action="/Wishes/wish_id=7?action=AddComment" method="post" enctype="multipart/form-data">
+                <form class="form-inline"
+                      action="/Wishes/Id={$selectedWish->id}/action=AddComment"
+                      method="post"
+                      enctype="multipart/form-data">
                     <div class="form-group">
                         <input class="form-control" name="img" type="file"/><br/>
                         <input class="form-control" type="text" name="comment" placeholder="Nieuwe Reactie"/>
-
                     </div>
                     <div class="form-group">
                         <button class="btn btn-default">Add</button>
@@ -137,7 +140,23 @@
         </div>
 
         <div class="col-xs-4">
-            matches
+            <div class="col-md-10 col-md-offset-1 panel panel-default">
+                <h5>Geïnteresseerde gebruikers</h5>
+                {foreach from=$matches item=match}
+                    {if !empty($matches)}
+                    <div class="inner-border">
+                        {$match->user->displayName}
+                        {if $match->isSelected}
+                            <span class="glyphicon glyphicon-ok"></span>
+                        {/if}
+                    </div>
+                        {else}
+                        <div class="inner-border">
+                            <p>Er zijn nog geen matches</p>
+                        </div>
+                    {/if}
+                {/foreach}
+            </div>
         </div>
     </div>
 
