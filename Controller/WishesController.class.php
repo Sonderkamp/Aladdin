@@ -52,7 +52,7 @@ class WishesController extends Controller
                 $displayNames[] = $item->getReported()->getDisplayName();
             }
         }
-        
+
         $this->render("wishOverview.tpl", ["title" => "Wensen Overzicht",
             "myWishes" => $myWishes,
             "completedWishes" => $completedWishes,
@@ -91,7 +91,8 @@ class WishesController extends Controller
     /**
      * Receives call from view and calls right method for Edit
      */
-    public function openEditView(){
+    public function openEditView()
+    {
         (new AccountController())->guaranteeLogin("/Wishes");
         (new DashboardController())->guaranteeProfile();
         $this->openWishView(false);
@@ -100,7 +101,8 @@ class WishesController extends Controller
     /**
      * Receives call from view and calls right method for Add
      */
-    public function openAddView(){
+    public function openAddView()
+    {
         (new AccountController())->guaranteeLogin("/Wishes");
         $this->openWishView(true);
     }
@@ -163,7 +165,7 @@ class WishesController extends Controller
 
 
     /**
-     * add's wish to database 
+     * add's wish to database
      */
     public function addWish()
     {
@@ -181,30 +183,33 @@ class WishesController extends Controller
 
             $input = array([$title, $description, $tag]);
             $size = strlen($this->getHashTags($tag));
+            $tempContent = preg_replace('/\s+/', '', $description);
+            $tempTitle = preg_replace('/\s+/', '', $title);
 
-            if (!$this->isValid($input) || $size == 0) {
-                $this->renderEdit($title, $description, $tag);
+            if (!$this->isValid($input) || (strlen($tempTitle) === 0) || strlen($tempContent) === 0 || ($size == 0)) {
+                $this->renderEdit($title, $description, $tag, "Vul aub alles in.", true);
             }
-
+            
             $myWishes = $this->wishRepo->getMyWishes();
             if ($this->hasSameWish($myWishes, $title)) {
-                $this->renderEdit($title, $description, $tag, "U heeft al een wens met een soortgelijke titel", true);
+                $this->renderEdit($title, $description, $tag, "U heeft al een wens met een soortgelijke titel.", true);
+            } else {
+                $myTags = array_map('ucfirst', explode(',', $this->getHashTags($tag)));
+
+                // create an array with the wish
+                $wish = new Wish();
+                $wish->title = $title;
+                $wish->content = $description;
+                $wish->tags = $myTags;
+                $this->wishRepo->addWish($wish);
+
+                $this->back();
+
             }
-
-            $myTags = array_map('ucfirst', explode(',', $this->getHashTags($tag)));
-
-            // create an array with the wish
-            $wish = new Wish();
-            $wish->title = $title;
-            $wish->content = $description;
-            $wish->tags = $myTags;
-            $this->wishRepo->addWish($wish);
-
-            $this->back();
         }
     }
-    
-    
+
+
     /** edit's wish */
     public function editWish()
     {
@@ -216,17 +221,21 @@ class WishesController extends Controller
             $message = "Ongelidige tag #";
             if (strlen($this->getHashTags($tag)) == 0) {
                 $this->renderEdit($title, $description, $tag, $message);
-
             }
+
+            $tempContent = preg_replace('/\s+/', '', $description);
+            $tempTitle = preg_replace('/\s+/', '', $title);
+
             // Check if fields are filled
-            if (!$this->isValid([$title, $description, $tag])) {
+            if ((strlen($tempTitle) === 0) || (strlen($tempContent) === 0)) {
                 $this->renderEdit($title, $description, $tag);
             }
 
+            /*
             $myWishes = $this->wishRepo->getMyWishes();
             if ($this->hasSameWish($myWishes, $title)) {
                 $this->renderEdit($title, $description, $tag, "U heeft al een wens met een soortgelijke titel", null, true);
-            }
+            } */
 
             // set a comma , between the tags.
             $myTags = array_map('ucfirst', explode(',', $this->getHashTags($tag)));
@@ -241,9 +250,9 @@ class WishesController extends Controller
                 $wish->id = $_SESSION["wishcontentid"];
                 $this->wishRepo->editWishContent($wish);
 
-                /* uitgecomment anders wordt je volgespamt
-                $this->wishRepo->sendEditMail($wish->id, $title, $description, $myTags);
-                */
+//                /* uitgecomment anders wordt je volgespamt
+//                $this->wishRepo->sendEditMail($wish->id, $title, $description, $myTags);
+//                */
             }
             $this->back();
         }
@@ -265,13 +274,13 @@ class WishesController extends Controller
 
 
     /**
-    //    ** renders to edit page
-    //     * @param $title = title of the wish
-    //     * @param $description = content of the wish
-    //     * @param $tag = the tag's of the wish
-    //     * @param $message = to show
-    //     * @param $add (optional), set if users want to add a wish
-    //     * @param $edit (optional), set if users want to edit a wish
+     * //    ** renders to edit page
+     * //     * @param $title = title of the wish
+     * //     * @param $description = content of the wish
+     * //     * @param $tag = the tag's of the wish
+     * //     * @param $message = to show
+     * //     * @param $add (optional), set if users want to add a wish
+     * //     * @param $edit (optional), set if users want to edit a wish
      */
     public function renderEdit($title, $description, $tag, $message = null, $add = null, $edit = null)
     {
@@ -279,13 +288,13 @@ class WishesController extends Controller
         if (isset($add)) {
             $this->render("addWish.tpl", ["wishtitle" => $title,
                 "description" => $description, "tag" => $tag, "tagerror" => $message]);
-            exit(0);
+            exit();
         }
 
         if (isset($edit)) {
             $this->render("addWish.tpl", ["error" => $message, "wishtitle" => $title,
                 "description" => $description, "tag" => $tag, "edit" => "isset"]);
-            exit(0);
+            exit();
         }
 
         $error = "Vul aub alles in!";
@@ -298,12 +307,13 @@ class WishesController extends Controller
                 "description" => $description, "tag" => $tag, "edit" => "isset"]);
         }
 
-        exit(1);
+        exit();
     }
 
 
     /** adds hashtags to a string with spaces
-     * @return string with hashtags */
+     * @return string with hashtags
+     */
     public function addHashTag($string)
     {
         if (substr($string, 0, 1) != "#") {
@@ -370,17 +380,17 @@ class WishesController extends Controller
 
         // TODO: Error?
 
-        if($id = null && empty($_GET["Id"])){
+        if ($id = null && empty($_GET["Id"])) {
             $this->apologize("Please provide a valid id");
-        } else if(!empty($_GET["Id"])){
+        } else if (!empty($_GET["Id"])) {
             $id = $_GET["Id"];
         }
-        
+
         $selectedWish = $this->wishRepo->getWish($id);
         $matches = $this->matchRepo->getMatches($id);
         $comments = $this->wishRepo->getComments($id);
 
-        if(!empty($selectedWish)){
+        if (!empty($selectedWish)) {
             $this->render("wishSpecificView.tpl",
                 ["title" => "Wens: " . $id,
                     "selectedWish" => $selectedWish,
@@ -405,12 +415,9 @@ class WishesController extends Controller
             exit();
         }
 
-        if(empty($_FILES["img"]["tmp_name"]))
-        {
+        if (empty($_FILES["img"]["tmp_name"])) {
             $check = false;
-        }
-        else
-        {
+        } else {
             $check = getimagesize($_FILES["img"]["tmp_name"]);
         }
 
@@ -444,8 +451,8 @@ class WishesController extends Controller
 
     public function requestMatch()
     {
-        if(!empty($_GET["Id"]) && !empty($this->userRepo->getCurrentUser())){
-            $this->matchRepo->setMatch($_GET["Id"] , $this->userRepo->getCurrentUser()->email);
+        if (!empty($_GET["Id"]) && !empty($this->userRepo->getCurrentUser())) {
+            $this->matchRepo->setMatch($_GET["Id"], $this->userRepo->getCurrentUser()->email);
 
         } else {
             $this->apologize("Please supply a valid wishId and make sure to be logged in");
