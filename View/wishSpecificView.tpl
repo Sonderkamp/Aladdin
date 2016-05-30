@@ -29,12 +29,9 @@
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3 row">
                             <div class="col-xs-6">
-                                <form action="/wishes/action=requestMatch" method="post">
-                                    <input type="hidden" value="{$selectedWish->id}" name="wishId">
-                                    <button class="btn btn-confirm btn-default" type="submit">
-                                        Ja
-                                    </button>
-                                </form>
+                                <a href="/wishes/action=requestMatch?Id={$selectedWish->id}" class="btn btn-confirm btn-default">
+                                    Ja
+                                </a>
                             </div>
                             <div class="col-xs-6">
                                 <button type="button" class="btn btn-confirm btn-default" data-dismiss="modal">
