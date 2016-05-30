@@ -10,12 +10,14 @@ class AdminManageController extends Controller
 {
     private $adminRepo;
 
+    // Constructor
     public function __construct()
     {
         (new AdminController())->guaranteeAdmin("/AdminManage");
         $this->adminRepo = new AdminRepository();
     }
 
+    // Renders the page
     public function run()
     {
         $this->checkSession($addError, $addUsername, $editError, $oldUsername);
@@ -31,6 +33,7 @@ class AdminManageController extends Controller
         exit();
     }
 
+    // Add an addmin and if result is false set error message
     public function addAdmin()
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -48,6 +51,7 @@ class AdminManageController extends Controller
         $this->redirect("/AdminManage");
     }
 
+    // Edit an addmin and if result is false set errorMessage
     public function editAdmin()
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -82,6 +86,7 @@ class AdminManageController extends Controller
         $this->redirect("/AdminManage");
     }
 
+    // Checks if the sessions created due to post recalls are set. If so set the session to local variable and destroy session.
     private function checkSession(&$addError, &$addUsername, &$editError, &$oldUsername)
     {
         if (!empty($_SESSION["addError"])) {

@@ -8,12 +8,14 @@
  */
 class AdminQueryBuilder
 {
+    // Add admin (password must be hashed)
     public function addAdmin($username, $password)
     {
         Database::query_safe("INSERT INTO `moderator`(`Username`, `Password`) VALUES (?,?)",
             array($username, $password));
     }
 
+    // Get all admins ordered by the creation date or only 1 admin by username
     public function getAdmin($username = null)
     {
         $query = "SELECT * FROM `moderator`";
@@ -31,17 +33,20 @@ class AdminQueryBuilder
         }
     }
 
-    public function changePassword($password, $oldUsername) {
-            Database::query_safe("UPDATE `moderator` SET `Password`=? WHERE `Username` = ?",
-                array($password, $oldUsername));
+    public function changePassword($password, $username)
+    {
+        Database::query_safe("UPDATE `moderator` SET `Password`=? WHERE `Username` = ?",
+            array($password, $username));
     }
-    
-    public function blockAdmin($username) {
+
+    public function blockAdmin($username)
+    {
         Database::query_safe("UPDATE `moderator` SET `IsActive`=0 WHERE `Username` = ?",
             array($username));
     }
 
-    public function unblockAdmin($username) {
+    public function unblockAdmin($username)
+    {
         Database::query_safe("UPDATE `moderator` SET `IsActive`=1 WHERE `Username` = ?",
             array($username));
     }

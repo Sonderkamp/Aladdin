@@ -21,10 +21,12 @@ class ForbiddenWordRepository
     }
     
     // ###### READ ######
+    // Get multiple words
     public function getForbiddenWords($page = null, $search = null) {
         return $this->createReturnArray($this->wordBuilder->getForbiddenWords($page, null, $search));
     }
     
+    // Get a single word
     public function getForbiddenWord($word) {
         return $this->createReturnArray($this->wordBuilder->getForbiddenWords(null, $word));
     }
@@ -45,6 +47,7 @@ class ForbiddenWordRepository
         return Empty($this->wordBuilder->getForbiddenWords(null,strtolower($word)));
     }
 
+    // Prevent duplicate code
     public function createReturnArray($result) {
 
         if(!Empty($result)) {

@@ -46,7 +46,7 @@ class AdminRepository
         return true;
     }
 
-
+    // Validate if password is bigger than 8 or smaller than 60, and only numeric and alphabetical
     private function validPass($password)
     {
         if (strlen($password) < 8 || strlen($password) > 60
@@ -58,6 +58,7 @@ class AdminRepository
         return true;
     }
 
+    // Validates the username
     private function validUsername($username, &$message)
     {
         $admins = $this->adminQueryBuilder->getAdmin();
@@ -81,6 +82,7 @@ class AdminRepository
     }
 
     // Read
+    // Returns false or the current admin
     public function getCurrentAdmin()
     {
 
@@ -90,25 +92,28 @@ class AdminRepository
         return $_SESSION["admin"];
     }
 
+    // Get all admins
     public function getAdmins()
     {
         return $this->createAdminArray($this->adminQueryBuilder->getAdmin());
     }
 
     // Update
+    // Change password if given values are correct
     public function changePassword()
     {
         if (empty($_POST["oldUsername"])) {
             return "Oeps... Er ging iets fout...";
         } else {
-            $oldUsername = htmlspecialchars(trim($_POST["oldUsername"]));
+            $username = htmlspecialchars(trim($_POST["oldUsername"]));
         }
 
-        $admin = $this->adminQueryBuilder->getAdmin($oldUsername);
+        $admin = $this->adminQueryBuilder->getAdmin($username);
         if (empty($admin)) {
             return "Oeps... Er ging iets fout...";
         }
 
+        // Checks if the admin whose password is about to change is added later than the current admin
         $date1 = strftime(" %H:%M %#d %B %Y", strtotime($admin[0]["CreationDate"]));
         $date2 = strftime(" %H:%M %#d %B %Y", strtotime($this->getCurrentAdmin()->creationDate));
         if ($date1 <= $date2) {
@@ -133,33 +138,55 @@ class AdminRepository
 
         $hashed = password_hash($password, PASSWORD_DEFAULT);
 
-        $this->adminQueryBuilder->changePassword($hashed, $oldUsername);
+        $this->adminQueryBuilder->changePassword($hashed, $username);
 
         return true;
     }
-
+    
     public function blockAdmin()
     {
-        if(empty($_GET["admin"]))
+        if (empty($_GET["admin"]))
             return false;
-        
+
         $username = htmlspecialchars($_GET["admin"]);
-        
+
+        if(!$this->validateBlock($username))
+            return false;
+
         $this->adminQueryBuilder->blockAdmin($username);
         return true;
     }
 
     public function unblockAdmin()
     {
-        if(empty($_GET["admin"]))
+        if (empty($_GET["admin"]))
             return false;
 
         $username = htmlspecialchars($_GET["admin"]);
 
+        if(!$this->validateBlock($username))
+            return false;
+        
         $this->adminQueryBuilder->unblockAdmin($username);
         return true;
     }
 
+    // Validates if the current admin can block the other admin
+    private function validateBlock($username)
+    {
+        $admin = $this->adminQueryBuilder->getAdmin($username);
+
+        if (empty($admin))
+            return false;
+
+        $date1 = strftime(" %H:%M %#d %B %Y", strtotime($admin[0]["CreationDate"]));
+        $date2 = strftime(" %H:%M %#d %B %Y", strtotime($this->getCurrentAdmin()->creationDate));
+        if ($date1 <= $date2)
+            return false;
+        return true;
+    }
+
+    // Prevents duplicate code
     private function createAdminArray($result)
     {
 
@@ -182,7 +209,7 @@ class AdminRepository
         return $returnArray;
     }
 
-// Other
+    // Other
     public function login()
     {
         if (!Empty($_POST["username"]) && !Empty($_POST["password"])) {
@@ -204,6 +231,7 @@ class AdminRepository
         $_SESSION["admin"] = null;
     }
 
+    // Validates if the input is correct to log in
     public function validate($username, $password, &$message)
     {
 

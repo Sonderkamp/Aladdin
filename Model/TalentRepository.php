@@ -50,7 +50,7 @@ class TalentRepository
 
     // ####### Read ######
 
-    // getAllTalents
+    // get or search AllTalents
     public function getTalents($page = null, $synonyms = null)
     {
         return $this->createTalentArray($this->talentBuilder->getTalents($page), $synonyms);
@@ -60,7 +60,7 @@ class TalentRepository
         return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, null, null, null, null, null, $search), $synonyms);
     }
 
-    // getAcceptedTalents
+    // get or search acceptedTalents
     public function getAcceptedTalents($page = null, $synonyms = null)
     {
         return $this->createTalentArray($this->talentBuilder->getTalents($page, true), $synonyms);
@@ -71,7 +71,7 @@ class TalentRepository
         return $this->createTalentArray($this->talentBuilder->getTalents($page, true, null, null, null, null, null, null, null, $search), $synonyms);
     }
 
-    // getNotAddedTalents
+    // get or search unaddedTalents
     public function getUnaddedTalents($userEmail = null, $page = null, $synonyms = null)
     {
         if($userEmail == null) {
@@ -88,7 +88,7 @@ class TalentRepository
         return $this->createTalentArray($this->talentBuilder->getTalents($page, null, $userEmail, null, null, null, null, null, null, $search), $synonyms);
     }
 
-    // getAddedTalents
+    // get or search AddedTalents (returns not denied talents added by User)
     public function getAddedTalents($userEmail = null, $page = null, $synonyms = null) {
         if($userEmail == null) {
             $userEmail = $this->userRepo->getCurrentUser()->email;
@@ -111,7 +111,7 @@ class TalentRepository
         return $this->createTalentArray($this->talentBuilder->getTalents(null, null, null, $id), $synonyms);
     }
 
-    // getTalentsRequestedByCurrentUser
+    // get or search requested talents by user
     public function getRequestedTalents($userEmail = null, $page = null, $synonyms = null)
     {
         if($userEmail == null) {
@@ -129,7 +129,7 @@ class TalentRepository
         return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, null, $userEmail, null, null, null, $search), $synonyms);
     }
 
-    // getAllRequestedTalents
+    // get or search all requested talents
     public function getAllRequestedTalents($page = null, $synonyms = null)
     {
         return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, null, null, true), $synonyms);
@@ -161,7 +161,7 @@ class TalentRepository
 
     // ###### Delete ######
 
-    // deleteTalentFromCurrentUser
+    // delete talent from current user or given user
     public function deleteTalent($talentId, $userEmail = null)
     {
         if($userEmail == null) {
@@ -182,6 +182,7 @@ class TalentRepository
     }
 
     // Helping methods
+    // Prevents duplicate code
     private function createTalentArray($result, $synonym = null)
     {
 
