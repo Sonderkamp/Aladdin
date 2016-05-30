@@ -284,12 +284,13 @@ class WishesController extends Controller
 
     public function getSpecificWish($id = null)
     {
+
         if($id = null && empty($_POST["wishId"])){
             $this->apologize("Please provide a valid id");
-        } else {
+        } else if(!empty($_POST["wishId"])){
             $id = $_POST["wishId"];
         }
-
+        
         $selectedWish = $this->wishRepo->getWish($id);
         $matches = $this->matchRepository->getMatches($id);
 
