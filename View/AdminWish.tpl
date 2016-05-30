@@ -145,27 +145,15 @@
                                             </li>
 
                                             <li>
-                                                <form class='noPadding' method="post">
-                                                    <button class="btn btn-sm"
-                                                            formaction="/AdminWish/action=accept"
-                                                            value="{$wish->id}"
-                                                            type="submit"
-                                                            name="wish_id">
-                                                        <span class="glyphicon glyphicon-ok"></span>
-                                                    </button>
-                                                </form>
+                                                <a href="/AdminWish/action=acceptWish?Id={$wish->id}" class="btn btn-sm">
+                                                    <span class="glyphicon glyphicon-ok"></span>
+                                                </a>
                                             </li>
 
                                             <li>
-                                                <form class='noPadding' method="post">
-                                                    <button class="btn btn-sm"
-                                                            formaction="/AdminWish/action=refuse"
-                                                            value="{$wish->id}"
-                                                            type="submit"
-                                                            name="wish_id">
-                                                        <span class="glyphicon glyphicon-remove"></span>
-                                                    </button>
-                                                </form>
+                                                <a href="/AdminWish/action=refuseWish?Id={$wish->id}" class="btn btn-sm">
+                                                    <span class="glyphicon glyphicon-remove"></span>
+                                                </a>
                                             </li>
 
                                             <li>
@@ -175,15 +163,9 @@
                                             </li>
 
                                             <li>
-                                                <form class='noPadding' method="post">
-                                                    <button class="btn btn-sm"
-                                                            formaction="/AdminWish/action=delete"
-                                                            value="{$wish->id}"
-                                                            type="submit"
-                                                            name="wish_id">
-                                                        <span class="glyphicon glyphicon glyphicon-trash"></span>
-                                                    </button>
-                                                </form>
+                                                <a href="/AdminWish/action=deleteWish?Id={$wish->id}" class="btn btn-sm">
+                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                </a>
                                             </li>
                                         </ul>
                                     </div>
@@ -242,15 +224,9 @@
                                             </li>
 
                                             <li>
-                                                <form class='noPadding' method="post">
-                                                    <button class="btn btn-sm"
-                                                            formaction="/AdminWish/action=delete"
-                                                            value="{$wish->id}"
-                                                            type="submit"
-                                                            name="wish_id">
-                                                        <span class="glyphicon glyphicon glyphicon-trash"></span>
-                                                    </button>
-                                                </form>
+                                                <a href="/AdminWish/action=deleteWish?Id={$wish->id}" class="btn btn-sm">
+                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                </a>
                                             </li>
                                         </ul>
                                     </div>
@@ -303,27 +279,15 @@
                                             </li>
 
                                             <li>
-                                                <form class='noPadding' method="post">
-                                                    <button class="btn btn-sm"
-                                                            formaction="/AdminWish/action=accept"
-                                                            value="{$wish->id}"
-                                                            type="submit"
-                                                            name="wish_id">
-                                                        <span class="glyphicon glyphicon-ok"></span>
-                                                    </button>
-                                                </form>
+                                                <a href="/AdminWish/action=acceptWish?Id={$wish->id}" class="btn btn-sm">
+                                                    <span class="glyphicon glyphicon-ok"></span>
+                                                </a>
                                             </li>
 
                                             <li>
-                                                <form class='noPadding' method="post">
-                                                    <button class="btn btn-sm"
-                                                            formaction="/AdminWish/action=refuse"
-                                                            value="{$wish->id}"
-                                                            type="submit"
-                                                            name="wish_id">
-                                                        <span class="glyphicon glyphicon-remove"></span>
-                                                    </button>
-                                                </form>
+                                                <a href="/AdminWish/action=refuseWish?Id={$wish->id}" class="btn btn-sm">
+                                                    <span class="glyphicon glyphicon-remove"></span>
+                                                </a>
                                             </li>
 
                                             <li>
@@ -388,15 +352,9 @@
                                             </li>
 
                                             <li>
-                                                <form class='noPadding' method="post">
-                                                    <button class="btn btn-sm"
-                                                            formaction="/AdminWish/action=delete"
-                                                            value="{$wish->id}"
-                                                            type="submit"
-                                                            name="wish_id">
-                                                        <span class="glyphicon glyphicon glyphicon-trash"></span>
-                                                    </button>
-                                                </form>
+                                                <a href="/AdminWish/action=deleteWish?Id={$wish->id}" class="btn btn-sm">
+                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                </a>
                                             </li>
                                         </ul>
                                     </div>
@@ -454,7 +412,6 @@
                                                     <span class="glyphicon glyphicon-user"></span>
                                                 </button>
                                             </li>
-
                                         </ul>
                                     </div>
                                 </td>
@@ -506,15 +463,9 @@
                                             </li>
 
                                             <li>
-                                                <form class='noPadding' method="post">
-                                                    <button class="btn btn-sm"
-                                                            formaction="/AdminWish/action=accept"
-                                                            value="{$wish->id}"
-                                                            type="submit"
-                                                            name="wish_id">
-                                                        <span class="glyphicon glyphicon-ok"></span>
-                                                    </button>
-                                                </form>
+                                                <a href="/AdminWish/action=acceptWish?Id={$wish->id}" class="btn btn-sm">
+                                                    <span class="glyphicon glyphicon-ok"></span>
+                                                </a>
                                             </li>
 
                                             <li>
@@ -524,15 +475,9 @@
                                             </li>
 
                                             <li>
-                                                <form class='noPadding' method="post">
-                                                    <button class="btn btn-sm"
-                                                            formaction="/AdminWish/action=delete"
-                                                            value="{$wish->id}"
-                                                            type="submit"
-                                                            name="wish_id">
-                                                        <span class="glyphicon glyphicon glyphicon-trash"></span>
-                                                    </button>
-                                                </form>
+                                                <a href="/AdminWish/action=deleteWish?Id={$wish->id}" class="btn btn-sm">
+                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                </a>
                                             </li>
                                         </ul>
                                     </div>
@@ -585,15 +530,9 @@
                                             </li>
 
                                             <li>
-                                                <form class='noPadding' method="post">
-                                                    <button class="btn btn-sm"
-                                                            formaction="/AdminWish/action=accept"
-                                                            value="{$wish->id}"
-                                                            type="submit"
-                                                            name="wish_id">
-                                                        <span class="glyphicon glyphicon-ok"></span>
-                                                    </button>
-                                                </form>
+                                                <a href="/AdminWish/action=acceptWish?Id={$wish->id}" class="btn btn-sm">
+                                                    <span class="glyphicon glyphicon-ok"></span>
+                                                </a>
                                             </li>
 
                                             <li>

@@ -62,7 +62,7 @@
                             <div class="panel panel-default">
 
                                 <div class="panel-heading">
-                                    <a href="/Wishes/Id={$wish->id}?action=getSpecificWish"
+                                    <a href="/Wishes/action=getSpecificWish?Id={$wish->id}"
                                        class="h3">{htmlspecialcharsWithNL($wish -> title)}</a>
                                 </div>
 
@@ -104,7 +104,7 @@
                             <div class="panel panel-default">
 
                                 <div class="panel-heading">
-                                    <a href="/Wishes/Id={$wish->id}?action=getSpecificWish"
+                                    <a href="/Wishes/action=getSpecificWish?Id={$wish->id}"
                                        class="h3">{htmlspecialcharsWithNL($wish -> title)}</a>
                                 </div>
 
@@ -135,7 +135,7 @@
                             <div class="panel panel-default">
 
                                 <div class="panel-heading">
-                                    <a href="/Wishes/Id={$wish->id}?action=getSpecificWish"
+                                    <a href="/Wishes/action=getSpecificWish?Id={$wish->id}"
                                        class="h3">{htmlspecialcharsWithNL($wish -> title)}</a>
                                 </div>
 
@@ -166,7 +166,7 @@
                             <div class="panel panel-default">
 
                                 <div class="panel-heading">
-                                    <a href="/Wishes/Id={$wish->id}?action=getSpecificWish"
+                                    <a href="/Wishes/action=getSpecificWish?Id={$wish->id}"
                                        class="h3">{htmlspecialcharsWithNL($wish -> title)}</a>
                                 </div>
 
@@ -197,7 +197,7 @@
                             <div class="panel panel-default">
 
                                 <div class="panel-heading">
-                                    <a href="/Wishes/Id={$wish->id}?action=getSpecificWish"
+                                    <a href="/Wishes/action=getSpecificWish?Id={$wish->id}"
                                        class="h3">{htmlspecialcharsWithNL($wish -> title)}</a>
                                 </div>
 

@@ -127,10 +127,15 @@ a:hover {
     min-width: 285px;
 }
 
-.small-dropdown-menu li {
+.small-dropdown-menu li{
     display: inline;
     margin-right: 10px;
     margin-bottom: 10px;
+}
+
+.small-dropdown-menu li > a{
+    padding: 10px;
+    display: inline;
 }
 
 .small-dropdown-menu li:last-child {

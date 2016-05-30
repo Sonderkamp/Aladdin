@@ -19,55 +19,7 @@ class AdminwishController extends Controller
 
     public function run()
     {
-
-        // BREEKT MET NIEUWE STRCTUUR TODO
-
-        if (isset($_GET["action"])) {
-            switch (strtolower($_GET["action"])) {
-                case "delete":
-                    $this->deleteWish($_POST["wish_id"]);
-                    break;
-                case "accept":
-                    $this->acceptWish($_POST["wish_id"]);
-                    break;
-                case "refuse":
-                    $this->refuseWish($_POST["wish_id"]);
-                    break;
-                default:
-                    $this->apologize("404 page not found");
-                    break;
-            }
-        }
-
-        if (isset($_GET["show"])) {
-            switch (strtolower($_GET["show"])) {
-                case "requested":
-                    $this->renderPage("requested");
-                    break;
-                case "published":
-                    $this->renderPage("published");
-                    break;
-                case "matched":
-                    $this->renderPage("matched");
-                    break;
-                case "current":
-                    $this->renderPage("current");
-                    break;
-                case "completed":
-                    $this->renderPage("completed");
-                    break;
-                case "denied":
-                    $this->renderPage("denied");
-                    break;
-                case "deleted":
-                    $this->renderPage("deleted");
-                    break;
-                default:
-                    $this->apologize("404 page not found");
-                    break;
-            }
-        }
-
+        (new AdminController())->guaranteeAdmin("/AdminWish");
         $this->renderPage("requested");
     }
 
@@ -96,24 +48,40 @@ class AdminwishController extends Controller
         exit(0);
     }
 
-    private function refuseWish($wishId)
+    public function refuseWish()
     {
-        $this->wishRepo->refuseWish($wishId);
-        $this->sendConfirmationMessage($wishId, false);
-        $this->redirect("/AdminWish");
+        if (!empty($_GET["Id"])) {
+            $wishId = $_GET["Id"];
+            $this->wishRepo->refuseWish($wishId);
+            $this->sendConfirmationMessage($wishId, false);
+            $this->redirect("/AdminWish");
+        } else {
+            $this->apologize("Please provide a valid wish Id");
+        }
+
     }
 
-    private function acceptWish($wishId)
+    public function acceptWish()
     {
-        $this->wishRepo->acceptWish($wishId);
-        $this->sendConfirmationMessage($wishId, true);
-        $this->redirect("/AdminWish");
+        if (!empty($_GET["Id"])) {
+            $wishId = $_GET["Id"];
+            $this->wishRepo->acceptWish($wishId);
+            $this->sendConfirmationMessage($wishId, true);
+            $this->redirect("/AdminWish");
+        } else {
+            $this->apologize("Please provide a valid wish Id");
+        }
     }
 
-    private function deleteWish($wishId)
+    public function deleteWish()
     {
-        $this->wishRepo->deleteWish($wishId);
-        $this->redirect("/AdminWish");
+        if (!empty($_GET["Id"])) {
+            $wishId = $_GET["Id"];
+            $this->wishRepo->deleteWish($wishId);
+            $this->redirect("/AdminWish");
+        } else {
+            $this->apologize("Please provide a valid wish Id");
+        }
     }
 
     private function sendConfirmationMessage($wishId, $accepted)
