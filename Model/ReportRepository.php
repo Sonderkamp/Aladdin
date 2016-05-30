@@ -8,7 +8,7 @@
  */
 class ReportRepository
 {
-    private $reportQueryBuilder;
+    private $reportQueryBuilder, $userRepository;
 
     private $BLOCK_STATUS = "bevestigd";
     private $DELETE_STATUS = "verwijderd";
@@ -16,6 +16,7 @@ class ReportRepository
     public function __construct()
     {
         $this->reportQueryBuilder = new ReportQueryBuilder();
+        $this->userRepository = new UserRepository();
     }
 
     public function add(Report $report)
@@ -57,12 +58,20 @@ class ReportRepository
         $this->reportQueryBuilder->setStatus($this->DELETE_STATUS, $id);
     }
 
+    // TODO: control for duplicate with getMyReports
     public function getReportedUsers($email = null){
+        if($email == null){
+            $email = $this->userRepository->getCurrentUser()->email;
+        }
+        
         $reported = $this->reportQueryBuilder->getReportedUsers($email);
         return $this->reportQueryBuilder->getReportArray($reported);
     }
 
     public function getMyReports($email = null){
+        if($email == null){
+            $email = $this->userRepository->getCurrentUser()->email; 
+        }
         $reported = $this->reportQueryBuilder->getMyReports($email);
         return $this->reportQueryBuilder->getReportArray($reported);
     }

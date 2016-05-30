@@ -73,7 +73,6 @@ class WishesController extends Controller
         $matchedWishes = $this->wishRepo->getPossibleMatches();
 
         $canAddWish = $this->wishRepo->canAddWish($this->userRepo->getCurrentUser()->email);
-
         $report = $this->reportRepo->getReportedUsers();
         $displayNames = array();
         $amountReports = count($report);
@@ -147,7 +146,7 @@ class WishesController extends Controller
     {
         if ($open) {
             // Check if users has 3 wishes, true if wishes are [<] 3
-            $canAddWish = $this->wishRepo->canAddWish($_SESSION["user"]->email);
+            $canAddWish = $this->wishRepo->canAddWish($this->userRepo->getCurrentUser()->email);
             if (!$canAddWish) {
                 $this->back();
                 exit(1);
@@ -204,7 +203,7 @@ class WishesController extends Controller
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // check if user can add a wish
-            if (!($this->wishRepo->canAddWish($_SESSION["user"]->email))) {
+            if (!($this->wishRepo->canAddWish($this->userRepo->getCurrentUser()->email))) {
                 $this->render("addWish.tpl", ["wishError" => "U heeft al 3 wensen, u kunt geen wensen meer toevoegen."]);
                 exit(1);
             }
@@ -214,7 +213,7 @@ class WishesController extends Controller
             $tag = $this->addHashTag($_POST["tag"]);
 
             $input = array([$title, $description, $tag]);
-            $size = strlen($this->gethashtags($tag));
+            $size = strlen($this->getHashTags($tag));
 
             if (!$this->isValid($input) || $size == 0) {
                 $this->renderEdit($title, $description, $tag);
@@ -225,7 +224,7 @@ class WishesController extends Controller
                 $this->renderEdit($title, $description, $tag, "U heeft al een wens met een soortgelijke titel", true);
             }
 
-            $myTags = array_map('ucfirst', explode(',', $this->gethashtags($tag)));
+            $myTags = array_map('ucfirst', explode(',', $this->getHashTags($tag)));
 
             // create an array with the wish
             $wish = new Wish();
@@ -238,10 +237,7 @@ class WishesController extends Controller
         }
     }
 
-    /**
-     *
-     */
-    public function editWish()
+    private function editWish()
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $title = $_POST["title"];
@@ -249,7 +245,7 @@ class WishesController extends Controller
             $tag = $this->addHashTag($_POST["tag"]);
 
             $message = "Ongelidige tag #";
-            if (strlen($this->gethashtags($tag)) == 0) {
+            if (strlen($this->getHashTags($tag)) == 0) {
                 $this->renderEdit($title, $description, $tag, $message);
 
             }
@@ -264,7 +260,7 @@ class WishesController extends Controller
             }
 
             // set a comma , between the tags.
-            $myTags = array_map('ucfirst', explode(',', $this->gethashtags($tag)));
+            $myTags = array_map('ucfirst', explode(',', $this->getHashTags($tag)));
 
             // create a wish
             $wish = new Wish();
@@ -353,7 +349,7 @@ class WishesController extends Controller
      * @param $text
      * @return string
      */
-    public function gethashtags($text)
+    public function getHashTags($text)
     {
         //Match the hashtags
         preg_match_all('/(^|[^a-z0-9_])#([a-z0-9_]+)/i', $text, $matchedHashtags);
