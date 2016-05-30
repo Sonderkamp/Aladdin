@@ -74,15 +74,18 @@ class MatchRepository
         if(!$this->checkDuplicates($username)){
             $this->matchQueryBuilder->addMatch($wishId , $username);
             $this->sentMatchMessage($wishId , $username);
+        } else {
+            return false;
         }
+        return true;
     }
 
     public function selectMatch($wishId , $username){
-        
+        $this->matchQueryBuilder->selectMatch($wishId , $username);
     }
 
     public function checkDuplicates($username){
-        if(!empty($this->matchQueryBuilder->checkForUser($username))){
+        if(empty($this->matchQueryBuilder->checkForUser($username))){
             return true;
         } else {
             return false;

@@ -127,10 +127,15 @@ a:hover {
     min-width: 285px;
 }
 
-.small-dropdown-menu li {
+.small-dropdown-menu li{
     display: inline;
     margin-right: 10px;
     margin-bottom: 10px;
+}
+
+.small-dropdown-menu li > a{
+    padding: 10px;
+    display: inline;
 }
 
 .small-dropdown-menu li:last-child {
@@ -556,6 +561,22 @@ blockquote footer, blockquote small, blockquote .small {
     border-bottom-width: 1px;
     padding-bottom: 5px;
     margin-bottom: 5px;
+}
+
+.match-controls > span{
+    width: 50px;
+    height: 50px;
+}
+
+.match-controls > .btn{
+    max-width: 50px;
+    max-height: 50px;
+    margin-left: 5px;
+    float: right;
+}
+
+.match-controls > .btn :last-child{
+    margin-left: 0;
 }
 
 .panel > :last-child {

@@ -26,6 +26,7 @@ class AccountController extends Controller
 
     }
 
+    // check if username is taken.
     public function check()
     {
 
@@ -39,6 +40,7 @@ class AccountController extends Controller
         }
     }
 
+    // go to login, activate or manage account.
     private function pagepicker()
     {
         if (!Empty($_SESSION["user"]) && (empty($_GET["token"]) || (strtolower($_GET["action"])) != "activate")) {
