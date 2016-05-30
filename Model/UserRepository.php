@@ -18,7 +18,7 @@ class UserRepository
 
     public function getUser($emailOrDisplayName)
     {
-        return $this->UserQueryBuilder->getUser($emailOrDisplayName);
+        return $this->userCreator($this->UserQueryBuilder->getUser($emailOrDisplayName));
     }
 
     public function blockUser($username, $reason = null)
@@ -578,13 +578,69 @@ class UserRepository
     public
     function getAllUsers()
     {
-        return $this->UserQueryBuilder->getAllUsers();
+        return $this->createUsers($this->UserQueryBuilder->getAllUsers());
     }
 
     public
     function searchUsers($keyword)
     {
         return $this->UserQueryBuilder->getAllUsers($keyword);
+    }
+
+    private function userCreator($result){
+        if (count(($result)) === 0) {
+            return null;
+        }
+
+        if (count($result) === 1) {
+            return $this->createUser($result);
+        } else {
+            return $this->createUsers($result);
+        }
+    }
+
+    private function createUser($result)
+    {
+
+        if ($result == null || $result == false || count($result) == 0) {
+            return false;
+        }
+
+        $newUser = new User();
+
+        $newUser->email = $result[0]["Email"];
+        $newUser->isAdmin = $result[0]["Admin"];
+        $newUser->name = $result[0]["Name"];
+        $newUser->surname = $result[0]["Surname"];
+        $newUser->address = $result[0]["Address"];
+        $newUser->handicap = $result[0]["Handicap"];
+        $newUser->postalcode = $result[0]["Postalcode"];
+        $newUser->country = $result[0]["Country"];
+        $newUser->city = $result[0]["City"];
+        $newUser->dob = $result[0]["Dob"];
+        $newUser->gender = $result[0]["Gender"];
+        $newUser->hash = $result[0]["ValidationHash"];
+        $newUser->displayName = $result[0]["DisplayName"];
+        $newUser->initials = $result[0]["Initials"];
+        $newUser->RecoveryHash = $result[0]["RecoveryHash"];
+        $newUser->RecoveryDate = $result[0]["RecoveryDate"];
+
+        if (isset($result[0]["isBlocked"])) {
+            $newUser->blocked = $result[0]["isBlocked"];
+        }
+
+        return $newUser;
+    }
+
+    /** creates multipe user objects */
+    public function createUsers($result)
+    {
+        $users = array();
+        foreach ($result as $item) {
+            $users[] = $this->createUser(array($item));
+        }
+
+        return $users;
     }
 
 }
