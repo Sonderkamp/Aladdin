@@ -16,7 +16,9 @@ class ReportQueryBuilder
         $this->userRepository = new UserRepository();
     }
 
-    /* ADD */
+    /** Add report to database
+     * @param $report = Report object
+     */
     public function add(Report $report)
     {
         $sql = "INSERT INTO `reportedusers` 
@@ -34,7 +36,12 @@ class ReportQueryBuilder
     }
 
 
-    /* GET */
+    /** Get report
+     * @param $requested , set to get all reports where status = 'aangevraagd'
+     * @param $id , set to get report with id
+     * @param $handled , set to get all handled reports
+     * @return return result
+     */
     public function get($requested = null, $id = null, $handled = null)
     {
         $query = "SELECT * FROM reportedusers";
@@ -54,15 +61,23 @@ class ReportQueryBuilder
         return Database::query_safe($query, $parameters);
     }
 
-    // TODO: control for duplicate with getMyReports
+    /** Get report of user
+     * @param $email = reports of user with email
+     * @return result
+     */
     public function getReportedUsers($email)
     {
+        // TODO: control for duplicate with getMyReports
         $sql = "SELECT * FROM `reportedusers` WHERE `user_Reporter` = ?";
         $parameters = array($email);
 
         return Database::query_safe($sql, $parameters);
     }
 
+    /** Get report of user
+     * @param $email = reports of user with email
+     * @return result
+     */
     public function getMyReports($email)
     {
         $sql = "SELECT * FROM `reportedusers` WHERE `user_Reported` = ?";
@@ -71,11 +86,14 @@ class ReportQueryBuilder
         return Database::query_safe($sql, $parameters);
     }
 
-    // TODO: [MEVLUT] check of reporter en reported samen in zelfde query kunnen 
+
+    /** Returns array with rerport objects
+     * @param $result, result of the database query 
+     * @return array with report objects */
     public function getReportArray($result)
     {
         if (count($result) <= 0) return;
-
+        // TODO: [MEVLUT] check of reporter en reported samen in zelfde query kunnen
         $reports = array();
         foreach ($result as $item) {
             $id = $item["Id"];
@@ -96,7 +114,10 @@ class ReportQueryBuilder
     }
 
 
-    /* SET */
+    /** Set reportstatus
+     * @param $status = new status for the report
+     * @param $id = the id of the report which status needs to be changed
+     */
     public function setStatus($status, $id)
     {
         if ($id > 0) {

@@ -161,6 +161,9 @@ class UserQueryBuilder
         return $result;
     }
 
+    /** get all users
+     * @param $keyword | optional, set for searching users 
+     * @return array with User objects */
     public function getAllUsers($keyword = null)
     {
         $sql = "
@@ -190,6 +193,5 @@ class UserQueryBuilder
             return Database::query($sql);
         }
     }
-
 
 }

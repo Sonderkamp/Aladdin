@@ -575,16 +575,32 @@ class UserRepository
         return $_SESSION["user"];
     }
 
+//<<<<<<< HEAD
+//    /** returns all users */
+//    public function getAllUsers(){
+//        return $this->UserQueryBuilder->getAllUsers();
+//    }
+//
+//    /** search users
+//     * @param $keyword = keyword to search user this can be a name for example
+//     * @return array with user objects */
+//    public function searchUsers($keyword){
+//=======
+
+    /** returns all users */
     public
     function getAllUsers()
     {
         return $this->createUsers($this->UserQueryBuilder->getAllUsers());
     }
 
+    /** search users
+     * @param $keyword = keyword to search user this can be a name for example
+     * @return array with user objects */
     public
     function searchUsers($keyword)
     {
-        return $this->UserQueryBuilder->getAllUsers($keyword);
+        return $this->userCreator($this->UserQueryBuilder->getAllUsers($keyword));
     }
 
     private function userCreator($result){
