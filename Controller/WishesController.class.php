@@ -464,7 +464,7 @@ class WishesController extends Controller
             }
         }
 
-        $this->redirect("/Wishes/Id=" . $_GET["Id"]);
+        $this->redirect("/Wishes/action=getSpecificWish/Id=" . $_GET["Id"]);
         exit();
 
     }
