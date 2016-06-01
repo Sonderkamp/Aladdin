@@ -147,12 +147,12 @@ class WishQueryBuilder extends QueryBuilder
     {
         $wishContentDate = $this->getSingleWish($wishId, true)[0]["Date"];
 
-        $query1 = "UPDATE `wishContent` SET IsAccepted = ? WHERE `wishContent`.Date = ?;";
-        $query2 = "UPDATE `wishContent` SET moderator_username = ? WHERE `wishContent`.Date = ?;";
+        $query1 = "UPDATE `wishContent` SET IsAccepted = ? WHERE `wishContent`.Date = ? AND `wishContent`.wish_Id = ?;";
+        $query2 = "UPDATE `wishContent` SET moderator_username = ? WHERE `wishContent`.Date = ? AND `wishContent`.wish_Id = ?;";
         $query3 = "UPDATE `wish` SET Status = ? WHERE id = ?;";
 
-        $this->executeQuery($query1, array($IsAccepted, $wishContentDate));
-        $this->executeQuery($query2, array($modName, $wishContentDate));
+        $this->executeQuery($query1, array($IsAccepted, $wishContentDate, $wishId));
+        $this->executeQuery($query2, array($modName, $wishContentDate, $wishId));
         $this->executeQuery($query3, array($status, $wishId));
 
     }

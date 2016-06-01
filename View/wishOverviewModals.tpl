@@ -1,45 +1,37 @@
 <div class="col-xs-3 right">
     <div class="dropdown">
         {*{if $currentPage == "myWishes"}*}
-            {*<span class="glyphicon glyphicon-user"></span>*}
-            {*{htmlspecialcharsWithNL($wish -> user -> displayName)}*}
+        {*<span class="glyphicon glyphicon-user"></span>*}
+        {*{htmlspecialcharsWithNL($wish -> user -> displayName)}*}
         {*{else}*}
-            {if ($wish -> user -> displayName) != $smarty.session.user -> displayName}
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"
-                   role="button"
-                   aria-haspopup="true"
-                   aria-expanded="false">
-                    <span class="glyphicon glyphicon-user"></span>
-                    <span>{htmlspecialcharsWithNL($wish -> user -> displayName)}</span>
-                    <span class="caret"></span>
-                </a>
-                {if in_array(($wish -> user -> displayName),$reported)}
-                    <ul class="dropdown-menu">
-                        <li>
-                            <p>U heeft deze gebruiker gerapporteerd.</p>
-                        </li>
-                    </ul>
-                {else}
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a data-toggle="modal"
-                               data-target="#myModal{preg_replace('/\s+/', '', $wish->id)}">
-                                <p>Rapporteren</p>
-                            </a>
-                        </li>
-                    </ul>
-                {/if}
-            {else}
+        {if ($wish -> user -> displayName) != $smarty.session.user -> displayName}
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+               role="button"
+               aria-haspopup="true"
+               aria-expanded="false">
                 <span class="glyphicon glyphicon-user"></span>
-                {htmlspecialcharsWithNL($wish -> user -> displayName)}
-                {*<a class="dropdown-toggle" data-toggle="dropdown" role="button"*}
-                   {*aria-haspopup="true"*}
-                   {*aria-expanded="false">*}
-                {*<span class="glyphicon glyphicon-user">*}
-                    {*{htmlspecialcharsWithNL($wish -> user -> displayName)}*}
-                {*</span>*}
-                {*</a>*}
-            {/if}
+                <span>{htmlspecialcharsWithNL($wish -> user -> displayName)}</span>
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a data-toggle="modal"
+                       data-target="#myModal{preg_replace('/\s+/', '', $wish->id)}">
+                        <p>Rapporteren</p>
+                    </a>
+                </li>
+            </ul>
+        {else}
+            <span class="glyphicon glyphicon-user"></span>
+            {htmlspecialcharsWithNL($wish -> user -> displayName)}
+            {*<a class="dropdown-toggle" data-toggle="dropdown" role="button"*}
+            {*aria-haspopup="true"*}
+            {*aria-expanded="false">*}
+            {*<span class="glyphicon glyphicon-user">*}
+            {*{htmlspecialcharsWithNL($wish -> user -> displayName)}*}
+            {*</span>*}
+            {*</a>*}
+        {/if}
         {*{/if}*}
 
     </div>
