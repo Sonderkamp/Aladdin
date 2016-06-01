@@ -61,9 +61,9 @@ class ForbiddenwordsController extends Controller
             // if $succes is succeeded create the word.
             if ($success == "succeeded") {
 
-                $talent = $this->talentRepo->searchTalents($word,null,null,true);
-                if(!empty($talent)) {
-                        $this->talentRepo->permanentDeleteTalent($talent[0]->id);
+                $talent = $this->talentRepo->searchTalents($word, null, null, true);
+                if (!empty($talent)) {
+                    $this->talentRepo->permanentDeleteTalent($talent[0]->id);
                 }
                 // Set the word in the database
                 $this->wordRepo->createForbiddenWord($word);
