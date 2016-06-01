@@ -56,9 +56,9 @@ class TalentRepository
         return $this->createTalentArray($this->talentBuilder->getTalents($page), $synonyms);
     }
 
-    public function searchTalents($search, $page = null, $synonyms = null)
+    public function searchTalents($search, $page = null, $synonyms = null, $exact = null)
     {
-        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, null, null, null, null, null, $search), $synonyms);
+        return $this->createTalentArray($this->talentBuilder->getTalents($page, null, null, null, null, null, null, null, null, $search, $exact), $synonyms);
     }
 
     // get or search acceptedTalents
@@ -170,6 +170,11 @@ class TalentRepository
             $userEmail = $this->userRepo->getCurrentUser()->email;
         }
         $this->talentBuilder->deleteTalentFromUser($talentId, $userEmail);
+    }
+    
+    // permanently deletes talent
+    public function permanentDeleteTalent($talentId) {
+        $this->talentBuilder->deleteTalent($talentId);
     }
 
     // deleteSynonymFromTalent

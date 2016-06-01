@@ -35,7 +35,7 @@
     {* Search forbidden word *}
     <form class="col-xs-12 col-sm-12 col-md-6 col-lg-6" action="/forbiddenwords/search" method="get">
         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-            <input class="form-control" name="search" placeholder="Zoek een verboden woord">
+            <input class="form-control" name="search" placeholder="Zoek een verboden woord"{if !Empty($search)}value="{$search}"{/if}>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
             <button type="submit" class="btn btn-primary">Zoek</button>
@@ -252,7 +252,7 @@
             </div>
         {/if}
     {else}
-        <h1 class="table col-xs-12 col-sm-12 col-md-12 col-lg-12">No words found!</h1>
+        <h5 class="table col-xs-12 col-sm-12 col-md-12 col-lg-12">Geen woorden gevonden!</h5>
     {/if}
 </div>
 
