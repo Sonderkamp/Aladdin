@@ -41,7 +41,7 @@
                                                                 placeholder="Zoeken.."></div>
         <div>
             <button type="submit" class="btn btn-primary">Zoek</button>
-            <button type="submit" class="btn btn-primary pull-right">Toon alle</button>
+            <button type="submit" class="btn btn-primary pull-right">Reset zoekfilter</button>
         </div>
     </form>
 

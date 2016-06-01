@@ -136,7 +136,7 @@ class UserQueryBuilder
 
     public function getUser($emailOrDisplayName)
     {
-       return Database::query_safe("SELECT * FROM user WHERE Email = ? OR DisplayName = ?", array($emailOrDisplayName, $emailOrDisplayName));
+        return Database::query_safe("SELECT * FROM user WHERE Email = ? OR DisplayName = ?", array($emailOrDisplayName, $emailOrDisplayName));
     }
 
     public function isBlocked($username)
@@ -162,8 +162,9 @@ class UserQueryBuilder
     }
 
     /** get all users
-     * @param $keyword | optional, set for searching users 
-     * @return array with User objects */
+     * @param $keyword | optional, set for searching users
+     * @return array with User objects
+     */
     public function getAllUsers($keyword = null)
     {
         $sql = "
@@ -178,20 +179,21 @@ class UserQueryBuilder
     		  GROUP BY user_email) AS b2    
               ON (b.user_email = b2.user_email AND b.dateBlocked= b2.MaxDate)) bx 
             ON u.email = bx.user_email";
-        
-        if(isset($keyword)){
-            $sql .= " WHERE u.Email SOUNDS LIKE ? 
+
+        if (isset($keyword)) {
+            $sql .= " WHERE u.Email LIKE ? 
                   OR u.Name SOUNDS LIKE ?
                   OR u.Surname SOUNDS LIKE ?
                   OR u.Country SOUNDS LIKE ?
                   OR u.City SOUNDS LIKE ?";
 
-            $result = Database::query_safe($sql, array($keyword,$keyword,$keyword,$keyword,$keyword));
-
+            $keyword = preg_replace('/\s+/', '', "%".$keyword."%");
+            $result = Database::query_safe($sql, array($keyword, $keyword, $keyword, $keyword, $keyword));
             return $result;
         } else {
             return Database::query($sql);
         }
     }
+
 
 }
