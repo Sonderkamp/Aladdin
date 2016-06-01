@@ -313,7 +313,7 @@ class AdmintalentsController extends Controller
     private function checkSearch()
     {
         if (!Empty($_GET["search"])) {
-            $this->search = htmlspecialchars($_GET["search"]);
+            $this->search = htmlspecialchars(trim($_GET["search"]));
 
             $this->allTalents = $this->talentRepo->searchTalents($this->search, null, true);
             $this->currentTalentsCount = 0;

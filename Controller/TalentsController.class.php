@@ -296,7 +296,7 @@ class TalentsController extends Controller
         }
     }
 
-    // Fill requestedTalents with the requested talents BY THE USER
+    // Fill requestedTalents with the requested ttalents BY THE USER
     private function fillRequestedTalents()
     {
 

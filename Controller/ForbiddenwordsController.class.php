@@ -9,7 +9,7 @@
 class ForbiddenwordsController extends Controller
 {
     // Instant variables
-    private $wordRepo, $words, $error, $success, $wordsCount, $page, $search;
+    private $wordRepo, $words, $error, $success, $wordsCount, $page, $search, $talentRepo;
 
     public function __construct()
     {
@@ -19,6 +19,7 @@ class ForbiddenwordsController extends Controller
 
         // Set the wordRepo
         $this->wordRepo = new ForbiddenWordRepository();
+        $this->talentRepo = new TalentRepository();
 
         // wordsCount is the number of words in total devided by 10 and rounded upwards.
         // page is the current page of the pagination. if page is 2 then show words 10 to 20
@@ -60,6 +61,10 @@ class ForbiddenwordsController extends Controller
             // if $succes is succeeded create the word.
             if ($success == "succeeded") {
 
+                $talent = $this->talentRepo->searchTalents($word,null,null,true);
+                if(!empty($talent)) {
+                        $this->talentRepo->permanentDeleteTalent($talent[0]->id);
+                }
                 // Set the word in the database
                 $this->wordRepo->createForbiddenWord($word);
                 // Create a succes message
