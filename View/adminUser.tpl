@@ -178,7 +178,7 @@
                                                            onClick="return popup(this, 'notes',900,400)">Bekijk
                                                             wens</a>
                                                         <a href="AdminWish/action=deleteWish?Id={$report->wishID}">
-                                                            Verwijder wens>
+                                                            Verwijder wens
                                                         </a>
                                                     {else}
                                                         {* bekijk bericht *}
