@@ -8,8 +8,7 @@
  */
 class WishRepository
 {
-
-    private $talentRepository, $userRepository, $WishQueryBuilder, $admin;
+    private $talentRepository, $userRepository, $WishQueryBuilder , $adminRepo;
 
     public $wishLimit = 3;
 
@@ -17,8 +16,8 @@ class WishRepository
     {
         $this->WishQueryBuilder = new WishQueryBuilder();
         $this->talentRepository = new TalentRepository();
-        $this->userRepository = new UserRepository();
-        $this->admin = new Admin();
+        $this->userRepository   = new UserRepository();
+        $this->adminRepo        = new AdminRepository();
     }
 
     /**
@@ -169,13 +168,6 @@ class WishRepository
                     $this->talentRepository->addTalent($item);
                 }
                 $this->bindToTalent($item, $wish);
-
-//                if (in_array($item, $tags)) {
-//                    $this->bindToTalent($item, $wish);
-//                } else {
-//                    $this->talentRepository->addTalent($item);
-//                    $this->bindToTalent($item, $wish);
-//                }
             }
         }
     }
@@ -236,7 +228,7 @@ class WishRepository
 
         $temp = $this->WishQueryBuilder->wishIDByTalents($allTalents);
         $result = $this->WishQueryBuilder->getPossibleMatches($temp, $this->getMyWishes());
-        
+
         return $this->getReturnArray($result);
     }
 
@@ -262,17 +254,17 @@ class WishRepository
 
     public function acceptWish($id)
     {
-        $this->WishQueryBuilder->executeAdminAction($id, 1, $this->admin->getCurrentAdmin()->username, "Gepubliseerd");
+        $this->WishQueryBuilder->executeAdminAction($id, 1, $this->adminRepo->getCurrentAdmin()->username, "Gepubliseerd");
     }
 
     public function refuseWish($id)
     {
-        $this->WishQueryBuilder->executeAdminAction($id, 0, $this->admin->getCurrentAdmin()->username, "Geweigerd");
+        $this->WishQueryBuilder->executeAdminAction($id, 0, $this->adminRepo->getCurrentAdmin()->username, "Geweigerd");
     }
 
     public function deleteWish($id)
     {
-        $this->WishQueryBuilder->executeAdminAction($id, 0, $this->admin->getCurrentAdmin()->username, "Verwijderd");
+        $this->WishQueryBuilder->executeAdminAction($id, 0, $this->adminRepo->getCurrentAdmin()->username, "Verwijderd");
     }
 
     public function getWish($id)
@@ -369,8 +361,7 @@ class WishRepository
 
 
         if ($img != null) {
-            if (!empty($img['tmp_name']))
-            {
+            if (!empty($img['tmp_name'])) {
 
 
                 $url = $this->upload($img);
@@ -444,6 +435,59 @@ class WishRepository
         }
         return null;
 
+    }
+
+    public function cleanWishes()
+    {
+
+       $res = Database::query("SELECT * FROM `updatelog` order by Time Desc Limit 1");
+
+        if($res !== false)
+        {
+             if(round((strtotime("now") - strtotime($res[0]["Time"]))/3600, 1) < 24)
+             {
+                 return;
+             }
+        }
+
+        Database::query_safe("INSERT INTO `updatelog` (`Time`) VALUES (?);", array(date("Y-m-d H:i:s")));
+
+
+        $monthsCap = 6;
+
+        // Ik ga dit met php doen. sorry. Ik krijg het niet voor elkaar met Mysql
+        $oldWishes = $this->getReturnArray($this->WishQueryBuilder->getWishes
+        (null, ["Aangemaakt", "Gepubliseerd"], null, true, null));
+
+
+        if (count($oldWishes) > 0) {
+            if (is_array($oldWishes)) {
+                foreach ($oldWishes as $wish) {
+
+                    $date1 = new DateTime( $wish->contentDate);
+                    $date2 = new DateTime();
+                    $interval = $date2->diff($date1);
+                    $diff = ($interval->format('%y') * 12) + $interval->format('%m');
+
+
+                    if ($diff >= $monthsCap) {
+
+
+                        $mail = new Email();
+                        $mail->fromName = "Alladin";
+                        $mail->subject = "Automatisch verwijderen.";
+                        $mail->message = "Hallo " . $wish->user->name . ", \n  Wensen die al meer dan 6 maanden niet zijn gewijzigd worden door het systeem verwijderd. Uw wens genaamd: '". $wish->title ."' Is nu verwijderd.";
+                        $mail->to = $wish->user->email;
+
+                        $newmail = new messageRepository();
+                        $newmail->sendMessage("Admin", $mail->to, $mail->subject, $mail->message);
+                        $this->WishQueryBuilder->executeAdminAction($wish->id, 0, "Admin", "Verwijderd");
+                    }
+
+
+                }
+            }
+        }
     }
 
 }

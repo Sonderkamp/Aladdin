@@ -7,7 +7,7 @@
 <div class="container">
 
 
-    <h5>Wensen Beheer</h5>
+    <h5>Gebruikers Beheer</h5>
     <div class="col-md-2">
         <ul class="nav nav-pills nav-stacked">
             <li {if $currentPage == "users"}class="active"{/if}>
@@ -37,10 +37,11 @@
 
     <div class="col-md-10">
         {if isset($error)}
-        <div class="alert  form-error alert-dismissible " role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            {htmlspecialchars($error)}
-        </div>
+            <div class="alert  form-error alert-dismissible " role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                {htmlspecialchars($error)}
+            </div>
         {/if}
 
     </div>
@@ -84,7 +85,8 @@
 
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a href="/AdminUser/action=showProfile/email={$selectedUser->email}">Bekijk profiel</a>
+                                                <a href="/AdminUser/action=showProfile/email={$selectedUser->email}">Bekijk
+                                                    profiel</a>
                                             </li>
                                             <li>
                                                 {if $selectedUser->blocked === 1}
@@ -148,7 +150,13 @@
                                                 <li>
                                                     <a data-toggle="modal"
                                                        data-target="#myModal{preg_replace('/\s+/', '', $report->getId())}">
-                                                        Bekijken
+                                                        Bekijk rapport
+                                                    </a>
+                                                </li>
+
+                                                <li>
+                                                    <a href="/AdminUser/action=showProfile/email={$report -> getReported() -> getEmail()}">
+                                                        <span>Bekijk profiel</span>
                                                     </a>
                                                 </li>
                                                 <li>

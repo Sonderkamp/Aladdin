@@ -100,6 +100,9 @@ class WishQueryBuilder extends QueryBuilder
             $query = substr_replace($query, '', -3);
         }
 
+
+
+
         $query .= " GROUP BY `wish`.Id";
 
         //acquire params if any
@@ -116,6 +119,10 @@ class WishQueryBuilder extends QueryBuilder
         return $this->executeQuery($query, $params);
     }
 
+    /** get one wish
+     * @param $wishId = the id of the wish you want
+     * @param $admin, set if only wants the accepted wishes
+     * @return result of the query */
     public function getSingleWish($wishId, $admin = null)
     {
         $query = "SELECT * FROM `wish` LEFT JOIN `wishContent`
@@ -151,13 +158,19 @@ class WishQueryBuilder extends QueryBuilder
     }
 
 
-    public function getLatestWish($user = null)
+    /** returns the last wish from the user given in the param
+     * @param $user = email of the user
+     * @return result of the query */
+    public function getLatestWish($user)
     {
         $sql = "SELECT * FROM `wish` where `User` = ? ORDER BY `Date` DESC LIMIT 1";
         return $this->executeQuery($sql, array($user));
     }
 
 
+    /** add wish to database
+     * @param $email = email of the user
+     * @return result of the query */
     public function addWish($email)
     {
         $status = "Aangemaakt";
@@ -167,7 +180,8 @@ class WishQueryBuilder extends QueryBuilder
         $this->executeQuery($query, $array);
     }
 
-
+    /** add content of the wish to the database
+     * @param $wish = Wish object */
     public function addWishContent(Wish $wish)
     {
         $query = "INSERT INTO `wishContent` (`Content`, `Title`, `wish_Id`)
@@ -177,12 +191,17 @@ class WishQueryBuilder extends QueryBuilder
         $this->executeQuery($query, $array);
     }
 
+    /** change status of a wish
+     * @param $wishId = id of the wish
+     * @param $status = status to change the wish to */
     public function editWishStatus($wishId, $status)
     {
         $query = "UPDATE `wish` SET Status = ? WHERE id = ?;";
         $this->executeQuery($query, array($status, $wishId));
     }
 
+    /** delete all talents which are linked to a wish
+     * @param $wish = Wish object*/
     public function deleteWishTalents(Wish $wish)
     {
         $query = "DELETE from `talent_has_wish` WHERE `wish_Id` = ?";
@@ -191,6 +210,8 @@ class WishQueryBuilder extends QueryBuilder
         $this->executeQuery($query, $value);
     }
 
+    /** delete wish content which is linked to a wish
+     * @param $wish = Wish object*/
     public function deleteWishContent(Wish $wish)
     {
         $query = "DELETE FROM `wishcontent` WHERE `wish_Id` = ?";
@@ -198,7 +219,10 @@ class WishQueryBuilder extends QueryBuilder
 
         $this->executeQuery($query, $value);
     }
-
+    
+    /** binds talent to wish 
+     * @param $talentName = name of the talent to bind to a wish
+     * @param $wish = Wish object */
     public function bindToTalent($talentName, Wish $wish)
     {
         $query = "SELECT `Id` as talentId FROM `talent` WHERE `Name`=?";
@@ -212,6 +236,9 @@ class WishQueryBuilder extends QueryBuilder
         Database::query_safe($query2, $array2);
     }
 
+    /** get all wish id's which are linked by talent_id's 
+     * @param $talents = array of talents
+     * @return list with wish id's */
     public function wishIDByTalents($talents)
     {
         $talentList = array();
@@ -232,6 +259,10 @@ class WishQueryBuilder extends QueryBuilder
         return $list;
     }
 
+    /** get's wishes which can be a match  
+     * @param $talents = array with talent id's 
+     * @param $myWishes = list with wishes of user 
+     * @return list with wishes */
     public function getPossibleMatches($talents, $myWishes)
     {
         $talentList = $this->getSQLString($talents);
@@ -243,28 +274,13 @@ class WishQueryBuilder extends QueryBuilder
 
         $wishList = $this->getSQLString($temp);
         return $this->getWishes(null, array($published, "Match gevonden"), null, false, false, $wishList, $talentList);
-
-//
-//        /** uitgecomment ff laten staan voor zkrheid */
-//        $sql = "SELECT *
-//              FROM wish AS w
-//                JOIN (SELECT wish_Id, MAX(wishContent.Date) AS max_date
-//                  FROM wishContent
-//                    WHERE IsAccepted = 1 AND moderator_username is not null
-//                    GROUP BY wish_Id) AS wcMax
-//                ON w.Id = wcMax.wish_Id
-//                  JOIN wishContent AS wc
-//                  ON wcMax.wish_Id = wc.wish_Id
-//                    WHERE wc.wish_Id in $talentList
-//                    AND wc.wish_Id NOT IN $wishList
-//                    AND (w.Status = 'Gepubliceerd' OR w.status='Match gevonden')
-//                    AND wc.Date = wcMax.max_date
-//                    ORDER BY max_date DESC";
-//
-//        return $this->executeQuery($sql, array());
     }
 
 
+    /** creates a sql string with comma's 
+     * @param $array an array with numbers 
+     * @return an sql string like: (1,2,3,4) so that it can be used in an sql query 
+     * like select * from .. where in getSQLString(..) */
     public function getSQLString($array)
     {
         $string = '(';

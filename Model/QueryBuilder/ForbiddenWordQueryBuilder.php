@@ -14,6 +14,7 @@ class ForbiddenWordQueryBuilder
             array(strtolower($word)));
     }
 
+    // Get all forbiddenwords, get limited forbidden words, get a single word or searched words
     public function getForbiddenWords($limit = null, $word = null, $search = null) {
 
         $query = "SELECT * FROM `forbiddenwords`";
