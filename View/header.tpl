@@ -64,6 +64,7 @@
                 <li><a href="/about/action=home"> <span class="glyphicon glyphicon glyphicon-home"></span> Over Aladdin</a>
                 </li>
                 {if isset($user)}
+                    <li><a href="/dashboard"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
                     <li><a href="/wishes"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
                     <li><a href="/Inbox"> <span class="glyphicon glyphicon glyphicon-envelope"></span> Berichten</a>
                     </li>
@@ -97,7 +98,6 @@
                             {$user->displayName}<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="/profile">Mijn profiel</a></li>
-                            <li><a href="/dashboard">Dashboard</a></li>
                             <li role="separator" class="divider">
                             <li><a href="/account/action=logout">Log uit</a></li>
                         </ul>
