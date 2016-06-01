@@ -50,7 +50,8 @@
             <ul class="nav nav-pills nav-stacked">
 
                 <li>
-                    <a class="btn btn-side btn-default" href="/Wishes/action=back">
+                    <a class="btn btn-side btn-default"
+                       href="{if !empty($returnPage)}{$returnPage}{else}/Wishes/action=back{/if}">
                         Go Back
                     </a>
                 </li>

@@ -141,9 +141,16 @@
                                         <ul class="dropdown-menu small-dropdown-menu">
 
                                             <li>
-                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#wishModal{$wish->id}">
-                                                    <span class="glyphicon glyphicon-eye-open"></span>
-                                                </button>
+                                                <form action="/wishes/action=getSpecificWish">
+                                                    <input type="hidden" name="admin" value="true">
+                                                    <input type="hidden" name="Id" value="{$wish->id}">
+                                                    <button type="submit" class="btn btn-sm">
+                                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                                    </button>
+                                                </form>
+                                                {*<a href="/wishes/action=getSpecificWish?Id={$wish->id}" class="btn btn-sm">*}
+                                                    {*<span class="glyphicon glyphicon-eye-open"></span>*}
+                                                {*</a>*}
                                             </li>
 
                                             <li>
@@ -216,9 +223,16 @@
                                         <ul class="dropdown-menu small-dropdown-menu">
 
                                             <li>
-                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#wishModal{$wish->id}">
-                                                    <span class="glyphicon glyphicon-eye-open"></span>
-                                                </button>
+                                                <form action="/wishes/action=getSpecificWish">
+                                                    <input type="hidden" name="admin" value="true">
+                                                    <input type="hidden" name="Id" value="{$wish->id}">
+                                                    <button type="submit" class="btn btn-sm">
+                                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                                    </button>
+                                                </form>
+                                                {*<a href="/wishes/action=getSpecificWish?Id={$wish->id}" class="btn btn-sm">*}
+                                                {*<span class="glyphicon glyphicon-eye-open"></span>*}
+                                                {*</a>*}
                                             </li>
 
                                             <li>
@@ -277,11 +291,17 @@
                                             <span class="glyphicon glyphicon-chevron-down"></span>
                                         </a>
                                         <ul class="dropdown-menu small-dropdown-menu">
-
                                             <li>
-                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#wishModal{$wish->id}">
-                                                    <span class="glyphicon glyphicon-eye-open"></span>
-                                                </button>
+                                                <form action="/wishes/action=getSpecificWish">
+                                                    <input type="hidden" name="admin" value="true">
+                                                    <input type="hidden" name="Id" value="{$wish->id}">
+                                                    <button type="submit" class="btn btn-sm">
+                                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                                    </button>
+                                                </form>
+                                                {*<a href="/wishes/action=getSpecificWish?Id={$wish->id}" class="btn btn-sm">*}
+                                                {*<span class="glyphicon glyphicon-eye-open"></span>*}
+                                                {*</a>*}
                                             </li>
 
                                             <li>
@@ -336,9 +356,16 @@
                                         <ul class="dropdown-menu small-dropdown-menu">
 
                                             <li>
-                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#wishModal{$wish->id}">
-                                                    <span class="glyphicon glyphicon-eye-open"></span>
-                                                </button>
+                                                <form action="/wishes/action=getSpecificWish">
+                                                    <input type="hidden" name="admin" value="true">
+                                                    <input type="hidden" name="Id" value="{$wish->id}">
+                                                    <button type="submit" class="btn btn-sm">
+                                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                                    </button>
+                                                </form>
+                                                {*<a href="/wishes/action=getSpecificWish?Id={$wish->id}" class="btn btn-sm">*}
+                                                {*<span class="glyphicon glyphicon-eye-open"></span>*}
+                                                {*</a>*}
                                             </li>
 
                                             <li>
@@ -400,9 +427,16 @@
                                         <ul class="dropdown-menu small-dropdown-menu">
 
                                             <li>
-                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#wishModal{$wish->id}">
-                                                    <span class="glyphicon glyphicon-eye-open"></span>
-                                                </button>
+                                                <form action="/wishes/action=getSpecificWish">
+                                                    <input type="hidden" name="admin" value="true">
+                                                    <input type="hidden" name="Id" value="{$wish->id}">
+                                                    <button type="submit" class="btn btn-sm">
+                                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                                    </button>
+                                                </form>
+                                                {*<a href="/wishes/action=getSpecificWish?Id={$wish->id}" class="btn btn-sm">*}
+                                                {*<span class="glyphicon glyphicon-eye-open"></span>*}
+                                                {*</a>*}
                                             </li>
 
                                             <li>
@@ -457,9 +491,16 @@
                                         <ul class="dropdown-menu small-dropdown-menu">
 
                                             <li>
-                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#wishModal{$wish->id}">
-                                                    <span class="glyphicon glyphicon-eye-open"></span>
-                                                </button>
+                                                <form action="/wishes/action=getSpecificWish">
+                                                    <input type="hidden" name="admin" value="true">
+                                                    <input type="hidden" name="Id" value="{$wish->id}">
+                                                    <button type="submit" class="btn btn-sm">
+                                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                                    </button>
+                                                </form>
+                                                {*<a href="/wishes/action=getSpecificWish?Id={$wish->id}" class="btn btn-sm">*}
+                                                {*<span class="glyphicon glyphicon-eye-open"></span>*}
+                                                {*</a>*}
                                             </li>
 
                                             <li>
@@ -526,9 +567,16 @@
                                         <ul class="dropdown-menu small-dropdown-menu">
 
                                             <li>
-                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#wishModal{$wish->id}">
-                                                    <span class="glyphicon glyphicon-eye-open"></span>
-                                                </button>
+                                                <form action="/wishes/action=getSpecificWish">
+                                                    <input type="hidden" name="admin" value="true">
+                                                    <input type="hidden" name="Id" value="{$wish->id}">
+                                                    <button type="submit" class="btn btn-sm">
+                                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                                    </button>
+                                                </form>
+                                                {*<a href="/wishes/action=getSpecificWish?Id={$wish->id}" class="btn btn-sm">*}
+                                                {*<span class="glyphicon glyphicon-eye-open"></span>*}
+                                                {*</a>*}
                                             </li>
 
                                             <li>
