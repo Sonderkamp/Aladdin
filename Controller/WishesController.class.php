@@ -43,15 +43,7 @@ class WishesController extends Controller
         $matchedWishes = $this->wishRepo->getPossibleMatches();
 
         $canAddWish = $this->wishRepo->canAddWish($this->userRepo->getCurrentUser()->email);
-        $report = $this->reportRepo->getReportedUsers();
         $displayNames = array();
-        $amountReports = count($report);
-
-        if ($amountReports !== 0) {
-            foreach ($report as $item) {
-                $displayNames[] = $item->getReported()->getDisplayName();
-            }
-        }
 
         $this->render("wishOverview.tpl", ["title" => "Wensen Overzicht",
             "myWishes" => $myWishes,
@@ -60,8 +52,7 @@ class WishesController extends Controller
             "incompletedWishes" => $incompletedWishes,
             "matchedWishes" => $matchedWishes,
             "currentPage" => $currentPage,
-            "canAddWish" => $canAddWish,
-            "reported" => $displayNames
+            "canAddWish" => $canAddWish
         ]);
 
         exit(0);
@@ -189,7 +180,7 @@ class WishesController extends Controller
             if (!$this->isValid($input) || (strlen($tempTitle) === 0) || strlen($tempContent) === 0 || ($size == 0)) {
                 $this->renderEdit($title, $description, $tag, "Vul aub alles in.", true);
             }
-            
+
             $myWishes = $this->wishRepo->getMyWishes();
             if ($this->hasSameWish($myWishes, $title)) {
                 $this->renderEdit($title, $description, $tag, "U heeft al een wens met een soortgelijke titel.", true);
@@ -391,13 +382,28 @@ class WishesController extends Controller
         $comments = $this->wishRepo->getComments($id);
         $canMatch = false;
 
-        if(!empty($_GET["admin"]) && $_GET["admin"] == "true"){
+        if (!empty($_GET["admin"])) {
+            (new AdminController())->guaranteeAdmin("/");
             $returnPage = "/AdminWish";
-        } else if ($selectedWish->status == "Aangemaakt" && $selectedWish->user->email != $this->userRepo->getCurrentUser()->email){
+
+            if (!empty($selectedWish)) {
+                $this->renderAlone("wishSpecificView.tpl",
+                    ["title" => "Wens: " . $id,
+                        "selectedWish" => $selectedWish,
+                        "matches" => $matches,
+                        "comments" => $comments,
+                        "admin" => true,
+                        "canMatch" => false]);
+                exit(0);
+            } else {
+                $this->apologize("This wish doesn't exist");
+            }
+
+        } else if ($this->userRepo->getCurrentUser() === false || ($selectedWish->status == "Aangemaakt" && $selectedWish->user->email != $this->userRepo->getCurrentUser()->email)) {
             $this->apologize("You are not allowed to view this wish");
         }
 
-        if($selectedWish->status == "Aangemaakt" || $selectedWish->status == "Gepubliseerd" ){
+        if ($selectedWish->status == "Aangemaakt" || $selectedWish->status == "Gepubliseerd") {
             $canMatch = true;
         }
 
