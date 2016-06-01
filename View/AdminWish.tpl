@@ -113,6 +113,7 @@
                     <table class="table">
                         <thead>
                         <tr>
+                            <th>Wish id</th>
                             <th>Gebruiker</th>
                             <th>Wens</th>
                             <th>Status</th>
@@ -122,6 +123,7 @@
                         <tbody>
                         {foreach from=$requested item=wish}
                             <tr>
+                                <td>{$wish->id}</td>
                                 <td>{$wish->user->displayName}</td>
                                 <td>{$wish->title}</td>
                                 <td>{$wish->status}</td>
@@ -186,6 +188,7 @@
                     <table class="table">
                         <thead>
                         <tr>
+                            <th>Wish id</th>
                             <th>Gebruiker</th>
                             <th>Wens</th>
                             <th>Status</th>
@@ -195,6 +198,7 @@
                         <tbody>
                         {foreach from=$published item=wish}
                             <tr>
+                                <td>{$wish->id}</td>
                                 <td>{$wish->user->displayName}</td>
                                 <td>{$wish->title}</td>
                                 <td>{$wish->status}</td>
@@ -247,6 +251,7 @@
                     <table class="table">
                         <thead>
                         <tr>
+                            <th>Wish id</th>
                             <th>Gebruiker</th>
                             <th>Wens</th>
                             <th>Status</th>
@@ -256,6 +261,7 @@
                         <tbody>
                         {foreach from=$matched item=wish}
                             <tr>
+                                <td>{$wish->id}</td>
                                 <td>{$wish->user->displayName}</td>
                                 <td>{$wish->title}</td>
                                 <td>{$wish->status}</td>
@@ -276,18 +282,6 @@
                                                 <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#wishModal{$wish->id}">
                                                     <span class="glyphicon glyphicon-eye-open"></span>
                                                 </button>
-                                            </li>
-
-                                            <li>
-                                                <a href="/AdminWish/action=acceptWish?Id={$wish->id}" class="btn btn-sm">
-                                                    <span class="glyphicon glyphicon-ok"></span>
-                                                </a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/AdminWish/action=refuseWish?Id={$wish->id}" class="btn btn-sm">
-                                                    <span class="glyphicon glyphicon-remove"></span>
-                                                </a>
                                             </li>
 
                                             <li>
@@ -314,6 +308,7 @@
                     <table class="table">
                         <thead>
                         <tr>
+                            <th>Wish id</th>
                             <th>Gebruiker</th>
                             <th>Wens</th>
                             <th>Status</th>
@@ -323,6 +318,7 @@
                         <tbody>
                         {foreach from=$current item=wish}
                             <tr>
+                                <td>{$wish->id}</td>
                                 <td>{$wish->user->displayName}</td>
                                 <td>{$wish->title}</td>
                                 <td>{$wish->status}</td>
@@ -376,6 +372,7 @@
                     <table class="table">
                         <thead>
                         <tr>
+                            <th>Wish id</th>
                             <th>Gebruiker</th>
                             <th>Wens</th>
                             <th>Status</th>
@@ -385,6 +382,7 @@
                         <tbody>
                         {foreach from=$completed item=wish}
                             <tr>
+                                <td>{$wish->id}</td>
                                 <td>{$wish->user->displayName}</td>
                                 <td>{$wish->title}</td>
                                 <td>{$wish->status}</td>
@@ -431,6 +429,7 @@
                     <table class="table">
                         <thead>
                         <tr>
+                            <th>Wish id</th>
                             <th>Gebruiker</th>
                             <th>Wens</th>
                             <th>Status</th>
@@ -440,6 +439,7 @@
                         <tbody>
                         {foreach from=$denied item=wish}
                             <tr>
+                                <td>{$wish->id}</td>
                                 <td>{$wish->user->displayName}</td>
                                 <td>{$wish->title}</td>
                                 <td>{$wish->status}</td>
@@ -498,6 +498,7 @@
                     <table class="table">
                         <thead>
                         <tr>
+                            <th>Wish id</th>
                             <th>Gebruiker</th>
                             <th>Wens</th>
                             <th>Status</th>
@@ -507,6 +508,7 @@
                         <tbody>
                         {foreach from=$deleted item=wish}
                             <tr>
+                                <td>{$wish->id}</td>
                                 <td>{$wish->user->displayName}</td>
                                 <td>{$wish->title}</td>
                                 <td>{$wish->status}</td>

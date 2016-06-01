@@ -391,6 +391,9 @@ class WishesController extends Controller
         $comments = $this->wishRepo->getComments($id);
         $canMatch = false;
 
+        if($selectedWish->status == "Aangemaakt" && $selectedWish->user->email != $this->userRepo->getCurrentUser()->email){
+            $this->apologize("You are not allowed to view this wish");
+        }
 
         if($selectedWish->status == "Aangemaakt" || $selectedWish->status == "Gepubliseerd" ){
             $canMatch = true;
