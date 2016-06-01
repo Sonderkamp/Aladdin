@@ -61,8 +61,6 @@
 
 
             <ul class="nav navbar-nav navbar-left">
-                <li><a href="/about/action=home"> <span class="glyphicon glyphicon glyphicon-home"></span> Over Aladdin</a>
-                </li>
                 {if isset($user)}
                     <li><a href="/wishes"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
                     <li><a href="/Inbox"> <span class="glyphicon glyphicon glyphicon-envelope"></span> Berichten</a>
