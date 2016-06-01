@@ -24,7 +24,9 @@ class TalentsController extends Controller
         $requestedTalents,
         $requestedCount,
         $currentRequestedCount,
-        $talentSuccess;
+        $talentSuccess,
+        $searchAll,
+        $searchAdded;
 
     public function __construct()
     {
@@ -60,7 +62,9 @@ class TalentsController extends Controller
                 "talentSuccess" => $this->talentSuccess,
                 "requestedTalents" => $this->requestedTalents,
                 "requestedCount" => $this->requestedCount,
-                "currentRequestedCount" => $this->currentRequestedCount]);
+                "currentRequestedCount" => $this->currentRequestedCount,
+                "searchAdded" => $this->searchAdded,
+                "searchAll" => $this->searchAll]);
         exit(0);
     }
 
@@ -315,10 +319,12 @@ class TalentsController extends Controller
     // Check if the user wanted to search an added or unadded talent
     private function checkSearch()
     {
+        $this->searchAdded = "";
+        $this->searchAll = "";
 
         if (!Empty($_GET["searchAdded"])) {
-
             $search = htmlentities(trim($_GET["searchAdded"], ENT_QUOTES));
+            $this->searchAdded = $search;
 
             $this->talentsUser = $this->talentRepo->searchAddedTalents($this->userRepo->getCurrentUser()->email, $search);
 
@@ -327,8 +333,8 @@ class TalentsController extends Controller
 
             $this->page = "myTalents";
         } else if (!Empty($_GET["searchAll"])) {
-
             $search = htmlentities(trim($_GET["searchAll"], ENT_QUOTES));
+            $this->searchAll = $search;
 
             $this->talents = $this->talentRepo->searchUnaddedTalents($this->userRepo->getCurrentUser()->email, $search);
 

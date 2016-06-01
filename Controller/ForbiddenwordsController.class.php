@@ -9,7 +9,7 @@
 class ForbiddenwordsController extends Controller
 {
     // Instant variables
-    private $wordRepo, $words, $error, $success, $wordsCount, $page;
+    private $wordRepo, $words, $error, $success, $wordsCount, $page, $search;
 
     public function __construct()
     {
@@ -41,7 +41,8 @@ class ForbiddenwordsController extends Controller
                 "errorMessage" => $this->error,
                 "successMessage" => $this->success,
                 "wordsCount" => $this->wordsCount,
-                "page" => $this->page]);
+                "page" => $this->page,
+                "search" => $this->search]);
         // Exit with succes status
         exit(0);
     }
@@ -167,14 +168,14 @@ class ForbiddenwordsController extends Controller
             if (!Empty($_GET["search"])) {
 
                 // Make $search secure
-                $search = htmlentities(trim($_GET["search"]), ENT_QUOTES);
+                $this->search = htmlentities(trim($_GET["search"]), ENT_QUOTES);
 
                 // Change wordsCount to the words that fit the search criteria
-                $this->wordsCount = ceil(count($this->wordRepo->getForbiddenWords(null, $search)) / 10);
+                $this->wordsCount = ceil(count($this->wordRepo->getForbiddenWords(null, $this->search)) / 10);
             } else {
 
                 // Set search null, because of optional variables.
-                $search = null;
+                $this->search = null;
             }
 
             // If pagination is not switched off, than continue
@@ -190,28 +191,28 @@ class ForbiddenwordsController extends Controller
                     if ($_GET["wordsPage"] > 0 && $_GET["wordsPage"] <= $this->wordsCount) {
 
                         // Fill words with the requested page and if isset search
-                        $this->words = $this->wordRepo->getForbiddenWords($_GET["wordsPage"], $search);
+                        $this->words = $this->wordRepo->getForbiddenWords($_GET["wordsPage"], $this->search);
 
                         // Set the page to load in the .tpl
                         $this->page = $_GET["wordsPage"];
                     } else {
 
                         // Fill words with the first page an if isset search
-                        $this->words = $this->wordRepo->getForbiddenWords(1, $search);
+                        $this->words = $this->wordRepo->getForbiddenWords(1, $this->search);
                         // Set the page to load in the .tpl
                         $this->page = 1;
                     }
                 } else {
 
                     // Fill words with the first page an if isset search
-                    $this->words = $this->wordRepo->getForbiddenWords(1, $search);
+                    $this->words = $this->wordRepo->getForbiddenWords(1, $this->search);
                     // Set the page to load in the .tpl
                     $this->page = 1;
                 }
             } else {
 
                 // Fill words with all the words and if isset search
-                $this->words = $this->wordRepo->getForbiddenWords(null, $search);
+                $this->words = $this->wordRepo->getForbiddenWords(null, $this->search);
             }
         }
     }
