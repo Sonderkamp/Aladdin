@@ -376,12 +376,17 @@ class WishesController extends Controller
         } else if (!empty($_GET["Id"])) {
             $id = $_GET["Id"];
         }
-
+        $returnPage = null;
         $selectedWish = $this->wishRepo->getWish($id);
         $matches = $this->matchRepo->getMatches($id);
         $comments = $this->wishRepo->getComments($id);
         $canMatch = false;
 
+        if(!empty($_GET["admin"]) && $_GET["admin"] == "true"){
+            $returnPage = "/AdminWish";
+        } else if ($selectedWish->status == "Aangemaakt" && $selectedWish->user->email != $this->userRepo->getCurrentUser()->email){
+            $this->apologize("You are not allowed to view this wish");
+        }
 
         if($selectedWish->status == "Aangemaakt" || $selectedWish->status == "Gepubliseerd" ){
             $canMatch = true;
@@ -392,6 +397,7 @@ class WishesController extends Controller
                 ["title" => "Wens: " . $id,
                     "selectedWish" => $selectedWish,
                     "matches" => $matches,
+                    "returnPage" => $returnPage,
                     "comments" => $comments,
                     "canMatch" => $canMatch,
                     "currentUser" => $this->userRepo->getCurrentUser()]);

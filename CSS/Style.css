@@ -138,6 +138,10 @@ a:hover {
     display: inline;
 }
 
+.small-dropdown-menu li > *{
+    display: inline;
+}
+
 .small-dropdown-menu li:last-child {
     margin-right: 0;
 }
