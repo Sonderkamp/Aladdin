@@ -43,6 +43,31 @@ class Controller
         }
     }
 
+    public function renderAlone($template, $values = [])
+    {
+        // if template exists, render it
+        if (file_exists("View/$template")) {
+            // extract variables into local scope
+            $smarty = new Smarty();
+
+            $smarty->assign($values);
+
+            if (!empty($_SESSION["user"])) {
+                $smarty->assign("user", $_SESSION["user"]);
+            }
+
+            if (!empty($_SESSION["admin"])) {
+                $smarty->assign("admin", $_SESSION["admin"]);
+            }
+
+            // render header
+            $smarty->display("View/simpleHeader.tpl");
+            // render template
+            $smarty->display("View/$template");
+
+        }
+    }
+
     public function apologize($message)
     {
         $err = new ErrorController();
@@ -58,7 +83,7 @@ class Controller
      * Because this function outputs an HTTP header, it
      * must be called before caller outputs any HTML.
      */
-   public  function redirect($destination)
+    public function redirect($destination)
     {
         // handle URL
         if (preg_match("/^https?:\/\//", $destination)) {

@@ -3,6 +3,16 @@
 <!-- * User: Simon / Max-->
 <!-- * Date: 8-3-2016 Rewritten on: 14-05-2016-->
 <!-- */-->
+<script>
+    function popup(mylink, windowname, w, h) {
+        if (!window.focus)return true;
+        var href;
+        if (typeof(mylink) == 'string') href = mylink; else href = mylink.href;
+        window.open(href, windowname, 'width=' + w + ',height=' + h + ',scrollbars=yes');
+        return false;
+    }
+</script>
+
 
 <div class="container">
 
@@ -119,24 +129,38 @@
                             <th>Gebruiker</th>
                             <th>Status</th>
                             <th>Datum</th>
+                            <th>Type</th>
                             <th>Actie</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         {foreach from=$unhandled item=report}
-                            {if $report -> getReported() -> getBlocked() == false}
+                            {if $report -> reported -> getBlocked() == false}
                                 <tr>
                                     <td>
-                                        <span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($report -> getReporter() -> getDisplayName())}
+                                        <a href="/AdminUser/action=showProfile/email={$report -> reporter -> email}">
+                                            <span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($report -> reporter -> displayName)}
+                                        </a>
+
                                     </td>
-                                    <td>{htmlspecialcharsWithNL($report -> getMessage()|substr:0:20)}</td>
+                                    <td>{htmlspecialcharsWithNL($report -> message)}</td>
                                     <td>
-                                        <span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($report -> getReported() -> getDisplayName())}
+                                        <a href="/AdminUser/action=showProfile/email={$report -> reported -> email}">
+                                            <span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($report -> reported -> displayName)}
+                                        </a>
                                     </td>
-                                    <td>{htmlspecialcharsWithNL($report -> getStatus())}</td>
+                                    <td>{htmlspecialcharsWithNL($report -> status)}</td>
                                     <td>
-                                        <span class="glyphicon glyphicon-calendar"></span> {htmlspecialcharsWithNL($report -> getDate())}
+                                        <span class="glyphicon glyphicon-calendar"></span> {htmlspecialcharsWithNL($report -> date)}
+                                    </td>
+                                    <td>
+                                        {if !empty($report->wishID)}
+                                            Wens
+                                        {else}
+                                            {* bekijk bericht *}
+                                            Bericht
+                                        {/if}
                                     </td>
                                     <td>
                                         <div class="dropdown">
@@ -148,26 +172,29 @@
 
                                             <ul class="dropdown-menu">
                                                 <li>
-                                                    <a data-toggle="modal"
-                                                       data-target="#myModal{preg_replace('/\s+/', '', $report->getId())}">
-                                                        Bekijk rapport
-                                                    </a>
+                                                    {*bekijk wens*}
+                                                    {if !empty($report->wishID)}
+                                                        <a href="wishes/action=getSpecificWish?admin=true&Id={$report->wishID}"
+                                                           onClick="return popup(this, 'notes',900,400)">Bekijk
+                                                            wens</a>
+                                                        <a href="AdminWish/action=deleteWish?Id={$report->wishID}">
+                                                            Verwijder wens
+                                                        </a>
+                                                    {else}
+                                                        {* bekijk bericht *}
+                                                        <a href="adminmail/action=show/id={$report->messageID}/user={$report -> reporter -> email}"
+                                                           onClick="return popup(this, 'notes',700,400)">Bekijk
+                                                            bericht</a>
+                                                    {/if}
+
                                                 </li>
 
                                                 <li>
-                                                    <a href="/AdminUser/action=showProfile/email={$report -> getReported() -> getEmail()}">
-                                                        <span>Bekijk profiel</span>
-                                                    </a>
+                                                    <a href="/AdminUser/action=delete/id={$report->id}">Verwijderen</a>
                                                 </li>
                                                 <li>
-                                                    <a href="/AdminUser/action=delete/id={$report->getId()}">Verwijderen</a>
+                                                    <a href="/AdminUser/action=block/id={$report->id}">Blokkeren</a>
                                                 </li>
-                                                <li>
-                                                    <a href="/AdminUser/action=block/id={$report->getId()}">Blokkeren</a>
-                                                </li>
-                                                {*<li>*}
-                                                {*<a href="/AdminUser/action=check/id={$report->getId()}">Bekijken</a>*}
-                                                {*</li>*}
                                             </ul>
                                         </div>
                                     </td>
@@ -193,32 +220,53 @@
                             <th>Gebruiker</th>
                             <th>Status</th>
                             <th>Datum</th>
+                            <th>Type</th>
                             <th>Actie</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         {foreach from=$handled item=report}
-                            {if $report -> getReported() -> getBlocked() == false}
-                                <tr>
-                                    <td>
-                                        <span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($report -> getReporter() -> getDisplayName())}
-                                    </td>
-                                    <td>{htmlspecialcharsWithNL($report -> getMessage()|substr:0:20)}</td>
-                                    <td>
-                                        <span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($report -> getReported() -> getDisplayName())}
-                                    </td>
-                                    <td>{htmlspecialcharsWithNL($report -> getStatus())}</td>
-                                    <td>
-                                        <span class="glyphicon glyphicon-calendar"></span> {htmlspecialcharsWithNL($report -> getDate())}
-                                    </td>
-                                    <td>
-                                        <a href="/AdminUser/action=showProfile/email={$report -> getReported() -> getEmail()}">
-                                            <span>Bekijk profiel</span>
-                                        </a>
-                                    </td>
-                                </tr>
-                            {/if}
+                            <tr>
+                                <td>
+                                    <a href="/AdminUser/action=showProfile/email={$report -> reporter -> email}">
+                                        <span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($report -> reporter -> displayName)}
+                                    </a>
+
+                                </td>
+                                <td>{htmlspecialcharsWithNL($report -> message)}</td>
+                                <td>
+                                    <a href="/AdminUser/action=showProfile/email={$report -> reported -> email}">
+                                        <span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($report -> reported -> displayName)}
+                                    </a>
+                                </td>
+                                <td>{htmlspecialcharsWithNL($report -> status)}</td>
+                                <td>
+                                    <span class="glyphicon glyphicon-calendar"></span> {htmlspecialcharsWithNL($report -> date)}
+                                </td>
+                                <td>
+                                    {if !empty($report->wishID)}
+                                        Wens
+                                    {else}
+                                        {* bekijk bericht *}
+                                        Bericht
+                                    {/if}
+                                </td>
+                                <td>
+
+                                    {if !empty($report->wishID)}
+                                        <a href="wishes/action=getSpecificWish?admin=true&Id={$report->wishID}"
+                                           onClick="return popup(this, 'notes',900,400)">Bekijk
+                                            wens</a>
+                                    {else}
+                                        {* bekijk bericht *}
+                                        <a href="adminmail/action=show/id={$report->messageID}/user={$report -> reporter -> email}"
+                                           onClick="return popup(this, 'notes',700,400)">Bekijk
+                                            bericht</a>
+                                    {/if}
+
+                                </td>
+                            </tr>
                         {/foreach}
                         </tbody>
                     </table>
@@ -242,38 +290,31 @@
 
                     <h6 class="modal-title"><span
                                 class="glyphicon glyphicon-user"></span>
-                        Melder: {htmlspecialcharsWithNL($report -> getReporter() -> getDisplayName())}
+                        Melder: {htmlspecialcharsWithNL($report -> reporter -> displayName)}
                     </h6>
 
                     <h6 class="modal-title"><span class="glyphicon glyphicon-calendar"></span> Aangevraagd
-                        op: {htmlspecialcharsWithNL($report -> getDate())}
+                        op: {htmlspecialcharsWithNL($report -> date)}
                     </h6>
 
                     <h6 class="modal-title"><span
                                 class="glyphicon glyphicon-user"></span>
-                        Gebruiker: {htmlspecialcharsWithNL($report -> getReported() -> getDisplayName())}
+                        Gebruiker: {htmlspecialcharsWithNL($report -> reported -> displayName)}
                     </h6>
                     <h6 class="modal-title"><span
                                 class="glyphicon glyphicon-eye-open"></span>
-                        Status: {htmlspecialcharsWithNL($report -> getStatus())}
+                        Status: {htmlspecialcharsWithNL($report -> status)}
                     </h6>
                     <br>
-                    <h6 class="modal-title"><b>Reden:</b> <br> {htmlspecialcharsWithNL($report -> getMessage())}
+                    <h6 class="modal-title"><b>Reden:</b> <br> {htmlspecialcharsWithNL($report -> message)}
                     </h6>
                 </div>
                 <div class="modal-footer">
                     <a class="btn btn-default infoLeft" data-dismiss="modal">Annuleren</a>
-                    <a class="btn btn-default" href="/AdminUser/action=delete/id={$report->getId()}">Verwijderen</a>
-                    <a class="btn btn-default" href="/AdminUser/action=block/id={$report->getId()}"><span
+                    <a class="btn btn-default" href="/AdminUser/action=delete/id={$report->id}">Verwijderen</a>
+                    <a class="btn btn-default" href="/AdminUser/action=block/id={$report->id}"><span
                                 class="glyphicon glyphicon-remove"></span> Blokkeren</a>
                 </div>
-                {*<form action="/report/action=report" method="post">*}
-                {*<div class="modal-footer">*}
-                {*<button type="submit" name="submit" class="btn btn-inbox info">*}
-                {*<span class="glyphicon glyphicon-remove"></span> Gebruiker blokkeren*}
-                {*</button>*}
-                {*</div>*}
-                {*</form>*}
             </div>
         </div>
     </div>
@@ -359,143 +400,3 @@
 {/foreach}
 
 
-{*<div class="container">*}
-{*<div class="row">*}
-{*<h5>Gebruikersbeheer</h5>*}
-{*<div class="col-xs-12 col-md-2 col-sm-2 col-lg-2">*}
-{*<ul class="nav nav-pills nav-stacked">*}
-{*{if isset($current)}*}
-{*<li {if $current == "users"} class="active" {/if}><a href="/AdminUser/action=unhandled">Alle*}
-{*gebruikers</a></li>*}
-{*<li {if $current == "unhandled"} class="active" {/if}><a href="/AdminUser/action=unhandled">Nieuwe*}
-{*rapportages</a></li>*}
-{*<li {if $current == "handled"} class="active" {/if}><a href="/AdminUser/action=handled">Behandelde*}
-{*rapportages</a></li>*}
-{*{/if}*}
-{*</ul>*}
-{*</div>*}
-
-{*{if $smarty.session.current == "handled" || $smarty.session.current == "unhandled"}*}
-{*<div class="col-md-10">*}
-{*<table class="table">*}
-{*<thead>*}
-{*<tr>*}
-{*<th>Melder</th>*}
-{*<th>Reden</th>*}
-{*<th>Gebruiker</th>*}
-{*<th>Status</th>*}
-{*<th>Datum</th>*}
-{*<th>Actie</th>*}
-{*</tr>*}
-{*</thead>*}
-{*<tbody>*}
-
-
-{*{if isset($reports)}*}
-{*{foreach from=$reports item=report}*}
-{*{if $report -> getReported() -> getBlocked() == false}*}
-{*<tr>*}
-{*<td>*}
-{*<span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($report -> getReporter() -> getDisplayName())}*}
-{*</td>*}
-{*<td>{htmlspecialcharsWithNL($report -> getMessage()|substr:0:20)}</td>*}
-{*<td>*}
-{*<span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($report -> getReported() -> getDisplayName())}*}
-{*</td>*}
-{*<td>{htmlspecialcharsWithNL($report -> getStatus())}</td>*}
-{*<td>*}
-{*<span class="glyphicon glyphicon-calendar"></span> {htmlspecialcharsWithNL($report -> getDate())}*}
-{*</td>*}
-{*<td>*}
-{*{if $current == "unhandled"}*}
-{*<div class="dropdown">*}
-{*<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"*}
-{*aria-haspopup="true"*}
-{*aria-expanded="false"></span>*}
-{*Kies</span><span class="caret"></span></a>*}
-
-
-{*<ul class="dropdown-menu">*}
-{*<li>*}
-{*<a data-toggle="modal"*}
-{*data-target="#myModal{preg_replace('/\s+/', '', $report->getId())}">*}
-{*Bekijken*}
-{*</a>*}
-{*</li>*}
-{*<li>*}
-{*<a href="/AdminUser/action=delete/id={$report->getId()}">Verwijderen</a>*}
-{*</li>*}
-{*<li>*}
-{*<a href="/AdminUser/action=block/id={$report->getId()}">Blokkeren</a>*}
-{*</li>*}
-{*<li>*}
-{*<a href="/AdminUser/action=check/id={$report->getId()}">Bekijken</a>*}
-{*</li>*}
-{*</ul>*}
-{*</div>*}
-{*{else}*}
-{*<a href="/profilecheck/action=viewProfile/user={$report -> getReported() -> getEmail()}">*}
-{*<span>Bekijk profiel</span>*}
-{*</a>*}
-{*{/if}*}
-{*</td>*}
-{*</tr>*}
-{*{/if}*}
-{*{/foreach}*}
-{*{/if}*}
-{*</tbody>*}
-{*</table>*}
-{*</div>*}
-{*{/if}*}
-
-{*</div>*}
-{*</div>*}
-
-{*{foreach from=$users item=user}*}
-{*<div id="myModalUser{preg_replace('/\s+/', '', $user->email)}" class="modal fade" role="dialog">*}
-{*<div class="modal-dialog">*}
-{*<!-- Modal content-->*}
-{*<div class="modal-content">*}
-{*<div class="modal-header">*}
-{*<button type="button" class="close" data-dismiss="modal">&times;</button>*}
-
-{*<h6 class="modal-title"><span*}
-{*class="glyphicon glyphicon-user"></span>*}
-{*Melder: {htmlspecialcharsWithNL($user -> displayname)}*}
-{*</h6>*}
-
-{*<h6 class="modal-title"><span class="glyphicon glyphicon-calendar"></span> Aangevraagd*}
-{*op: {htmlspecialcharsWithNL($report -> getDate())}*}
-{*</h6>*}
-
-{*<h6 class="modal-title"><span*}
-{*class="glyphicon glyphicon-user"></span>*}
-{*Gebruiker: {htmlspecialcharsWithNL($report -> getReported() -> getDisplayName())}*}
-{*</h6>*}
-{*<h6 class="modal-title"><span*}
-{*class="glyphicon glyphicon-eye-open"></span>*}
-{*Status: {htmlspecialcharsWithNL($report -> getStatus())}*}
-{*</h6>*}
-{*<br>*}
-{*<h6 class="modal-title"><b>Reden:</b> <br> {htmlspecialcharsWithNL($report -> getMessage())}*}
-{*</h6>*}
-{*</div>*}
-{*<div class="modal-footer">*}
-{*<a class="btn btn-default infoLeft" data-dismiss="modal">Annuleren</a>*}
-{*<a class="btn btn-default" href="/AdminUser/action=delete/id={$report->getId()}">Verwijderen</a>*}
-{*<a class="btn btn-default" href="/AdminUser/action=block/id={$report->getId()}"><span*}
-{*class="glyphicon glyphicon-remove"></span> Blokkeren</a>*}
-{*</div>*}
-{*<form action="/report/action=report" method="post">*}
-{*<div class="modal-footer">*}
-{*<button type="button" class="btn btn-default infoLeft" data-dismiss="modal">Annuleren</button>*}
-
-{*<button type="submit" name="submit" class="btn btn-inbox info">*}
-{*<span class="glyphicon glyphicon-remove"></span> Gebruiker blokkeren*}
-{*</button>*}
-{*</div>*}
-{*</form>*}
-{*</div>*}
-{*</div>*}
-{*</div>*}
-{*{/foreach}*}

@@ -9,9 +9,9 @@
 class Report
 {
 
-    private $reporter, $reported, $status, $wishID, $message, $moderator, $date, $id;
+    public $reporter, $reported, $status, $wishID, $message, $moderator, $date, $id, $messageID;
 
-    public function __construct($reporter, $reported, $status, $wishID, $message = null, $date = null, $id = null)
+    public function __construct($reporter, $reported, $status, $wishID = null, $message = null, $date = null, $id = null)
     {
         $this->reporter = $reporter;
         $this->reported = $reported;
@@ -21,46 +21,6 @@ class Report
         if (isset($message)) $this->message = $message;
         if (isset($date)) $this->date = $date;
         if (isset($id)) $this->id = $id;
-    }
-
-    public function getMessage()
-    {
-        return $this->message;
-    }
-
-    public function getModerator()
-    {
-        return $this->moderator;
-    }
-
-    public function getReported()
-    {
-        return $this->reported;
-    }
-
-    public function getReporter()
-    {
-        return $this->reporter;
-    }
-
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    public function getWishID()
-    {
-        return $this->wishID;
-    }
-
-    public function getDate()
-    {
-        return $this->date;
-    }
-
-    public function getId()
-    {
-        return $this->id;
     }
 
 

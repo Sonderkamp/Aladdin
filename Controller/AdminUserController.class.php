@@ -95,7 +95,7 @@ class AdminuserController extends Controller
 
         if (count($report) > 0) {
             foreach ($report as $item) {
-                $user = $item->getReported();
+                $user = $item->reported;
                 $temp = new UserRepository();
                 if ($temp->isBlocked($user->getEmail())) {
                     $user->blocked = true;

@@ -654,7 +654,7 @@
 {foreach from=$talentsUser item=talent}
     <div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}" class="modal fade"
          role="dialog">
-        <div class="modal-dialog">\
+        <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
