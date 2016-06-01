@@ -49,7 +49,7 @@
     <div class="row">
 
         <div class="col-xs-3 small-margin-bot">
-            {if (!isset($admin))}
+            {if (!isset($adminView))}
                 <ul class="nav nav-pills nav-stacked">
 
 
@@ -74,7 +74,7 @@
                 </ul>
             {/if}
         </div>
-        {if (!isset($admin))}
+        {if (!isset($adminView))}
         <div class="col-xs-9 panel panel-default">
             {else}
             <div class="col-xs-12 panel panel-default">
