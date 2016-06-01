@@ -142,7 +142,7 @@
                                                 </tr>
 
                                                 <tr>
-                                                    <td>Adress:</td>
+                                                    <td>Straat en huisnummer:</td>
                                                     <td>
                                                         <input type="text" name="address" onblur="validateAddress()"
                                                                data-validation="custom"
@@ -150,6 +150,13 @@
                                                                data-validation-error-msg="Straat en huisnummer kan alleen letters, nummers, spaties en streepjes(-) bevatten"
                                                                maxlength="255" value="{$user->address}">
                                                     </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Stad:</td>
+                                                    <td><input type="text" name="city" required onblur="validateAddress()"
+                                                               maxlength="255" value="{$user->city}">
+                                                    </td>
+
                                                 </tr>
                                                 <tr>
                                                     <td>Postcode:</td>
@@ -160,12 +167,7 @@
 
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <td>Stad:</td>
-                                                    <td><input type="text" name="city" required readonly
-                                                               value="{$user->city}"></td>
 
-                                                </tr>
                                                 <tr>
                                                     <td>Land:</td>
                                                     <td><input type="text" name="country" required
@@ -349,13 +351,13 @@
         $("#err").text("");
         $("#err").removeClass("form-error");
 
-        $('input[name=city]').val('');
         $('input[name=country]').val('');
         $('input[name=postalcode]').val('');
         var location = $('input[name=address]').val();
+        var location2 = $('input[name=city]').val();
 
-        if (location != "")
-            return getAddress(location, false);
+        if (location != "" && location2 != "")
+            return getAddress(location + ", " + location2, false);
 
         return false;
     }
