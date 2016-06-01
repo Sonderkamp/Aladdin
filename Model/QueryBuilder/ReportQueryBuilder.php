@@ -21,16 +21,26 @@ class ReportQueryBuilder
      */
     public function add(Report $report)
     {
-        $sql = "INSERT INTO `reportedusers` 
-                (`user_Reporter`,`user_Reported`, `reportStatus_status`, `wish_Id`, `Message`) 
+        if (!empty($report->wishID)) {
+
+            $string = "`wish_Id`";
+            $var = $report->wishID;
+
+        } else {
+            $string = "`message_Id`";
+            $var = $report->messageID;
+        }
+
+        $sql = "INSERT INTO `reportedusers`
+                (`user_Reporter`,`user_Reported`, `reportStatus_status`, " . $string . ", `Message`)
                 VALUES (?,?,?,?,?)";
+
         $parameters = array(
-            $report->getReporter(),
-            $report->getReported(),
-            $report->getStatus(),
-            $report->getWishID(),
-            $report->getMessage()
-        );
+            $report->reporter,
+            $report->reported,
+            $report->status,
+            $var,
+            $report->message);
 
         Database::query_safe($sql, $parameters);
     }
@@ -88,8 +98,9 @@ class ReportQueryBuilder
 
 
     /** Returns array with rerport objects
-     * @param $result, result of the database query 
-     * @return array with report objects */
+     * @param $result , result of the database query
+     * @return array with report objects
+     */
     public function getReportArray($result)
     {
         if (count($result) <= 0) return;
@@ -105,8 +116,10 @@ class ReportQueryBuilder
             $reported = $this->userRepository->getUser($reported);
             $status = $item["reportStatus_Status"];
             $wishID = $item["wish_Id"];
+            $messageID = $item["message_Id"];
 
             $report = new Report($reporter, $reported, $status, $wishID, $message, $date, $id);
+            $report->messageID = $messageID;
             $reports[] = $report;
         }
 

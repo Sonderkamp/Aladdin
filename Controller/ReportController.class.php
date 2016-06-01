@@ -27,16 +27,9 @@ class ReportController extends Controller
     /** creates a report  */
     public function report()
     {
-        if (!empty($_POST["wish_id"])) {
-            $id = $_POST["wish_id"];
-            $reporter = $_SESSION["user"]->email;
-            $reported = $this->wishRepository->getWish($id)->user->email;
-            $status = "aangevraagd";
-            $message = $_POST["report_message"];
-            $report = new Report($reporter, $reported, $status, $id, $message);
-            $this->reportRepository->add($report);
-        }
-        $this->redirect("/wishes");
+
+        $this->redirect($this->reportRepository->tryAdd());
+        exit();
     }
 
 

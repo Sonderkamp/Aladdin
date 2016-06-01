@@ -43,15 +43,7 @@ class WishesController extends Controller
         $matchedWishes = $this->wishRepo->getPossibleMatches();
 
         $canAddWish = $this->wishRepo->canAddWish($this->userRepo->getCurrentUser()->email);
-        $report = $this->reportRepo->getReportedUsers();
         $displayNames = array();
-        $amountReports = count($report);
-
-        if ($amountReports !== 0) {
-            foreach ($report as $item) {
-                $displayNames[] = $item->getReported()->getDisplayName();
-            }
-        }
 
         $this->render("wishOverview.tpl", ["title" => "Wensen Overzicht",
             "myWishes" => $myWishes,
@@ -60,8 +52,7 @@ class WishesController extends Controller
             "incompletedWishes" => $incompletedWishes,
             "matchedWishes" => $matchedWishes,
             "currentPage" => $currentPage,
-            "canAddWish" => $canAddWish,
-            "reported" => $displayNames
+            "canAddWish" => $canAddWish
         ]);
 
         exit(0);

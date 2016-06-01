@@ -112,7 +112,9 @@
                         <input type="hidden" name="reply" value="{$message->id}"/>
                         <button type="submit" class="btn btn-inbox">Beantwoorden</button>
                     </form>
-                    <span class="info"><a class="btn btn-inbox">Rapporteren</a></span>
+                    {if $message->sender !== $user->displayName}
+                    <span class="info"><a class="btn btn-inbox" data-toggle="modal" data-target="#report">Rapporteren</a></span>
+                    {/if}
                     {if isset($message->links)}
                         {foreach from=$message->links item=link}
                             {if $link->action == "Talent"}
@@ -229,5 +231,45 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+
+    <div id="report" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Rapporteren van gebruiker <span
+                                class="glyphicon glyphicon-user"></span>{$message->sender}
+                    </h4>
+                </div>
+                <form action="/report/action=report" method="post">
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <p>
+                            <div class="col-xs-3">
+                                Reden:
+                            </div>
+                            <div class="col-xs-9">
+                                <input type="hidden" value="{$message->id}" name="message_id"/>
+                                <input type="text" class="form-control"
+                                       placeholder="Reden dat u {$message->sender} wilt rappoteren"
+                                       name="report_message">
+                            </div>
+                            </p>
+                            <br>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default infoLeft" data-dismiss="modal">Annuleren
+                        </button>
+                        <button type="submit" name="submit" class="btn btn-inbox info">
+                            <span class="glyphicon glyphicon-remove"></span> Bevestigen
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
