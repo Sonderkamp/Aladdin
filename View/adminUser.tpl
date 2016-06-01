@@ -4,11 +4,11 @@
 <!-- * Date: 8-3-2016 Rewritten on: 14-05-2016-->
 <!-- */-->
 <script>
-    function popup(mylink, windowname) {
+    function popup(mylink, windowname, w, h) {
         if (!window.focus)return true;
         var href;
         if (typeof(mylink) == 'string') href = mylink; else href = mylink.href;
-        window.open(href, windowname, 'width=700,height=400,scrollbars=yes');
+        window.open(href, windowname, 'width=' + w + ',height=' + h + ',scrollbars=yes');
         return false;
     }
 </script>
@@ -174,10 +174,16 @@
                                                 <li>
                                                     {*bekijk wens*}
                                                     {if !empty($report->wishID)}
-                                                        <a href="#">Bekijk wens</a>
+                                                        <a href="wishes/action=getSpecificWish?admin=true&Id={$report->wishID}"
+                                                           onClick="return popup(this, 'notes',900,400)">Bekijk
+                                                            wens</a>
+                                                        <a href="AdminWish/action=deleteWish?Id={$report->wishID}">
+                                                            Verwijder wens>
+                                                        </a>
                                                     {else}
                                                         {* bekijk bericht *}
-                                                        <a href="/adminmail/action=show/id={$report->messageID}/user={$report -> reporter -> email}" onClick="return popup(this, 'notes')">Bekijk
+                                                        <a href="adminmail/action=show/id={$report->messageID}/user={$report -> reporter -> email}"
+                                                           onClick="return popup(this, 'notes',700,400)">Bekijk
                                                             bericht</a>
                                                     {/if}
 
@@ -189,9 +195,6 @@
                                                 <li>
                                                     <a href="/AdminUser/action=block/id={$report->id}">Blokkeren</a>
                                                 </li>
-                                                {*<li>*}
-                                                {*<a href="/AdminUser/action=check/id={$report->getId()}">Bekijken</a>*}
-                                                {*</li>*}
                                             </ul>
                                         </div>
                                     </td>
@@ -224,34 +227,46 @@
                         </thead>
                         <tbody>
                         {foreach from=$handled item=report}
-                            {if $report -> reported -> getBlocked() == false}
-                                <tr>
-                                    <td>
+                            <tr>
+                                <td>
+                                    <a href="/AdminUser/action=showProfile/email={$report -> reporter -> email}">
                                         <span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($report -> reporter -> displayName)}
-                                    </td>
-                                    <td>{htmlspecialcharsWithNL($report -> message)}</td>
-                                    <td>
+                                    </a>
+
+                                </td>
+                                <td>{htmlspecialcharsWithNL($report -> message)}</td>
+                                <td>
+                                    <a href="/AdminUser/action=showProfile/email={$report -> reported -> email}">
                                         <span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($report -> reported -> displayName)}
-                                    </td>
-                                    <td>{htmlspecialcharsWithNL($report -> status)}</td>
-                                    <td>
-                                        <span class="glyphicon glyphicon-calendar"></span> {htmlspecialcharsWithNL($report -> date)}
-                                    </td>
-                                    <td>
-                                        {if !empty($report->wishID)}
-                                            Wens
-                                        {else}
-                                            {* bekijk bericht *}
-                                            Bericht
-                                        {/if}
-                                    </td>
-                                    <td>
-                                        <a href="/AdminUser/action=showProfile/email={$report -> reported -> email}">
-                                            <span>Bekijk profiel</span>
-                                        </a>
-                                    </td>
-                                </tr>
-                            {/if}
+                                    </a>
+                                </td>
+                                <td>{htmlspecialcharsWithNL($report -> status)}</td>
+                                <td>
+                                    <span class="glyphicon glyphicon-calendar"></span> {htmlspecialcharsWithNL($report -> date)}
+                                </td>
+                                <td>
+                                    {if !empty($report->wishID)}
+                                        Wens
+                                    {else}
+                                        {* bekijk bericht *}
+                                        Bericht
+                                    {/if}
+                                </td>
+                                <td>
+
+                                    {if !empty($report->wishID)}
+                                        <a href="wishes/action=getSpecificWish?admin=true&Id={$report->wishID}"
+                                           onClick="return popup(this, 'notes',900,400)">Bekijk
+                                            wens</a>
+                                    {else}
+                                        {* bekijk bericht *}
+                                        <a href="adminmail/action=show/id={$report->messageID}/user={$report -> reporter -> email}"
+                                           onClick="return popup(this, 'notes',700,400)">Bekijk
+                                            bericht</a>
+                                    {/if}
+
+                                </td>
+                            </tr>
                         {/foreach}
                         </tbody>
                     </table>
