@@ -122,7 +122,7 @@
                     <span>{$message->content}</span><br><br>
                 </div>
                 <div class="panel-footer">
-                    <a href="/Inbox/folder={$folderShortcut}/p={$page[0]}/message={$message->id}" class="btn btn-inbox">Openen</a>
+                    <a href="/Inbox/action=message/folder={$folderShortcut}/p={$page[0]}/message={$message->id}" class="btn btn-inbox">Openen</a>
                     {if $folderShortcut == "trash"}
                         <form class=noPadding action="/Inbox/folder={$folderShortcut}/p={$page[0]}" method="post">
                             <input type="hidden" name="delete" value="{$message->id}"/>

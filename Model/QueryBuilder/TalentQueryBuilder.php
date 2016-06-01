@@ -67,7 +67,7 @@ class TalentQueryBuilder
     // Read
     // This function returns all talents, limited talents, acceptedTalents, notAdded talents by given user, talent by id, added talents by user,
     // requested talents by user, all requested talents, all talents added by user (also denied talents), only names or searched talents
-    public function getTalents($limit = null, $accepted = null, $notAdded = null, $id = null, $addedUser = null, $userRequested = null, $allRequested = null, $allUser = null, $nameOnly = null, $search = null)
+    public function getTalents($limit = null, $accepted = null, $notAdded = null, $id = null, $addedUser = null, $userRequested = null, $allRequested = null, $allUser = null, $nameOnly = null, $search = null, $exact = null)
     {
 
         if ($nameOnly != null) {
@@ -137,17 +137,30 @@ class TalentQueryBuilder
         }
 
         if ($search != null) {
+            if($exact != null) {
+                if (Isset($where)) {
 
-            if (Isset($where)) {
+                    $query .= " AND `talent`.`name` LIKE ?";
 
-                $query .= " AND `talent`.`name` LIKE ?";
+                    array_push($parameters, $search);
+                } else {
 
-                array_push($parameters, "%" . $search . "%");
+                    $query .= " WHERE `talent`.`name` LIKE ?";
+
+                    $parameters = array($search);
+                }
             } else {
+                if (Isset($where)) {
 
-                $query .= " WHERE `talent`.`name` LIKE ?";
+                    $query .= " AND `talent`.`name` LIKE ?";
 
-                $parameters = array("%" . $search . "%");
+                    array_push($parameters, "%" . $search . "%");
+                } else {
+
+                    $query .= " WHERE `talent`.`name` LIKE ?";
+
+                    $parameters = array("%" . $search . "%");
+                }
             }
         }
 
@@ -269,11 +282,8 @@ class TalentQueryBuilder
                   WHERE `Id`=?",
                     Array($name, $isRejected, $admin, $id));
 
-                Database::query_safe("DELETE FROM `synonym` WHERE `talent_Id` = ?",
-                    array($id));
-
-                Database::query_safe("DELETE FROM `synonym` WHERE `synonym_Id` = ?",
-                    array($id));
+                Database::query_safe("DELETE FROM `synonym` WHERE `talent_Id` = ? OR `synonym_Id` = ?",
+                    array($id, $id));
             }
         }
     }
@@ -292,11 +302,8 @@ class TalentQueryBuilder
     public function deleteSynonym($talentId, $synonymId)
     {
 
-        Database::query_safe("DELETE FROM `synonym` WHERE `talent_Id` = ? AND `synonym_Id` = ?",
-            array($talentId, $synonymId));
-
-        Database::query_safe("DELETE FROM `synonym` WHERE `talent_Id` = ? AND `synonym_Id` = ?",
-            array($synonymId, $talentId));
+        Database::query_safe("DELETE FROM `synonym` WHERE (`talent_Id` = ? AND `synonym_Id` = ?) OR (`talent_Id` = ? AND `synonym_Id` = ?)",
+            array($talentId, $synonymId, $synonymId, $talentId));
     }
 
     public function getWishTalents(Wish $wish)
@@ -322,6 +329,20 @@ class TalentQueryBuilder
 //            $returnArray[] = $names[$i]["Name"];
 //        }
 //        return $returnArray;
+    }
+
+    public function deleteTalent($talentId)
+    {
+
+        $pdo = DATABASE::getPDO();
+        $pdo->beginTransaction();
+
+        DATABASE::transaction_action_safe($pdo, "DELETE FROM `synonym` WHERE `synonym_Id` = ? OR `talent_Id` = ?", array($talentId, $talentId));
+        DATABASE::transaction_action_safe($pdo, "DELETE FROM `talent_has_user` WHERE `talent_Id` = ?", array($talentId));
+        DATABASE::transaction_action_safe($pdo, "DELETE FROM `talent_has_wish` WHERE `talent_Id` = ?", array($talentId));
+        DATABASE::transaction_action_safe($pdo, "DELETE FROM `talent` WHERE `Id` = ?", array($talentId));
+
+        $pdo->commit();
     }
 
     // Helping methods

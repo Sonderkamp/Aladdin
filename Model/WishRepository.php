@@ -476,7 +476,7 @@ class WishRepository
                         $mail = new Email();
                         $mail->fromName = "Alladin";
                         $mail->subject = "Automatisch verwijderen.";
-                        $mail->message = "Hallo " . $wish->user->name . ", \n  Wensen die al meer dan 6 maanden niet zijn gewijzigd worden door het systeem verwijderd. Uw wens genaamd: '". $wish->title ."' Is nu verwijderd.";
+                        $mail->message = "Hallo " . $wish->user->name . ", \n  Wensen die al meer dan 6 maanden niet zijn gewijzigd worden door het systeem verwijderd. Uw wens genaamd: '". $wish->title ."' is nu verwijderd.";
                         $mail->to = $wish->user->email;
 
                         $newmail = new messageRepository();

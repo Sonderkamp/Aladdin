@@ -392,7 +392,7 @@ class WishesController extends Controller
                         "selectedWish" => $selectedWish,
                         "matches" => $matches,
                         "comments" => $comments,
-                        "admin" => true,
+                        "adminView" => true,
                         "canMatch" => false]);
                 exit(0);
             } else {
@@ -464,7 +464,7 @@ class WishesController extends Controller
             }
         }
 
-        $this->redirect("/Wishes/Id=" . $_GET["Id"]);
+        $this->redirect("/Wishes/action=getSpecificWish/Id=" . $_GET["Id"]);
         exit();
 
     }

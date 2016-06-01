@@ -15,7 +15,8 @@ class AdmintalentsController extends Controller
         $talentsCount,
         $talentRepo,
         $wordsRepo,
-        $synonymId;
+        $synonymId,
+        $search;
 
     // contructor
     public function __construct()
@@ -24,6 +25,7 @@ class AdmintalentsController extends Controller
 
         $this->page = "allTalents";
         $this->synonymId = "";
+        $this->search = "";
 
         $this->talentRepo = new TalentRepository();
         $this->wordsRepo = new ForbiddenWordRepository();
@@ -50,7 +52,8 @@ class AdmintalentsController extends Controller
                 "talents" => $this->talentRepo->getTalents(),
                 "synonymId" => $this->synonymId,
                 "acceptedTalents" => $this->talentRepo->getAcceptedTalents(),
-                "page" => $this->page]);
+                "page" => $this->page,
+                "search" => $this->search]);
         exit(0);
     }
 
@@ -310,8 +313,9 @@ class AdmintalentsController extends Controller
     private function checkSearch()
     {
         if (!Empty($_GET["search"])) {
+            $this->search = htmlspecialchars(trim($_GET["search"]));
 
-            $this->allTalents = $this->talentRepo->searchTalents(htmlspecialchars($_GET["search"]), null, true);
+            $this->allTalents = $this->talentRepo->searchTalents($this->search, null, true);
             $this->currentTalentsCount = 0;
             $this->talentsCount = 0;
         }
