@@ -123,13 +123,20 @@
                         </tr>
 
                         <tr>
-                            <td>Adress:</td>
+                            <td>Straat en huisnummer:</td>
                             <td>
                                 <input type="text" name="address" onblur="validateAddress()" data-validation="custom"
                                        data-validation-regexp="^([a-zA-Z][A-Za-z0-9\- ]+)$"
                                        data-validation-error-msg="Straat en huisnummer kan alleen letters, nummers, spaties en streepjes(-) bevatten"
                                        maxlength="255">
                             </td>
+                        </tr>
+                        <tr>
+                            <td>Stad:</td>
+                            <td><input type="text" name="city" required onblur="validateAddress()"
+                                       maxlength="255">
+                            </td>
+
                         </tr>
                         <tr>
                             <td>Postcode:</td>
@@ -140,11 +147,7 @@
 
                             </td>
                         </tr>
-                        <tr>
-                            <td>Stad:</td>
-                            <td><input type="text" name="city" required maxlength="255" readonly></td>
 
-                        </tr>
                         <tr>
                             <td>Land:</td>
                             <td><input type="text" name="country" required
@@ -253,16 +256,17 @@
 
     function validateAddress() {
 
+
         $("#error").text("");
         $("#error").removeClass("form-error");
 
-        $('input[name=city]').val('');
         $('input[name=country]').val('');
         $('input[name=postalcode]').val('');
         var location = $('input[name=address]').val();
+        var location2 = $('input[name=city]').val();
 
-        if (location != "")
-            return getAddress(location, false);
+        if (location != "" && location2 != "")
+            return getAddress(location + ", " + location2, false);
 
         return false;
     }

@@ -24,9 +24,14 @@ class MatchQueryBuilder extends QueryBuilder
         return $this->executeQuery($query , array($wishId , $username));
     }
 
-    public function checkForUser($username){
-        $query = "SELECT * FROM `matches` WHERE ? = $username";
-        return $this->executeQuery($query , array($username));
+    public function checkForUser($username , $wishId){
+        $query = "SELECT * FROM `matches` WHERE `matches`.user_Email = ? AND `matches`.wish_Id = ?";
+        return $this->executeQuery($query , array($username, $wishId));
+    }
+
+    public function checkOwnWish($username, $wishId){
+        $query = "SELECT * FROM `wish` WHERE `wish`.User = ? AND `wish`.Id = ?";
+        return $this->executeQuery($query , array($username , $wishId));
     }
 
     public function selectMatch($wishId , $username){

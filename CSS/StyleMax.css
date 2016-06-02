@@ -1,0 +1,36 @@
+.navbar{
+    background-color: #CCC888 !important;
+}
+
+.container-fluid{
+    border-bottom: 15px solid #B2AC40 !important;
+}
+
+.footer{
+    background-color: #CCC888 !important;
+}
+
+/*.btn{*/
+    /*background-color: #75A1B2 !important;*/
+/*}*/
+
+.btn-default{
+    background-color: #75A1B2 !important;
+}
+
+.btn-danger{
+    background-color: #75A1B2;
+}
+
+.dashboard-header{
+    color: #B2AC40 !important;
+}
+
+/*.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {*/
+    /*color: #75A1B2 !important;*/
+/*}*/
+
+/*.btn-inbox {*/
+    /*color: #FFBAA1 !important;*/
+/*}*/
+

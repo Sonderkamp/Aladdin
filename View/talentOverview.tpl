@@ -41,7 +41,7 @@
 
                     <form class="col-xs-12 col-sm-12 col-md-12 col-lg-12" action="/talents" method="get">
                         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                            <input class="form-control" name="searchAdded" placeholder="Zoek een toegevoegd talent">
+                            <input class="form-control" name="searchAdded" placeholder="Zoek een toegevoegd talent"{if !Empty($searchAdded)}value="{$searchAdded}"{/if}>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                             <button type="submit" class="btn btn-primary">Zoek</button>
@@ -247,7 +247,7 @@
                 <div class="tab-pane{if $page == "allTalents"} fade in active{/if}" id="tab2">
                     <form class="col-xs-12 col-sm-12 col-md-12 col-lg-12" action="/talents" method="get">
                         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                            <input class="form-control" name="searchAll" placeholder="Zoek een talent">
+                            <input class="form-control" name="searchAll" placeholder="Zoek een talent"{if !Empty($searchAll)}value="{$searchAll}"{/if}>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                             <button type="submit" class="btn btn-primary">Zoek</button>

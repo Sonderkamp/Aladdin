@@ -21,7 +21,11 @@
             </blockquote>
 
             <div class="text-center">
-                <a class="btn btn-register start btn-lg" href="/Account/action=register">Registreer</a>
+                {if empty($user)}
+                    <a class="btn btn-register start btn-lg" href="/Account/action=register">Registreer</a>
+                {else}
+                    <a class="btn btn-register start btn-lg" href="/Dashboard">Naar Dashboard</a>
+                {/if}
             </div>
         </div>
 

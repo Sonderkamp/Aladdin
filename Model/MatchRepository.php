@@ -71,24 +71,27 @@ class MatchRepository
     }
 
     public function setMatch($wishId , $username){
-        if(!$this->checkDuplicates($username)){
-            $this->matchQueryBuilder->addMatch($wishId , $username);
-            $this->sentMatchMessage($wishId , $username);
-        } else {
-            return false;
-        }
-        return true;
+        $this->matchQueryBuilder->addMatch($wishId , $username);
+        $this->sentMatchMessage($wishId , $username);
     }
 
     public function selectMatch($wishId , $username){
         $this->matchQueryBuilder->selectMatch($wishId , $username);
     }
 
-    public function checkDuplicates($username){
-        if(empty($this->matchQueryBuilder->checkForUser($username))){
-            return true;
-        } else {
+    public function checkDuplicates($username, $wishId){
+        if(empty($this->matchQueryBuilder->checkForUser($username, $wishId))){
             return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function checkOwnWish($username, $wishId){
+        if(empty($this->matchQueryBuilder->checkOwnWish($username , $wishId))){
+            return false;
+        } else {
+            return true;
         }
     }
 
@@ -102,6 +105,6 @@ class MatchRepository
         $title = "U heeft een nieuwe match!";
 
         $messageId = $this->messageRepo->sendMessage($username, $wish->user->email, $title, $message);
-        $this->messageRepo->setLink($wishId, 'Match', $messageId);
+        $this->messageRepo->setLink($wishId, 'Wens', $messageId);
     }
 }
