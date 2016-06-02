@@ -407,6 +407,10 @@ class WishesController extends Controller
             $canMatch = true;
         }
 
+        if($this->userRepo->getCurrentUser()->email == $selectedWish->user->email){
+            $canMatch = false;
+        }
+
         if (!empty($selectedWish)) {
             $this->render("wishSpecificView.tpl",
                 ["title" => "Wens: " . $id,
@@ -473,9 +477,18 @@ class WishesController extends Controller
     {
         if (!empty($_GET["Id"]) && !empty($this->userRepo->getCurrentUser())) {
 
-            if (!$this->matchRepo->setMatch($_GET["Id"], $this->userRepo->getCurrentUser()->email)) {
+            if($this->matchRepo->checkOwnWish($this->userRepo->getCurrentUser()->email , $_GET["Id"])){
                 $this->apologize("You can't match with your own wishes");
+                exit(0);
             }
+
+            if($this->matchRepo->checkDuplicates($this->userRepo->getCurrentUser()->email , $_GET["Id"])){
+                $this->apologize("You already matched with this wish");
+                exit(0);
+            }
+
+            $this->matchRepo->setMatch($_GET["Id"] ,  $this->userRepo->getCurrentUser()->email);
+
         } else {
             $this->apologize("Please supply a valid wishId and make sure to be logged in");
         }
@@ -485,12 +498,6 @@ class WishesController extends Controller
 
     public function selectMatch()
     {
-//        if (!empty($_GET["user"]) && !empty($_GET["wish"])) {
-//            $this->matchRepo->selectMatch($_GET["wish"], $_GET["user"]);
-//        } else {
-//            $this->apologize("Please supply a valid wishId and User email");
-//        }
-
         if ($this->userRepo->getCurrentUser()->email && !empty($_GET["wish"])) {
             $this->matchRepo->selectMatch($_GET["wish"], $this->userRepo->getCurrentUser());
             $this->redirect("/wishes//wishes/action=getSpecificWish?Id=" . $_GET["wish"]);
