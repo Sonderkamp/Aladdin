@@ -8,13 +8,14 @@
  */
 class WishRepository
 {
-    private $talentRepository, $userRepository, $WishQueryBuilder , $adminRepo;
+    private $talentRepository, $userRepository, $WishQueryBuilder, $matchRepo, $adminRepo;
 
     public $wishLimit = 3;
 
     public function __construct()
     {
         $this->WishQueryBuilder = new WishQueryBuilder();
+        $this->matchRepo        = new MatchRepository();
         $this->talentRepository = new TalentRepository();
         $this->userRepository   = new UserRepository();
         $this->adminRepo        = new AdminRepository();
@@ -191,7 +192,7 @@ class WishRepository
     public function canAddWish($email)
     {
         // kortere notatie voor de if/else :)
-        return $this->getWishAmount($email) < $this->wishLimit;
+        return $this->getWishAmount($email) < $this->getWishLimit($email);
     }
 
     public function getWishAmount($email)
@@ -202,6 +203,11 @@ class WishRepository
         } else {
             return 0;
         }
+    }
+
+    public function getWishLimit($username){
+        $extraWishes = count($this->matchRepo->getCompletedMatches($username));
+        return $this->wishLimit + $extraWishes;
     }
 
     public function getRequestedWishes()
