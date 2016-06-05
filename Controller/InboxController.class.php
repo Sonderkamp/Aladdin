@@ -253,6 +253,31 @@ class InboxController extends Controller
             exit();
         }
 
+        // Check if the message contains a forbidden word
+        $wordRepo = new ForbiddenWordRepository();
+        $errorMessage = "";
+
+        // Validate title
+        if(!$wordRepo->isValidArray(explode(" ", $_POST["title"]))) {
+            $errorMessage = "de titel van het bericht voldoet niet aan de regels!";
+        }
+
+        // Validate message
+        if(!$wordRepo->isValidArray(explode(" ", $_POST["message"]))) {
+            if(!empty($errorMessage)) {
+                $errorMessage = "de titel en het bericht voldoen niet aan de regels!";
+            } else {
+
+                $errorMessage = "het bericht voldoet niet aan de regels!";
+            }
+        }
+
+        if(!empty($errorMessage)) {
+
+            $this->render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => $errorMessage, "names" => $names]);
+            exit();
+        }
+
         // send message
         $mes->sendMessage($_SESSION["user"]->email, $username, $_POST["title"], $_POST["message"]);
 

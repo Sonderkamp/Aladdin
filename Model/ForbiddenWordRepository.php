@@ -46,6 +46,11 @@ class ForbiddenWordRepository
 
         return Empty($this->wordBuilder->getForbiddenWords(null,strtolower($word)));
     }
+    
+    public function isValidArray($wordArray) {
+        
+        return Empty($this->wordBuilder->getForbiddenWords(null,null,null,$wordArray));
+    }
 
     // Prevent duplicate code
     public function createReturnArray($result) {
