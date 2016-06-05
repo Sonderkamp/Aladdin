@@ -39,18 +39,19 @@
         </div>
     </form>
 
-    <div class="col-md-10">
-        {if isset($error)}
-            <div class="alert  form-error alert-dismissible " role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                {htmlspecialchars($error)}
-            </div>
-        {/if}
-    </div>
+    {*<div class="col-md-10">*}
+      {**}
+    {*</div>*}
 
     <div class="col-md-10">
         <div class="tab-content">
+            {if isset($error)}
+                <div class="alert  form-error alert-dismissible " role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    {htmlspecialchars($error)}
+                </div>
+            {/if}
             <div class="tab-pane fade in {if $currentPage == "sponsors"}active{/if}" id="requestedTab">
                 {if $sponsors}
                     <table class="table">
@@ -67,8 +68,8 @@
                         {foreach from=$sponsors item=sponsor}
                             <tr>
                                 <td>{$sponsor->name}</td>
-                                <td>{$sponsor->image}</td>
                                 <td>{$sponsor->url}</td>
+                                <td>{$sponsor->description}</td>
                                 <td>{$sponsor->userMail}</td>
                                 <td>
                                     <div class="dropdown">
@@ -80,7 +81,7 @@
 
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a href="#">Zet op non-actief</a>
+                                                <a href="/AdminSponsor/action=deleteSponsor?sponsorID={$sponsor->id}">Verwijderen</a>
                                             </li>
                                         </ul>
                                     </div>

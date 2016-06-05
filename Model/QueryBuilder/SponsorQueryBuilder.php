@@ -8,33 +8,25 @@
  */
 class SponsorQueryBuilder
 {
-    
+
     public function getAllSponsors()
     {
-        return Database::query($this->selectAll());
+        return Database::query("SELECT * FROM `sponsor`");
     }
 
 
     public function addSponsor(Sponsor $sponsor)
     {
         $sql = "INSERT INTO `aladdin_db2`.`sponsor`";
-        if(isset($sponsor->userMail)){
-            $sql .= " (`Name`, `Image`, `Description`, `WebsiteLink`, `user_Email`)";
-            $sql .= " VALUES (?,?,?,?,?)";
-            $parameters = array($sponsor->name, $sponsor->image, $sponsor->description, $sponsor->url, $sponsor->userMail);
-        } else {
-            $sql .= " (`Name`, `Image`, `Description`, `WebsiteLink`)";
-            $sql .= " VALUES (?,?,?,?)";
-            $parameters = array($sponsor->name, $sponsor->image, $sponsor->description, $sponsor->url);
-        }
-
-
+        $sql .= " (`Name`, `Image`, `Description`, `WebsiteLink`, `user_Email`)";
+        $sql .= " VALUES (?,?,?,?,?)";
+        $parameters = array($sponsor->name, $sponsor->image, $sponsor->description, $sponsor->url, $sponsor->userMail);
         Database::query_safe($sql, $parameters);
     }
 
-    public function selectAll(){
-        return "SELECT * FROM `sponsor`";
+    public function deleteSponsor(Sponsor $sponsor){
+        $sql = "DELETE FROM `aladdin_db2`.`sponsor` WHERE `Id` = ?";
+        Database::query_safe($sql, array($sponsor->id));
     }
-
-
+    
 }

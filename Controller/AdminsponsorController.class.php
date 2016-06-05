@@ -9,7 +9,8 @@
 class AdminsponsorController extends Controller
 {
 
-    private $sponsorRepo, $userRepo,$wishRepo;
+    private $sponsorRepo, $userRepo, $wishRepo, $error;
+    private $errorNoUserOrCompany = "Er moet een bedrijfsnaam of gebruiker worden ingevuld bij het toevoegen van een sponsor.";
 
     public function __construct()
     {
@@ -23,7 +24,11 @@ class AdminsponsorController extends Controller
     public function run()
     {
         (new AccountController())->guaranteeLogin("/Wishes");
-        $this->renderOverview("sponsors");
+        if (!isset($currentPage)) {
+            $currentPage = "sponsors";
+        }
+
+        $this->renderOverview($currentPage);
     }
 
     public function renderOverview($currentPage)
@@ -32,6 +37,15 @@ class AdminsponsorController extends Controller
         $sponsors = $this->sponsorRepo->getAllSponsors();
         $users = $this->userRepo->getAllUsers();
 
+        if (isset($this->error)) {
+            $this->render("adminSponsor.tpl", ["title" => "Sponsor Beheer",
+                "sponsors" => $sponsors,
+                "users" => $users,
+                "currentPage" => $currentPage,
+                "error" => $this->error
+            ]);
+            exit();
+        }
 
         $this->render("adminSponsor.tpl", ["title" => "Sponsor Beheer",
             "sponsors" => $sponsors,
@@ -42,50 +56,52 @@ class AdminsponsorController extends Controller
 
     public function addSponsor(Sponsor $sponsor = null)
     {
+        if (!isset($sponsor)) {
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                $sponsor = $this->sponsorFromRequest();
+            }
+        }
+
+        if (empty($sponsor->userMail) && empty($sponsor->name)) {
+            $this->error = $this->errorNoUserOrCompany;
+            $this->run();
+            exit();
+        }
+
+        $this->sponsorRepo->addSponsor($sponsor);
+        $this->goBack();
+    }
+
+
+    public function sponsorFromRequest()
+    {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $sponsor = new Sponsor();
             $sponsor->name = $_POST["name"];
             $sponsor->description = $_POST["description"];
             $sponsor->url = $_POST["url"];
-            $sponsor->image = $this->getImage();
 
             if ($_POST["userEmail"] != "default") {
                 $sponsor->userMail = $_POST["userEmail"];
             }
+            return $sponsor;
         }
-
-        $this->sponsorRepo->addSponsor($sponsor);
-        $this->uploadeImage($sponsor->image);
-    }
-    
-    public function getImage(){
-//        echo "IMAGE: " . $_FILES["img"]["tmp_name"];
-        if (!empty($_FILES["img"]["tmp_name"])) {
-            return $_FILES["img"];
-        }
+        return null;
     }
 
-    public function uploadeImage($img){
-        if ($img != null) {
-            if (!empty($img['tmp_name'])) {
-                $url = $this->upload($img);
-                $this->wishRepo->upload($img);
-
-                if ($url == null) {
-                    return "Er is een invalide bestand meegegeven. Alleen foto bestanden worden geaccepteerd tot 10MB";
-                }
-            }
-        }
-    }
-
-    public function valid($sponsors)
+    public function deleteSponsor(Sponsor $sponsor = null)
     {
-        foreach ($sponsors as $item) {
-            if (empty($item->name) || empty($item->description) || empty($item->url)) {
-                return false;
-            }
+        if ($_SERVER["REQUEST_METHOD"] == "GET") {
+            $sponsor = new Sponsor();
+            $sponsor->id = $_GET["sponsorID"];
         }
-        return true;
+        $this->sponsorRepo->deleteSponsor($sponsor);
+        $this->goBack();
+    }
+
+    public function goBack()
+    {
+        $this->redirect("AdminSponsor");
     }
 
 

@@ -9,6 +9,6 @@
 class Sponsor
 {
 
-    public $name, $image, $description, $url, $userMail;
+    public $id, $name, $image, $description, $url, $userMail;
 
 }
