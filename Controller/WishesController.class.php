@@ -477,10 +477,16 @@ class WishesController extends Controller
      */
     public function AddComment()
     {
-
         if (!isset($_POST["comment"])) {
             $this->redirect("/Wishes/Id=" . $_GET["Id"]);
             exit();
+        }
+
+        if (!empty($wish = $this->wishRepo->getWish(htmlspecialchars($_GET["Id"])))) {
+            if($wish->status != "Vervuld") {
+                $this->redirect("/Wishes/action=getSpecificWish/Id=" . htmlspecialchars($_GET["Id"]));
+                exit();
+            }
         }
 
         if (empty($_FILES["img"]["tmp_name"])) {
