@@ -258,13 +258,13 @@ class InboxController extends Controller
         $errorMessage = "";
 
         // Validate title
-        if(!$wordRepo->isValidArray(explode(" ", $_POST["title"]))) {
+        if (!$wordRepo->isValidArray(explode(" ", $_POST["title"]))) {
             $errorMessage = "de titel van het bericht voldoet niet aan de regels!";
         }
 
         // Validate message
-        if(!$wordRepo->isValidArray(explode(" ", $_POST["message"]))) {
-            if(!empty($errorMessage)) {
+        if (!$wordRepo->isValidArray(explode(" ", $_POST["message"]))) {
+            if (!empty($errorMessage)) {
                 $errorMessage = "de titel en het bericht voldoen niet aan de regels!";
             } else {
 
@@ -272,7 +272,7 @@ class InboxController extends Controller
             }
         }
 
-        if(!empty($errorMessage)) {
+        if (!empty($errorMessage)) {
 
             $this->render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => $errorMessage, "names" => $names]);
             exit();
