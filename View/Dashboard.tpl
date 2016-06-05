@@ -9,22 +9,26 @@
     <div class="row dashboard-row">
 
         <div class="col-xs-6">
-            <h3 class="dashboard-header">Informatie van {htmlspecialchars($smarty.session.user->name)}</h3>
+            <h3 class="dashboard-header">Informatie van {htmlspecialchars($user->name)}</h3>
             <div class="row">
                 <label class="col-md-4 col-xs-4">Adres:</label>
-                <label>{htmlspecialchars($smarty.session.user->address)}</label>
+                <label>{htmlspecialchars($user->address)}</label>
             </div>
             <div class="row">
                 <label class="col-md-4 col-xs-4">postcode:</label>
-                <label>{htmlspecialchars($smarty.session.user->postalcode)}</label>
+                <label>{htmlspecialchars($user->postalcode)}</label>
             </div>
             <div class="row">
                 <label class="col-md-4 col-xs-4">Land:</label>
-                <label>{htmlspecialchars($smarty.session.user->country)}</label>
+                <label>{htmlspecialchars($user->country)}</label>
             </div>
             <div class="row">
                 <label class="col-md-4">Geboortedatum:</label>
-                <label>{htmlspecialchars($smarty.session.user->dob)}</label>
+                <label>{htmlspecialchars($user->dob)}</label>
+            </div>
+            <div class="row">
+                <label class="col-md-4">Wens limiet:</label>
+                <label>{htmlspecialchars($wishLimit)}</label>
             </div>
             <div class="row">
                 <a href="/profile" class="btn btn-info">

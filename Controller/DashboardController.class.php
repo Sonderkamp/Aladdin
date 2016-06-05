@@ -8,15 +8,17 @@
  */
 class DashboardController extends Controller
 {
-    private $wishRepo, $talentRepo, $wishLimit, $talentLimit;
+    private $wishRepo, $talentRepo, $userRepo, $matchRepo, $wishLimit, $talentMinimum;
 
     public function __construct()
     {
         (new AccountController())->guaranteeLogin("/dashboard");
+        $this->userRepo = new UserRepository();
         $this->wishRepo = new WishRepository();
+        $this->matchRepo = new MatchRepository();
         $this->talentRepo = new TalentRepository();
         $this->wishLimit = $this->wishRepo->wishLimit;
-        $this->talentLimit = $this->talentRepo->TALENT_MINIMUM;
+        $this->talentMinimum = $this->talentRepo->TALENT_MINIMUM;
     }
 
     public function run()
@@ -37,28 +39,41 @@ class DashboardController extends Controller
 
     public function showForcedProfile()
     {
-        $wishAmount = $this->wishLimit - $this->getWishAmount();
-        $talentAmount = $this->talentLimit - $this->getTalentAmount();
+        $talentAmount = $this->getTalentAmount();
+        $wishAmount = $this->getWishAmount();
+        $wishLimit = $this->wishRepo->getWishLimit($this->userRepo->getCurrentUser()->email);
         $wishCheck = false;
 
-        if ($wishAmount <= $this->wishLimit) {
+        if($wishAmount < $wishLimit){
             $wishCheck = true;
         }
 
-        $this->render("dashboard.tpl", ["title" => $_SESSION["user"]->displayName,
+        $this->render("dashboard.tpl", ["title" => $this->userRepo->getCurrentUser()->displayName,
+            "user" => $this->userRepo->getCurrentUser(),
             "wishes" => $this->getMyWishes(),
             "talents" => $this->getMyTalents(),
             "wishCheck" => $wishCheck,
+            "wishLimit" => $wishLimit,
             "errorString" => $this->generateErrorSentence($wishAmount, $talentAmount)]);
         exit(0);
     }
 
     public function showProfile()
     {
-        $this->render("dashboard.tpl", ["title" => $_SESSION["user"]->displayName,
+        $wishAmount = $this->getWishAmount();
+        $wishLimit = $this->wishRepo->getWishLimit($this->userRepo->getCurrentUser()->email);
+        $wishCheck = false;
+
+        if($wishAmount < $wishLimit){
+            $wishCheck = true;
+        }
+
+        $this->render("dashboard.tpl", ["title" => $this->userRepo->getCurrentUser()->displayName,
+            "user" => $this->userRepo->getCurrentUser(),
             "wishes" => $this->getMyWishes(),
             "talents" => $this->getMyTalents(),
-            "wishCheck" => false
+            "wishLimit" => $wishLimit,
+            "wishCheck" => $wishCheck
         ]);
         exit(0);
     }
@@ -66,6 +81,9 @@ class DashboardController extends Controller
 
     private function generateErrorSentence($wishAmount, $talentAmount)
     {
+        $wishAmount = $this->wishLimit - $wishAmount;
+        $talentAmount = $this->talentMinimum - $talentAmount;
+
         $prefix = "<strong>Pas op!</strong> U heeft uw profiel nog niet voltooid. Vul alstublieft nog ";
         $str = "";
         if ($wishAmount <= $this->wishLimit && $wishAmount > 0) {
@@ -78,7 +96,7 @@ class DashboardController extends Controller
         }
 
 
-        if ($talentAmount <= $this->talentLimit && $talentAmount > 0) {
+        if ($talentAmount <= $this->talentMinimum && $talentAmount > 0) {
 
             if ($str != "") {
                 $str .= " en vul ";
@@ -109,7 +127,7 @@ class DashboardController extends Controller
 
     private function getWishAmount()
     {
-        return $this->wishRepo->getWishAmount($_SESSION["user"]->email);
+        return $this->wishRepo->getWishAmount($this->userRepo->getCurrentUser()->email);
     }
 
     private function getTalentAmount()
@@ -119,12 +137,12 @@ class DashboardController extends Controller
 
     private function checkAmounts()
     {
-        if (!empty($_SESSION['user'])) {
+        if (!empty($this->userRepo->getCurrentUser())) {
             $wishAmount = $this->getWishAmount();
             $talentAmount = $this->getTalentAmount();
 
             //3 wishes and 3 talents are mandatory
-            if ($wishAmount >= $this->wishLimit && $talentAmount >= $this->talentLimit) {
+            if ($wishAmount >= $this->wishLimit && $talentAmount >= $this->talentMinimum) {
                 return true;
             } else {
                 return false;

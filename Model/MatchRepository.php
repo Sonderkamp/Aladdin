@@ -9,16 +9,17 @@
 class MatchRepository
 {
 
-    private $matchQueryBuilder, $messageRepo, $wishRepo, $userRepo;
+    private $matchQueryBuilder, $messageRepo, $userRepo;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->matchQueryBuilder = new MatchQueryBuilder();
         $this->messageRepo = new messageRepository();
-        $this->wishRepo = new WishRepository();
         $this->userRepo = new UserRepository();
     }
 
-    private function getReturnArray($queryResult){
+    private function getReturnArray($queryResult)
+    {
         if (!empty($queryResult)) {
             $returnArray = array();
 
@@ -66,37 +67,50 @@ class MatchRepository
         return false;
     }
 
-    public function getMatches($wishId){
+    public function getMatches($wishId)
+    {
         return $this->getReturnArray($this->matchQueryBuilder->getMatches($wishId));
     }
 
-    public function setMatch($wishId , $username){
-        $this->matchQueryBuilder->addMatch($wishId , $username);
-        $this->sentMatchMessage($wishId , $username);
+    public function setMatch($wishId, $username)
+    {
+        $this->matchQueryBuilder->addMatch($wishId, $username);
+        $this->sentMatchMessage($wishId, $username);
     }
 
-    public function selectMatch($wishId , $username){
-        $this->matchQueryBuilder->selectMatch($wishId , $username);
+    public function selectMatch($wishId, $username)
+    {
+        $this->matchQueryBuilder->selectMatch($wishId, $username);
     }
 
-    public function checkDuplicates($username, $wishId){
-        if(empty($this->matchQueryBuilder->checkForUser($username, $wishId))){
+    public function checkDuplicates($username, $wishId)
+    {
+        if (empty($this->matchQueryBuilder->checkForUser($username, $wishId))) {
             return false;
         } else {
             return true;
         }
     }
 
-    public function checkOwnWish($username, $wishId){
-        if(empty($this->matchQueryBuilder->checkOwnWish($username , $wishId))){
+    public function checkOwnWish($username, $wishId)
+    {
+        if (empty($this->matchQueryBuilder->checkOwnWish($username, $wishId))) {
             return false;
         } else {
             return true;
         }
     }
 
-    private function sentMatchMessage($wishId , $username){
-        $wish = $this->wishRepo->getWish($wishId);
+    public function getCompletedMatches($username)
+    {
+        return $this->getReturnArray($this->matchQueryBuilder->getMatches(null , $username));
+    }
+
+    private function sentMatchMessage($wishId, $username)
+    {
+        $wishRepo = new WishRepository();
+
+        $wish = $wishRepo->getWish($wishId);
         $user = $this->userRepo->getUser($username);
 
         $message = $user->displayName . " heeft zichzelf als match opgegeven bij uw wens: " . $wish->title .
