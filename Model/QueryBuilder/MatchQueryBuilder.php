@@ -8,15 +8,49 @@
  */
 class MatchQueryBuilder extends QueryBuilder
 {
-    public function getMatches($wishId){
+    /**
+     * @param null $wishId
+     * @param null $username
+     * @return array|bool
+     *
+     * provide $wishId for matches of that wish
+     * provide $username for completed matches by that username
+     *
+     * do not provide both since this will result in an error
+     * Neither provide none cause this will cause error as well
+     */
+    public function getMatches($wishId = null , $username = null){
+
+        $param = array();
+
+        if(($wishId != null && $username != null) || ($wishId == null && $username == null)){
+            return null;
+        }
+
         $query = "SELECT * FROM `matches`
-                  JOIN `user` ON `matches`.user_Email = `user`.Email
-                  WHERE `matches`.wish_Id = ? AND user_Email IS NOT NULL AND NOT EXISTS
+                  JOIN `user` ON `matches`.user_Email = `user`.Email ";
+
+        if($username != null){
+            $query .= "JOIN `wish` ON `matches`.wish_Id = `wish`.Id ";
+        }
+
+        if($wishId != null){
+            $query .= "WHERE `matches`.wish_Id = ? ";
+            $param[] = $wishId;
+        }
+
+        if($username != null){
+            $query .= "WHERE `matches`.user_Email = ? AND `wish`.Status = 'Vervuld' ";
+            $param[] = $username;
+        }
+
+        $query .= "AND user_Email IS NOT NULL AND NOT EXISTS
                   ( SELECT NULL FROM blockedusers AS b WHERE b.user_Email = `matches`.user_Email AND b.IsBlocked = 1
                   AND b.Id = (SELECT Id FROM blockedusers as c WHERE c.user_Email = `matches`.user_Email
                   ORDER BY DateBlocked DESC LIMIT 1))";
 
-        return $this->executeQuery($query , array($wishId));
+
+        return $this->executeQuery($query , $param);
     }
 
     public function addMatch($wishId , $username){
