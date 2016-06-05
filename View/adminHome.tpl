@@ -12,35 +12,35 @@
         </span>
 
 
-        <div id="detailchart">
-        </div>
+            <div id="detailchart">
+            </div>
 
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Categorie</th>
-                <th>Aantal</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>Handicap</td>
-                <td id="Handicap"></td>
-            </tr>
-            <tr>
-                <td>Volwassen</td>
-                <td id="Volwassen"></td>
-            </tr>
-            <tr>
-                <td>Kinderen</td>
-                <td id="Kind"></td>
-            </tr>
-            <tr>
-                <td>Ouderen</td>
-                <td id="Ouderen"></td>
-            </tr>
-            </tbody>
-        </table>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Categorie</th>
+                    <th>Aantal</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Handicap</td>
+                    <td id="Handicap"></td>
+                </tr>
+                <tr>
+                    <td>Volwassen</td>
+                    <td id="Volwassen"></td>
+                </tr>
+                <tr>
+                    <td>Kinderen</td>
+                    <td id="Kind"></td>
+                </tr>
+                <tr>
+                    <td>Ouderen</td>
+                    <td id="Ouderen"></td>
+                </tr>
+                </tbody>
+            </table>
 
         </article>
     </div>
@@ -51,6 +51,7 @@
             <ul class="nav nav-pills nav-stacked">
                 <li class="active"><a href="#tab1" data-toggle="tab">Gebruiker</a></li>
                 <li><a href="#tab2" data-toggle="tab">Matches</a></li>
+                <li><a href="#tab3" data-toggle="tab" onclick="sort()">Donaties</a></li>
             </ul>
         </div>
         <div class="col-xs-10">
@@ -74,9 +75,50 @@
 
                     <div id="map"></div>
                 </div>
+                <div class="tab-pane fade" id="tab3">
+
+                    {if count($donations) > 0}
+                        <table class="table sortable">
+                            <thead>
+                            <tr>
+                                <th id="first">Datum</th>
+                                <th>Persoon</th>
+                                <th>Hoeveelheid</th>
+                                <th>Beschrijving</th>
+                                <th>IP</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach from=$donations item=donation}
+                                <tr>
+                                    <td>{$donation->date}</td>
+                                    {if $donation->anonymous == 1}
+                                        <td>Anoniem</td>
+                                    {elseif $donation->name !== null}
+                                        <td>{$donation->name}</td>
+                                    {else}
+                                        <td>
+                                            <a href="/AdminUser/action=showProfile/email={$donation -> user -> email}">
+                                                <span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($donation -> user -> displayName)}
+                                            </a></td>
+                                    {/if}
+                                    <td>&euro;{number_format($donation->amount, 2, ',', ' ')}</td>
+                                    <td>{$donation->description}</td>
+                                    <td>{$donation->IP}</td>
+                                </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                    {else}
+                        <h6 class="text-center">Er zijn nog geen donaties via de site uitgevoerd.</h6>
+                    {/if}
+                </div>
+
             </div>
         </div>
     </div>
+</div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.14/d3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.6.7/d3-tip.min.js"></script>
@@ -91,3 +133,11 @@
 <script src="/JS/userdetailchart.js"></script>
 <script src="/JS/matchmap.js"></script>
 <script src="/JS/main.js"></script>
+<script src="/JS/Sortable.js"></script>
+<script>
+    function sort() {
+        $("#first").click();
+        $("#first").click();
+    }
+
+</script>

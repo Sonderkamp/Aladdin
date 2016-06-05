@@ -19,3 +19,5 @@ define("EMAILADRESS", "WebshopWebs@gmail.com");
 
 define("EMAILWACHTWOORD", "webs2eindopdracht!");
 
+define("MOLLIE_ID", 'test_vgs9fE6musPtVGrFyzW69xM3fxVJJQ');
+

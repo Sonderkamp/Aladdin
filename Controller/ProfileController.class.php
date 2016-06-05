@@ -64,10 +64,21 @@ class ProfileController extends Controller
 //        return $result;
 //    }
 
-    private function manage()
+    private function manage($error = null, $success = null)
     {
+        $email = ((new UserRepository())->getCurrentUser());
+        $email = $email->email;
+        $donations = (new DonationRepository())->getDonations($email);
 
-        $this->render("account.tpl", ["title" => "profile"]);
+        if ($error != null) {
+            $this->render("account.tpl", ["title" => "profile", "error" => $error, "donations" => $donations]);
+            exit();
+        }
+        if ($success != null) {
+            $this->render("account.tpl", ["title" => "profile", "success" => $success, "donations" => $donations]);
+            exit();
+        }
+        $this->render("account.tpl", ["title" => "account", "donations" => $donations]);
         exit();
     }
 
@@ -87,7 +98,7 @@ class ProfileController extends Controller
                 || Empty($_POST["dob"])
                 || Empty($_POST["gender"])
             ) {
-                $this->render("account.tpl", ["title" => "profile", "error" => "Vul AUB alles in"]);
+                $this->manage("Vul AUB alles in");
                 exit(1);
             }
             $array = array("username" => $_POST["email"], "name" => $_POST["name"], "surname" => $_POST["surname"], "address" => $_POST["address"], "postalcode" => $_POST["postalcode"], "country" => $_POST["country"], "city" => $_POST["city"], "dob" => $_POST["dob"], "initial" => $_POST["initials"], "gender" => $_POST["gender"]);
@@ -113,12 +124,12 @@ class ProfileController extends Controller
                     $arr["handicap"] = true;
 
                 $usermodel->updateUser($arr);
-                $this->render("account.tpl", ["title" => "profile", "success" => "Gegevens gewijzigd"]);
+                $this->manage(null, "Gegevens gewijzigd");
                 exit();
 
             }
         }
-        $this->render("account.tpl", ["title" => "profile", "errorc" => "een van de ingevoerde invoer velden klopt niet"]);
+        $this->manage("een van de ingevoerde invoer velden klopt niet");
         exit();
     }
 
@@ -130,26 +141,26 @@ class ProfileController extends Controller
 
                 $userModel = new UserRepository();
                 if ((Empty($_POST["username"]) || !$userModel->validateUsername($_POST["username"]))) {
-                    $this->render("account.tpl", ["error" => "Wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter, een nummer en een speciaal teken bevatten.", "title" => "nieuw wachtwoord"]);
+                    $this->manage("Wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter, een nummer en een speciaal teken bevatten.");
                     exit();
                 }
                 if ($_SESSION["user"]->email != $_POST["username"]) {
-                    $this->render("account.tpl", ["error" => "Wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter, een nummer en een speciaal teken bevatten.", "title" => "nieuw wachtwoord"]);
+                    $this->manage("Wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter, een nummer en een speciaal teken bevatten.");
                     exit();
                 }
                 // check passwords
                 if (Empty($_POST["password1"]) || Empty($_POST["password2"])) {
-                    $this->render("account.tpl", ["error" => "Niet alles ingevuld", "title" => "nieuw wachtwoord"]);
+                    $this->manage("Niet alles ingevuld");
                     exit(1);
                 }
                 if ($_POST["password1"] != $_POST["password2"]) {
-                    $this->render("account.tpl", ["error" => "Wachtwoorden komen niet overeen.", "title" => "nieuw wachtwoord"]);
+                    $this->manage("Wachtwoorden komen niet overeen.");
                     exit(1);
                 }
 
                 // save password
                 if (!$userModel->newPassword($_POST["username"], $_POST["password1"])) {
-                    $this->render("account.tpl", ["error" => "Wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter, een nummer en een speciaal teken bevatten.", "title" => "nieuw wachtwoord"]);
+                    $this->manage("Wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter, een nummer en een speciaal teken bevatten.");
                     exit(1);
                 }
 
@@ -159,7 +170,7 @@ class ProfileController extends Controller
                         $userModel->newPassword($_POST["username"], $_POST["password1"]);
                         $messagemodel = new messageRepository();
                         $messagemodel->sendMessage("Admin", $_SESSION["user"]->email, "Je wachtwoord voor Aladdin is veranderd", "Je wachtwoord voor Aladdin is veranderd heeft u dit niet zelf gedaan vraag dan een nieuw wachtwoord aan op http://localhost/Account/action=Recover");
-                        $this->render("account.tpl", ["title" => "nieuw wachtwoord", "error" => "Uw wachtwoord is veranderd"]);
+                        $this->manage(null, "Uw wachtwoord is veranderd");
                         exit();
                     }
 
@@ -167,12 +178,12 @@ class ProfileController extends Controller
                 }
                 // new recovery creation
             } elseif (!$_SESSION["user"]->checkPassword($_POST["pwo"])) {
-                $this->render("account.tpl", ["title" => "nieuw wachtwoord", "error" => "Oud password klopt niet"]);
+                $this->manage("Oud password klopt niet");
                 exit(0);
             }
 
         }
-        $this->render("account.tpl", ["title" => "nieuw wachtwoord"]);
+        $this->manage();
 
     }
 }

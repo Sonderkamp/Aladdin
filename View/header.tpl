@@ -61,6 +61,7 @@
 
 
             <ul class="nav navbar-nav navbar-left">
+                <li><a href="/donate"><span class="glyphicon glyphicon-euro"></span> Doneren</a></li>
                 {if isset($user)}
                     <li><a href="/dashboard"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
                     <li><a href="/wishes"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
@@ -75,7 +76,8 @@
                     <li class="dropdown dropdown-admin">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">
-                            <span class="glyphicon glyphicon-eye-open"></span> {$admin->username}<span class="caret"></span></a>
+                            <span class="glyphicon glyphicon-eye-open"></span> {$admin->username}<span
+                                    class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="/admin">Statistiek</a></li>
                             <li role="separator" class="divider"></li>

@@ -2,6 +2,16 @@
 <!-- * Created by PhpStorm.-->
 <!-- * User: Marius-->
 <!-- */-->
+<script>
+    function popup(mylink, windowname, w, h) {
+        if (!window.focus)return true;
+        var href;
+        if (typeof(mylink) == 'string') href = mylink; else href = mylink.href;
+        window.open(href, windowname, 'width=' + w + ',height=' + h + ',scrollbars=yes');
+        return false;
+    }
+</script>
+
 <div class="container">
     <div class="row">
         <div class="col-sm-3">
@@ -246,6 +256,8 @@
                                                     <th>Gebruiker</th>
                                                     <th>Status</th>
                                                     <th>Datum</th>
+                                                    <th>Type</th>
+                                                    <th></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -254,15 +266,37 @@
                                                 {foreach from=$reports item=report}
                                                     <tr>
                                                         <td>
-                                                            <span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($report -> getReporter() -> getDisplayName())}
+                                                            <span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($report -> reporter -> displayName)}
                                                         </td>
-                                                        <td>{htmlspecialcharsWithNL($report -> getMessage()|substr:0:20)}</td>
+                                                        <td>{htmlspecialcharsWithNL($report -> message|substr:0:20)}</td>
                                                         <td>
-                                                            <span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($report -> getReported() -> getDisplayName())}
+                                                            <span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($report -> reported -> displayName)}
                                                         </td>
-                                                        <td>{htmlspecialcharsWithNL($report -> getStatus())}</td>
+                                                        <td>{htmlspecialcharsWithNL($report -> status)}</td>
                                                         <td>
-                                                            <span class="glyphicon glyphicon-calendar"></span> {htmlspecialcharsWithNL($report -> getDate())}
+                                                            <span class="glyphicon glyphicon-calendar"></span> {htmlspecialcharsWithNL($report -> date)}
+                                                        </td>
+                                                        <td>
+                                                            {if !empty($report->wishID)}
+                                                                Wens
+                                                            {else}
+                                                                {* bekijk bericht *}
+                                                                Bericht
+                                                            {/if}
+                                                        </td>
+                                                        <td>
+
+                                                            {if !empty($report->wishID)}
+                                                                <a href="wishes/action=getSpecificWish?admin=true&Id={$report->wishID}"
+                                                                   onClick="return popup(this, 'notes',900,400)">Bekijk
+                                                                    wens</a>
+                                                            {else}
+                                                                {* bekijk bericht *}
+                                                                <a href="adminmail/action=show/id={$report->messageID}/user={$report -> reporter -> email}"
+                                                                   onClick="return popup(this, 'notes',700,400)">Bekijk
+                                                                    bericht</a>
+                                                            {/if}
+
                                                         </td>
                                                     </tr>
                                                 {/foreach}
@@ -282,6 +316,8 @@
                                                     <th>Gebruiker</th>
                                                     <th>Status</th>
                                                     <th>Datum</th>
+                                                    <th>Type</th>
+                                                    <th></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -290,15 +326,37 @@
                                                 {foreach from=$reports2 item=report}
                                                     <tr>
                                                         <td>
-                                                            <span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($report -> getReporter() -> getDisplayName())}
+                                                            <span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($report -> reporter -> displayName)}
                                                         </td>
-                                                        <td>{htmlspecialcharsWithNL($report -> getMessage()|substr:0:20)}</td>
+                                                        <td>{htmlspecialcharsWithNL($report -> message|substr:0:20)}</td>
                                                         <td>
-                                                            <span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($report -> getReported() -> getDisplayName())}
+                                                            <span class="glyphicon glyphicon-user"></span> {htmlspecialcharsWithNL($report -> reported -> displayName)}
                                                         </td>
-                                                        <td>{htmlspecialcharsWithNL($report -> getStatus())}</td>
+                                                        <td>{htmlspecialcharsWithNL($report -> status)}</td>
                                                         <td>
-                                                            <span class="glyphicon glyphicon-calendar"></span> {htmlspecialcharsWithNL($report -> getDate())}
+                                                            <span class="glyphicon glyphicon-calendar"></span> {htmlspecialcharsWithNL($report -> date)}
+                                                        </td>
+                                                        <td>
+                                                            {if !empty($report->wishID)}
+                                                                Wens
+                                                            {else}
+                                                                {* bekijk bericht *}
+                                                                Bericht
+                                                            {/if}
+                                                        </td>
+                                                        <td>
+
+                                                            {if !empty($report->wishID)}
+                                                                <a href="/wishes/action=getSpecificWish?admin=true&Id={$report->wishID}"
+                                                                   onClick="return popup(this, 'notes',900,400)">Bekijk
+                                                                    wens</a>
+                                                            {else}
+                                                                {* bekijk bericht *}
+                                                                <a href="/adminmail/action=show/id={$report->messageID}/user={$report -> reporter -> email}"
+                                                                   onClick="return popup(this, 'notes',700,400)">Bekijk
+                                                                    bericht</a>
+                                                            {/if}
+
                                                         </td>
                                                     </tr>
                                                 {/foreach}
