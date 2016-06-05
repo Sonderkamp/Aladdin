@@ -94,6 +94,19 @@ class WishRepository
     }
 
     /**
+     * @return array of wishes where user == current user and status != "Verwijderd and status != "Vervuld"
+     */
+    public function getMyDashboardWishes()
+    {
+        return $this->getReturnArray($this->WishQueryBuilder->getWishes
+        ($this->userRepository->getCurrentUser()->email, [0 => "Aangemaakt",
+            1 => "Gepubliseerd",
+            2 => "Geweigerd",
+            3 => "Match gevonden",
+            5 => "Wordt vervuld"]));
+    }
+
+    /**
      * @return array of wishes where status == "vervuld" or "wordt vervuld"
      */
     public function getCurrentCompletedWishes()
