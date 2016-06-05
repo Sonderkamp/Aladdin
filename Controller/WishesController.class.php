@@ -11,7 +11,7 @@ class WishesController extends Controller
 
     // BREEKT MET NIEUWE STRCTUUR TODO
 
-    public $wishRepo, $talentRepo, $reportRepo, $userRepo, $matchRepo, $maxContentLength = 50;
+    public $wishRepo, $talentRepo, $reportRepo, $userRepo, $matchRepo, $forbiddenWordRepo, $maxContentLength = 50;
 
     public function __construct()
     {
@@ -20,6 +20,7 @@ class WishesController extends Controller
         $this->userRepo = new UserRepository();
         $this->reportRepo = new ReportRepository();
         $this->matchRepo = new MatchRepository();
+        $this->forbiddenWordRepo = new ForbiddenWordRepository();
     }
 
     //
@@ -172,22 +173,11 @@ class WishesController extends Controller
             $description = $_POST["description"];
             $tag = $this->addHashTag($_POST["tag"]);
 
-            $input = array([$title, $description, $tag]);
-            $size = strlen($this->getHashTags($tag));
-            $tempContent = preg_replace('/\s+/', '', $description);
-            $tempTitle = preg_replace('/\s+/', '', $title);
+            $this->validateWish($title, $description, $tag, $returnVal);
 
-            if (!$this->isValid($input) || (strlen($tempTitle) === 0) || strlen($tempContent) === 0 || ($size == 0)) {
-                $this->renderEdit($title, $description, $tag, "Vul aub alles in.", true);
-            }
-
-            $myWishes = $this->wishRepo->getMyWishes();
-            if ($this->hasSameWish($myWishes, $title)) {
-                $this->renderEdit($title, $description, $tag, "U heeft al een wens met een soortgelijke titel.", true);
-            } else {
+            if ($returnVal === 0) {
                 $myTags = array_map('ucfirst', explode(',', $this->getHashTags($tag)));
 
-                // create an array with the wish
                 $wish = new Wish();
                 $wish->title = $title;
                 $wish->content = $description;
@@ -195,11 +185,9 @@ class WishesController extends Controller
                 $this->wishRepo->addWish($wish);
 
                 $this->back();
-
             }
         }
     }
-
 
     /** edit's wish */
     public function editWish()
@@ -211,22 +199,19 @@ class WishesController extends Controller
 
             $message = "Ongelidige tag #";
             if (strlen($this->getHashTags($tag)) == 0) {
-                $this->renderEdit($title, $description, $tag, $message);
+                $this->renderWishView($title, $description, $tag, $message);
             }
 
             $tempContent = preg_replace('/\s+/', '', $description);
             $tempTitle = preg_replace('/\s+/', '', $title);
 
-            // Check if fields are filled
-            if ((strlen($tempTitle) === 0) || (strlen($tempContent) === 0)) {
-                $this->renderEdit($title, $description, $tag);
-            }
+            $this->validateWish($tempTitle, $tempContent, $tag, $returnVal, true);
 
-            /*
-            $myWishes = $this->wishRepo->getMyWishes();
-            if ($this->hasSameWish($myWishes, $title)) {
-                $this->renderEdit($title, $description, $tag, "U heeft al een wens met een soortgelijke titel", null, true);
-            } */
+            if ($returnVal === 1) {
+                $this->renderWishView($title, $description, $tag);
+            } else if ($returnVal === 3) {
+                $this->renderWishView($title, $description, $tag, "U heeft verboden woorden in uw wens staan!", null, true);
+            }
 
             // set a comma , between the tags.
             $myTags = array_map('ucfirst', explode(',', $this->getHashTags($tag)));
@@ -248,6 +233,87 @@ class WishesController extends Controller
             $this->back();
         }
     }
+
+    /** checks if wish is valid, returns number, 0 is valid.
+     * @param $title = wish title
+     * @param $content = wish content
+     * @param $tag = wish tag's
+     * @param &$returnVal = reference variable
+     * @param $edit , set if editing a wish
+     * @return number
+     */
+    public function validateWish($title, $content, $tag, &$returnVal, $edit = null)
+    {
+        $input = array([$title, $content, $tag]);
+        $size = strlen($this->getHashTags($tag));
+        $tempContent = preg_replace('/\s+/', '', $content);
+        $tempTitle = preg_replace('/\s+/', '', $title);
+
+        $returnVal = 0;
+
+        if (!$this->isValid($input) || (strlen($tempTitle) === 0) || strlen($tempContent) === 0 || ($size == 0)) {
+            if (isset($edit)){
+                $returnVal = 1;
+                return;
+            }
+            $this->renderWishView($title, $content, $tag, "Vul aub alles in.", true);
+        }
+
+        if (!isset($edit)) {
+            $myWishes = $this->wishRepo->getMyWishes();
+            if ($this->hasSameWish($myWishes, $title)) {
+                $this->renderWishView($title, $content, $tag, "U heeft al een wens met een soortgelijke titel.", true);
+            }
+        }
+
+        if ($this->inForbiddenWords($title, $tempContent, $tag)) {
+            if (isset($edit)){
+                $returnVal = 3;
+                return;
+            }
+            $this->renderWishView($title, $content, $tag, "U heeft verboden woorden in uw wens staan!", true);
+        }
+    }
+
+    /** check if user has a wish with the same title
+     * @param $wishes = all wishes of user
+     * @param $title = title to check
+     * @return true if title is similar for more then 80%
+     */
+    public function hasSameWish($wishes, $title)
+    {
+        if (count($wishes) > 0) {
+            foreach ($wishes as $item) {
+                if ($item instanceof Wish) {
+                    similar_text($item->title, $title, $percent);
+                    if ($percent > 80) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public function inForbiddenWords($title, $content, $tag)
+    {
+        $forbiddenWords = $this->forbiddenWordRepo->getForbiddenWords();
+        $tag = str_replace("#", "", $tag);
+
+        foreach ($forbiddenWords as $word) {
+            if (strpos($title, $word) !== FALSE) {
+                return true;
+            }
+            if (strpos($content, $word) !== FALSE) {
+                return true;
+            }
+            if (strpos($tag, $word) !== FALSE) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     /** check if there are empty values in an array
      * @param $array = the array to check
@@ -273,7 +339,7 @@ class WishesController extends Controller
      * //     * @param $add (optional), set if users want to add a wish
      * //     * @param $edit (optional), set if users want to edit a wish
      */
-    public function renderEdit($title, $description, $tag, $message = null, $add = null, $edit = null)
+    public function renderWishView($title, $description, $tag, $message = null, $add = null, $edit = null)
     {
 
         if (isset($add)) {
@@ -335,28 +401,6 @@ class WishesController extends Controller
         return rtrim($hashtag, ',');
     }
 
-    /** check if user has a wish with the same title
-     * @param $wishes = all wishes of user
-     * @param $title = title to check
-     * @return true if title is similar for more then 80%
-     */
-    public function hasSameWish($wishes, $title)
-    {
-        if (count($wishes) > 0) {
-            foreach ($wishes as $item) {
-                if ($item instanceof Wish) {
-                    similar_text($item->title, $title, $percent);
-                    if ($percent > 80) {
-                        return true;
-                    }
-                }
-            }
-        } else {
-            return false;
-        }
-        return false;
-    }
-
     //Specific Wish methods
 
     /**
@@ -407,7 +451,7 @@ class WishesController extends Controller
             $canMatch = true;
         }
 
-        if($this->userRepo->getCurrentUser()->email == $selectedWish->user->email){
+        if ($this->userRepo->getCurrentUser()->email == $selectedWish->user->email) {
             $canMatch = false;
         }
 
@@ -477,17 +521,17 @@ class WishesController extends Controller
     {
         if (!empty($_GET["Id"]) && !empty($this->userRepo->getCurrentUser())) {
 
-            if($this->matchRepo->checkOwnWish($this->userRepo->getCurrentUser()->email , $_GET["Id"])){
+            if ($this->matchRepo->checkOwnWish($this->userRepo->getCurrentUser()->email, $_GET["Id"])) {
                 $this->apologize("You can't match with your own wishes");
                 exit(0);
             }
 
-            if($this->matchRepo->checkDuplicates($this->userRepo->getCurrentUser()->email , $_GET["Id"])){
+            if ($this->matchRepo->checkDuplicates($this->userRepo->getCurrentUser()->email, $_GET["Id"])) {
                 $this->apologize("You already matched with this wish");
                 exit(0);
             }
 
-            $this->matchRepo->setMatch($_GET["Id"] ,  $this->userRepo->getCurrentUser()->email);
+            $this->matchRepo->setMatch($_GET["Id"], $this->userRepo->getCurrentUser()->email);
 
         } else {
             $this->apologize("Please supply a valid wishId and make sure to be logged in");
