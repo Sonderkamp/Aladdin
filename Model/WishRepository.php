@@ -195,6 +195,11 @@ class WishRepository
         return $this->getWishAmount($email) < $this->getWishLimit($email);
     }
 
+    // This function checks if the given user can comment on the selected wish
+    public function canComment($wishId, $user) {
+        return !empty($this->WishQueryBuilder->getMatchByFulfiller($wishId, $user));
+    }
+
     public function getWishAmount($email)
     {
         $wishByUser = $this->getWishesByUser($email);
@@ -365,7 +370,7 @@ class WishRepository
             }
         }
 
-
+        $url = null;
         if ($img != null) {
             if (!empty($img['tmp_name'])) {
 
