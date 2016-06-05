@@ -23,9 +23,9 @@ class DonateQueryBuilder
     public function getDonations($email)
     {
         if ($email != null) {
-            return Database::query_safe("SELECT *, `donation`.`Name` as dName from `donation` left join `user` on `user_Email` = `email` where Paid = 1 and `email` = ? And Anonymous = 0", array($email));
+            return Database::query_safe("SELECT *, `donation`.`Name` as dName from `donation` left join `user` on `user_Email` = `email` where Paid = 1 and `email` = ? And Anonymous = 0 order by `Date` Desc", array($email));
         }
-        return Database::query("SELECT *, `donation`.`Name` as dName from `donation` left join `user` on `user_Email` = `email` where Paid = 1;");
+        return Database::query("SELECT *, `donation`.`Name` as dName from `donation` left join `user` on `user_Email` = `email` where Paid = 1 order by `Date` Desc;");
     }
 
 }
