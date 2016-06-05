@@ -478,7 +478,7 @@ class WishesController extends Controller
     public function AddComment()
     {
         if (!isset($_POST["comment"])) {
-            $this->redirect("/Wishes/Id=" . $_GET["Id"]);
+            $this->redirect("/Wishes/action=getSpecificWish/Id=" . htmlspecialchars($_GET["Id"]));
             exit();
         }
 
