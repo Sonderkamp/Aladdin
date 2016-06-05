@@ -254,6 +254,14 @@ class ForbiddenwordsController extends Controller
             }
         }
 
+        // Check on whitespace
+        if(preg_match('/\s/', $forbiddenWord)) {
+            $this->error .= ' Het woord "' . $forbiddenWord . '" bevat whitespace!';
+
+            // Set succes on failed.
+            $success = "failed";
+        }
+
         // Check if the maximum length of 150 isn't exceeded.
         if (strlen($forbiddenWord) > 150) {
 
