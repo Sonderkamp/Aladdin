@@ -180,6 +180,7 @@ class AdmintalentsController extends Controller
                                     }
                                 } else {
                                     $this->talentError = "De naam " . $name . " is groter dan 45 letters!";
+                                    $name = $talent->name;
                                 }
                             } else {
 
@@ -197,13 +198,12 @@ class AdmintalentsController extends Controller
                         $accepted = 0;
                     }
 
-                    if (!preg_match('/[^a-z\s]/i', $name)) {
-
-                        $this->talentRepo->updateTalent($name, $accepted, $id);
-                    } else {
-
+                    if (preg_match('/[^a-z\s]/i', $name)) {
                         $this->talentError = "The name " . $name . " must be alphabetical!";
+
+                        $name = $talent->name;
                     }
+                    $this->talentRepo->updateTalent($name, $accepted, $id);
                 }
             }
             if (!empty($this->talentError)) {
