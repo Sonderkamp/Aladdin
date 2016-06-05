@@ -9,12 +9,13 @@
 class DonationRepository
 {
 
-    public $mollie;
+    public $mollie, $donateQB;
 
     public function __construct()
     {
         $this->mollie = new Mollie_API_Client;
         $this->mollie->setApiKey(MOLLIE_ID);
+        $this->donateQB = new DonateQueryBuilder();
     }
 
     public function newDonation($amount, $name, $description, $user, $anonymous)
@@ -45,9 +46,7 @@ class DonationRepository
             }
 
             // Save ID to database WITH user if possible and set status to new
-            Database::query_safe("INSERT INTO `donation`(`PaymentId`, `Amount`, `Name`, `Description`, `Anonymous`, `user_Email`, `IP`) VALUES (?, ?, ?, ?, ?, ?, ?);",
-                array($_SESSION["payment"]->id, $amount, $name, $description, $anonymous, $user, $_SERVER['REMOTE_ADDR']));
-
+            $this->donateQB->addDonation($_SESSION["payment"]->id, $amount, $name, $description, $anonymous, $user, $_SERVER['REMOTE_ADDR']);
 
         } catch (Mollie_API_Exception $e) {
             echo "Doneer API heeft gefaald : " . htmlspecialchars($e->getMessage());
@@ -74,16 +73,15 @@ class DonationRepository
     public function closeDonation($id)
     {
         // DATABASE SET PAID
-        Database::query_safe("UPDATE `donation` set Paid = 1 where PaymentID = ?",
-            array($id));
+        $this->donateQB->setPaid($id);
+
     }
 
     public function getDonations($email = null)
     {
-        if ($email != null) {
-            return $this->resultsToDonations(Database::query_safe("SELECT *, `donation`.`Name` as dName from `donation` left join `user` on `user_Email` = `email` where Paid = 1 and `email` = ? And Anonymous = 0", array($email)));
-        }
-        return $this->resultsToDonations(Database::query("SELECT *, `donation`.`Name` as dName from `donation` left join `user` on `user_Email` = `email` where Paid = 1;"));
+
+        return $this->resultsToDonations($this->donateQB->getDonations($email));
+
     }
 
     private function resultsToDonations($array)
