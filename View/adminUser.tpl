@@ -271,7 +271,7 @@
                         </tbody>
                     </table>
                 {else}
-                    <div class="center-block text-center"><h4>Er zijn momenteel geen behandelde wensen</h4></div>
+                    <div class="center-block text-center"><h4>Er zijn momenteel geen behandelde rapporten</h4></div>
                 {/if}
             </div>
 

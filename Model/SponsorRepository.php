@@ -15,16 +15,13 @@ class SponsorRepository
     {
         $this->sponsorQB = new SponsorQueryBuilder();
     }
-
-    /** Getters */
-
+    
     public function getAllSponsors()
     {
         $result = $this->sponsorQB->getAllSponsors();
         return $this->sponsorCreator($result);
     }
-
-
+    
     public function addSponsor(Sponsor $sponsor)
     {
         if ($sponsor != null) {
@@ -32,10 +29,21 @@ class SponsorRepository
         }
     }
     
+    public function updateSponsor(Sponsor $sponsor){
+        if($sponsor != null){
+            $this->sponsorQB->updateSponsor($sponsor);
+        }
+    }
+    
     public function deleteSponsor(Sponsor $sponsor){
         if($sponsor != null){
             $this->sponsorQB->deleteSponsor($sponsor);
         }
+    }
+    
+    public function searchSponsor($searchKey){
+        $result = $this->sponsorQB->getAllSponsors($searchKey);
+        return $this->sponsorCreator($result);
     }
 
     public function sponsorCreator($result)
