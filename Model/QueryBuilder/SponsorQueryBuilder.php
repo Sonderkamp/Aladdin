@@ -38,16 +38,18 @@ class SponsorQueryBuilder
         $parameters = array($sponsor->name, $sponsor->image, $sponsor->description, $sponsor->url, $sponsor->userMail);
         Database::query_safe($sql, $parameters);
     }
-
+    
     public function updateSponsor(Sponsor $sponsor)
     {
-        print_r($sponsor);
-        exit();
         if ($sponsor == null) return;
-        $sql = "UPDATE `sponsor` SET `Name` = ?,`Image`=?,`Description`=?,`WebsiteLink`=?,`user_Email` = ? WHERE Id = ?;";
-        $parameters = array($sponsor->name, $sponsor->image, $sponsor->description, $sponsor->url, $sponsor->userMail, $sponsor->id);
-        Database::query_safe($sql, $parameters);
+        $sql = "UPDATE `sponsor` SET `Name` = ?,`Image`= ?,`Description`= ?,`WebsiteLink`= ?,`user_Email` = ? WHERE Id = ?";
+        if ($sponsor->userMail == null) {
+            $parameters = array($sponsor->name, $sponsor->image, $sponsor->description, $sponsor->url, null, $sponsor->id);
+        } else {
+            $parameters = array($sponsor->name, $sponsor->image, $sponsor->description, $sponsor->url, $sponsor->userMail, $sponsor->id);
+        }
 
+        Database::query_safe($sql, $parameters);
     }
 
     public function deleteSponsor(Sponsor $sponsor)

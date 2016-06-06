@@ -50,7 +50,7 @@
                             <th>Bedrijfsnaam</th>
                             <th>Url</th>
                             <th>Beschrijving</th>
-                            <th>Contactpersoon</th>
+                            <th>Email</th>
                             <th>Actie</th>
                         </tr>
                         </thead>
@@ -66,9 +66,7 @@
                                     <div class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                            aria-haspopup="true"
-                                           aria-expanded="false"></span>
-                                            Kies</span><span class="caret"></span></a>
-
+                                           aria-expanded="false"></span>Kies</span><span class="caret"></span></a>
 
                                         <ul class="dropdown-menu">
                                             <li>
