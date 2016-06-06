@@ -117,7 +117,7 @@ class DashboardController extends Controller
 
     private function getMyWishes()
     {
-        return $this->wishRepo->getMyWishes();
+        return $this->wishRepo->getMyDashboardWishes();
     }
 
     private function getMyTalents()
@@ -140,12 +140,10 @@ class DashboardController extends Controller
         if (!empty($this->userRepo->getCurrentUser())) {
             $wishAmount = $this->getWishAmount();
             $talentAmount = $this->getTalentAmount();
-
+            
             //3 wishes and 3 talents are mandatory
             if ($wishAmount >= $this->wishLimit && $talentAmount >= $this->talentMinimum) {
                 return true;
-            } else {
-                return false;
             }
         }
         return false;

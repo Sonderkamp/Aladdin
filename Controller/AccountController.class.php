@@ -176,11 +176,12 @@ class AccountController extends Controller
 
     private function redirectToPage()
     {
-        if (!empty($_SESSION["Redirect"])) {
+        if (!empty($_SESSION["Redirect"]) && (strpos($_SESSION["Redirect"], 'admin') === false)) {
             $this->redirect($_SESSION["Redirect"]);
             $_SESSION["Redirect"] = null;
             exit();
         }
+        $_SESSION["Redirect"] = null;
         $this->redirect("/");
     }
 
@@ -259,7 +260,7 @@ class AccountController extends Controller
     private function manage()
     {
 
-        $this->render("account.tpl", ["title" => "account"]);
+        (new ProfileController())->run();
         exit();
     }
 
