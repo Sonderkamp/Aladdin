@@ -30,7 +30,8 @@ class AdminController extends Controller
             (new Graph())->$_GET["csv"]();
 
         } else {
-            $this->render("adminHome.tpl", ["title" => "Statistiek"]);
+            $donations = (new DonationRepository())->getDonations();
+            $this->render("adminHome.tpl", ["title" => "Statistiek", "donations" => $donations]);
             exit();
         }
 

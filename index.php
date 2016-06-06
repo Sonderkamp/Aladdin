@@ -1,6 +1,6 @@
 <?php
 include_once("Includes/config.php");
-
+setlocale(LC_TIME, 'Dutch');
 
 (new WishRepository())->cleanWishes();
 

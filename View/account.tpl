@@ -52,6 +52,7 @@
                 <li class="active">
                     <a href="#tab1" data-toggle="tab"> <i class="glyphicon glyphicon-user"></i> Overzicht</a>
                 </li>
+                <li><a href="#tab4" data-toggle="tab"> <i class="glyphicon glyphicon-euro"></i> Donaties</a></li>
                 <li><a href="#tab2" data-toggle="tab"><i class="glyphicon glyphicon-edit"></i> Bewerken</a></li>
                 <li><a href="#tab3" data-toggle="tab"><i class="glyphicon glyphicon-option-horizontal"></i>
                         Wachtwoord</a>
@@ -99,6 +100,37 @@
 
 
                                 </form>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="tab4">
+                            <div class="panel-heading text-center">
+                                <h3 class="panel-title">Donaties</h3>
+                            </div>
+                            <div class="panel-body">
+                                {if count($donations) > 0}
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>Datum</th>
+                                            <th>Hoeveelheid</th>
+                                            <th>Beschrijving</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {foreach from=$donations item=donation}
+                                            <tr>
+                                                <td>{$donation->date}</td>
+                                                <td>&euro;{number_format($donation->amount, 2, ',', ' ')}</td>
+                                                <td>{$donation->description}</td>
+                                            </tr>
+                                        {/foreach}
+                                        </tbody>
+                                    </table>
+                                {else}
+                                    <h6 class="text-center">Je hebt niet gedoneerd aan Stichting Aladdin. <br> Je kan
+                                        dit <a href="/donate">Hier</a> doen
+                                    </h6>
+                                {/if}
                             </div>
                         </div>
                         <div class="tab-pane fade" id="tab2">
@@ -153,7 +185,8 @@
                                                 </tr>
                                                 <tr>
                                                     <td>Stad:</td>
-                                                    <td><input type="text" name="city" required onblur="validateAddress()"
+                                                    <td><input type="text" name="city" required
+                                                               onblur="validateAddress()"
                                                                maxlength="255" value="{$user->city}">
                                                     </td>
 
