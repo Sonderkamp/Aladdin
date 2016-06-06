@@ -20,7 +20,7 @@ class Survey
     }
 
     private function getSurveyGroups(){
-        $result = Database::query("SELECT * FROM `surveygroups`");
+        $result = Database::query("SELECT * FROM `surveyGroups`");
 
         if(!empty($result)){
 
@@ -35,5 +35,10 @@ class Survey
         }
 
         return null;
+    }
+
+    public function getSurveyText($surveyId){
+        $result = Database::query_safe("SELECT * FROM `surveyGroups` WHERE `surveygroups`.Group = ?" , array($surveyId));
+        return $result[0]["GroupText"];
     }
 }
