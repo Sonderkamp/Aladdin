@@ -10,14 +10,14 @@
         <div class="col-md-12">
 
             <h1>Aladdin</h1>
-            <h4><em>Wat is jouw hartenwens?</em></h4>
+            <h4><em>Facebook zonder face, maar met een hart.</em></h4>
             <br><br><br>
             <blockquote>
                 <p>
-                    Korte samenvatting of een mooie quote. <br> Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Maecenas imperdiet est sit amet neque interdum luctus. Fusce interdum eros non massa efficitur
-                    congue id ut urna.
-                    <footer>Source</footer>
+                    Vreemden worden vrienden, wensen worden werkelijkheid, kennis en wijsheid worden gedeeld,
+                    eenzaamheid
+                    verminderd & de aarde wordt liefdevol.
+                    <footer>Stichting Aladdin</footer>
             </blockquote>
 
             <div class="text-center">
