@@ -131,6 +131,18 @@ where m.`IsActive` = 1 AND m.`IsSelected` = 1;");
         echo $csvString;
     }
 
+    public function userLocation()
+    {
+        $list = Database::query("Select count(*), `City`, `Lat`,`Lon` from user group by City, Country");
+
+        $csvString = 'count,city,lat,lon' . "\n";
+        foreach ($list as $fields) {
+            $csvString .= $this->tocsv($fields) . "\n";
+        }
+
+        echo $csvString;
+    }
+
     // source:http://stackoverflow.com/questions/16352591/convert-php-array-to-csv-string
     private function tocsv($input)
     {

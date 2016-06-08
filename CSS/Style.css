@@ -41,10 +41,11 @@ h3 .h3 {
     margin: 10px 10px 5px 5px;
 }
 
-.padd{
+.padd {
     padding-bottom: 40px;
     padding-top: 40px;
 }
+
 .btn-text {
     margin: 5px;
     text-align: center;
@@ -132,7 +133,8 @@ a:hover {
     float: right;
 }
 
-.brown{}
+.brown {
+}
 
 .small-dropdown-menu {
     padding: 5px;
@@ -473,9 +475,10 @@ blockquote footer, blockquote small, blockquote .small {
     color: #151313;
 }
 
-.graphic{
+.graphic {
     width: 70%;
 }
+
 #content {
     height: 500px;
     width: 100%;
@@ -687,4 +690,12 @@ blockquote footer, blockquote small, blockquote .small {
     border-top: 1px dotted #bbb;
     padding: 10px;
 
+}
+
+.backgroundMap {
+    fill: white;
+}
+
+.world {
+    fill: #BF5F5F;
 }
