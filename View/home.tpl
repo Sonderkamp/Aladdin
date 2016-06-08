@@ -33,7 +33,7 @@
 </div>
 <div class="white">
     <div class="container bg">
-        <div class="col-xs-12">
+        <div class="col-lg-6 col-md-4">
 
             <h3>Wat is Aladdin?</h3>
             <p>
@@ -61,6 +61,11 @@
 
 
             </p>
+        </div>
+        <div class="col-lg-6 col-md-8 text-center">
+            <br>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/ZsO2gbE2f80" frameborder="0"
+                    allowfullscreen></iframe>
         </div>
         </row>
     </div>
