@@ -1,192 +1,72 @@
 /**
  * Created by Marius on 1-3-2016.
  */
-var geo = new google.maps.Geocoder();
 var map = null;
 // SVG drawing area
 matchmap = function (_parentElement, _data) {
 
     var vis = this;
-    this.margin = {top: 40, right: 40, bottom: 40, left: 40};
 
-    this.width = 1000 - this.margin.left - this.margin.right,
-        this.height = 500 - this.margin.top - this.margin.bottom,
-        this.scale0 = (this.width - 1) / 2 / Math.PI;
-
-    this.svg = d3.select("#map").append("svg")
-        .attr("width", this.width + this.margin.left + this.margin.right)
-        .attr("height", this.height + this.margin.top + this.margin.bottom)
+    queue()
+        .defer(d3.csv, "/admin/csv=matches")
+        .await(function (error, matches) {
 
 
-    this.total = this.svg.append("g");
+            console.log("AAA");
+            console.log(matches);
 
-        this.total.append("rect")
-        .attr("width", this.width + this.margin.left + this.margin.right)
-        .attr("height", this.height + this.margin.top + this.margin.bottom)
-        .attr("x", 0)
-        .attr("y", 0);
+            vis.margin = {top: 40, right: 40, bottom: 40, left: 40};
 
-    this.svg = this.total.append("g")
-        .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
+            vis.width = 1000 - vis.margin.left - vis.margin.right,
+                vis.height = 500 - vis.margin.top - vis.margin.bottom,
+                vis.scale0 = (vis.width - 1) / 2 / Math.PI;
 
-    this.projection = d3.geo.mercator()
-        .translate([this.width / 2, this.height / 2]);
-
-    this.path = d3.geo.path()
-        .projection(this.projection);
-
-    this.count = 0;
+            vis.svg = d3.select("#map").append("svg")
+                .attr("width", vis.width + vis.margin.left + vis.margin.right)
+                .attr("height", vis.height + vis.margin.top + vis.margin.bottom);
 
 
-    this.zoom = d3.behavior.zoom()
-        .translate([this.width / 2, this.height / 2])
-        .scale(this.scale0)
-        .scaleExtent([this.scale0, 8 * this.scale0])
-        .on("zoom", this.zoomed);
+            vis.total = vis.svg.append("g");
 
-    map = this;
-    this.data = [
-        {"from": 'Den Bosch, nl', "to": 'Utrecht, nl', "strength": 6},
-        {"from": 'Den Bosch, nl', "to": 'Boston, us', "strength": 2},
-        {"from": 'Den Bosch, nl', "to": 'Amsterdam, nl', "strength": 8},
-        {"from": 'Den Bosch, nl', "to": 'Rosmalen, nl', "strength": 8},
-        {"from": 'Amsterdam, nl', "to": 'Groesbeek, nl', "strength": 8},
-        {"from": 'Amsterdam, nl', "to": 'leeuwarden, nl', "strength": 8},
-        {"from": 'Zeeland, nl', "to": 'hoofddorp, nl', "strength": 8},
-        {"from": 'Den Bosch, nl', "to": 'london, uk', "strength": 1},
-        {"from": 'london, uk', "to": 'bath, uk', "strength": 1}
-    ];
+            vis.total.append("rect")
+                .attr("width", vis.width + vis.margin.left + vis.margin.right)
+                .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
+                .attr("x", 0)
+                .attr("y", 0);
 
-    vis.showlines = true;
+            vis.svg = vis.total.append("g")
+                .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
-    this.parseData();
+            vis.projection = d3.geo.mercator()
+                .translate([vis.width / 2, vis.height / 2]);
+
+            vis.path = d3.geo.path()
+                .projection(vis.projection);
+
+            vis.count = 0;
 
 
-};
-var address;
-matchmap.prototype.parseData = function () {
+            vis.zoom = d3.behavior.zoom()
+                .translate([vis.width / 2, vis.height / 2])
+                .scale(vis.scale0)
+                .scaleExtent([vis.scale0, 8 * vis.scale0])
+                .on("zoom", vis.zoomed);
 
-    var vis = this;
-    var geocoder = new google.maps.Geocoder();
-
-    vis.cities = [];
-    vis.delay = 100;
-    var lookup = [];
-    address = [];
-
-    this.data.forEach(function (d) {
-
-        // make lookup table with all different cities
-        if (lookup[d.from] == null) {
-            lookup[d.from] = true;
-            vis.cities.push({"city": d.from, "lat": 0, "lon": 0});
-            address.push(d.from);
-        }
-        if (lookup[d.to] == null) {
-            lookup[d.to] = true;
-            vis.cities.push({"city": d.to, "lat": 0, "lon": 0});
-            address.push(d.to);
-        }
-
-    });
-    // get lat-lon for those cities
-
-    vis.nextAddress = 0;
+            map = vis;
+            vis.data = matches;
 
 
-    // ======= Call that function for the first time =======
-    theNext();
+            vis.showlines = true;
 
+            vis.call();
 
+        });
 };
 
-function theNext() {
-
-    if (map.nextAddress < address.length) {
-        setTimeout('map.getAddress("' + address[map.nextAddress] + '",theNext)', map.delay);
-        map.nextAddress++;
-    } else {
-        map.call();
-
-    }
-}
-
-matchmap.prototype.getAddress = function (search, next) {
-    geo.geocode({address: search}, function (results, status) {
-            // If that was successful
-            if (status == google.maps.GeocoderStatus.OK) {
-                // Lets assume that the first marker is the one we want
-                var p = results[0].geometry.location;
-                var lat = p.lat();
-                var lng = p.lng();
-                // Output the data
-
-                map.cities.forEach(function (d) {
-                    if (d.city == search) {
-                        d.lat = lat;
-                        d.lon = lng;
-                    }
-
-                })
-            }
-            // ====== catch error ======
-            else {
-                // === increase delay if over query limit ===
-                if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
-                    nextAddress--;
-                    delay++;
-                } else {
-                    console.log("MAPS ERROR. ERROR-CODE: " + status + ". On city: " + search);
-
-                }
-            }
-            next();
-        }
-    );
-};
 
 matchmap.prototype.call = function () {
     var vis = this;
-
-    // connect the two again
-
-    vis.newd = [];
-    this.data.forEach(function (d) {
-
-        // set from
-        vis.cities.forEach(function (e) {
-            if (d.from == e.city) {
-                d.from_lat = e.lat;
-                d.from_lon = e.lon;
-
-            }
-            if (d.to == e.city) {
-                d.to_lat = e.lat;
-                d.to_lon = e.lon;
-
-            }
-        });
-
-        vis.newd.push(d);
-
-        while (d.strength >= 1) {
-            var nd = JSON.parse(JSON.stringify(d));
-
-            nd.from_lat += ((Math.random() - Math.random()) / 30);
-            nd.from_lon += ((Math.random() - Math.random()) / 30);
-
-            nd.to_lat += ((Math.random() - Math.random()) / 30);
-            nd.to_lon += ((Math.random() - Math.random()) / 30);
-
-            vis.newd.push(nd);
-            d.strength--;
-        }
-
-    });
-
-
-    this.data = this.newd;
-    this.updateVisualization();
+    vis.updateVisualization();
 };
 
 // Render visualization
@@ -228,14 +108,13 @@ matchmap.prototype.updateVisualization = function () {
 
             vis.links = [];
 
-            vis.data.forEach(function (d) {
+            vis.data.forEach(function (d, i) {
                 vis.links.push({
                     type: "LineString",
                     coordinates: [
-                        [d.from_lon, d.from_lat],
-                        [d.to_lon, d.to_lat]
-                    ],
-                    name: d.from + d.to,
+                        [+d.from_lon - 0.05, +d.from_lat - 0.05],
+                        [+d.to_lon + 0.05, +d.to_lat + 0.05]
+                    ]
                 });
             });
 

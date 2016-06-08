@@ -70,6 +70,8 @@
                                 <input type="text" name="username" data-validation="email"
                                        data-validation-error-msg="Geen valide email adres ingevuld." required
                                        maxlength="254">
+                                <input type="hidden" name="Lat">
+                                <input type="hidden" name="Lon">
                             </td>
                         </tr>
                         <tr>
@@ -194,6 +196,7 @@
                         </tr>
                         </tbody>
                     </table>
+
                 </form>
 
             </div>
@@ -285,9 +288,21 @@
                 else {
 
 
-                    var city = results[0].address_components[2].long_name;
-                    var country = results[0].address_components[5].long_name;
-                    var postalcode = results[0].address_components[6].long_name.replace(/\s+/g, '');
+                    var postalcode = "";
+                    var city = "";
+                    var country = "";
+
+                    results[0].address_components.forEach(function (d) {
+                        if (d.types[0] == "postal_code") {
+                            postalcode = d.long_name.replace(/\s+/g, '');
+                        }
+                        else if (d.types[0] == "country") {
+                            country = d.long_name;
+                        }
+                        else if (d.types[0] == "locality") {
+                            city = d.long_name;
+                        }
+                    });
 
                     if ($('input[name=city]').val() !== city ||
                             $('input[name=country]').val() !== country ||
@@ -295,6 +310,10 @@
                         $('input[name=city]').val(city);
                         $('input[name=country]').val(country);
                         $('input[name=postalcode]').val(postalcode);
+
+                        $('input[name=Lat]').val(results[0].geometry.location.lat());
+                        $('input[name=Lon]').val(results[0].geometry.location.lng());
+
                     }
 
                     if (submit == true) {
