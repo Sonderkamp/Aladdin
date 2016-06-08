@@ -31,7 +31,7 @@
 
     </div>
 </div>
-<div class=" white">
+<div class="white">
     <div class="container bg">
         <div class="col-xs-12">
 
@@ -61,6 +61,27 @@
 
 
             </p>
+        </div>
+        </row>
+    </div>
+</div>
+<div class="brown wrapper">
+    <div class="container bg">
+        <div class="col-xs-12 whiteText padd">
+
+            <p class="text-center padd">
+
+                <img class="graphic" src="/Resources/Images/Aladdin_Instructie_Graphic.png"/>
+
+            <div class="text-center">
+                {if empty($user)}
+                    <a class="btn btn-register start btn-lg" href="/Account/action=register">Registreer</a>
+                {else}
+                    <a class="btn btn-register start btn-lg" href="/Dashboard">Naar Dashboard</a>
+                {/if}
+            </div>
+            </p>
+
         </div>
         </row>
     </div>
