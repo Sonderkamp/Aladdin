@@ -370,6 +370,21 @@ class UserRepository
 
     public function tryRegister($array)
     {
+
+        if ($array["type"] == "adult") {
+
+        }
+
+        $method = "tryRegister" . $array["type"];
+        return $this->$method($array);
+    }
+
+    private function tryRegisteradult($array)
+    {
+
+        echo "TODO: handicap info wordt niet opgeslagen";
+        exit();
+
         if (Empty($array["username"])
             || Empty($array["password"])
             || Empty($array["name"])
@@ -437,6 +452,41 @@ class UserRepository
         return true;
     }
 
+    private function tryRegisterchild($array)
+    {
+
+        /*
+           Valideer met Voogd. Verder gewoon tryRegisterAdult.
+        */
+        echo "Registreer als kind";
+
+        exit();
+    }
+
+    private function tryRegisterelder($array)
+    {
+        return $this->tryRegisteradult($array);
+    }
+
+    private function tryRegisterdisabled($array)
+    {
+        $array["handicap"] = 1;
+        $this->tryRegisteradult($array);
+        exit();
+    }
+
+    private function tryRegisterbusiness($array)
+    {
+        /*
+            Geboortedatum:
+            Geslacht:
+            Handicap:
+            Business_Name
+         */
+
+        echo "Registreer als bedrijf";
+        exit();
+    }
 
     public function login()
     {

@@ -60,10 +60,24 @@
 
                 <form id="form" name="registerForm" action="/Account/action=register" method="post"
                       onsubmit="return validateEmail()">
-
+                    <input type="hidden" name="type" value="{$type}">
 
                     <table class="table table-user-information">
                         <tbody>
+                        {if $type == "business"}
+                            <tr>
+                                <td>Bedrijfsnaam:</td>
+                                <td>
+
+                                    <input type="text" name="companyName" data-validation="custom"
+                                           data-validation-regexp="^([0-9a-zA-Z][A-Za-z0-9\- ]+)$"
+                                           data-validation-error-msg="Geen valide naam ingevuld."
+                                           maxlength="45">
+
+                                </td>
+                            </tr>
+                        {/if}
+
                         <tr>
                             <td>Email:</td>
                             <td>
@@ -96,34 +110,61 @@
                                 {/literal}
                             </td>
                         </tr>
+                        {if $type != "business"}
+                            <tr>
+                                <td>Voornaam:</td>
+                                <td>
+                                    <input type="text" name="name" data-validation="custom"
+                                           data-validation-regexp="^([a-zA-Z][A-Za-z\- ]+)$"
+                                           data-validation-error-msg="Geen valide voornaam ingevuld."
+                                           maxlength="45">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Achternaam:</td>
+                                <td><input type="text" name="surname"
+                                           data-validation="custom"
+                                           data-validation-regexp="^([a-zA-Z][A-Za-z\- ]+)$"
+                                           data-validation-error-msg="Geen valide achternaam ingevuld.">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>initialen:</td>
+                                <td><input type="text" name="initial"
+                                           required data-validation="custom"
+                                           data-validation-regexp="^([a-zA-Z\.]+)$"
+                                           data-validation-error-msg="Initialen mogen alleen letters en punten bevatten.">
 
-                        <tr>
-                            <td>Voornaam:</td>
-                            <td>
-                                <input type="text" name="name" data-validation="custom"
-                                       data-validation-regexp="^([a-zA-Z][A-Za-z\- ]+)$"
-                                       data-validation-error-msg="Geen valide voornaam ingevuld."
-                                       maxlength="45">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Achternaam:</td>
-                            <td><input type="text" name="surname"
-                                       data-validation="custom"
-                                       data-validation-regexp="^([a-zA-Z][A-Za-z\- ]+)$"
-                                       data-validation-error-msg="Geen valide achternaam ingevuld.">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>initialen:</td>
-                            <td><input type="text" name="initial"
-                                       required data-validation="custom"
-                                       data-validation-regexp="^([a-zA-Z\.]+)$"
-                                       data-validation-error-msg="Initialen mogen alleen letters en punten bevatten.">
+                                </td>
+                            </tr>
+                        {else}
+                            <tr>
+                                <td>Contactpersoon Voornaam:</td>
+                                <td>
+                                    <input type="text" name="name" data-validation="custom"
+                                           data-validation-regexp="^([a-zA-Z][A-Za-z\- ]+)$"
+                                           data-validation-error-msg="Geen valide voornaam ingevuld."
+                                           maxlength="45">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Contactpersoon Achternaam:</td>
+                                <td><input type="text" name="surname"
+                                           data-validation="custom"
+                                           data-validation-regexp="^([a-zA-Z][A-Za-z\- ]+)$"
+                                           data-validation-error-msg="Geen valide achternaam ingevuld.">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Contactpersoon initialen:</td>
+                                <td><input type="text" name="initial"
+                                           required data-validation="custom"
+                                           data-validation-regexp="^([a-zA-Z\.]+)$"
+                                           data-validation-error-msg="Initialen mogen alleen letters en punten bevatten.">
 
-                            </td>
-                        </tr>
-
+                                </td>
+                            </tr>
+                        {/if}
                         <tr>
                             <td>Straat en huisnummer:</td>
                             <td>
@@ -156,36 +197,61 @@
                                        data-validation-error-msg="invalide land gekozen." readonly>
                             </td>
                         </tr>
-                        <tr>
-                            <td>Geboortedatum:</td>
-                            <td><input type="text" data-validation="birthdate"
-                                       name="dob" data-validation-format="dd-mm-yyyy"
-                                       required
-                                       data-validation-error-msg="invalide datum."
-                                       data-validation-help="dd-mm-yyyy">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Geslacht:</td>
-                            <td>
+                        {if $type != "business"}
+                            <tr>
+                                <td>Geboortedatum:</td>
+                                <td><input type="text" data-validation="birthdate"
+                                           name="dob" data-validation-format="dd-mm-yyyy"
+                                           required
+                                           data-validation-error-msg="invalide datum."
+                                           data-validation-help="dd-mm-yyyy">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Geslacht:</td>
+                                <td>
 
-                                <input type='radio' name='gender' value='male'>
-                                Man
-                                <input type='radio' name='gender' value='female'>
-                                Vrouw
-                                <input type='radio' name='gender' value='other'>
-                                Anders
+                                    <input type='radio' name='gender' value='male'>
+                                    Man
+                                    <input type='radio' name='gender' value='female'>
+                                    Vrouw
+                                    <input type='radio' name='gender' value='other'>
+                                    Anders
 
-                            </td>
+                                </td>
 
-                        </tr>
-                        <tr>
-                            <td>Handicap:</td>
-                            <td>
-                                <input type='checkbox' name='handicap'>
-                            </td>
+                            </tr>
+                            {if $type == "child"}
+                                <tr>
+                                    <td>Email-adress Ouder/Verzorger:</td>
+                                    <td>
 
-                        </tr>
+                                        <input type="text" name="guardian" data-validation="email"
+                                               data-validation-error-msg="Geen valide gebruikers-email ingevuld."
+                                               required
+                                               maxlength="254">
+
+                                    </td>
+                                </tr>
+                            {/if}
+                            {if $type != "disabled"}
+                                <tr>
+                                    <td>Handicap:</td>
+                                    <td>
+                                        <input onchange="toggle()" type='checkbox' name='handicap'>
+                                    </td>
+
+                                </tr>
+                            {/if}
+                            <tr id="tog">
+                                <td>Wat is uw beperking:</td>
+                                <td>
+                                    <input type='text' name='handicap_info'>
+                                </td>
+
+                            </tr>
+                        {/if}
+
                         <tr>
                             <td colspan="2" class="right">
                                 <input type="submit" value="Registreren"
@@ -334,3 +400,13 @@
 
     {/literal}
 </script>
+
+{if isset($type) && $type != "disabled"}
+    <script>
+        function toggle() {
+            $("#tog").slideToggle(1);
+        }
+
+        toggle();
+    </script>
+{/if}
