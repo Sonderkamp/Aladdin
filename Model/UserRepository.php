@@ -456,8 +456,14 @@ class UserRepository
     {
 
         /*
-           Valideer met Voogd. Verder gewoon tryRegisterAdult.
-        */
+         * check if voogd account exists.
+         *
+         * tryRegisteradult.
+         * set Active = false / activated = false
+         * Mailtje naar voogd (Met wachtwoord kind account)
+         * mailtje heeft link naar activate
+         */
+
         echo "Registreer als kind";
 
         exit();
@@ -478,10 +484,11 @@ class UserRepository
     private function tryRegisterbusiness($array)
     {
         /*
-            Geboortedatum:
-            Geslacht:
-            Handicap:
-            Business_Name
+            Geen Geboortedatum.
+            Geen Geslacht.
+            Geen Handicap.
+            WEL: bedrijfsnaam.
+            Bedrijfsnaam == displayname.
          */
 
         echo "Registreer als bedrijf";
