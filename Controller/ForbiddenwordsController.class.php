@@ -256,7 +256,7 @@ class ForbiddenwordsController extends Controller
 
         // Check on whitespace
         if(preg_match('/\s/', $forbiddenWord)) {
-            $this->error .= ' Het woord "' . $forbiddenWord . '" bevat whitespace!';
+            $this->error .= ' Het woord "' . $forbiddenWord . '" bevat spaties!';
 
             // Set succes on failed.
             $success = "failed";

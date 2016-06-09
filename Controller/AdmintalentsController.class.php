@@ -199,7 +199,7 @@ class AdmintalentsController extends Controller
                     }
 
                     if (preg_match('/[^a-z\s]/i', $name)) {
-                        $this->talentError = "The name " . $name . " must be alphabetical!";
+                        $this->talentError = "De naam " . $name . " moet alfabetisch zijn!";
 
                         $name = $talent->name;
                     }
