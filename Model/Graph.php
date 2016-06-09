@@ -114,6 +114,35 @@ class Graph
         echo $csvString;
     }
 
+
+    public function matches()
+    {
+        $list = Database::query("select u1.Lat as 'from_lat', u1.Lon as 'from_lon', u2.Lat as 'to_lat', u2.Lon as 'to_lon' from matches as m
+join wish as w on m.wish_id = w.Id
+join User as u1 on w.User = u1.Email
+join User as u2 on m.user_Email = u2.Email
+where m.`IsActive` = 1 AND m.`IsSelected` = 1;");
+
+        $csvString = 'from_lat,from_lon,to_lat,to_lon' . "\n";
+        foreach ($list as $fields) {
+            $csvString .= $this->tocsv($fields) . "\n";
+        }
+
+        echo $csvString;
+    }
+
+    public function userLocation()
+    {
+        $list = Database::query("Select count(*), `City`, `Lat`,`Lon` from user group by City, Country");
+
+        $csvString = 'count,city,lat,lon' . "\n";
+        foreach ($list as $fields) {
+            $csvString .= $this->tocsv($fields) . "\n";
+        }
+
+        echo $csvString;
+    }
+
     // source:http://stackoverflow.com/questions/16352591/convert-php-array-to-csv-string
     private function tocsv($input)
     {

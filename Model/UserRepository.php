@@ -53,7 +53,7 @@ class UserRepository
             $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
             $res = $this->getUser($username);
 
-            if ($res === false) {
+            if ($res === false || $res === null) {
                 return false;
             } else if ($res->checkPassword($password)) {
                 $_SESSION["user"] = $res;
@@ -111,7 +111,7 @@ class UserRepository
     {
         $username = strtolower(filter_var($username, FILTER_SANITIZE_EMAIL));
         $val = $this->getUser($username);
-        if ($val === false)
+        if ($val === false || $val === null)
             return false;
 
         $mail->to = $username;
@@ -171,6 +171,7 @@ class UserRepository
         $arr["initial"] = strtoupper(trim($arr["initials"]));
         $arr["gender"] = strtolower(trim($arr["gender"]));
 
+
         if ($this->validateUser($arr) === false) {
             return "Validatie mislukt. check uw gegevens. Voor interactieve validatie, zet uw javascipt aan.";
         }
@@ -186,8 +187,7 @@ class UserRepository
             $arr["handicap"] = 0;
         }
 
-
-        Database::query_safe("UPDATE user SET `Name`=?, `Surname`=?, `Address`=?,`Postalcode`=?,`Country`=?,`City`=?,`Dob`=?,`Initials`=?,`Gender`=?,`Handicap`=?,`DisplayName`=?  WHERE Email=?", Array($arr["name"], $arr["surname"], $arr["address"], $arr["postalcode"], $arr["country"], $arr["city"], $d->format('Y-m-d'), $arr["initial"], $arr["gender"], $arr["handicap"], $newdisplay, $arr["username"]));
+        Database::query_safe("UPDATE user SET `Name`=?, `Surname`=?, `Address`=?,`Postalcode`=?,`Country`=?,`City`=?,`Dob`=?,`Initials`=?,`Gender`=?,`Handicap`=?,`DisplayName`=?, Lat=?, Lon=?  WHERE Email=?", Array($arr["name"], $arr["surname"], $arr["address"], $arr["postalcode"], $arr["country"], $arr["city"], $d->format('Y-m-d'), $arr["initial"], $arr["gender"], $arr["handicap"], $newdisplay, $arr["Lat"], $arr["Lon"], $arr["username"]));
 
         if ($arr["email"] === $_SESSION["user"]->email) {
             // Update
@@ -227,10 +227,10 @@ class UserRepository
         if (preg_match("/^[a-zA-Z][A-Za-z0-9\\- ]+$/", $array["address"]) == false)
             return false;
 
-        // POSTALCODE
-        //data-validation-regexp="^[0-9]{4}[\s]{0,1}[a-zA-z]{2}"
-        if (preg_match("/^[0-9]{4}[\s]{0,1}[a-zA-z]{2}/", $array["postalcode"]) == false)
-            return false;
+//        // POSTALCODE
+//        //data-validation-regexp="^[0-9]{4}[\s]{0,1}[a-zA-z]{2}"
+//        if (preg_match("/^[0-9]{4}[\s]{0,1}[a-zA-z]{2}/", $array["postalcode"]) == false)
+//            return false;
 
 
         // INITIALS
@@ -248,6 +248,11 @@ class UserRepository
         if ($array["gender"] != "male" && $array["gender"] != "female" && $array["gender"] != "other")
             return false;
 
+        if (is_numeric($array["Lat"]) == false)
+            return false;
+        if (is_numeric($array["Lon"]) == false)
+            return false;
+        // is number lat lon
         return true;
 
     }
@@ -273,7 +278,7 @@ class UserRepository
         if (!Empty($username)) {
             // htmlspecialchar
 
-            if ($this->getUser($username) !== false) {
+            if ($this->getUser($username) !== null) {
 
                 echo json_encode(array('result' => true));
                 exit();
@@ -351,7 +356,7 @@ class UserRepository
         if ($this->validateUsername($username)) {
 
             $res = $this->getUser($username);
-            if ($res === false)
+            if ($res === false || $res === null)
                 return false;
 
             if ($res->RecoveryHash == null || $this->hoursPassed($res->RecoveryDate) >= 24) {
@@ -376,6 +381,8 @@ class UserRepository
             || Empty($array["dob"])
             || Empty($array["initial"])
             || Empty($array["gender"])
+            || Empty($array["Lat"])
+            || Empty($array["Lon"])
             || !isset($array["handicap"])
         ) {
             return "Niet alles is ingevuld.";
@@ -402,7 +409,7 @@ class UserRepository
             return "Naam mag alleen alphabetische characters, spaties en streepjes(-) bevatten.";
         }
 
-        if ($this->getUser($array["username"]) !== false) {
+        if ($this->getUser($array["username"]) !== null) {
             return "Dit emailadress heeft al een account.";
         }
 
@@ -425,7 +432,7 @@ class UserRepository
         $this->UserQueryBuilder->addUser(array(strtolower($array["username"]), $hashed, strtolower($array["name"]),
             $array["surname"], $token, $array["address"],
             $array["postalcode"], $array["country"], $array["city"],
-            $d->format('Y-m-d'), $array["gender"], $array["handicap"], $displayname, $array["initial"]));
+            $d->format('Y-m-d'), $array["gender"], $array["handicap"], $displayname, $array["initial"], $array["Lat"], $array["Lon"]));
 
         return true;
     }
@@ -489,7 +496,7 @@ class UserRepository
 
         $i = 0;
         while (true) {
-            $tmp = $name . " (" .($count + $i). ")";
+            $tmp = $name . " (" . ($count + $i) . ")";
 
             $res = Database::query_safe("SELECT count(*) AS Counter FROM `user` WHERE DisplayName = ? ", array($tmp));
             $res = $res[0];
@@ -596,14 +603,16 @@ class UserRepository
 
     /** search users
      * @param $keyword = keyword to search user this can be a name for example
-     * @return array with user objects */
+     * @return array with user objects
+     */
     public
     function searchUsers($keyword)
     {
         return $this->userCreator($this->UserQueryBuilder->getAllUsers($keyword));
     }
 
-    private function userCreator($result){
+    private function userCreator($result)
+    {
         if (count(($result)) === 0) {
             return null;
         }

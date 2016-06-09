@@ -6,7 +6,7 @@ var wish = new userchart();
 var details = new detailchart();
 var matchmap = new matchmap();
 var prevdate = "";
-
+var usermap = new userMap();
 
 function newUsers() {
     wish.setUser();
