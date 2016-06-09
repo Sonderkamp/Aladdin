@@ -673,3 +673,9 @@ blockquote footer, blockquote small, blockquote .small {
     padding: 10px;
 
 }
+
+.sponsorImage {
+    max-height: 100px;
+    max-width: 100px;
+    margin-right:20px;
+}
