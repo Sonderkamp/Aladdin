@@ -8,7 +8,7 @@
         <div class="alert alert-danger fade in">
             <a href="#" class="close" data-dismiss="alert"
                aria-label="close">&times;</a>
-            <strong>Error!</strong> {$talentError}
+            <strong>Error!</strong> {htmlspecialchars($talentError)}
         </div>
     {/if}
 
@@ -16,7 +16,7 @@
         <div class="alert alert-success fade in">
             <a href="#" class="close" data-dismiss="alert"
                aria-label="close">&times;</a>
-            <strong>Succes!</strong> {$talentSuccess}
+            <strong>Succes!</strong> {htmlspecialchars($talentSuccess)}
         </div>
     {/if}
     <h3>Talenten</h3>

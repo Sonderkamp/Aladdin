@@ -336,4 +336,8 @@ WHERE `wish_Id` = ? ORDER BY `wishmessage`.`CreationDate` ASC ", array($wishID))
         }
     }
 
+
+    public function getMatchByFulfiller($wishId, $user) {
+        return Database::query_safe("SELECT * FROM `matches` WHERE `IsSelected` = 1 AND `user_Email` = ? AND `wish_Id` = ?",array($user,$wishId));
+    }
 }
