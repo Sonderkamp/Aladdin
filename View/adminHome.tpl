@@ -50,6 +50,7 @@
         <div class="col-xs-2">
             <ul class="nav nav-pills nav-stacked">
                 <li class="active"><a href="#tab1" data-toggle="tab">Gebruiker</a></li>
+                <li><a href="#tab4" data-toggle="tab">Gebruikers locaties</a></li>
                 <li><a href="#tab2" data-toggle="tab">Matches</a></li>
                 <li><a href="#tab3" data-toggle="tab" onclick="sort()">Donaties</a></li>
             </ul>
@@ -70,10 +71,10 @@
                 </div>
 
                 <div class="tab-pane fade" id="tab2">
-                    <input type="checkbox" value="Yes" checked onclick="toggleLines()"> Matches
-
-
                     <div id="map"></div>
+                </div>
+                <div class="tab-pane fade" id="tab4">
+                    <div id="map2"></div>
                 </div>
                 <div class="tab-pane fade" id="tab3">
 
@@ -132,6 +133,7 @@
 <script src="/JS/userchart.js"></script>
 <script src="/JS/userdetailchart.js"></script>
 <script src="/JS/matchmap.js"></script>
+<script src="/JS/userMap.js"></script>
 <script src="/JS/main.js"></script>
 <script src="/JS/Sortable.js"></script>
 <script>

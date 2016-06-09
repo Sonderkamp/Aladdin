@@ -31,9 +31,9 @@
 
     </div>
 </div>
-<div class=" white">
+<div class="white">
     <div class="container bg">
-        <div class="col-xs-12">
+        <div class="col-lg-6 col-md-4">
 
             <h3>Wat is Aladdin?</h3>
             <p>
@@ -61,6 +61,32 @@
 
 
             </p>
+        </div>
+        <div class="col-lg-6 col-md-8 text-center">
+            <br>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/ZsO2gbE2f80" frameborder="0"
+                    allowfullscreen></iframe>
+        </div>
+        </row>
+    </div>
+</div>
+<div class="brown wrapper">
+    <div class="container bg">
+        <div class="col-xs-12 whiteText padd">
+
+            <p class="text-center padd">
+
+                <img class="graphic" src="/Resources/Images/Aladdin_Instructie_Graphic.png"/>
+
+            <div class="text-center">
+                {if empty($user)}
+                    <a class="btn btn-register start btn-lg" href="/Account/action=register">Registreer</a>
+                {else}
+                    <a class="btn btn-register start btn-lg" href="/Dashboard">Naar Dashboard</a>
+                {/if}
+            </div>
+            </p>
+
         </div>
         </row>
     </div>

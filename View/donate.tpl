@@ -2,9 +2,6 @@
 
     <div id="loginbox" class="mainbox col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
 
-        <div class="row">
-
-        </div>
 
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -26,6 +23,10 @@
                     </div>
                 {/if}
                 <br>
+                In principe streven we ernaar dat de wensen zonder geld gerealiseerd kunnen worden door elkaar.
+                In sommige gevallen kan het noodzakelijk zijn om geld te hebben voor het vervullen van bijzondere
+                wensen.
+                Daarom zoeken wij donateurs. <br><br>
                 <form action="/Donate/action=add" name="form" id="form" class="form-horizontal"
                       enctype="multipart/form-data"
                       method="POST">

@@ -57,6 +57,8 @@ class DonationRepository
 
     public function getCurrentDonation()
     {
+        if (empty ($_SESSION["payment"])) ;
+        return null;
         return $_SESSION["payment"];
     }
 

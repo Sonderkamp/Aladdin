@@ -95,39 +95,43 @@ class ProfileController extends Controller
                 || Empty($_POST["country"])
                 || Empty($_POST["city"])
                 || Empty($_POST["initials"])
+                || Empty($_POST["Lat"])
+                || Empty($_POST["Lon"])
                 || Empty($_POST["dob"])
                 || Empty($_POST["gender"])
             ) {
                 $this->manage("Vul AUB alles in");
                 exit(1);
             }
-            $array = array("username" => $_POST["email"], "name" => $_POST["name"], "surname" => $_POST["surname"], "address" => $_POST["address"], "postalcode" => $_POST["postalcode"], "country" => $_POST["country"], "city" => $_POST["city"], "dob" => $_POST["dob"], "initial" => $_POST["initials"], "gender" => $_POST["gender"]);
+            $arr = [];
+            $arr["email"] = strtolower(filter_var($_POST["email"], FILTER_SANITIZE_EMAIL));
 
-            if ($usermodel->validateUser($array)) {
-                $arr = [];
-                $arr["email"] = strtolower(filter_var($_POST["email"], FILTER_SANITIZE_EMAIL));
+            $arr["name"] = strtolower($_POST["name"]);
+            $arr["surname"] = $_POST["surname"];
+            $arr["address"] = $_POST["address"];
+            $arr["postalcode"] = $_POST["postalcode"];
+            $arr["country"] = $_POST["country"];
+            $arr["Lat"] = $_POST["Lat"];
+            $arr["Lon"] = $_POST["Lon"];
+            $arr["city"] = $_POST["city"];
+            $arr["dob"] = $_POST["dob"];
 
-                $arr["name"] = strtolower($_POST["name"]);
-                $arr["surname"] = $_POST["surname"];
-                $arr["address"] = $_POST["address"];
-                $arr["postalcode"] = $_POST["postalcode"];
-                $arr["country"] = $_POST["country"];
-                $arr["city"] = $_POST["city"];
-                $arr["dob"] = $_POST["dob"];
+            $arr["initials"] = $_POST["initials"];
+            $arr["gender"] = $_POST["gender"];
 
-                $arr["initials"] = $_POST["initials"];
-                $arr["gender"] = $_POST["gender"];
+            if (Empty($_POST["handicap"]))
+                $arr["handicap"] = false;
+            else
+                $arr["handicap"] = true;
 
-                if (Empty($_POST["handicap"]))
-                    $arr["handicap"] = false;
-                else
-                    $arr["handicap"] = true;
+            $res = $usermodel->updateUser($arr);
 
-                $usermodel->updateUser($arr);
+            if (!is_string($res)) {
                 $this->manage(null, "Gegevens gewijzigd");
                 exit();
-
             }
+
+
         }
         $this->manage("een van de ingevoerde invoer velden klopt niet");
         exit();
