@@ -58,7 +58,7 @@ class UserQueryBuilder
             `Surname`, `RecoveryHash`, `RecoveryDate`,
             `ValidationHash`, `Address`, `Postalcode`,
             `Country`, `City`, `Dob`,
-            `Gender`, `Handicap`, `DisplayName`, `Initials`) VALUES (?, ?, ?,?, NULL, NULL, ?, ?,?,?, ?,?,?,?,?,?)"
+            `Gender`, `Handicap`, `DisplayName`, `Initials`, `Lat`, `Lon`) VALUES (?, ?, ?,?, NULL, NULL, ?, ?,?,?, ?,?,?,?,?,?,?,?)"
                 , $array) === false
         ) {
             apologize("Er was een error bij het toevoegen van uw gegevens aan onze database. Probeer dit alstublieft opnieuw. Is dit de tweede keer dat u dit ziet, contacteer de webmaster op: Mariusdv@outlook.com");
@@ -187,7 +187,7 @@ class UserQueryBuilder
                   OR u.Country SOUNDS LIKE ?
                   OR u.City SOUNDS LIKE ?";
 
-            $keyword = preg_replace('/\s+/', '', "%".$keyword."%");
+            $keyword = preg_replace('/\s+/', '', "%" . $keyword . "%");
             $result = Database::query_safe($sql, array($keyword, $keyword, $keyword, $keyword, $keyword));
             return $result;
         } else {

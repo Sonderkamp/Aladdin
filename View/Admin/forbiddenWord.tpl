@@ -22,7 +22,7 @@
             <label for="word" class="col-sm-2 form-control-label">Verboden woord</label>
             <div class="col-sm-10">
                 <input type="text" name="newWord" class="form-control" id="word" placeholder="Verboden woord">
-                <small class="text-muted">Dit is het verboden woord. Als dit woord voorkomt in een aanvraag bij wens of talent word deze aanvraag automatisch verwijderd.</small>
+                <small class="text-muted">Dit is het verboden woord. Als dit woord voorkomt in een aanvraag bij wens of talent word deze aanvraag automatisch verwijderd. Het verboden woord mag geen whitespace bevatten en de letters zijn altijd klein.</small>
             </div>
         </div>
         <div class="form-group row">
@@ -298,7 +298,7 @@
                             <label for="edit{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}" class="col-sm-2 form-control-label">Verboden woord</label>
                             <div class="col-sm-10">
                                 <input type="text" name="editedWord" class="form-control" id="edit{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}" placeholder="Verboden woord" value="{htmlentities(trim($word),ENT_QUOTES)}">
-                                <small class="text-muted">Dit is het verboden woord. Als dit woord voorkomt in een aanvraag bij wens of talent word deze aanvraag automatisch verwijderd.</small>
+                                <small class="text-muted">Dit is het verboden woord. Als dit woord voorkomt in een aanvraag bij wens of talent word deze aanvraag automatisch verwijderd. Het verboden woord mag geen whitespace bevatten en de letters zijn altijd klein.</small>
                             </div>
                         </div>
                     </div>

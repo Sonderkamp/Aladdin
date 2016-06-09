@@ -62,6 +62,7 @@
 
             <ul class="nav navbar-nav navbar-left">
                 <li><a href="/donate"><span class="glyphicon glyphicon-euro"></span> Doneren</a></li>
+                <li><a href="/about"><span class="glyphicon glyphicon-heart"></span> Over Ons</a></li>
                 {if isset($user)}
                     <li><a href="/dashboard"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
                     <li><a href="/wishes"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>

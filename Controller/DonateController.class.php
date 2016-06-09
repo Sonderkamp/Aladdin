@@ -77,8 +77,20 @@ class DonateController extends Controller
 
         $this->donateRepo->newDonation($_POST["quantity"], $_POST["name"], $_POST["description"], $this->userRepo->getCurrentUser(), $anon);
 
+        $donation = $this->donateRepo->getCurrentDonation();
+
+
+//        // print_r($_SESSION["payment"]);
+//        echo "AA";
+//        print_r($donation);
+//        exit();
+
+        if ($donation == null) {
+            $this->render("donate.tpl", ["title" => "Aladdin", "error" => "geen geldige waarde ingevoerd."]);
+            exit();
+        }
         // redirect
-        header("Location: " . $this->donateRepo->getCurrentDonation()->getPaymentUrl());
+        header("Location: " . $donation->getPaymentUrl());
         exit;
 
 
