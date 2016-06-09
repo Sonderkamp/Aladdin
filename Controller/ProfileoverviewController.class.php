@@ -70,7 +70,7 @@ class ProfileoverviewController extends Controller
         $reports = $reportRepo->getMyReports($user->email);
         $reports2 = $reportRepo->getReportedUsers($user->email);
 
-        $this->render("ProfileCheck.tpl", ["title" => "Profiel", "curUser" => $user, "blockstatus" => $blockStatus, "wishes" => $wishes, "talents" => $talents, "blocks" => $blocks, "reports" => $reports, "reports2" => $reports2]);
+        $this->render("profileCheck.tpl", ["title" => "Profiel", "curUser" => $user, "blockstatus" => $blockStatus, "wishes" => $wishes, "talents" => $talents, "blocks" => $blocks, "reports" => $reports, "reports2" => $reports2]);
         exit();
     }
 

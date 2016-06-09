@@ -41,6 +41,10 @@ h3 .h3 {
     margin: 10px 10px 5px 5px;
 }
 
+.collapse-comment{
+    margin-left: 15px;
+}
+
 .padd {
     padding-bottom: 40px;
     padding-top: 40px;
