@@ -418,10 +418,8 @@ class WishRepository
 
     }
 
-    private function upload($img)
+    public function upload($img)
     {
-
-
         // if to big
         if ($img["size"] > 10000000) {
             return null;
