@@ -471,6 +471,15 @@ class WishesController extends Controller
         }
     }
 
+    public function removeComment(){
+        if(!empty($_GET["wishId"]) && !empty($_GET["creationDate"]) && !empty($_GET["username"])){
+            (new AdminController())->guaranteeAdmin("/wishes/action=getSpecificWish?Id=" . $_GET["wishId"]);
+            $this->wishRepo->removeComment($_GET["creationDate"] , $_GET["username"] , $_GET["wishId"]);
+        } else {
+            $this->apologize("please provide a valid wishId & creationDate");
+        }
+    }
+
     //Comment Panel for specific wish view
 
     /**

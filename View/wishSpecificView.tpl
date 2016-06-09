@@ -122,6 +122,16 @@
                         {foreach from=$comments item=comment}
                             <li>
                                 <div class="commentText">
+                                    {if (isset($adminView))}
+                                        <form action="/wishes/action=removeComment">
+                                            <input type="hidden" name="wishId" value="{$selectedWish->id}" />
+                                            <input type="hidden" name="creationDate" value="{$comment->creationDate}" />
+                                            <input type="hidden" name="username" value="{$comment->displayName}" />
+                                            <button type="submit" class="btn btn-default">
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                            </button>
+                                        </form>
+                                    {/if}
                                     <p class="">{$comment->message}
                                         {if !empty($comment->image)}
                                             <a href="{$comment->image}" target="_blank">

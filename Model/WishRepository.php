@@ -350,6 +350,10 @@ class WishRepository
         return $this->wishQueryBuilder->getComments($wishID);
     }
 
+    public function removeComment($creationDate , $username, $wishId){
+        $this->wishQueryBuilder->removeComment($creationDate , $username, $wishId);
+    }
+
     public function addComment($comment, $wishID, $user, $img = null)
     {
 
