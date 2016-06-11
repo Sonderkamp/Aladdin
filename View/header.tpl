@@ -62,6 +62,7 @@
 
             <ul class="nav navbar-nav navbar-left">
                 <li><a href="/donate"><span class="glyphicon glyphicon-euro"></span> Doneren</a></li>
+                <li><a href="/about"><span class="glyphicon glyphicon-heart"></span> Over Ons</a></li>
                 {if isset($user)}
                     <li><a href="/dashboard"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
                     <li><a href="/wishes"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
@@ -86,6 +87,7 @@
                             <li><a href="/AdminUser">Gebruikersbeheer</a></li>
                             <li><a href="/ForbiddenWords">Verboden woorden beheer</a></li>
                             <li><a href="/AdminManage">Moderator beheer</a></li>
+                            <li><a href="/AdminSponsor">Sponsoren beheer</a></li>
                             <li role="separator" class="divider">
                             <li><a href="/Admin/action=logout">Log uit als {$admin->username}</a></li>
                         </ul>

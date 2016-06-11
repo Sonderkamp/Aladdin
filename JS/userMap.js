@@ -1,19 +1,16 @@
 /**
- * Created by Marius on 1-3-2016.
+ * Created by Marius on 8-6-2016.
  */
-var map = null;
+var map2 = null;
 // SVG drawing area
-matchmap = function (_parentElement, _data) {
+userMap = function (_parentElement, _data) {
 
     var vis = this;
 
     queue()
-        .defer(d3.csv, "/admin/csv=matches")
+        .defer(d3.csv, "/admin/csv=userLocation")
         .await(function (error, matches) {
 
-
-            console.log("AAA");
-            console.log(matches);
 
             vis.margin = {top: 40, right: 40, bottom: 40, left: 40};
 
@@ -21,7 +18,7 @@ matchmap = function (_parentElement, _data) {
                 vis.height = 500 - vis.margin.top - vis.margin.bottom,
                 vis.scale0 = (vis.width - 1) / 2 / Math.PI;
 
-            vis.svg = d3.select("#map").append("svg")
+            vis.svg = d3.select("#map2").append("svg")
                 .attr("width", vis.width + vis.margin.left + vis.margin.right)
                 .attr("height", vis.height + vis.margin.top + vis.margin.bottom);
 
@@ -34,7 +31,6 @@ matchmap = function (_parentElement, _data) {
                 .attr("x", 0)
                 .attr("y", 0)
                 .attr("class", "backgroundMap");
-
 
             vis.svg = vis.total.append("g")
                 .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
@@ -54,7 +50,7 @@ matchmap = function (_parentElement, _data) {
                 .scaleExtent([vis.scale0, 8 * vis.scale0])
                 .on("zoom", vis.zoomed);
 
-            map = vis;
+            map2 = vis;
             vis.data = matches;
 
 
@@ -66,13 +62,13 @@ matchmap = function (_parentElement, _data) {
 };
 
 
-matchmap.prototype.call = function () {
+userMap.prototype.call = function () {
     var vis = this;
     vis.updateVisualization();
 };
 
 // Render visualization
-matchmap.prototype.updateVisualization = function () {
+userMap.prototype.updateVisualization = function () {
 
 
     var vis = this;
@@ -97,43 +93,72 @@ matchmap.prototype.updateVisualization = function () {
                 return a.name.localeCompare(b.name);
             });
 
-            var map = vis.svg.append("g");
+            var map2 = vis.svg.append("g");
             vis.lines = vis.svg.append("g");
             // Render the world atlas by using the path generator
-            var feature = map.selectAll("path")
+            var feature = map2.selectAll("path")
                 .data(countries)
                 .enter()
                 .append("path")
                 .attr("d", vis.path)
                 .attr("class", "world");
 
-            vis.links = [];
 
-            vis.data.forEach(function (d, i) {
-                vis.links.push({
-                    type: "LineString",
-                    coordinates: [
-                        [+d.from_lon - 0.05, +d.from_lat - 0.05],
-                        [+d.to_lon + 0.05, +d.to_lat + 0.05]
-                    ]
+            var range = d3.extent(vis.data, function (d) {
+                return d.count;
+            });
+
+            // create range from red to green
+            vis.size = d3.scale.linear()
+                .domain([range[0], range[1]])
+                .range([2, 8]);
+
+            // tooltip
+            vis.tip = d3.tip().attr('class', 'd3-tip').html(function (d) {
+                    return d.city + ": " + d.count;
+                })
+                .offset([-10, 0]);
+
+            vis.svg.call(vis.tip);
+
+            console.log(vis.data);
+            // add circles to svg
+            vis.lines.selectAll("circle")
+                .data(vis.data).enter()
+                .append("circle")
+                .attr("cx", function (d) {
+                    return vis.projection([d.lon, d.lat])[0];
+                })
+                .attr("cy", function (d) {
+                    return vis.projection([d.lon, d.lat])[1];
+                })
+                .attr("r", function (d) {
+                    return vis.size(d.count);
+                })
+                .attr("fill", function (d) {
+                    return "#80CDC1";
+                })
+                .style("stroke", "black")
+                .style("stroke-width", 0.3)
+                .on("mouseover", function (d) {
+                    d3.select(this)
+                        .transition()
+                        .duration(100)
+                        .attr("r", function (d) {
+                            return vis.size(d.count) + 3;
+                        });
+                    vis.tip.show(d);
+                })
+                .on("mouseout", function (d) {
+                    d3.select(this)
+                        .transition()
+                        .duration(100)
+                        .attr("r", function (d) {
+                            return vis.size(d.count);
+                        });
+                    vis.tip.hide(d);
                 });
-            });
 
-            vis.pathArcs = vis.lines.selectAll(".arc")
-                .data(vis.links);
-
-            //enter
-            vis.pathArcs.enter()
-                .append("path").attr({
-                'class': 'arc'
-            }).style({
-                fill: 'none'
-            });
-
-            //update
-            vis.pathArcs.attr({d: vis.path})
-                .style("stroke-width", 0.4)
-                .style("stroke", "black");
 
             vis.total
                 .call(vis.zoom)
@@ -145,37 +170,24 @@ matchmap.prototype.updateVisualization = function () {
 };
 
 
-matchmap.prototype.zoomed = function () {
+userMap.prototype.zoomed = function () {
 
-    map.projection
-        .translate(map.zoom.translate())
-        .scale(map.zoom.scale());
+    map2.projection
+        .translate(map2.zoom.translate())
+        .scale(map2.zoom.scale());
 
-    map.svg.selectAll("path")
-        .attr("d", map.path);
+    map2.svg.selectAll("path")
+        .attr("d", map2.path);
 
-    if (map.showlines) {
-        if (map.pathArcs == null) {
-            map.pathArcs = map.lines.selectAll(".arc")
-                .data(map.links);
-
-            //enter
-            map.pathArcs.enter()
-                .append("path").attr({
-                'class': 'arc'
-            }).style({
-                fill: 'none'
-            });
-        }
-        map.pathArcs.attr({d: map.path})
-            .style("stroke-width", 0.4)
-            .style("stroke", "black");
-
-    }
-    else {
-        map.pathArcs.remove();
-        map.pathArcs = null;
-    }
+    // add circles to svg
+    map2.lines.selectAll("circle")
+        .data(map2.data)
+        .attr("cx", function (d) {
+            return map2.projection([d.lon, d.lat])[0];
+        })
+        .attr("cy", function (d) {
+            return map2.projection([d.lon, d.lat])[1];
+        });
 
 };
 

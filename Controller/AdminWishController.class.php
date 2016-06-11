@@ -34,7 +34,7 @@ class AdminwishController extends Controller
         $deniedWishes = $this->wishRepo->getDeniedWishes();
         $deletedWishes = $this->wishRepo->getDeletedWishes();
 
-        $this->render("AdminWish.tpl", ["title" => "WensBeheer",
+        $this->render("adminWish.tpl", ["title" => "WensBeheer",
             "requested" => $requestedWishes,
             "published" => $publishedWishes,
             "matched" => $matchedWishes,

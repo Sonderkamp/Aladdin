@@ -16,7 +16,9 @@ class AdmintalentsController extends Controller
         $talentRepo,
         $wordsRepo,
         $synonymId,
-        $search;
+        $search,
+        $talentError,
+        $talentId;
 
     // contructor
     public function __construct()
@@ -25,6 +27,8 @@ class AdmintalentsController extends Controller
 
         $this->page = "allTalents";
         $this->synonymId = "";
+        $this->talentId = "";
+        $this->talentError = "";
         $this->search = "";
 
         $this->talentRepo = new TalentRepository();
@@ -53,7 +57,9 @@ class AdmintalentsController extends Controller
                 "synonymId" => $this->synonymId,
                 "acceptedTalents" => $this->talentRepo->getAcceptedTalents(),
                 "page" => $this->page,
-                "search" => $this->search]);
+                "search" => $this->search,
+                "talentId" => $this->talentId,
+                "talentError" => $this->talentError]);
         exit(0);
     }
 
@@ -150,7 +156,6 @@ class AdmintalentsController extends Controller
                 // Check if the talent is already accepted or denied
                 if (!Empty($talent->moderator_username)) {
 
-                    $correct = true;
                     // Set name if empty
                     if (Empty($talentName)) {
 
@@ -167,40 +172,42 @@ class AdmintalentsController extends Controller
                                     foreach ($this->talentRepo->getTalents() as $item) {
 
                                         if (strtolower($item->name) == strtolower($name)) {
+                                            $this->talentError = "De naam " . $name . " is al toegevoegd, afgewezen of aangevraagd!";
 
-                                            // The given name is already added, denied or requested.
-                                            $correct = false;
+                                            $name = $talent->name;
                                             break;
                                         }
                                     }
+                                } else {
+                                    $this->talentError = "De naam " . $name . " is groter dan 45 letters!";
+                                    $name = $talent->name;
                                 }
                             } else {
 
-                                // The name is not accepted due to our terms
+                                $this->talentError = "De naam " . $name . " voldoet niet aan de regels!";
                                 $name = $talent->name;
                             }
                         }
                     }
 
-                    if ($correct == true) {
+                    if (!Empty($accepted) && $accepted == "on") {
 
-                        if (!Empty($accepted) && $accepted == "on") {
+                        $accepted = 1;
+                    } else {
 
-                            $accepted = 1;
-                        } else {
-
-                            $accepted = 0;
-                        }
-
-                        if (!preg_match('/[^a-z\s]/i', $name)) {
-
-                            $this->talentRepo->updateTalent($name, $accepted, $id);
-                        } else {
-
-                            // The name must be alphabetical.
-                        }
+                        $accepted = 0;
                     }
+
+                    if (preg_match('/[^a-z\s]/i', $name)) {
+                        $this->talentError = "De naam " . $name . " moet alfabetisch zijn!";
+
+                        $name = $talent->name;
+                    }
+                    $this->talentRepo->updateTalent($name, $accepted, $id);
                 }
+            }
+            if (!empty($this->talentError)) {
+                $this->talentId = $id;
             }
         }
 

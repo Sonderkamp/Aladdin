@@ -299,7 +299,7 @@ class WishQueryBuilder extends QueryBuilder
 
         setlocale(LC_TIME, 'Dutch');
         $array = Database::query_safe("SELECT `wishmessage`.`Message`, `wishmessage`.`Image`,  `wishmessage`.`CreationDate`, `wishmessage`.`user_Email`, `wishmessage`.`wish_Id`, `user`.`DisplayName` FROM `wishmessage` join `user` on `email` = `user_Email`
-WHERE `wish_Id` = ?", array($wishID));
+WHERE `wish_Id` = ? ORDER BY `wishmessage`.`CreationDate` ASC ", array($wishID));
 
         $comments = array();
         foreach ($array as $row) {
@@ -336,4 +336,8 @@ WHERE `wish_Id` = ?", array($wishID));
         }
     }
 
+
+    public function getMatchByFulfiller($wishId, $user) {
+        return Database::query_safe("SELECT * FROM `matches` WHERE `IsSelected` = 1 AND `user_Email` = ? AND `wish_Id` = ?",array($user,$wishId));
+    }
 }

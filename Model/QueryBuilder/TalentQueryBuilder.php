@@ -273,14 +273,14 @@ class TalentQueryBuilder
                   UPDATE `talent`
                   SET `Name`=?,`IsRejected`=?,`moderator_Username`=?,`AcceptanceDate`=CURRENT_TIMESTAMP
                   WHERE `Id`=?",
-                    Array($name, $isRejected, $admin, $id));
+                    Array(ucfirst(strtolower($name)), $isRejected, $admin, $id));
             } else {
 
                 Database::query_safe("
                   UPDATE `talent`
                   SET `Name`=?,`IsRejected`=?,`moderator_Username`=?,`AcceptanceDate`=NULL
                   WHERE `Id`=?",
-                    Array($name, $isRejected, $admin, $id));
+                    Array(ucfirst(strtolower($name)), $isRejected, $admin, $id));
 
                 Database::query_safe("DELETE FROM `synonym` WHERE `talent_Id` = ? OR `synonym_Id` = ?",
                     array($id, $id));
