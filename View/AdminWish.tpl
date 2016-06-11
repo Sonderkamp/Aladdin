@@ -154,21 +154,21 @@
                                             </li>
 
                                             <li>
-                                                <a href="/AdminWish/action=acceptWish?Id={$wish->id}" class="btn btn-sm">
+                                                <a class="btn btn-sm" data-toggle="modal" data-target="#acceptModal{$wish->id}">
                                                     <span class="glyphicon glyphicon-ok"></span>
                                                 </a>
                                             </li>
 
                                             <li>
-                                                <a href="/AdminWish/action=refuseWish?Id={$wish->id}" class="btn btn-sm">
+                                                <a class="btn btn-sm" data-toggle="modal" data-target="#refuseModal{$wish->id}">
                                                     <span class="glyphicon glyphicon-remove"></span>
                                                 </a>
                                             </li>
 
                                             <li>
-                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#profileModal{$wish->id}">
+                                                <a href="/profileoverview/action=viewProfile/user={$wish->user->email}">
                                                     <span class="glyphicon glyphicon-user"></span>
-                                                </button>
+                                                </a>
                                             </li>
 
                                             <li>
@@ -236,9 +236,9 @@
                                             </li>
 
                                             <li>
-                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#profileModal{$wish->id}">
+                                                <a href="/profileoverview/action=viewProfile/user={$wish->user->email}">
                                                     <span class="glyphicon glyphicon-user"></span>
-                                                </button>
+                                                </a>
                                             </li>
 
                                             <li>
@@ -305,9 +305,9 @@
                                             </li>
 
                                             <li>
-                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#profileModal{$wish->id}">
+                                                <a href="/profileoverview/action=viewProfile/user={$wish->user->email}">
                                                     <span class="glyphicon glyphicon-user"></span>
-                                                </button>
+                                                </a>
                                             </li>
                                         </ul>
                                     </div>
@@ -369,9 +369,9 @@
                                             </li>
 
                                             <li>
-                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#profileModal{$wish->id}">
+                                                <a href="/profileoverview/action=viewProfile/user={$wish->user->email}">
                                                     <span class="glyphicon glyphicon-user"></span>
-                                                </button>
+                                                </a>
                                             </li>
 
                                             <li>
@@ -440,9 +440,9 @@
                                             </li>
 
                                             <li>
-                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#profileModal{$wish->id}">
+                                                <a href="/profileoverview/action=viewProfile/user={$wish->user->email}">
                                                     <span class="glyphicon glyphicon-user"></span>
-                                                </button>
+                                                </a>
                                             </li>
                                         </ul>
                                     </div>
@@ -504,15 +504,15 @@
                                             </li>
 
                                             <li>
-                                                <a href="/AdminWish/action=acceptWish?Id={$wish->id}" class="btn btn-sm">
+                                                <a class="btn btn-sm" data-toggle="modal" data-target="#acceptModal{$wish->id}">
                                                     <span class="glyphicon glyphicon-ok"></span>
                                                 </a>
                                             </li>
 
                                             <li>
-                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#profileModal{$wish->id}">
+                                                <a href="/profileoverview/action=viewProfile/user={$wish->user->email}">
                                                     <span class="glyphicon glyphicon-user"></span>
-                                                </button>
+                                                </a>
                                             </li>
 
                                             <li>
@@ -580,17 +580,16 @@
                                             </li>
 
                                             <li>
-                                                <a href="/AdminWish/action=acceptWish?Id={$wish->id}" class="btn btn-sm">
+                                                <a class="btn btn-sm" data-toggle="modal" data-target="#acceptModal{$wish->id}">
                                                     <span class="glyphicon glyphicon-ok"></span>
                                                 </a>
                                             </li>
-
+                                            
                                             <li>
-                                                <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#profileModal{$wish->id}">
+                                                <a href="/profileoverview/action=viewProfile/user={$wish->user->email}">
                                                     <span class="glyphicon glyphicon-user"></span>
-                                                </button>
+                                                </a>
                                             </li>
-
                                         </ul>
                                     </div>
                                 </td>
