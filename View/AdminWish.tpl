@@ -584,7 +584,7 @@
                                                     <span class="glyphicon glyphicon-ok"></span>
                                                 </a>
                                             </li>
-                                            
+
                                             <li>
                                                 <a href="/profileoverview/action=viewProfile/user={$wish->user->email}">
                                                     <span class="glyphicon glyphicon-user"></span>
