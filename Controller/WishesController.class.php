@@ -8,9 +8,6 @@
  */
 class WishesController extends Controller
 {
-
-    // BREEKT MET NIEUWE STRCTUUR TODO
-
     public $wishRepo, $talentRepo, $reportRepo, $userRepo, $matchRepo, $forbiddenWordRepo, $maxContentLength = 50;
 
     public function __construct()
@@ -417,6 +414,7 @@ class WishesController extends Controller
 
         if ($id = null && empty($_GET["Id"])) {
             $this->apologize("Please provide a valid id");
+            exit(0);
         } else if (!empty($_GET["Id"])) {
             $id = $_GET["Id"];
         }
@@ -426,11 +424,13 @@ class WishesController extends Controller
         $comments = $this->wishRepo->getComments($id);
         $canMatch = false;
 
-        if (!empty($_GET["admin"])) {
-            (new AdminController())->guaranteeAdmin("/");
-            $returnPage = "/AdminWish";
 
-            if (!empty($selectedWish)) {
+        if (!empty($selectedWish)) {
+            if (!empty($_GET["admin"])) {
+                (new AdminController())->guaranteeAdmin("/");
+                $returnPage = "/AdminWish";
+
+
                 $this->renderAlone("wishSpecificView.tpl",
                     ["title" => "Wens: " . $id,
                         "selectedWish" => $selectedWish,
@@ -439,12 +439,13 @@ class WishesController extends Controller
                         "adminView" => true,
                         "canMatch" => false]);
                 exit(0);
-            } else {
-                $this->apologize("This wish doesn't exist");
+
+            } else if ($this->userRepo->getCurrentUser() === false || ($selectedWish->status == "Aangemaakt" && $selectedWish->user->email != $this->userRepo->getCurrentUser()->email)) {
+                $this->apologize("You are not allowed to view this wish");
             }
 
-        } else if ($this->userRepo->getCurrentUser() === false || ($selectedWish->status == "Aangemaakt" && $selectedWish->user->email != $this->userRepo->getCurrentUser()->email)) {
-            $this->apologize("You are not allowed to view this wish");
+        } else {
+            $this->apologize("This wish doesn't exist");
         }
 
         if ($selectedWish->status == "Aangemaakt" || $selectedWish->status == "Gepubliseerd") {
@@ -467,6 +468,15 @@ class WishesController extends Controller
             exit(0);
         } else {
             $this->apologize("This wish doesn't exist");
+        }
+    }
+
+    public function removeComment(){
+        if(!empty($_GET["wishId"]) && !empty($_GET["creationDate"]) && !empty($_GET["username"])){
+            (new AdminController())->guaranteeAdmin("/wishes/action=getSpecificWish?Id=" . $_GET["wishId"]);
+            $this->wishRepo->removeComment($_GET["creationDate"] , $_GET["username"] , $_GET["wishId"]);
+        } else {
+            $this->apologize("please provide a valid wishId & creationDate");
         }
     }
 

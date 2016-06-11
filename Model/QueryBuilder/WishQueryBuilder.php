@@ -317,6 +317,13 @@ WHERE `wish_Id` = ? ORDER BY `wishmessage`.`CreationDate` ASC ", array($wishID))
 
     }
 
+    public function removeComment($creationDate , $username, $wishId){
+        Database::query_safe("DELETE FROM `wishmessage`
+        WHERE `wishmessage`.`CreationDate` = ?
+        AND `wishmessage`.`user_Email` = ?
+        AND `wishmessage`.`wish_Id` = ?" , array($creationDate , $username, $wishId));
+    }
+
     public function addComment($comment, $wishID, $user, $img = null)
     {
         Database::query_safe("INSERT INTO `wishmessage` (`Message`, `Image`, `CreationDate`, `user_Email`, `wish_Id`) VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?);", array($comment, $img, $user->email, $wishID));
