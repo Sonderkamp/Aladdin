@@ -307,6 +307,7 @@ WHERE `wish_Id` = ? ORDER BY `wishmessage`.`CreationDate` ASC ", array($wishID))
             $comment->message = $row["Message"];
             $comment->image = $row["Image"];
             $comment->creationDate = strftime("%#d %B %Y", strtotime($row["CreationDate"]));
+            $comment->dbDate = $row["CreationDate"];
             $comment->userEmail = $row["user_Email"];
             $comment->wishId = $row["wish_Id"];
             $comment->displayName = $row["DisplayName"];
@@ -318,10 +319,15 @@ WHERE `wish_Id` = ? ORDER BY `wishmessage`.`CreationDate` ASC ", array($wishID))
     }
 
     public function removeComment($creationDate , $username, $wishId){
-        Database::query_safe("DELETE FROM `wishmessage`
+        $query = "DELETE FROM `wishmessage`
         WHERE `wishmessage`.`CreationDate` = ?
         AND `wishmessage`.`user_Email` = ?
-        AND `wishmessage`.`wish_Id` = ?" , array($creationDate , $username, $wishId));
+        AND `wishmessage`.`wish_Id` = ?";
+
+        print_r($query);
+        print_r($creationDate . " " . $username . " " . $wishId);
+
+        $this->executeQuery($query , array($creationDate , $username, $wishId));
     }
 
     public function addComment($comment, $wishID, $user, $img = null)

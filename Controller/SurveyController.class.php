@@ -8,11 +8,12 @@
 
 class SurveyController extends Controller
 {
-    public $survey;
+    public $survey, $userRepo;
 
     public function run()
     {
         $this->survey = new Survey();
+        $this->userRepo = new UserRepository();
 
         if(isset($_GET["submit"])){
             $this->handleSurveySubmit();
@@ -38,13 +39,13 @@ class SurveyController extends Controller
 
     private function showSurvey()
     {
-        $this->render("survey.tpl", ["title" => $_SESSION["user"]->displayName, "questions" => $this->survey->questions]);
+        $this->render("survey.tpl", ["title" => $this->userRepo->getCurrentUser()->displayName, "questions" => $this->survey->questions]);
     }
 
 
     private function showSurveyResults($group){
         $groupMessage = $this->survey->getSurveyText($group);
-        $this->render("surveyResult.tpl", ["title" => $_SESSION["user"]->displayName , "groupMessage" => $groupMessage]);
+        $this->render("surveyResult.tpl", ["title" => $this->userRepo->getCurrentUser()->displayName , "groupMessage" => $groupMessage , "groupId" => $group]);
     }
 
 }

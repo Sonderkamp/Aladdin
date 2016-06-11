@@ -409,27 +409,24 @@ class WishesController extends Controller
      */
     public function getSpecificWish($id = null, $error = null)
     {
-
-        // TODO: Error?
-
         if ($id = null && empty($_GET["Id"])) {
             $this->apologize("Please provide a valid id");
             exit(0);
         } else if (!empty($_GET["Id"])) {
             $id = $_GET["Id"];
         }
+
         $returnPage = null;
         $selectedWish = $this->wishRepo->getWish($id);
         $matches = $this->matchRepo->getMatches($id);
         $comments = $this->wishRepo->getComments($id);
         $canMatch = false;
-
+        $canComment = false;
 
         if (!empty($selectedWish)) {
             if (!empty($_GET["admin"])) {
                 (new AdminController())->guaranteeAdmin("/");
                 $returnPage = "/AdminWish";
-
 
                 $this->renderAlone("wishSpecificView.tpl",
                     ["title" => "Wens: " . $id,
@@ -437,7 +434,9 @@ class WishesController extends Controller
                         "matches" => $matches,
                         "comments" => $comments,
                         "adminView" => true,
-                        "canMatch" => false]);
+                        "canMatch" => false,
+                        "canComment" => false,
+                        "currentUser" => $this->userRepo->getCurrentUser()]);
                 exit(0);
 
             } else if ($this->userRepo->getCurrentUser() === false || ($selectedWish->status == "Aangemaakt" && $selectedWish->user->email != $this->userRepo->getCurrentUser()->email)) {
@@ -446,6 +445,7 @@ class WishesController extends Controller
 
         } else {
             $this->apologize("This wish doesn't exist");
+            exit(0);
         }
 
         if ($selectedWish->status == "Aangemaakt" || $selectedWish->status == "Gepubliseerd") {
@@ -456,25 +456,24 @@ class WishesController extends Controller
             $canMatch = false;
         }
 
-        if (!empty($selectedWish)) {
-            $this->render("wishSpecificView.tpl",
-                ["title" => "Wens: " . $id,
-                    "selectedWish" => $selectedWish,
-                    "matches" => $matches,
-                    "returnPage" => $returnPage,
-                    "comments" => $comments,
-                    "canMatch" => $canMatch,
-                    "currentUser" => $this->userRepo->getCurrentUser()]);
-            exit(0);
-        } else {
-            $this->apologize("This wish doesn't exist");
-        }
+        $this->render("wishSpecificView.tpl",
+            ["title" => "Wens: " . $id,
+                "selectedWish" => $selectedWish,
+                "matches" => $matches,
+                "returnPage" => $returnPage,
+                "adminView" => false,
+                "comments" => $comments,
+                "canMatch" => $canMatch,
+                "canComment" => $canComment,
+                "currentUser" => $this->userRepo->getCurrentUser()]);
+        exit(0);
     }
 
     public function removeComment(){
-        if(!empty($_GET["wishId"]) && !empty($_GET["creationDate"]) && !empty($_GET["username"])){
-            (new AdminController())->guaranteeAdmin("/wishes/action=getSpecificWish?Id=" . $_GET["wishId"]);
-            $this->wishRepo->removeComment($_GET["creationDate"] , $_GET["username"] , $_GET["wishId"]);
+        if(!empty($_POST["wishId"]) && !empty($_POST["creationDate"]) && !empty($_POST["username"])){
+            (new AdminController())->guaranteeAdmin("/wishes/action=getSpecificWish?Id=" . $_POST["wishId"]);
+            $this->wishRepo->removeComment($_POST["creationDate"] , $_POST["username"] , $_POST["wishId"]);
+            $this->redirect("/wishes/action=getSpecificWish?Id=" . $_POST["wishId"]);
         } else {
             $this->apologize("please provide a valid wishId & creationDate");
         }
