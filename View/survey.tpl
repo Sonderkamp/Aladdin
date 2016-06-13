@@ -7,8 +7,15 @@
                         <h4>{$value->questionContent}</h4>
                         <div class="row answer-container">
                         {foreach from=$value->answers item=$answerValue}
-                            <label class="radio-inline col-xs-6">
-                                <input type="radio" name="Question-{$value->id}" value="{$answerValue->answerContent}">{$answerValue->answerContent}
+                            <label class="radio-inline col-xs-6 row">
+                                <div class="col-xs-3" ></div>
+                                <div class="col-xs-2">
+                                    <input type="radio" required name="Question-{$value->id}" value="{$answerValue->answerContent}">
+                                </div>
+                                <div class="col-xs-6">
+                                    {$answerValue->answerContent}
+                                </div>
+                                <div class="col-xs-3"></div>
                             </label>
                         {/foreach}
                         </div>
