@@ -350,7 +350,7 @@ class WishRepository
         return $message;
     }
 
-    public function getComments($wishID)
+    public function getComments($wishID = null)
     {
         return $this->wishQueryBuilder->getComments($wishID);
     }

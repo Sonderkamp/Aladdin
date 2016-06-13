@@ -294,12 +294,17 @@ class WishQueryBuilder extends QueryBuilder
     }
 
 
-    public function getComments($wishID)
+    public function getComments($wishID = null)
     {
 
         setlocale(LC_TIME, 'Dutch');
-        $array = Database::query_safe("SELECT `wishmessage`.`Message`, `wishmessage`.`Image`,  `wishmessage`.`CreationDate`, `wishmessage`.`user_Email`, `wishmessage`.`wish_Id`, `user`.`DisplayName` FROM `wishmessage` join `user` on `email` = `user_Email`
-WHERE `wish_Id` = ? ORDER BY `wishmessage`.`CreationDate` ASC ", array($wishID));
+        if($wishID != null) {
+            $array = Database::query_safe("SELECT `wishmessage`.`Message`, `wishmessage`.`Image`,  `wishmessage`.`CreationDate`, `wishmessage`.`user_Email`, `wishmessage`.`wish_Id`, `user`.`DisplayName` FROM `wishmessage` join `user` on `email` = `user_Email`
+            WHERE `wish_Id` = ? ORDER BY `wishmessage`.`CreationDate` ASC ", array($wishID));
+        } else {
+            $array = Database::query("SELECT `wishmessage`.`Message`, `wishmessage`.`Image`,  `wishmessage`.`CreationDate`, `wishmessage`.`user_Email`, `wishmessage`.`wish_Id`, `user`.`DisplayName` FROM `wishmessage` join `user` on `email` = `user_Email`
+            WHERE InGuestbook = 1 ORDER BY `wishmessage`.`CreationDate` DESC ");
+        }
 
         $comments = array();
         foreach ($array as $row) {
