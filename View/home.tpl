@@ -91,6 +91,31 @@
         </row>
     </div>
 </div>
+
+<div class=" white">
+    <div class="container bg">
+        <div class="col-xs-12">
+
+            <h5 class="text-center"><b>Sponsors</b></h5>
+            <div class="text-center">
+                {foreach $sponsors as $sponsor}
+                    {if !empty($sponsor->image)}
+                        {if !empty($sponsor->url)}
+                        <a href="http://{$sponsor->url}" target="_blank" >
+                            <img class=" sponsorImage " src="{$sponsor->image}" style="text-align: center">
+                        </a>
+                        {else}
+                            <img class=" sponsorImage " src="{$sponsor->image}" style="text-align: center">
+                        {/if}
+                    {/if}
+                {/foreach}
+            </div>
+        </div>
+        </row>
+    </div>
+</div>
+
+
 </div>
 <script>
     // get the video

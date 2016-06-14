@@ -18,6 +18,7 @@ class SponsorQueryBuilder
                   OR s.WebsiteLink LIKE ?
                   OR s.user_Email LIKE ?
                   OR s.Description LIKE ?";
+            $keyword = preg_replace('/\s+/', '', "%".$keyword."%");
             $parameters = array($keyword, $keyword, $keyword, $keyword);
         }
 

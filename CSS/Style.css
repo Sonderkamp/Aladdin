@@ -696,6 +696,12 @@ blockquote footer, blockquote small, blockquote .small {
 
 }
 
+.sponsorImage {
+    max-height: 100px;
+    max-width: 100px;
+    margin-right:20px;
+}
+
 .backgroundMap {
     fill: white;
 }
@@ -703,3 +709,4 @@ blockquote footer, blockquote small, blockquote .small {
 .world {
     fill: #BF5F5F;
 }
+
