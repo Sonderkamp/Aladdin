@@ -29,7 +29,7 @@
                 <span class="glyphicon glyphicon-plus"></span>
             </button>
             <button type="submit" class="btn btn-primary">Zoek</button>
-            <button type="submit" class="btn btn-primary pull-right">Reset zoekfilter</button>
+            <button type="submit" class="btn btn-primary">Reset zoekfilter</button>
         </div>
     </form>
 
@@ -100,7 +100,7 @@
                     <h4 class="modal-title">Sponsor toevoegen</h4>
                 </div>
                 <div class="modal-body">
-                    <form action="/adminsponsor/action=addSponsor" method="post">
+                    <form action="/adminsponsor/action=addSponsor" method="post" enctype="multipart/form-data">
                         <fieldset class="form-group">
                             <select name="userEmail">
                                 <option value="default">- kies gebruiker -</option>
@@ -132,7 +132,7 @@
             <div class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">
-                    <form action="/AdminSponsor/action=updateSponsor" method="post">
+                    <form action="/AdminSponsor/action=updateSponsor" method="post" enctype="multipart/form-data">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
 
@@ -162,6 +162,9 @@
                                    placeholder="Link naar website" value="{$sponsor -> url}">
 
                             <input class="form-control" name="img" type="file"/><br/>
+                            <a href="{$sponsor->image}" target="_blank">
+                                <img class="thumbnail commentImage" src="{$sponsor->image}">
+                            </a>
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-default pull-left">Opslaan</button>

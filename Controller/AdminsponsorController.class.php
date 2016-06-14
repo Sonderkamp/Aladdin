@@ -99,6 +99,8 @@ class AdminsponsorController extends Controller
             exit();
         }
 
+        $image = $this->wishRepo->upload($sponsor->image);
+        $sponsor->image = $image;
         $this->sponsorRepo->addSponsor($sponsor);
         $this->goBack();
 
@@ -116,7 +118,9 @@ class AdminsponsorController extends Controller
             $this->run();
             exit();
         }
-        
+
+        $image = $this->wishRepo->upload($sponsor->image);
+        $sponsor->image = $image;
         $this->sponsorRepo->updateSponsor($sponsor);
         $this->goBack();
     }
@@ -160,6 +164,12 @@ class AdminsponsorController extends Controller
             if ($_POST["userEmail"] != "default") {
                 $sponsor->userMail = $_POST["userEmail"];
             }
+
+
+            if (!empty($_FILES["img"]["tmp_name"])) {
+                $sponsor->image = $_FILES["img"];
+            }
+
             return $sponsor;
         }
         return null;
