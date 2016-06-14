@@ -345,6 +345,10 @@ class WishQueryBuilder extends QueryBuilder
         Database::query_safe("UPDATE `wishmessage` SET `InGuestbook`=1 WHERE `CreationDate` = ? AND `user_Email` = ? AND `wish_Id` = ?" , array($creationDate , $username, $wishId));
     }
 
+    public function removeFromGuestbook($creationDate , $username, $wishId) {
+        Database::query_safe("UPDATE `wishmessage` SET `InGuestbook`=0 WHERE `CreationDate` = ? AND `user_Email` = ? AND `wish_Id` = ?" , array($creationDate , $username, $wishId));
+    }
+
     public function lastCommentMinutes($wishID, $user)
     {
         $array = Database::query_safe("SELECT `wishmessage`.`CreationDate` FROM `wishmessage` WHERE `wish_Id` = ? AND user_Email = ? order by `wishmessage`.`CreationDate` DESC LIMIT 1", array($wishID, $user->email));

@@ -5,6 +5,17 @@
                 {if !empty($comments[$comment])}
                     <div class="panel panel-default">
                         <div class="panel-body">
+                            {if $isAdmin}
+                                <form action="/guestbook/action=removeComment" method="post">
+                                    <input type="hidden" name="wishId" value="{$comments[$comment]->wishId}" />
+                                    <input type="hidden" name="creationDate" value="{$comments[$comment]->dbDate}" />
+                                    <input type="hidden" name="username" value="{$comments[$comment]->displayName}" />
+                                    <button type="submit" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                </form>
+                                <br>
+                            {/if}
                             <div class="row">
                                 <div class="col-xs-9">
                                     <p>{htmlspecialchars(trim($comments[$comment]->message))}
@@ -29,6 +40,17 @@
                 {if !empty($comments[$comment])}
                     <div class="panel panel-default">
                         <div class="panel-body">
+                            {if $isAdmin}
+                                <form action="/guestbook/action=removeComment" method="post">
+                                    <input type="hidden" name="wishId" value="{$comments[$comment]->wishId}" />
+                                    <input type="hidden" name="creationDate" value="{$comments[$comment]->dbDate}" />
+                                    <input type="hidden" name="username" value="{$comments[$comment]->displayName}" />
+                                    <button type="submit" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                </form>
+                                <br>
+                            {/if}
                             <div class="row">
                                 <div class="col-xs-9">
                                     <p>{htmlspecialchars(trim($comments[$comment]->message))}
