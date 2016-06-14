@@ -299,10 +299,10 @@ class WishQueryBuilder extends QueryBuilder
 
         setlocale(LC_TIME, 'Dutch');
         if($wishID != null) {
-            $array = Database::query_safe("SELECT `wishmessage`.`Message`, `wishmessage`.`Image`,  `wishmessage`.`CreationDate`, `wishmessage`.`user_Email`, `wishmessage`.`wish_Id`, `user`.`DisplayName` FROM `wishmessage` join `user` on `email` = `user_Email`
+            $array = Database::query_safe("SELECT `wishmessage`.`Message`, `wishmessage`.`Image`,  `wishmessage`.`CreationDate`, `wishmessage`.`user_Email`, `wishmessage`.`wish_Id`, `wishmessage`.`InGuestbook`, `user`.`DisplayName` FROM `wishmessage` join `user` on `email` = `user_Email`
             WHERE `wish_Id` = ? ORDER BY `wishmessage`.`CreationDate` ASC ", array($wishID));
         } else {
-            $array = Database::query("SELECT `wishmessage`.`Message`, `wishmessage`.`Image`,  `wishmessage`.`CreationDate`, `wishmessage`.`user_Email`, `wishmessage`.`wish_Id`, `user`.`DisplayName` FROM `wishmessage` join `user` on `email` = `user_Email`
+            $array = Database::query("SELECT `wishmessage`.`Message`, `wishmessage`.`Image`,  `wishmessage`.`CreationDate`, `wishmessage`.`user_Email`, `wishmessage`.`wish_Id`, `wishmessage`.`InGuestbook`, `user`.`DisplayName` FROM `wishmessage` join `user` on `email` = `user_Email`
             WHERE InGuestbook = 1 ORDER BY `wishmessage`.`CreationDate` DESC ");
         }
 
@@ -316,6 +316,7 @@ class WishQueryBuilder extends QueryBuilder
             $comment->userEmail = $row["user_Email"];
             $comment->wishId = $row["wish_Id"];
             $comment->displayName = $row["DisplayName"];
+            $comment->inGuestbook = $row["InGuestbook"];
 
             $comments[] = $comment;
         }

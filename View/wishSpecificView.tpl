@@ -131,9 +131,11 @@
                                             <button type="submit" class="btn btn-default" name="removeButton" value="remove">
                                                 <span class="glyphicon glyphicon-remove"></span>
                                             </button>
+                                            {if $comment->inGuestbook == "0"}
                                             <button type="submit" class="btn btn-inbox" name="addGuestbook" value="add">
                                                 <span class="glyphicon glyphicon-book"></span>
                                             </button>
+                                            {/if}
                                         </form>
                                     {/if}
                                     <p class="">{$comment->message}
