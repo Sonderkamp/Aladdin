@@ -339,6 +339,10 @@ class WishQueryBuilder extends QueryBuilder
     {
         Database::query_safe("INSERT INTO `wishmessage` (`Message`, `Image`, `CreationDate`, `user_Email`, `wish_Id`) VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?);", array($comment, $img, $user->email, $wishID));
     }
+    
+    public function addToGuestbook($creationDate , $username, $wishId) {
+        Database::query_safe("UPDATE `wishmessage` SET `InGuestbook`=1 WHERE `CreationDate` = ? AND `user_Email` = ? AND `wish_Id` = ?" , array($creationDate , $username, $wishId));
+    }
 
     public function lastCommentMinutes($wishID, $user)
     {

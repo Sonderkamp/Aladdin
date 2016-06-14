@@ -469,10 +469,16 @@ class WishesController extends Controller
         exit(0);
     }
 
-    public function removeComment(){
+    public function editComment(){
         if(!empty($_POST["wishId"]) && !empty($_POST["creationDate"]) && !empty($_POST["username"])){
             (new AdminController())->guaranteeAdmin("/wishes/action=getSpecificWish?Id=" . $_POST["wishId"]);
-            $this->wishRepo->removeComment($_POST["creationDate"] , $_POST["username"] , $_POST["wishId"]);
+
+            if(!empty($_POST["removeButton"]) && $_POST["removeButton"] == "remove") {
+                $this->wishRepo->removeComment($_POST["creationDate"] , $_POST["username"] , $_POST["wishId"]);
+            }
+            elseif (!empty($_POST["addGuestbook"]) && $_POST["addGuestbook"] == "add") {
+                $this->wishRepo->addToGuestbook($_POST["creationDate"] , $_POST["username"] , $_POST["wishId"]);
+            }
             $this->redirect("/wishes/action=getSpecificWish?Id=" . $_POST["wishId"]);
         } else {
             $this->apologize("please provide a valid wishId & creationDate");

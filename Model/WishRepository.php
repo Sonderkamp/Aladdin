@@ -361,6 +361,11 @@ class WishRepository
         $this->wishQueryBuilder->removeComment($creationDate , $user, $wishId);
     }
 
+    public function addToGuestbook($creationDate , $username, $wishId) {
+        $user = $this->userRepository->getUser($username)->email;
+        $this->wishQueryBuilder->addToGuestbook($creationDate , $user, $wishId);
+    }
+
     public function addComment($comment, $wishID, $user, $img = null)
     {
 
