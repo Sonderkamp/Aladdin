@@ -27,7 +27,7 @@
                                     </p>
                                 </div>
                                 <div class="col-xs-3">
-                                    <span class="date sub-text">{htmlspecialchars($comments[$comment]->displayName)} op {htmlspecialchars($comments[$comment]->creationDate)}
+                                    <span class="date sub-text">{htmlspecialchars($comments[$comment]->displayName)} op {htmlspecialchars($comments[$comment]->creationDate)}</span>
                                 </div>
                             </div>
                         </div>
@@ -62,7 +62,7 @@
                                     </p>
                                 </div>
                                 <div class="col-xs-3">
-                                    <span class="date sub-text">{htmlspecialchars($comments[$comment]->displayName)} op {htmlspecialchars($comments[$comment]->creationDate)}
+                                    <span class="date sub-text">{htmlspecialchars($comments[$comment]->displayName)} op {htmlspecialchars($comments[$comment]->creationDate)}</span>
                                 </div>
                             </div>
                         </div>
