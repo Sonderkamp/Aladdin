@@ -11,7 +11,6 @@ class GuestbookController extends Controller
     public function run() {
 
         if ((new AdminRepository())->getCurrentAdmin() !== false) {
-            (new AdminController())->guaranteeAdmin("/guestbook");
             $this->render("guestbook.tpl",
                 ["title" => "Gastenboek",
                     "comments" => (new WishRepository())->getComments(),
