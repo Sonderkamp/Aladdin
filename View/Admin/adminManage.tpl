@@ -1,12 +1,13 @@
 <div class="container">
     <div>
-        <h3 class="col-xs-12 col-sm-6 col-md-6 col-lg-6">Moderators beheren</h3>
-
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            <button class="btn btn-info pull-right" data-toggle="modal" data-target="#addAdmin">
+        <h3 class="col-xs-12">Moderators beheren
+            <button class="btn btn-default" data-toggle="modal" data-target="#infoAdminManage">
+                <span class="glyphicon glyphicon-info-sign"></span>
+            </button>
+            <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#addAdmin">
                 <span class="glyphicon glyphicon-plus"></span>
             </button>
-        </div>
+        </h3>
     </div>
     <table class="table">
         <thead>
@@ -19,7 +20,7 @@
         <tbody>
         {foreach from=$admins item=admin}
             <tr>
-                {if strftime(" %H:%M %#d %B %Y", strtotime($admin->creationDate)) >= strftime(" %H:%M %#d %B %Y", strtotime($currentAdmin->creationDate))}
+                {if strtotime($admin->creationDate) >= strtotime($currentAdmin->creationDate)}
                     <td class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                         {if $admin->username != $currentAdmin->username}
                             <div class="dropdown">
@@ -116,7 +117,7 @@
 
 
 {foreach from=$admins item=admin}
-    {if strftime(" %H:%M %#d %B %Y", strtotime($admin->creationDate)) >= strftime(" %H:%M %#d %B %Y", strtotime($currentAdmin->creationDate))}
+    {if strtotime($admin->creationDate) >= strtotime($currentAdmin->creationDate)}
         <!-- Modal Edit-->
         <div id="{htmlspecialchars($admin->username)}Edit" class="modal fade" role="dialog">
             <div class="modal-dialog">
@@ -168,6 +169,40 @@
         </div>
     {/if}
 {/foreach}
+
+<div id="infoAdminManage" class="modal fade"
+     role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Informatie moderator beheer</h4>
+            </div>
+            <div class="modal-body">
+                <h5>Moderators beheren</h5>
+                <p>Hier kunnen alle moderators beheert worden, mits de moderator die je wilt beheren later is toegevoegd
+                    dan de ingelogde moderator. Dit is ter beveiliging. Als een moderator word toegevoegd dan kan hierna
+                    de gebruikersnaam <b>niet</b> worden gewijzigd.</p>
+                <p>Bij de naam kan een moderator worden geblokkeerd. Een moderator kan zichzelf niet blokkeren of
+                    deblokkeren. Door op de naam te klikken wanneer deze roodkleurig is verschijnt er een klein boxje
+                    onder.</p>
+                <p>
+                    <button class="btn btn-inbox btn-sm">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </button>
+                    Hier kan het wachtwoord van een moderator worden gewijzigd.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default infoLeft"
+                        data-dismiss="modal">Sluiten
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 {if !Empty($addError)}
     <script type="text/javascript">
