@@ -5,6 +5,14 @@
 <!-- * Time: 12:42-->
 <!-- */-->
 <div class="container">
+
+    <span class="info">
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#InfoModal">
+                <span class="glyphicon glyphicon-info-sign"></span>
+            </button>
+         </span>
+
+
     <div class="row">
         <div class="col-sm-3">
             <div class="profile-usertitle">
@@ -347,6 +355,37 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="InfoModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Mijn profiel</h4>
+            </div>
+            <div class="modal-body">
+
+                <p>
+                    Hier kunt u uw profiel bekijken en wijzigen, uw donaties inzien en uw wachtwoord wijzigen.
+                    <br><br>
+
+                    <a><span class="glyphicon glyphicon glyphicon-user"/> Overzicht</a> hier staat uw profiel zoals u dat heeft ingesteld.<br>
+                    <a><span class="glyphicon glyphicon glyphicon-euro"/> Donaties</a> hier staan al uw donaties.<br>
+                    <a><span class="glyphicon glyphicon glyphicon-edit"/> Bewerken</a> hier kunt u uw profiel bewerken<br>
+                    <a><span class="glyphicon glyphicon glyphicon-option-horizontal"/> Wachtwoord</a> hier kunt u uw wachtwoord wijzigen.<br>
+                </p>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Sluiten
+                    </button>
                 </div>
             </div>
         </div>

@@ -1,5 +1,13 @@
 <div class="container">
 
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12  pull-right">
+        <span class="info" style="margin-bottom: 20px;">
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#InfoModal">
+                <span class="glyphicon glyphicon-info-sign"></span>
+            </button>
+        </span>
+    </div>
+
     {* If succes message is not empty than show it *}
     {if !empty($successMessage)}
         <div class="alert alert-success">
@@ -22,7 +30,10 @@
             <label for="word" class="col-sm-2 form-control-label">Verboden woord</label>
             <div class="col-sm-10">
                 <input type="text" name="newWord" class="form-control" id="word" placeholder="Verboden woord">
-                <small class="text-muted">Dit is het verboden woord. Als dit woord voorkomt in een aanvraag bij wens of talent word deze aanvraag automatisch verwijderd. Het verboden woord mag geen whitespace bevatten en de letters zijn altijd klein.</small>
+                <small class="text-muted">Dit is het verboden woord. Als dit woord voorkomt in een aanvraag bij wens of
+                    talent word deze aanvraag automatisch verwijderd. Het verboden woord mag geen whitespace bevatten en
+                    de letters zijn altijd klein.
+                </small>
             </div>
         </div>
         <div class="form-group row">
@@ -35,7 +46,8 @@
     {* Search forbidden word *}
     <form class="col-xs-12 col-sm-12 col-md-6 col-lg-6" action="/forbiddenwords/search" method="get">
         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-            <input class="form-control" name="search" placeholder="Zoek een verboden woord"{if !Empty($search)}value="{$search}"{/if}>
+            <input class="form-control" name="search" placeholder="Zoek een verboden woord"
+                   {if !Empty($search)}value="{$search}"{/if}>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
             <button type="submit" class="btn btn-primary">Zoek</button>
@@ -44,7 +56,9 @@
         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
             <a href="/forbiddenwords" class="btn btn-warning">Alle</a>
         </div>
+
     </form>
+
 
     {* if there is 1 word or more show table *}
     {* ELSE show no words found *}
@@ -52,35 +66,35 @@
         <h5 class="col-xs-12 col-sm-12 col-md-12 col-lg-12">Verboden woorden</h5>
         <table class="table col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <thead>
-                <tr>
-                    <th>Word</th>
-                    <th></th>
-                    <th></th>
-                </tr>
+            <tr>
+                <th>Word</th>
+                <th></th>
+                <th></th>
+            </tr>
             </thead>
             <tbody>
-                {* loop through all words and show them in the table *}
-                {foreach from=$forbiddenWords item=word}
-                    <tr>
-                        <td class="col-xs-10 col-sm-10 col-md-10 col-lg-10">{htmlentities(trim($word),ENT_QUOTES)}</td>
-                        <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                            <button type="button" class="btn btn-inbox btn-small" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}Edit">
-                                <span class="glyphicon glyphicon-edit"></span>
-                            </button>
-                        </td>
-                        <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                            <button type="button" class="btn btn-danger btn-small" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}Remove">
-                                <span class="glyphicon glyphicon-trash"></span>
-                            </button>
-                        </td>
-                    </tr>
-                {/foreach}
+            {* loop through all words and show them in the table *}
+            {foreach from=$forbiddenWords item=word}
+                <tr>
+                    <td class="col-xs-10 col-sm-10 col-md-10 col-lg-10">{htmlentities(trim($word),ENT_QUOTES)}</td>
+                    <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                        <button type="button" class="btn btn-inbox btn-small" data-toggle="modal"
+                                data-target="#myModal{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}Edit">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </button>
+                    </td>
+                    <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                        <button type="button" class="btn btn-danger btn-small" data-toggle="modal"
+                                data-target="#myModal{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}Remove">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </td>
+                </tr>
+            {/foreach}
             </tbody>
         </table>
-
         {* if there are more than 10 words show pagination *}
         {if $wordsCount > 1}
-
             <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
                 {* If pagination is not turned off show pagination *}
@@ -99,7 +113,8 @@
                                     </li>
                                 {else}
                                     <li>
-                                        <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}wordsPage={$page - 1}" aria-label="Previous">
+                                        <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}wordsPage={$page - 1}"
+                                           aria-label="Previous">
                                             <span aria-hidden="true">&laquo;</span>
                                         </a>
                                     </li>
@@ -156,18 +171,14 @@
                                                 </li>
                                             {/if}
                                         {/for}
-
                                         <li class="disabled">
                                             <a href="#">...</a>
                                         </li>
-
-                                    {* if page is greater than wordscount minus 3 (for example page is 8 and wordsCount(10) - 3 is 7) *}
+                                        {* if page is greater than wordscount minus 3 (for example page is 8 and wordsCount(10) - 3 is 7) *}
                                     {elseif $page > ($wordsCount - 3)}
-
                                         <li class="disabled">
                                             <a href="#">...</a>
                                         </li>
-
                                         {* Loop through the last four numbers until the last minus one *}
                                         {for $number=($wordsCount - 3) to ($wordsCount - 1)}
 
@@ -184,12 +195,11 @@
                                             {/if}
                                         {/for}
 
-                                    {* ELSE the pagination will be shown like this (first,...,3,4,5,...,last) *}
+                                        {* ELSE the pagination will be shown like this (first,...,3,4,5,...,last) *}
                                     {else}
                                         <li class="disabled">
                                             <a href="#">...</a>
                                         </li>
-
                                         {* Loop from page minus one until page plus one *}
                                         {for $number=($page - 1) to ($page + 1)}
 
@@ -235,7 +245,8 @@
                                     </li>
                                 {else}
                                     <li>
-                                        <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}wordsPage={$page + 1}" aria-label="Next">
+                                        <a href="/ForbiddenWords/{if !empty($smarty.get.search)}search={$smarty.get.search}/{/if}wordsPage={$page + 1}"
+                                           aria-label="Next">
                                             <span aria-hidden="true">&raquo;</span>
                                         </a>
                                     </li>
@@ -244,10 +255,13 @@
                         </nav>
                     </div>
                 {/if}
-                <form class="pull-right"  action="/forbiddenwords" method="post">
-                    <input type="hidden" value="{if $smarty.session.wordsPagination == "off"}on{else}off{/if}" name="pagination">
-                    <input type="hidden" value="{if isset($smarty.get.wordsPage)}{$smarty.get.wordsPage}{else}1{/if}" name="page">
-                    <button type="submit" class="btn btn-primary">Pagination {if $smarty.session.wordsPagination == "off"}aan{else}uit{/if}</button>
+                <form class="pull-right" action="/forbiddenwords" method="post">
+                    <input type="hidden" value="{if $smarty.session.wordsPagination == "off"}on{else}off{/if}"
+                           name="pagination">
+                    <input type="hidden" value="{if isset($smarty.get.wordsPage)}{$smarty.get.wordsPage}{else}1{/if}"
+                           name="page">
+                    <button type="submit" class="btn btn-primary">
+                        Pagination {if $smarty.session.wordsPagination == "off"}aan{else}uit{/if}</button>
                 </form>
             </div>
         {/if}
@@ -258,12 +272,14 @@
 
 {* Modal for remove forbidden word *}
 {foreach from=$forbiddenWords item=word}
-    <div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}Remove" class="modal fade" role="dialog">
+    <div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}Remove" class="modal fade"
+         role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Wilt u het verboden woord "{htmlentities(trim($word),ENT_QUOTES)}" definitief verwijderen?</h4>
+                    <h4 class="modal-title">Wilt u het verboden woord "{htmlentities(trim($word),ENT_QUOTES)}"
+                        definitief verwijderen?</h4>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default infoLeft" data-dismiss="modal">Sluiten</button>
@@ -283,7 +299,8 @@
 
 {* Modal for editing a forbidden word *}
 {foreach from=$forbiddenWords item=word}
-    <div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}Edit" class="modal fade" role="dialog">
+    <div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}Edit" class="modal fade"
+         role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
@@ -295,10 +312,16 @@
                 <form action="/forbiddenwords/action=editWord" method="get">
                     <div class="modal-body">
                         <div class="form-group row">
-                            <label for="edit{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}" class="col-sm-2 form-control-label">Verboden woord</label>
+                            <label for="edit{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}"
+                                   class="col-sm-2 form-control-label">Verboden woord</label>
                             <div class="col-sm-10">
-                                <input type="text" name="editedWord" class="form-control" id="edit{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}" placeholder="Verboden woord" value="{htmlentities(trim($word),ENT_QUOTES)}">
-                                <small class="text-muted">Dit is het verboden woord. Als dit woord voorkomt in een aanvraag bij wens of talent word deze aanvraag automatisch verwijderd. Het verboden woord mag geen whitespace bevatten en de letters zijn altijd klein.</small>
+                                <input type="text" name="editedWord" class="form-control"
+                                       id="edit{preg_replace('/\s+/', '', htmlentities(trim($word),ENT_QUOTES))}"
+                                       placeholder="Verboden woord" value="{htmlentities(trim($word),ENT_QUOTES)}">
+                                <small class="text-muted">Dit is het verboden woord. Als dit woord voorkomt in een
+                                    aanvraag bij wens of talent word deze aanvraag automatisch verwijderd. Het verboden
+                                    woord mag geen whitespace bevatten en de letters zijn altijd klein.
+                                </small>
                             </div>
                         </div>
                     </div>
@@ -316,3 +339,50 @@
         </div>
     </div>
 {/foreach}
+
+<div id="InfoModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Verboden woorden beheer</h4>
+            </div>
+            <div class="modal-body">
+
+                <p>
+                    Op deze pagina kun je de verboden woorden beheren, zoals toevoegen, verwijderen en wijzigen. Met de
+                    zoekbalk kunt u woorden zoeken.<br><br>
+
+                    <a>Pagination uit</a> toont alle woorden op één en dezelfde pagina getoond.<br>
+                    <a>Pagination aan</a> verdeeld de woorden over meerdere paginas.<br>
+                    <br>
+
+                    Hier vind u uitleg over de icoontjes die in het verboden woorden systeem voorkomen:
+                </p>
+
+
+                <div class="col-xs-12 info-row">
+                    <button class="btn btn-sm">
+                        <span class="glyphicon glyphicon glyphicon-edit"></span>
+                    </button>
+                    <span class="info-text">Woord wijzigen</span>
+                </div>
+
+                <div class="col-xs-12 info-row">
+                    <button class="btn btn-sm">
+                        <span class="glyphicon glyphicon glyphicon-remove"></span>
+                    </button>
+                    <span class="info-text">Woord verwijderen</span>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Sluiten
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

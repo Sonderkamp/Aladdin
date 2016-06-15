@@ -1,5 +1,12 @@
 <script src="/JS/dashboard.js"></script>
 <div class="container">
+
+       <span class="info">
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#InfoModal">
+                <span class="glyphicon glyphicon-info-sign"></span>
+            </button>
+       </span>
+
     {if isset($errorString)}
         <div class="alert alert-warning">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -50,9 +57,9 @@
     <div class="row">
         <h3 class="col-xs-6 col-sm-4 col-md-12 dashboard-header">Mijn wensen</h3>
         {if $wishCheck}
-        <a href="/wishes/action=openAddView" class="btn btn-info col-xs-1 visible-sm visible-xs">
-            <i class="fa fa-plus" aria-hidden="true"></i>
-        </a>
+            <a href="/wishes/action=openAddView" class="btn btn-info col-xs-1 visible-sm visible-xs">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </a>
         {/if}
     </div>
     <div class="row dashboard-row">
@@ -140,3 +147,50 @@
     </div>
 </div>
 
+<div id="InfoModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Dashboard</h4>
+            </div>
+            <div class="modal-body">
+
+                <p>Dit is uw persoonlijke dashboard, vanuit hier kunt u uw wensen & talenten toevoegen en bekijken.<br>
+                    Geen wens in gedachten? vul dan de <a href="/survey">vragenlijst</a> in, misschien kunnen wij u
+                    hierbij helpen.
+                    <br><br>
+                    Voor het wijzigen van uw profiel klikt u op
+                    <a href="/profile">
+                        naar mijn profiel.
+                    </a>
+                </p>
+
+                <div>
+                    Een wens toevoegen doet u met:
+                    <a href="/wishes/action=openAddView">
+                        voeg wens toe
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </a>
+                </div>
+
+                <div>
+                    Een talent toevoegen doet u met:
+                    <a href="/Talents/p=allTalents">
+                        voeg talent toe
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </a>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Sluiten
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

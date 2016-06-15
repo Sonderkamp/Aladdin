@@ -710,3 +710,7 @@ blockquote footer, blockquote small, blockquote .small {
     fill: #BF5F5F;
 }
 
+.infoButtonMargin{
+    margin-left:20px;
+}
+

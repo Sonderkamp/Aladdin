@@ -1,3 +1,11 @@
+<div class="container">
+ <span class="info infoButtonMargin">
+            <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#InfoModal">
+                <span class="glyphicon glyphicon-info-sign"></span>
+            </button>
+            </span>
+</div>
+
 <div class="noflow">
     <div id="slide-panel">
         <button class="btn btn-default" onclick="userinfo(null)">Terug</button>
@@ -121,6 +129,50 @@
     </div>
 </div>
 </div>
+
+<div id="InfoModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Statistieken</h4>
+            </div>
+            <div class="modal-body">
+
+                <p>
+                    Op deze pagina kun je de statistieken zien van:<br><br>
+                    <a><b>Gebruiker</b></a><br>
+                    - Aantal nieuwe gebruikers<br>
+                    - Aantal gebruikers per categories (kind/volwassen)<br>
+                    - Aantal gebruikers per leeftijd<br><br>
+
+                    <a><b>Gebruikers locatie</b></a><br>
+                    - Een kaart met het aantal plaatsen per gerbuiker, door met de muis over de bolletjes heen te gaan
+                    worden de aantal gebruikers van dat gebied getoont.<br><br>
+
+                    <a><b>Matches</b></a><br>
+                    - Een kaart met de matches, de lijnen op de kaart zijn van de plaats van de wensen naar de plaats
+                    van de vervuller<br><br>
+
+                    <a><b>Donaties</b></a><br>
+                    - Toont de gedane donaties, met datum, de donateur, het bedrag en een korte beschrijving dat de gebruiker
+                    kan toevoegen tijdens het doneren.
+
+                </p>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Sluiten
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.14/d3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.6.7/d3-tip.min.js"></script>
 <script src="/JS/queue.min.js"></script>

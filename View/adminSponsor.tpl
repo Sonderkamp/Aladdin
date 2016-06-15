@@ -10,6 +10,11 @@
 
 <div class="container">
 
+    <span class="info">
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#InfoModal">
+                <span class="glyphicon glyphicon-info-sign"></span>
+            </button>
+    </span>
 
     <h5>Sponsor Beheer</h5>
     <div class="col-md-2">
@@ -58,7 +63,7 @@
                         {foreach from=$sponsors item=sponsor}
                             <tr>
                                 <td>{$sponsor->name}</td>
-                                <td><a href="http://{$sponsor->url}" target="_blank">{$sponsor->url}</a> </td>
+                                <td><a href="http://{$sponsor->url}" target="_blank">{$sponsor->url}</a></td>
 
                                 <td>{$sponsor->description}</td>
                                 <td>{$sponsor->userMail}</td>
@@ -178,8 +183,41 @@
             </div>
         </div>
     {/foreach}
+</div>
 
+<div id="InfoModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
 
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Sponsor beheer</h4>
+            </div>
+            <div class="modal-body">
+
+                <p>
+                    Bij het aanmaken van een sponsor is de bedrijfsnaam of de gebruiker verplicht.<br>
+                    <a>Kies<span class="glyphicon glyphicon-triangle-bottom"/></a> hiermee kunt u kiezen om een sponsor te bewerken of te verwijderen.<br><br>
+
+                    Hier vind u uitleg over de icoontjes die in het talentbeheer systeem voorkomen:
+                </p>
+
+                <div class="col-xs-12 info-row">
+                    <button class="btn btn-sm">
+                        <span class="glyphicon glyphicon glyphicon-plus"/>
+                    </button>
+                    <span class="info-text">Sponsor toevoegen</span>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Sluiten
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 

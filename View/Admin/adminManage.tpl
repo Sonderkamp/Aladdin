@@ -1,11 +1,23 @@
 <div class="container">
+
+
     <div>
         <h3 class="col-xs-12 col-sm-6 col-md-6 col-lg-6">Moderators beheren</h3>
 
+
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+
+             <span class="info infoButtonMargin">
+            <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#InfoModal">
+                <span class="glyphicon glyphicon-info-sign"></span>
+            </button>
+            </span>
+
             <button class="btn btn-info pull-right" data-toggle="modal" data-target="#addAdmin">
                 <span class="glyphicon glyphicon-plus"></span>
             </button>
+
+
         </div>
     </div>
     <table class="table">
@@ -168,6 +180,50 @@
         </div>
     {/if}
 {/foreach}
+
+
+<div id="InfoModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Moderators beheer</h4>
+            </div>
+            <div class="modal-body">
+
+                <p>
+                    Op deze pagina kun je moderators aanmaken.<br><br>
+
+                    Hier vind u uitleg over de icoontjes die in het moderator beheer voorkomen.
+                </p>
+
+                <div class="col-xs-12 info-row">
+                    <button class="btn btn-sm">
+                        <span class="glyphicon glyphicon glyphicon-plus"></span>
+                    </button>
+                    <span class="info-text">Nieuwe moderator aanmaken</span>
+                </div>
+
+                <div class="col-xs-12 info-row">
+                    <button class="btn btn-sm">
+                        <span class="glyphicon glyphicon glyphicon-edit"></span>
+                    </button>
+                    <span class="info-text">Wachtwoord wijzigen</span>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Sluiten
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 {if !Empty($addError)}
     <script type="text/javascript">
