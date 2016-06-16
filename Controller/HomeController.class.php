@@ -4,10 +4,17 @@
 class HomeController extends Controller
 {
 
+    private $sponsorRepo;
+
+    public function __construct()
+    {
+        $this->sponsorRepo = new SponsorRepository();
+    }
+
     public function run()
     {
-
-        $this->render("home.tpl", ["title" => "Aladdin"]);
+        $sponsors = $this->sponsorRepo->getAllSponsors();
+        $this->render("home.tpl", ["title" => "Aladdin", "sponsors" => $sponsors]);
         exit(0);
     }
 

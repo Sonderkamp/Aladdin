@@ -10,6 +10,13 @@ class UserQueryBuilder
 {
 
 
+    public function setGuardian($childEmail, $parentEmail)
+    {
+        if (Database::query_safe("UPDATE `user` SET `guardian` = ?  WHERE `Email` = ?", array($parentEmail, $childEmail)) === false) {
+            exit();
+        }
+    }
+
     public function setPassword($hashed, $username)
     {
         if (Database::query_safe("UPDATE `user` SET `Password` = ?  WHERE `Email` = ?", array($hashed, $username)) === false) {
@@ -58,12 +65,28 @@ class UserQueryBuilder
             `Surname`, `RecoveryHash`, `RecoveryDate`,
             `ValidationHash`, `Address`, `Postalcode`,
             `Country`, `City`, `Dob`,
-            `Gender`, `Handicap`, `DisplayName`, `Initials`, `Lat`, `Lon`) VALUES (?, ?, ?,?, NULL, NULL, ?, ?,?,?, ?,?,?,?,?,?,?,?)"
+            `Gender`, `Handicap`, `DisplayName`, `Initials`, `Lat`, `Lon`, `HandicapInfo`) VALUES (?, ?, ?,?, NULL, NULL, ?, ?,?,?, ?,?,?,?,?,?,?,?,?)"
                 , $array) === false
         ) {
-            apologize("Er was een error bij het toevoegen van uw gegevens aan onze database. Probeer dit alstublieft opnieuw. Is dit de tweede keer dat u dit ziet, contacteer de webmaster op: Mariusdv@outlook.com");
-            exit();
+            return false;
         }
+
+        return true;
+    }
+
+    public function addCompany($array)
+    {
+
+        if (Database::query_safe("INSERT INTO `user` (`Email`, `Password`, `Name`,
+            `Surname`, `RecoveryHash`, `RecoveryDate`,
+            `ValidationHash`, `Address`, `Postalcode`,
+            `Country`, `City`, `DisplayName`, `Initials`, `Lat`, `Lon`, `CompanyName`) VALUES (?, ?, ?,?, NULL, NULL, ?, ?,?,?, ?,?,?,?,?,?)"
+                , $array) === false
+        ) {
+            return false;
+        }
+
+        return true;
     }
 
     public function clearToken($username, $type)
