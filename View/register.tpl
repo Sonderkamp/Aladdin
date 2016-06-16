@@ -58,7 +58,7 @@
             </div>
             <div class="panel-body">
 
-                <form id="form" name="registerForm" action="/Account/action=register" method="post"
+                <form id="form" name="registerForm" action="/Account/action=register/type={$type}" method="post"
                       onsubmit="return validateEmail()">
                     <input type="hidden" name="type" value="{$type}">
 
@@ -300,6 +300,28 @@
             },
             async: false
         });
+
+        {if isset($type) && $type == "child"}
+        {literal}
+        var val = {username: document.forms["registerForm"]["guardian"].value};
+        $.ajax({
+            type: 'POST',
+            url: "/Account/action=check",
+            data: val,
+            dataType: "text",
+            success: function (resultData) {
+                resultData = JSON.parse(resultData);
+                if (resultData.result != true) {
+                    ret = false;
+                    $("#error").text("Error: account van voogd bestaat niet.");
+                    $("#error").addClass("form-error");
+                }
+                return false;
+            },
+            async: false
+        });
+        {/literal}
+        {/if}
 
         if ($('input[name=city]').val() === "" ||
                 $('input[name=country]').val() === "" ||

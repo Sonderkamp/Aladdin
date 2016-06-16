@@ -219,9 +219,15 @@ class AccountController extends Controller
             $arr = $_POST;
             $arr["username"] = strtolower(filter_var($_POST["username"], FILTER_SANITIZE_EMAIL));
             $arr["password"] = $_POST["password1"];
-            if (isset($_POST["handicap"]))
+            if (isset($_POST["handicap"])) {
                 $arr["handicap"] = 1;
-            else
+                if (!isset($arr["handicap_info"])) {
+                    $this->render("register.tpl", [
+                        "title" => "register",
+                        "error" => "Formulier klopt niet."]);
+                    exit(1);
+                }
+            } else
                 $arr["handicap"] = 0;
 
             $userRepo = new UserRepository();
