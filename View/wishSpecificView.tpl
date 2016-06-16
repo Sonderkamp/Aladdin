@@ -177,8 +177,7 @@
                         {if !empty($matches)}
                             <div class="inner-border match-controls row">
                                 <p class="col-xs-6">{$match->user->displayName}</p>
-                                {if $selectedWish->user->email == $currentUser->email}
-
+                                {if !empty($currentUser) && $selectedWish->user->email == $currentUser->email}
                                     {*<button type="button" class="col-xs-3 btn btn-confirm btn-default" data-toggle="modal" data-target="#profileModal{$wish->id}">*}
                                     {*<span class="glyphicon glyphicon-user"></span>*}
                                     {*</button>*}

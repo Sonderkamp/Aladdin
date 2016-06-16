@@ -323,10 +323,7 @@ WHERE `wish_Id` = ? ORDER BY `wishmessage`.`CreationDate` ASC ", array($wishID))
         WHERE `wishmessage`.`CreationDate` = ?
         AND `wishmessage`.`user_Email` = ?
         AND `wishmessage`.`wish_Id` = ?";
-
-        print_r($query);
-        print_r($creationDate . " " . $username . " " . $wishId);
-
+        
         $this->executeQuery($query , array($creationDate , $username, $wishId));
     }
 

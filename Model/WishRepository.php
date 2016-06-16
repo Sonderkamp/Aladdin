@@ -36,7 +36,7 @@ class WishRepository
             foreach ($queryResult as $item) {
 
                 $userParams = array("Email", "Name", "DisplayName", "Surname", "Address",
-                    "Postalcode", "Country", "City", "Dob", "Gender", "Handicap");
+                    "Postalcode", "Country", "City");
                 $userCheck = true;
 
                 foreach ($userParams as $param) {
@@ -65,9 +65,9 @@ class WishRepository
                     $user->postalcode = $item[$userParams[5]];
                     $user->country = $item[$userParams[6]];
                     $user->city = $item[$userParams[7]];
-                    $user->dob = $item[$userParams[8]];
-                    $user->gender = $item[$userParams[9]];
-                    $user->handicap = $item[$userParams[10]];
+                    $user->dob = $item["Dob"];
+                    $user->gender = $item["Gender"];
+                    $user->handicap = $item["Handicap"];
                     $wish->user = $user;
                 }
 
