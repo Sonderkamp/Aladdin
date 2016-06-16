@@ -1,4 +1,3 @@
-
 <!--Created by PhpStorm.-->
 <!--User: Joost-->
 <!--Date: 10-3-2016-->
@@ -8,16 +7,20 @@
         <h5>Talenten beheren</h5>
         <div class="col-md-2">
             <ul class="nav nav-pills nav-stacked">
-                <li{if $page == "allTalents"} class="active"{/if}><a href="#tab1" data-toggle="tab">Talenten beheren</a></li>
-                <li{if $page == "unacceptedTalents"} class="active"{/if}><a href="#tab2" data-toggle="tab">Aanvragen talenten</a></li>
+                <li{if $page == "allTalents"} class="active"{/if}><a href="#tab1" data-toggle="tab">Talenten beheren</a>
+                </li>
+                <li{if $page == "unacceptedTalents"} class="active"{/if}><a href="#tab2" data-toggle="tab">Aanvragen
+                        talenten</a></li>
             </ul>
         </div>
         <div class="col-md-10">
             <div class="tab-content">
                 <div class="tab-pane{if $page == "allTalents"} fade in active{/if}" id="tab1">
-                    <form class="col-xs-12 col-sm-12 col-md-12 col-lg-12" action="/admintalents/p=allTalents" method="get">
+                    <form class="col-xs-12 col-sm-12 col-md-12 col-lg-12" action="/admintalents/p=allTalents"
+                          method="get">
                         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                            <input class="form-control" name="search" placeholder="Zoek een talent"{if !Empty($search)}value="{$search}"{/if}>
+                            <input class="form-control" name="search" placeholder="Zoek een talent"
+                                   {if !Empty($search)}value="{$search}"{/if}>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                             <button type="submit" class="btn btn-primary">Zoek</button>
@@ -29,51 +32,53 @@
                     </form>
                     <table class="table">
                         <thead>
-                            <tr>
-                                <th>Alle talenten</th>
-                                <th>Is geaccepteerd</th>
-                                <th>Gecheckt door</th>
-                                <th></th>
-                                <th></th>
-                            </tr>
+                        <tr>
+                            <th>Alle talenten</th>
+                            <th>Is geaccepteerd</th>
+                            <th>Gecheckt door</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {foreach from=$allTalents item=talent}
-                                <tr>
-                                    <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">{htmlentities(trim($talent->name),ENT_QUOTES)}</td>
-                                    {if !Empty(htmlentities(trim($talent->moderator_username),ENT_QUOTES))}
-                                        <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                            {if htmlentities(trim($talent->is_rejected),ENT_QUOTES) == true}
-                                                Ja
-                                            {else}
-                                                Nee
-                                            {/if}
-                                        </td>
-                                        <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">{htmlentities(trim($talent->moderator_username),ENT_QUOTES)}</td>
-                                    {else}
-                                        <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">-</td>
-                                        <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">-</td>
-                                    {/if}
-                                    {if $talent->is_rejected === 1}
-                                        <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                                            {if !Empty(htmlentities(trim($talent->moderator_username),ENT_QUOTES))}
-                                                <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}synonym">
-                                                    <span class="glyphicon glyphicon-wrench"></span>
-                                                </button>
-                                            {/if}
-                                        </td>
-                                    {else}
-                                        <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></td>
-                                    {/if}
+                        {foreach from=$allTalents item=talent}
+                            <tr>
+                                <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">{htmlentities(trim($talent->name),ENT_QUOTES)}</td>
+                                {if !Empty(htmlentities(trim($talent->moderator_username),ENT_QUOTES))}
+                                    <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                        {if htmlentities(trim($talent->is_rejected),ENT_QUOTES) == true}
+                                            Ja
+                                        {else}
+                                            Nee
+                                        {/if}
+                                    </td>
+                                    <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">{htmlentities(trim($talent->moderator_username),ENT_QUOTES)}</td>
+                                {else}
+                                    <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">-</td>
+                                    <td class="col-xs-4 col-sm-4 col-md-4 col-lg-4">-</td>
+                                {/if}
+                                {if $talent->is_rejected === 1}
                                     <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
                                         {if !Empty(htmlentities(trim($talent->moderator_username),ENT_QUOTES))}
-                                            <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}">
-                                                <span class="glyphicon glyphicon-edit"></span>
+                                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal"
+                                                    data-target="#myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}synonym">
+                                                <span class="glyphicon glyphicon-wrench"></span>
                                             </button>
                                         {/if}
                                     </td>
-                                </tr>
-                            {/foreach}
+                                {else}
+                                    <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></td>
+                                {/if}
+                                <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                    {if !Empty(htmlentities(trim($talent->moderator_username),ENT_QUOTES))}
+                                        <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal"
+                                                data-target="#myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}">
+                                            <span class="glyphicon glyphicon-edit"></span>
+                                        </button>
+                                    {/if}
+                                </td>
+                            </tr>
+                        {/foreach}
                         </tbody>
                     </table>
                     {if $talentsCount > 1}
@@ -90,7 +95,8 @@
                                                 </li>
                                             {else}
                                                 <li>
-                                                    <a href="/admintalents/p=allTalents/allTalents={$currentTalentsCount - 1}" aria-label="Previous">
+                                                    <a href="/admintalents/p=allTalents/allTalents={$currentTalentsCount - 1}"
+                                                       aria-label="Previous">
                                                         <span aria-hidden="true">&laquo;</span>
                                                     </a>
                                                 </li>
@@ -116,7 +122,8 @@
                                                 </li>
                                             {else}
                                                 <li>
-                                                    <a href="/admintalents/p=allTalents/allTalents={$currentTalentsCount + 1}" aria-label="Next">
+                                                    <a href="/admintalents/p=allTalents/allTalents={$currentTalentsCount + 1}"
+                                                       aria-label="Next">
                                                         <span aria-hidden="true">&raquo;</span>
                                                     </a>
                                                 </li>
@@ -132,7 +139,8 @@
                                                 </li>
                                             {else}
                                                 <li>
-                                                    <a href="/admintalents/p=allTalents/allTalents={$currentTalentsCount - 1}" aria-label="Previous">
+                                                    <a href="/admintalents/p=allTalents/allTalents={$currentTalentsCount - 1}"
+                                                       aria-label="Previous">
                                                         <span aria-hidden="true">&laquo;</span>
                                                     </a>
                                                 </li>
@@ -214,7 +222,8 @@
                                                 </li>
                                             {else}
                                                 <li>
-                                                    <a href="/admintalents/p=allTalents/allTalents={$currentTalentsCount + 1}" aria-label="Next">
+                                                    <a href="/admintalents/p=allTalents/allTalents={$currentTalentsCount + 1}"
+                                                       aria-label="Next">
                                                         <span aria-hidden="true">&raquo;</span>
                                                     </a>
                                                 </li>
@@ -239,19 +248,21 @@
                             </thead>
                             <tbody>
                             {foreach from=$unacceptedTalents item=talent}
-                            <tr>
-                                <td class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{$talent -> name}</td>
-                                <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                                    <button type="button" class="btn btn-add btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}accept">
-                                        <span class="glyphicon glyphicon-ok"></span>
-                                    </button>
-                                </td>
-                                <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                                    <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}deny">
-                                        <span class="glyphicon glyphicon-remove"></span>
-                                    </button>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{$talent -> name}</td>
+                                    <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                        <button type="button" class="btn btn-add btn-sm" data-toggle="modal"
+                                                data-target="#myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}accept">
+                                            <span class="glyphicon glyphicon-ok"></span>
+                                        </button>
+                                    </td>
+                                    <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                        <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal"
+                                                data-target="#myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}deny">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </button>
+                                    </td>
+                                </tr>
                             {/foreach}
                             </tbody>
                         </table>
@@ -265,7 +276,8 @@
 <!-- Modal Edit-->
 {foreach from=$allTalents item=talent}
     {if !Empty(htmlentities(trim($talent->moderator_username),ENT_QUOTES))}
-        <div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}" class="modal fade" role="dialog">
+        <div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}" class="modal fade"
+             role="dialog">
             <div class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">
@@ -276,17 +288,27 @@
                     <form action="/admintalents/p=allTalents/action=editTalent" method="get">
                         <input type="hidden" name="talent" value="{htmlentities(trim($talent->id),ENT_QUOTES)}">
                         <div class="modal-body">
+                            {if !empty($talentError)}
+                                <div class="alert alert-danger fade in">
+                                    <a href="#" class="close" data-dismiss="alert"
+                                       aria-label="close">&times;</a>
+                                    <strong>Error!</strong> {htmlspecialchars($talentError)}
+                                </div>
+                            {/if}
+
                             <div class="form-group">
                                 <label class="control-label col-sm-3" for="name">Nieuwe naam:</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="name" placeholder="Naam" name="talentName" value="{htmlentities(trim($talent->name),ENT_QUOTES)}">
+                                    <input type="text" class="form-control" id="name" placeholder="Naam"
+                                           name="talentName" value="{htmlentities(trim($talent->name),ENT_QUOTES)}">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-offset-3 col-sm-9">
                                     <div class="checkbox">
                                         {if htmlentities(trim($talent->is_rejected),ENT_QUOTES) == true}
-                                            <label><input type="checkbox" checked="checked" name="accepted"> Is geaccepteerd</label>
+                                            <label><input type="checkbox" checked="checked" name="accepted"> Is
+                                                geaccepteerd</label>
                                         {else}
                                             <label><input type="checkbox" name="accepted"> Is geaccepteerd</label>
                                         {/if}
@@ -304,22 +326,26 @@
                 </div>
             </div>
         </div>
-
         {if $talent->is_rejected === 1}
             <!-- Modal synonym-->
-            <div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}synonym" class="modal fade" role="dialog">
+            <div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}synonym"
+                 class="modal fade" role="dialog">
                 <div class="modal-dialog">
                     <!-- Modal content-->
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Synoniemen beheren van "{htmlentities(trim($talent->name),ENT_QUOTES)}"</h4>
+                            <h4 class="modal-title">Synoniemen beheren van
+                                "{htmlentities(trim($talent->name),ENT_QUOTES)}"</h4>
                         </div>
                         <div class="modal-body">
                             <form action="/admintalents" method="post">
-                                <input type="hidden" name="synonymId" value="{htmlentities(trim($talent->id),ENT_QUOTES)}">
-                                <input type="hidden" name="page" value="{htmlentities(trim($currentTalentsCount),ENT_QUOTES)}">
-                                {if isset($smarty.get.search)}<input type="hidden" name="search" value="{htmlentities(trim($smarty.get.search),ENT_QUOTES)}">{/if}
+                                <input type="hidden" name="synonymId"
+                                       value="{htmlentities(trim($talent->id),ENT_QUOTES)}">
+                                <input type="hidden" name="page"
+                                       value="{htmlentities(trim($currentTalentsCount),ENT_QUOTES)}">
+                                {if isset($smarty.get.search)}<input type="hidden" name="search"
+                                                                     value="{htmlentities(trim($smarty.get.search),ENT_QUOTES)}">{/if}
                                 <fieldset class="form-group col-xs-5">
                                     <label for="synonym">Wel synoniem</label>
                                     <select name="removeSynonym[]" multiple class="form-control" id="synonym">
@@ -329,11 +355,13 @@
                                     </select>
                                 </fieldset>
                                 <div class="list-arrows col-xs-2 text-center">
-                                    <button name="addButton" class="btn btn-default btn-sm move-left small-margin-bottom" value="add">
+                                    <button name="addButton"
+                                            class="btn btn-default btn-sm move-left small-margin-bottom" value="add">
                                         <span class="glyphicon glyphicon-chevron-left"></span>
                                     </button>
 
-                                    <button name="removeButton" class="btn btn-default btn-sm move-right" value="remove">
+                                    <button name="removeButton" class="btn btn-default btn-sm move-right"
+                                            value="remove">
                                         <span class="glyphicon glyphicon-chevron-right"></span>
                                     </button>
                                 </div>
@@ -361,68 +389,81 @@
 
 <!-- Modal deny request-->
 {foreach from=$unacceptedTalents item=talent}
-<div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}deny" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Wilt u het talentaanvraag {htmlentities(trim($talent->name),ENT_QUOTES)} afwijzen?</h4>
-            </div>
-            <form action="/admintalents/p=unacceptedTalents/action=denyTalent" method="get">
-                <div class="modal-body">
+    <div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}deny" class="modal fade"
+         role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Wilt u het talentaanvraag {htmlentities(trim($talent->name),ENT_QUOTES)}
+                        afwijzen?</h4>
+                </div>
+                <form action="/admintalents/p=unacceptedTalents/action=denyTalent" method="get">
+                    <div class="modal-body">
 
-                    <div class="form-group">
-                        <div class="col-xs-3">
-                            Rede afwijzing:
+                        <div class="form-group">
+                            <div class="col-xs-3">
+                                Rede afwijzing:
+                            </div>
+                            <div class="col-xs-9">
+                                <input type="hidden" value="{htmlentities(trim($talent->id),ENT_QUOTES)}"
+                                       name="talent"/>
+                                <input type="text" class="form-control" placeholder="Rede afwijzing" name="denyMessage">
+                            </div>
+                            <br>
                         </div>
-                        <div class="col-xs-9">
-                            <input type="hidden" value="{htmlentities(trim($talent->id),ENT_QUOTES)}" name="talent"/>
-                            <input type="text" class="form-control" placeholder="Rede afwijzing" name="denyMessage">
-                        </div>
-                        <br>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default infoLeft" data-dismiss="modal">Sluiten</button>
-                    <button type="submit" class="btn btn-inbox info">
-                        <span class="glyphicon glyphicon-remove"></span> Afwijzen
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-{/foreach}
-
-<!-- Modal accept request-->
-{foreach from=$unacceptedTalents item=talent}
-<div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}accept" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Wilt u het talentaanvraag {htmlentities(trim($talent->name),ENT_QUOTES)} accepteren?</h4>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default infoLeft" data-dismiss="modal">Sluiten</button>
-                <form action="/admintalents/p=unacceptedTalents/action=acceptTalent" method="get">
-                    <input type="hidden" value="{htmlentities(trim($talent->id),ENT_QUOTES)}" name="talent"/>
-                    <button type="submit" class="btn btn-add info">
-                        <span class="glyphicon glyphicon-ok"></span> Accepteren
-                    </button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default infoLeft" data-dismiss="modal">Sluiten</button>
+                        <button type="submit" class="btn btn-inbox info">
+                            <span class="glyphicon glyphicon-remove"></span> Afwijzen
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
-</div>
+{/foreach}
+
+<!-- Modal accept request-->
+{foreach from=$unacceptedTalents item=talent}
+    <div id="myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}accept" class="modal fade"
+         role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Wilt u het talentaanvraag {htmlentities(trim($talent->name),ENT_QUOTES)}
+                        accepteren?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default infoLeft" data-dismiss="modal">Sluiten</button>
+                    <form action="/admintalents/p=unacceptedTalents/action=acceptTalent" method="get">
+                        <input type="hidden" value="{htmlentities(trim($talent->id),ENT_QUOTES)}" name="talent"/>
+                        <button type="submit" class="btn btn-add info">
+                            <span class="glyphicon glyphicon-ok"></span> Accepteren
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 {/foreach}
 
 {if !Empty($synonymId)}
     <script type="text/javascript">
-        $(window).load(function(){
+        $(window).load(function () {
             $('#myModal{preg_replace('/\s+/', '', htmlentities(trim($synonymId),ENT_QUOTES))}synonym').modal('show');
+        });
+    </script>
+{/if}
+
+{if !Empty($talentId)}
+    <script type="text/javascript">
+        $(window).load(function () {
+            $('#myModal{preg_replace('/\s+/', '', htmlentities(trim($talentId),ENT_QUOTES))}').modal('show');
         });
     </script>
 {/if}

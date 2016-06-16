@@ -41,6 +41,10 @@ h3 .h3 {
     margin: 10px 10px 5px 5px;
 }
 
+.collapse-comment{
+    margin-left: 15px;
+}
+
 .padd {
     padding-bottom: 40px;
     padding-top: 40px;
@@ -240,7 +244,7 @@ body {
 .footer {
     background-color: brown;
     text-align: center;
-    padding: 3px;
+    padding: 5px;
 }
 
 .danger {
@@ -692,6 +696,12 @@ blockquote footer, blockquote small, blockquote .small {
 
 }
 
+.sponsorImage {
+    max-height: 100px;
+    max-width: 100px;
+    margin-right:20px;
+}
+
 .backgroundMap {
     fill: white;
 }
@@ -699,3 +709,4 @@ blockquote footer, blockquote small, blockquote .small {
 .world {
     fill: #BF5F5F;
 }
+

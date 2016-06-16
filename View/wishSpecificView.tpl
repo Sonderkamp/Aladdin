@@ -117,11 +117,22 @@
                 <div class="titleBox">
                     <label>Reacties</label>
                 </div>
+
                 <div class="actionBox">
                     <ul class="commentList">
                         {foreach from=$comments item=comment}
                             <li>
                                 <div class="commentText">
+                                    {if (isset($adminView))}
+                                        <form action="/wishes/action=removeComment" method="post">
+                                            <input type="hidden" name="wishId" value="{$selectedWish->id}" />
+                                            <input type="hidden" name="creationDate" value="{$comment->dbDate}" />
+                                            <input type="hidden" name="username" value="{$comment->displayName}" />
+                                            <button type="submit" class="btn btn-default">
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                            </button>
+                                        </form>
+                                    {/if}
                                     <p class="">{$comment->message}
                                         {if !empty($comment->image)}
                                             <a href="{$comment->image}" target="_blank">
@@ -136,18 +147,26 @@
                             </li>
                         {/foreach}
                     </ul>
-                    <form class="form-inline"
-                          action="/Wishes/Id={$selectedWish->id}/action=AddComment"
-                          method="post"
-                          enctype="multipart/form-data">
-                        <div class="form-group">
-                            <input class="form-control" name="img" type="file"/><br/>
-                            <input class="form-control" type="text" name="comment" placeholder="Nieuwe Reactie"/>
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-default">Add</button>
-                        </div>
-                    </form>
+                    {if !$adminView}
+                        {if $canComment}
+                        <form class="form-inline"
+                              action="/Wishes/Id={$selectedWish->id}/action=AddComment"
+                              method="post"
+                              enctype="multipart/form-data">
+                            <div class="form-group">
+                                <input class="form-control" name="img" type="file"/><br/>
+                                <input class="form-control" type="text" name="comment" placeholder="Nieuwe Reactie"/>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-default">Add</button>
+                            </div>
+                        </form>
+                        {else}
+                            <span>Reageren is alleen mogelijk bij vervulde wensen</span>
+                        {/if}
+                    {else}
+                        <span>Het is niet mogelijk voor admins om te reageren</span>
+                    {/if}
                 </div>
             </div>
 
@@ -158,7 +177,7 @@
                         {if !empty($matches)}
                             <div class="inner-border match-controls row">
                                 <p class="col-xs-6">{$match->user->displayName}</p>
-                                {if $selectedWish->user->email == $currentUser->email && $canMatch}
+                                {if $selectedWish->user->email == $currentUser->email}
 
                                     {*<button type="button" class="col-xs-3 btn btn-confirm btn-default" data-toggle="modal" data-target="#profileModal{$wish->id}">*}
                                     {*<span class="glyphicon glyphicon-user"></span>*}

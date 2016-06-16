@@ -8,13 +8,13 @@
  */
 class WishRepository
 {
-    private $talentRepository, $userRepository, $WishQueryBuilder, $matchRepo, $adminRepo;
+    private $talentRepository, $userRepository, $wishQueryBuilder, $matchRepo, $adminRepo;
 
     public $wishLimit = 3;
 
     public function __construct()
     {
-        $this->WishQueryBuilder = new WishQueryBuilder();
+        $this->wishQueryBuilder = new WishQueryBuilder();
         $this->matchRepo        = new MatchRepository();
         $this->talentRepository = new TalentRepository();
         $this->userRepository   = new UserRepository();
@@ -84,7 +84,7 @@ class WishRepository
      */
     public function getMyWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes
         ($this->userRepository->getCurrentUser()->email, [0 => "Aangemaakt",
             1 => "Gepubliseerd",
             2 => "Geweigerd",
@@ -98,7 +98,7 @@ class WishRepository
      */
     public function getMyDashboardWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes
         ($this->userRepository->getCurrentUser()->email, [0 => "Aangemaakt",
             1 => "Gepubliseerd",
             2 => "Geweigerd",
@@ -111,12 +111,12 @@ class WishRepository
      */
     public function getCurrentCompletedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes([0 => "Vervuld", 1 => "Wordt vervuld"], null, false));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes([0 => "Vervuld", 1 => "Wordt vervuld"], null, false));
     }
 
     public function getMyCompletedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes($this->userRepository->getCurrentUser()->email, [0 => "Vervuld", 1 => "Wordt vervuld"], null));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes($this->userRepository->getCurrentUser()->email, [0 => "Vervuld", 1 => "Wordt vervuld"], null));
     }
 
     /**
@@ -124,7 +124,7 @@ class WishRepository
      */
     public function getIncompletedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Gepubliseerd", 1 => "Match gevonden"], null, false));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Gepubliseerd", 1 => "Match gevonden"], null, false));
     }
 
     /**
@@ -134,7 +134,7 @@ class WishRepository
      */
     public function searchMyWishes($key)
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes($this->userRepository->getCurrentUser()->email, null, $key));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes($this->userRepository->getCurrentUser()->email, null, $key));
     }
 
 
@@ -142,8 +142,8 @@ class WishRepository
     {
         $user = $this->userRepository->getCurrentUser()->email;
 
-        $this->WishQueryBuilder->addWish($user);
-        $temp = $this->WishQueryBuilder->getLatestWish($user);
+        $this->wishQueryBuilder->addWish($user);
+        $temp = $this->wishQueryBuilder->getLatestWish($user);
         $wish->id = $temp[0]["Id"];
 
         $this->addWishContent($wish);
@@ -152,17 +152,17 @@ class WishRepository
 
     private function addWishContent(Wish $wish)
     {
-        $this->WishQueryBuilder->addWishContent($wish);
+        $this->wishQueryBuilder->addWishContent($wish);
     }
 
     public function editWishContent(Wish $wish)
     {
-        $temp = $this->WishQueryBuilder->getSingleWish($wish->id);
+        $temp = $this->wishQueryBuilder->getSingleWish($wish->id);
         if ($temp[0]["moderator_Username"] === null) {
-            $this->WishQueryBuilder->deleteWishContent($wish);
+            $this->wishQueryBuilder->deleteWishContent($wish);
         }
 
-        $this->WishQueryBuilder->addWishContent($wish);
+        $this->wishQueryBuilder->addWishContent($wish);
         $this->editWishTalents($wish);
     }
 
@@ -188,12 +188,12 @@ class WishRepository
 
     public function deleteWishTalents(Wish $wish)
     {
-        $this->WishQueryBuilder->deleteWishTalents($wish);
+        $this->wishQueryBuilder->deleteWishTalents($wish);
     }
 
     public function bindToTalent($talentName, Wish $wish)
     {
-        $this->WishQueryBuilder->bindToTalent($talentName, $wish);
+        $this->wishQueryBuilder->bindToTalent($talentName, $wish);
     }
 
 
@@ -206,6 +206,11 @@ class WishRepository
     {
         // kortere notatie voor de if/else :)
         return $this->getWishAmount($email) < $this->getWishLimit($email);
+    }
+
+    // This function checks if the given user can comment on the selected wish
+    public function canComment($wishId, $user) {
+        return !empty($this->WishQueryBuilder->getMatchByFulfiller($wishId, $user));
     }
 
     public function getWishAmount($email)
@@ -225,17 +230,17 @@ class WishRepository
 
     public function getRequestedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Aangemaakt", 1 => "Gepublieerd"], null, true));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Aangemaakt", 1 => "Gepublieerd"], null, true));
     }
 
     public function getPublishedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Gepubliseerd"], null, null));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Gepubliseerd"], null, null));
     }
 
     public function getMatchedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Match gevonden"], null, null));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Match gevonden"], null, null));
     }
 
     public function getPossibleMatches()
@@ -245,56 +250,56 @@ class WishRepository
         $allTalents = array_merge($userTalents, $synonyms);
 
 
-        $temp = $this->WishQueryBuilder->wishIDByTalents($allTalents);
-        $result = $this->WishQueryBuilder->getPossibleMatches($temp, $this->getMyWishes());
+        $temp = $this->wishQueryBuilder->wishIDByTalents($allTalents);
+        $result = $this->wishQueryBuilder->getPossibleMatches($temp, $this->getMyWishes());
 
         return $this->getReturnArray($result);
     }
 
     public function getCurrentWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Wordt vervuld"], null, null));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Wordt vervuld"], null, null));
     }
 
     public function getCompletedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Vervuld"], null, null));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Vervuld"], null, null));
     }
 
     public function getDeniedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Geweigerd"], null, null));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Geweigerd"], null, null));
     }
 
     public function getDeletedWishes()
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes(null, [0 => "Verwijderd"], null, null));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Verwijderd"], null, null));
     }
 
     public function acceptWish($id)
     {
-        $this->WishQueryBuilder->executeAdminAction($id, 1, $this->adminRepo->getCurrentAdmin()->username, "Gepubliseerd");
+        $this->wishQueryBuilder->executeAdminAction($id, 1, $this->adminRepo->getCurrentAdmin()->username, "Gepubliseerd");
     }
 
     public function refuseWish($id)
     {
-        $this->WishQueryBuilder->executeAdminAction($id, 0, $this->adminRepo->getCurrentAdmin()->username, "Geweigerd");
+        $this->wishQueryBuilder->executeAdminAction($id, 0, $this->adminRepo->getCurrentAdmin()->username, "Geweigerd");
     }
 
     public function deleteWish($id)
     {
-        $this->WishQueryBuilder->executeAdminAction($id, 0, $this->adminRepo->getCurrentAdmin()->username, "Verwijderd");
+        $this->wishQueryBuilder->executeAdminAction($id, 0, $this->adminRepo->getCurrentAdmin()->username, "Verwijderd");
     }
 
     public function getWish($id)
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getSingleWish($id, null))[0];
+        return $this->getReturnArray($this->wishQueryBuilder->getSingleWish($id, null))[0];
     }
 
 
     public function getWishesByUser($username)
     {
-        return $this->getReturnArray($this->WishQueryBuilder->getWishes
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes
         ($username, [0 => "Aangemaakt",
             1 => "Gepubliseerd",
             2 => "Geweigerd",
@@ -305,14 +310,14 @@ class WishRepository
     // nog even laten staan, kan wss binnekort verwijdert worden
     public function wishesByTalents($talents)
     {
-        $temp = $this->WishQueryBuilder->wishIDByTalents($talents);
-        $result = $this->WishQueryBuilder->getPossibleMatches($temp, $this->getMyWishes());
+        $temp = $this->wishQueryBuilder->wishIDByTalents($talents);
+        $result = $this->wishQueryBuilder->getPossibleMatches($temp, $this->getMyWishes());
         return $this->getReturnArray($result);
     }
 
     public function deleteMyWish($id)
     {
-        $this->WishQueryBuilder->editWishStatus($id, "Verwijderd");
+        $this->wishQueryBuilder->editWishStatus($id, "Verwijderd");
     }
 
     public function sendEditMail($id, $titel, $content, $tags)
@@ -347,7 +352,13 @@ class WishRepository
 
     public function getComments($wishID)
     {
-        return $this->WishQueryBuilder->getComments($wishID);
+        return $this->wishQueryBuilder->getComments($wishID);
+    }
+
+    public function removeComment($creationDate , $username, $wishId){
+        $user = $this->userRepository->getUser($username)->email;
+
+        $this->wishQueryBuilder->removeComment($creationDate , $user, $wishId);
     }
 
     public function addComment($comment, $wishID, $user, $img = null)
@@ -358,7 +369,7 @@ class WishRepository
 
 
         // if there has been a comment < 3 minutes ago
-        $res = $this->WishQueryBuilder->lastCommentMinutes($wishID, $user);
+        $res = $this->wishQueryBuilder->lastCommentMinutes($wishID, $user);
         if ($res < 3 && $res != -1) {
             return "U moet minstens drie minuten wachten tussen reacties.";
         }
@@ -378,7 +389,7 @@ class WishRepository
             }
         }
 
-
+        $url = null;
         if ($img != null) {
             if (!empty($img['tmp_name'])) {
 
@@ -392,7 +403,7 @@ class WishRepository
         }
 
         // Add comment
-        $this->WishQueryBuilder->addComment($comment, $wishID, $user, $url);
+        $this->wishQueryBuilder->addComment($comment, $wishID, $user, $url);
 
         // get email from wish creator
         $wish = $this->getWish($wishID);
@@ -413,10 +424,8 @@ class WishRepository
 
     }
 
-    private function upload($img)
+    public function upload($img)
     {
-
-
         // if to big
         if ($img["size"] > 10000000) {
             return null;
@@ -475,7 +484,7 @@ class WishRepository
         $monthsCap = 6;
 
         // Ik ga dit met php doen. sorry. Ik krijg het niet voor elkaar met Mysql
-        $oldWishes = $this->getReturnArray($this->WishQueryBuilder->getWishes
+        $oldWishes = $this->getReturnArray($this->wishQueryBuilder->getWishes
         (null, ["Aangemaakt", "Gepubliseerd"], null, true, null));
 
 
@@ -500,7 +509,7 @@ class WishRepository
 
                         $newmail = new messageRepository();
                         $newmail->sendMessage("Admin", $mail->to, $mail->subject, $mail->message);
-                        $this->WishQueryBuilder->executeAdminAction($wish->id, 0, "Admin", "Verwijderd");
+                        $this->wishQueryBuilder->executeAdminAction($wish->id, 0, "Admin", "Verwijderd");
                     }
 
 

@@ -5,7 +5,7 @@ class ErrorController extends Controller
     public $message = "ERROR MESSGAGE!!!";
 
     public function run() {
-        $this->render("error_view.tpl" , ["title" => "ErrorMessage",
+        $this->render("errorView.tpl" , ["title" => "ErrorMessage",
             "message" => $this->message ]);
         exit(2);
     }

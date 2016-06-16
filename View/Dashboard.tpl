@@ -88,7 +88,7 @@
                                 <button type="button" class="btn btn-info btn-dashboard" data-toggle="collapse"
                                         data-target="#wishcontent{$value->id}">Omschrijving
                                 </button>
-                                <div id="wishcontent{$value->id}" class="collapse collapse-button">
+                                <div id="wishcontent{$value->id}" class="collapse collapse-button collapse-comment">
                                     <strong>Omschrijving:</strong> {htmlspecialchars($value->content)}
                                 </div>
                             </div>

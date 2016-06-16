@@ -2,7 +2,7 @@
 
 /**
  * Created by PhpStorm.
- * User: simon
+ * User: max
  * Date: 8-3-2016
  * Time: 17:50
  */
@@ -34,7 +34,7 @@ class AdminwishController extends Controller
         $deniedWishes = $this->wishRepo->getDeniedWishes();
         $deletedWishes = $this->wishRepo->getDeletedWishes();
 
-        $this->render("AdminWish.tpl", ["title" => "WensBeheer",
+        $this->render("adminWish.tpl", ["title" => "WensBeheer",
             "requested" => $requestedWishes,
             "published" => $publishedWishes,
             "matched" => $matchedWishes,
@@ -50,26 +50,26 @@ class AdminwishController extends Controller
 
     public function refuseWish()
     {
-        if (!empty($_GET["Id"])) {
-            $wishId = $_GET["Id"];
+        if (!empty($_POST["Id"]) && !empty($_POST["Reason"])) {
+            $wishId = $_POST["Id"];
             $this->wishRepo->refuseWish($wishId);
-            $this->sendConfirmationMessage($wishId, false);
+            $this->sendConfirmationMessage($wishId, $_POST["Reason"], false);
             $this->redirect("/AdminWish");
         } else {
-            $this->apologize("Please provide a valid wish Id");
+            $this->apologize("Please provide a valid wish Id and reason");
         }
 
     }
 
     public function acceptWish()
     {
-        if (!empty($_GET["Id"])) {
-            $wishId = $_GET["Id"];
+        if (!empty($_POST["Id"])&& !empty($_POST["Reason"])) {
+            $wishId = $_POST["Id"];
             $this->wishRepo->acceptWish($wishId);
-            $this->sendConfirmationMessage($wishId, true);
+            $this->sendConfirmationMessage($wishId, $_POST["Reason"], true);
             $this->redirect("/AdminWish");
         } else {
-            $this->apologize("Please provide a valid wish Id");
+            $this->apologize("Please provide a valid wish Id and reason");
         }
     }
 
@@ -84,7 +84,7 @@ class AdminwishController extends Controller
         }
     }
 
-    private function sendConfirmationMessage($wishId, $accepted)
+    private function sendConfirmationMessage($wishId, $reason, $accepted)
     {
 
         if ($accepted) {
@@ -95,8 +95,9 @@ class AdminwishController extends Controller
 
         $acceptedWish = $this->wishRepo->getWish($wishId);
 
-        $message = "De wens met de titel '" . $acceptedWish->title . "' is " . $verdict . ". De inhoud van deze wens is alsvolgt: \n" . $acceptedWish->content .
-            "\n \n Wij hopen u hiermee voldoende te hebben geinformeerd.";
+        $message = "De wens met de titel '" . $acceptedWish->title . "' is " . $verdict . ". De reden opgegeven is: "
+            . $reason . ".\n De inhoud van deze wens is alsvolgt: \n" . $acceptedWish->content
+            . "\n \n Wij hopen u hiermee voldoende te hebben geinformeerd.";
         $title = "Uw wens is " . $verdict . "!";
 
         $messageId = $this->messRepo->sendMessage($_SESSION["admin"]->username, $acceptedWish->user->displayName, $title, $message);

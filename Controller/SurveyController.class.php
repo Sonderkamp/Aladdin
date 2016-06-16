@@ -8,12 +8,12 @@
 
 class SurveyController extends Controller
 {
-    // BREEKT MET NIEUWE STRCTUUR TODO
-    public $survey;
+    public $survey, $userRepo;
 
     public function run()
     {
         $this->survey = new Survey();
+        $this->userRepo = new UserRepository();
 
         if(isset($_GET["submit"])){
             $this->handleSurveySubmit();
@@ -27,7 +27,7 @@ class SurveyController extends Controller
             if(isset($_POST["Question-".$item->id])){
                 $givenAnswer = (new Answer())->getAnswer($_POST["Question-".$item->id]);
                 $this->survey->surveyGroups[$givenAnswer->positiveGroup] += 1;
-                $this->survey->surveyGroups[$givenAnswer->negativeGroup] -= 1;
+//                $this->survey->surveyGroups[$givenAnswer->negativeGroup] -= 1;
             } else {
                 $this->apologize("U heeft vraag: " . $item->id . " niet beantwoord");
             }
@@ -39,28 +39,13 @@ class SurveyController extends Controller
 
     private function showSurvey()
     {
-        $this->render("survey.tpl", ["title" => $_SESSION["user"]->displayName, "questions" => $this->survey->questions]);
+        $this->render("survey.tpl", ["title" => $this->userRepo->getCurrentUser()->displayName, "questions" => $this->survey->questions]);
     }
 
 
     private function showSurveyResults($group){
-        //TODO move groupmessage to database so groups can be generic
-
-        $groupMessage = "";
-
-        switch($group){
-            case "Test Group 1":
-                $groupMessage = "message from Test Group 1";
-                break;
-            case "Test Group 2":
-                $groupMessage = "message from Test Group 2";
-                break;
-            default:
-                $groupMessage = "something went horribly wrong D:";
-                break;
-        }
-
-        $this->render("surveyResult.tpl", ["title" => $_SESSION["user"]->displayName , "groupMessage" => $groupMessage]);
+        $groupMessage = $this->survey->getSurveyText($group);
+        $this->render("surveyResult.tpl", ["title" => $this->userRepo->getCurrentUser()->displayName , "groupMessage" => $groupMessage , "groupId" => $group]);
     }
 
 }
