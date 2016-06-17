@@ -350,7 +350,7 @@ class WishRepository
         return $message;
     }
 
-    public function getComments($wishID)
+    public function getComments($wishID = null)
     {
         return $this->wishQueryBuilder->getComments($wishID);
     }
@@ -359,6 +359,16 @@ class WishRepository
         $user = $this->userRepository->getUser($username)->email;
 
         $this->wishQueryBuilder->removeComment($creationDate , $user, $wishId);
+    }
+
+    public function addToGuestbook($creationDate , $username, $wishId) {
+        $user = $this->userRepository->getUser($username)->email;
+        $this->wishQueryBuilder->addToGuestbook($creationDate , $user, $wishId);
+    }
+
+    public function removeFromGuestbook($creationDate , $username, $wishId) {
+        $user = $this->userRepository->getUser($username)->email;
+        $this->wishQueryBuilder->removeFromGuestbook($creationDate , $user, $wishId);
     }
 
     public function addComment($comment, $wishID, $user, $img = null)

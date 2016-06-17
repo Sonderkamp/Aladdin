@@ -4,6 +4,7 @@
 <!--Time: 21:48-->
 
 <div class="container">
+
     {if !Empty($talentError)}
         <div class="alert alert-danger fade in">
             <a href="#" class="close" data-dismiss="alert"
@@ -19,14 +20,22 @@
             <strong>Succes!</strong> {htmlspecialchars($talentSuccess)}
         </div>
     {/if}
+    <span class="info">
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#infoTalents">
+            <span class="glyphicon glyphicon-info-sign"></span>
+        </button>
+    </span>
     <h3>Talenten</h3>
     <div id="rootwizard">
 
         <div class="col-md-2">
             <ul class="nav nav-pills nav-stacked">
-                <li {if $page == "myTalents"}class="active"{/if}><a href="#tab1" data-toggle="tab">Mijn talenten</a></li>
-                <li {if $page == "allTalents"}class="active"{/if}><a href="#tab2" data-toggle="tab">Alle talenten</a></li>
-                <li {if $page == "createTalent"}class="active"{/if}><a href="#tab3" data-toggle="tab">Talent toevoegen</a></li>
+                <li {if $page == "myTalents"}class="active"{/if}><a href="#tab1" data-toggle="tab">Mijn talenten</a>
+                </li>
+                <li {if $page == "allTalents"}class="active"{/if}><a href="#tab2" data-toggle="tab">Alle talenten</a>
+                </li>
+                <li {if $page == "createTalent"}class="active"{/if}><a href="#tab3" data-toggle="tab">Talent
+                        toevoegen</a></li>
             </ul>
         </div>
         <div class="col-md-10">
@@ -41,15 +50,11 @@
 
                     <form class="col-xs-12 col-sm-12 col-md-12 col-lg-12" action="/talents" method="get">
                         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                            <input class="form-control" name="searchAdded" placeholder="Zoek een toegevoegd talent"{if !Empty($searchAdded)}value="{$searchAdded}"{/if}>
+                            <input class="form-control" name="searchAdded" placeholder="Zoek een toegevoegd talent"
+                                   {if !Empty($searchAdded)}value="{$searchAdded}"{/if}>
                         </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                            <button type="submit" class="btn btn-primary">Zoek</button>
-                        </div>
-
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                            <a href="/talents/p=myTalents" class="btn btn-warning">Alle</a>
-                        </div>
+                        <button type="submit" class="btn btn-primary">Zoek</button>
+                        <a href="/talents/p=myTalents" class="btn btn-warning">Alle</a>
                     </form>
 
                     <table class="table">
@@ -60,28 +65,28 @@
                         </tr>
                         </thead>
                         <tbody>
-                            {foreach from=$talentsUser item=talent}
-                                <tr>
-                                    <td class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{htmlentities(trim($talent->name),ENT_QUOTES)}</td>
-                                    <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                                        {if $talentsNumber <= 3}
-                                            <button type="button" class="btn btn-inbox disabled btn-sm">
-                                                <span class="glyphicon glyphicon-remove"></span>
-                                            </button>
-                                        {else}
-                                            <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal" data-target="#myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}">
-                                                <span class="glyphicon glyphicon-remove"></span>
-                                            </button>
-                                        {/if}
-                                    </td>
-                                </tr>
-                            {/foreach}
+                        {foreach from=$talentsUser item=talent}
+                            <tr>
+                                <td class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{htmlentities(trim($talent->name),ENT_QUOTES)}</td>
+                                <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                    {if $talentsNumber <= 3}
+                                        <button type="button" class="btn btn-inbox disabled btn-sm">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </button>
+                                    {else}
+                                        <button type="button" class="btn btn-inbox btn-sm" data-toggle="modal"
+                                                data-target="#myModal{preg_replace('/\s+/', '', htmlentities(trim($talent->id),ENT_QUOTES))}">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </button>
+                                    {/if}
+                                </td>
+                            </tr>
+                        {/foreach}
                         </tbody>
                     </table>
 
                     {* if there are more than 10 talents show pagination *}
                     {if $userCount > 1}
-
                         <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <div class="col-xs-offset-4">
                                 <nav>
@@ -97,7 +102,8 @@
                                             </li>
                                         {else}
                                             <li>
-                                                <a href="/talents/p=myTalents/myTalents={$currentUserCount - 1}/allTalents={$currentTalentCount}/createTalent={$currentRequestedCount}" aria-label="Previous">
+                                                <a href="/talents/p=myTalents/myTalents={$currentUserCount - 1}/allTalents={$currentTalentCount}/createTalent={$currentRequestedCount}"
+                                                   aria-label="Previous">
                                                     <span aria-hidden="true">&laquo;</span>
                                                 </a>
                                             </li>
@@ -154,18 +160,14 @@
                                                         </li>
                                                     {/if}
                                                 {/for}
-
                                                 <li class="disabled">
                                                     <a href="#">...</a>
                                                 </li>
-
                                                 {* if currentUserCount is greater than userCount minus 3 (for example currentUserCount is 8 and userCount(10) - 3 is 7) *}
                                             {elseif $currentUserCount > ($userCount - 3)}
-
                                                 <li class="disabled">
                                                     <a href="#">...</a>
                                                 </li>
-
                                                 {* Loop through the last four numbers until the last minus one *}
                                                 {for $number=($userCount - 3) to ($userCount - 1)}
 
@@ -187,7 +189,6 @@
                                                 <li class="disabled">
                                                     <a href="#">...</a>
                                                 </li>
-
                                                 {* Loop from currentUserCount minus one until currentUserCount plus one *}
                                                 {for $number=($currentUserCount - 1) to ($currentUserCount + 1)}
 
@@ -233,7 +234,8 @@
                                             </li>
                                         {else}
                                             <li>
-                                                <a href="/talents/p=myTalents/myTalents={$currentUserCount + 1}/allTalents={$currentTalentCount}/createTalent={$currentRequestedCount}" aria-label="Next">
+                                                <a href="/talents/p=myTalents/myTalents={$currentUserCount + 1}/allTalents={$currentTalentCount}/createTalent={$currentRequestedCount}"
+                                                   aria-label="Next">
                                                     <span aria-hidden="true">&raquo;</span>
                                                 </a>
                                             </li>
@@ -247,15 +249,11 @@
                 <div class="tab-pane{if $page == "allTalents"} fade in active{/if}" id="tab2">
                     <form class="col-xs-12 col-sm-12 col-md-12 col-lg-12" action="/talents" method="get">
                         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                            <input class="form-control" name="searchAll" placeholder="Zoek een talent"{if !Empty($searchAll)}value="{$searchAll}"{/if}>
+                            <input class="form-control" name="searchAll" placeholder="Zoek een talent"
+                                   {if !Empty($searchAll)}value="{$searchAll}"{/if}>
                         </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                            <button type="submit" class="btn btn-primary">Zoek</button>
-                        </div>
-
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                            <a href="/talents/p=allTalents" class="btn btn-warning">Alle</a>
-                        </div>
+                        <button type="submit" class="btn btn-primary">Zoek</button>
+                        <a href="/talents/p=allTalents" class="btn btn-warning">Alle</a>
                     </form>
 
                     <table class="table">
@@ -271,7 +269,8 @@
                                 <td class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{htmlentities(trim($talent->name),ENT_QUOTES)}</td>
                                 <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
                                     <form action="/talents/action=addTalent" method="get">
-                                        <input type="hidden" name="talent" value="{htmlentities(trim($talent->id),ENT_QUOTES)}"/>
+                                        <input type="hidden" name="talent"
+                                               value="{htmlentities(trim($talent->id),ENT_QUOTES)}"/>
                                         <button type="submit" class="btn btn-add btn-sm">
                                             <span class="glyphicon glyphicon-ok"></span>
                                         </button>
@@ -283,7 +282,6 @@
                     </table>
                     {* if there are more than 10 talents show pagination *}
                     {if $talentCount > 1}
-
                         <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <div class="col-xs-offset-4">
                                 <nav>
@@ -299,7 +297,8 @@
                                             </li>
                                         {else}
                                             <li>
-                                                <a href="/talents/p=allTalents/myTalents={$currentUserCount}/allTalents={$currentTalentCount - 1}/createTalent={$currentRequestedCount}" aria-label="Previous">
+                                                <a href="/talents/p=allTalents/myTalents={$currentUserCount}/allTalents={$currentTalentCount - 1}/createTalent={$currentRequestedCount}"
+                                                   aria-label="Previous">
                                                     <span aria-hidden="true">&laquo;</span>
                                                 </a>
                                             </li>
@@ -356,18 +355,14 @@
                                                         </li>
                                                     {/if}
                                                 {/for}
-
                                                 <li class="disabled">
                                                     <a href="#">...</a>
                                                 </li>
-
                                                 {* if currentTalentCount is greater than talentCount minus 3 (for example currentTalentCount is 8 and talentCount(10) - 3 is 7) *}
                                             {elseif $currentTalentCount > ($talentCount - 3)}
-
                                                 <li class="disabled">
                                                     <a href="#">...</a>
                                                 </li>
-
                                                 {* Loop through the last four numbers until the last minus one *}
                                                 {for $number=($talentCount - 3) to ($talentCount - 1)}
 
@@ -389,7 +384,6 @@
                                                 <li class="disabled">
                                                     <a href="#">...</a>
                                                 </li>
-
                                                 {* Loop from currentTalentCount minus one until currentTalentCount plus one *}
                                                 {for $number=($currentTalentCount - 1) to ($currentTalentCount + 1)}
 
@@ -435,7 +429,8 @@
                                             </li>
                                         {else}
                                             <li>
-                                                <a href="/talents/p=allTalents/myTalents={$currentUserCount}/allTalents={$currentTalentCount + 1}/createTalent={$currentRequestedCount}" aria-label="Next">
+                                                <a href="/talents/p=allTalents/myTalents={$currentUserCount}/allTalents={$currentTalentCount + 1}/createTalent={$currentRequestedCount}"
+                                                   aria-label="Next">
                                                     <span aria-hidden="true">&raquo;</span>
                                                 </a>
                                             </li>
@@ -448,12 +443,16 @@
                 </div>
                 <div class="tab-pane{if $page == "createTalent"} fade in active{/if}" id="tab3">
                     <div class="col-md-10">
-                        <form class="col-xs-12 col-sm-12 col-md-12 col-lg-12" action="/talents/action=createTalent" method="get">
+                        <form class="col-xs-12 col-sm-12 col-md-12 col-lg-12" action="/talents/action=createTalent"
+                              method="get">
                             <div class="form-group row">
                                 <label for="name" class="col-sm-2 form-control-label">Naam talent</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="talent" class="form-control" id="name" placeholder="Naam" value="{if !Empty($talentName)}{$talentName}{/if}">
-                                    <small class="text-muted">Dit is de naam van het talent. Deze naam moet voldoen aan de algemene voorwaarden.</small>
+                                    <input type="text" name="talent" class="form-control" id="name" placeholder="Naam"
+                                           value="{if !Empty($talentName)}{$talentName}{/if}">
+                                    <small class="text-muted">Dit is de naam van het talent. Deze naam moet voldoen aan
+                                        de algemene voorwaarden.
+                                    </small>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -481,7 +480,6 @@
                         </table>
                         {* if there are more than 10 talents show pagination *}
                         {if $requestedCount > 1}
-
                             <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="col-xs-offset-4">
                                     <nav>
@@ -497,7 +495,8 @@
                                                 </li>
                                             {else}
                                                 <li>
-                                                    <a href="/talents/p=createTalent/myTalents={$currentUserCount}/allTalents={$currentTalentCount}/createTalent={$currentRequestedCount - 1}" aria-label="Previous">
+                                                    <a href="/talents/p=createTalent/myTalents={$currentUserCount}/allTalents={$currentTalentCount}/createTalent={$currentRequestedCount - 1}"
+                                                       aria-label="Previous">
                                                         <span aria-hidden="true">&laquo;</span>
                                                     </a>
                                                 </li>
@@ -554,18 +553,14 @@
                                                             </li>
                                                         {/if}
                                                     {/for}
-
                                                     <li class="disabled">
                                                         <a href="#">...</a>
                                                     </li>
-
                                                     {* if currentRequestedCount is greater than requestedCount minus 3 (for example currentRequestedCount is 8 and requestedCount(10) - 3 is 7) *}
                                                 {elseif $currentRequestedCount > ($requestedCount - 3)}
-
                                                     <li class="disabled">
                                                         <a href="#">...</a>
                                                     </li>
-
                                                     {* Loop through the last four numbers until the last minus one *}
                                                     {for $number=($requestedCount - 3) to ($requestedCount - 1)}
 
@@ -587,7 +582,6 @@
                                                     <li class="disabled">
                                                         <a href="#">...</a>
                                                     </li>
-
                                                     {* Loop from currentRequestedCount minus one until currentRequestedCount plus one *}
                                                     {for $number=($currentRequestedCount - 1) to ($currentRequestedCount + 1)}
 
@@ -633,7 +627,8 @@
                                                 </li>
                                             {else}
                                                 <li>
-                                                    <a href="/talents/p=createTalent/myTalents={$currentUserCount}/allTalents={$currentTalentCount}/createTalent={$currentRequestedCount + 1}" aria-label="Next">
+                                                    <a href="/talents/p=createTalent/myTalents={$currentUserCount}/allTalents={$currentTalentCount}/createTalent={$currentRequestedCount + 1}"
+                                                       aria-label="Next">
                                                         <span aria-hidden="true">&raquo;</span>
                                                     </a>
                                                 </li>
@@ -683,3 +678,44 @@
         </div>
     </div>
 {/foreach}
+
+<div id="infoTalents" class="modal fade"
+     role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Informatie talenten</h4>
+            </div>
+            <div class="modal-body">
+                <h5>Mijn Talenten</h5>
+                <p>Hier worden de door de gebruiker toegevoegde talenten weergegeven. Hier kunt u zoeken via de
+                    zoekbalk. Als u een zoekopdracht heeft uitgevoerd kunt u deze ongedaan maken met de "alle" knop.</p>
+                <button class="btn btn-inbox btn-sm">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+                Deze knop word gebruikt om het toegevoegde talent weg te halen.
+                <h5>Alle Talenten</h5>
+                <p>Hier worden alle talenten weergegeven die niet door u zijn toegevoegd. De zoekfunctie werkt hetzelfde
+                    als bij "mijn talenten".</p>
+                <button class="btn btn-add btn-sm">
+                    <span class="glyphicon glyphicon-ok"></span>
+                </button>
+                Deze knop voegt het talent toe.
+                <h5>Talent toevoegen</h5>
+                <p>Hier kunt u een nieuw talent toevoegen die nog niet bestaat. Als een talent word toegevoegd dan moet
+                    de aanvraag eerst worden geaccepteerd door een moderator. Als het talent al bestaat dan word deze
+                    direct toegevoegd of wanneer de aanvraag al is geplaatst dan word het talent toegevoegd zodra de
+                    aanvraag word geaccepteerd.</p>
+                <p>Vul uw talent in bij "naam talent" en daarna klik op de "aanvragen" knop</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default infoLeft"
+                        data-dismiss="modal">Sluiten
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
