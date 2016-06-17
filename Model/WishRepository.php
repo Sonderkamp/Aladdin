@@ -226,7 +226,14 @@ class WishRepository
 
     public function getWishLimit($username)
     {
-        $extraWishes = count($this->matchRepo->getCompletedMatches($username));
+        $res = $this->matchRepo->getCompletedMatches($username);
+
+        if($res === false){
+            $extraWishes = 0;
+        } else {
+            $extraWishes = count($res);
+        }
+        
         return $this->wishLimit + $extraWishes;
     }
 
@@ -385,9 +392,6 @@ class WishRepository
 
     public function addComment($comment, $wishID, $user, $img = null)
     {
-
-        // if user can comment this wish (alleen als de wens klaar is && de gebruiker de wenser is of de match)
-        // TODO
 
         // if there has been a comment < 3 minutes ago
         $res = $this->wishQueryBuilder->lastCommentMinutes($wishID, $user);
