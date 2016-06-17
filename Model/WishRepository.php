@@ -54,6 +54,7 @@ class WishRepository
                 $wish->accepted = $item["IsAccepted"];
                 $wish->contentDate = $item["Date"];
                 $wish->status = $item["Status"];
+                $wish->completionDate = $item["CompletionDate"];
 
                 if ($userCheck) {
                     $user = new User();
@@ -196,6 +197,29 @@ class WishRepository
         $this->wishQueryBuilder->bindToTalent($talentName, $wish);
     }
 
+    public function setCompletionDate($date , $id){
+        $this->wishQueryBuilder->setCompletionDate($date , $id);
+        $this->wishQueryBuilder->setWishStatus("Wordt vervuld" , $id);
+    }
+
+    public function confirmCompletionDate($id){
+        $this->wishQueryBuilder->setWishStatus("Vervuld" , $id);
+    }
+
+    public function clearExpiredDates(){
+        $res = $this->getReturnArray($this->wishQueryBuilder->getExpiredDate());
+
+        $mes = new MessageRepository();
+
+        foreach($res as $item){
+            $m = $mes->sendMessage("Admin" , $item->user->email,"Wens is verlopen" , "Geachte " . $item->user->displayName .
+                " Uw vervul datum is zonet verlopen en gereset. Vult u alstublieft z.s.m. een nieuwe datum in");
+            $mes->setLink($item->id , 'Wens' , $m );
+        }
+
+        $this->wishQueryBuilder->clearExpiredDate();
+    }
+
 
     /**
      * check if user has less then 3 wishes
@@ -233,13 +257,13 @@ class WishRepository
         } else {
             $extraWishes = count($res);
         }
-        
+
         return $this->wishLimit + $extraWishes;
     }
 
     public function getRequestedWishes()
     {
-        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Aangemaakt", 1 => "Gepublieerd"], null, true));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Aangemaakt", 1 => "Gepubliseerd"], null, true));
     }
 
     public function getPublishedWishes()
@@ -539,6 +563,8 @@ class WishRepository
                 }
             }
         }
+
+        $this->clearExpiredDates();
     }
 
 }

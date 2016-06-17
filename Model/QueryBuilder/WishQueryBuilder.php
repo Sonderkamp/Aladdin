@@ -340,6 +340,26 @@ class WishQueryBuilder extends QueryBuilder
         $this->executeQuery($query , array($wishId , $username));
     }
 
+    public function setCompletionDate($date , $wishId){
+        $query = "UPDATE `wish` SET `CompletionDate` = ? WHERE `wish`.Id = ?";
+        $this->executeQuery($query , array($date , $wishId));
+    }
+
+    public function setWishStatus($status , $wishId){
+        $query = "UPDATE `wish` SET `Status` = ? WHERE `wish`.Id = ?";
+        $this->executeQuery($query , array($status , $wishId));
+    }
+
+    public function getExpiredDate(){
+        $query = "SELECT * FROM `wish` WHERE `wish`.CompletionDate < CURRENT_DATE() AND `wish`.Status != 'Vervuld'";
+        return $this->executeQuery($query , array());
+    }
+
+    public function clearExpiredDate(){
+        $query = "UPDATE `wish` SET `CompletionDate` = null WHERE `wish`.CompletionDate < CURRENT_DATE() AND `wish`.Status != 'Vervuld'";
+        $this->executeQuery($query , array());
+    }
+
     public function addComment($comment, $wishID, $user, $img = null)
     {
         Database::query_safe("INSERT INTO `wishmessage` (`Message`, `Image`, `CreationDate`, `user_Email`, `wish_Id`) VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?);", array($comment, $img, $user->email, $wishID));
@@ -366,7 +386,6 @@ class WishQueryBuilder extends QueryBuilder
             return ( time() - strtotime($array[0]["CreationDate"])) / 60;
         }
     }
-
 
     public function getMatchByFulfiller($wishId, $user)
     {

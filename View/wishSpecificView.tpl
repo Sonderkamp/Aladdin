@@ -112,6 +112,13 @@
                             <label class="col-xs-4">Plaats: </label>
                             <div class="col-xs-8">{htmlspecialcharsWithNL($selectedWish->user->city)}</div>
                         </div>
+
+                        {if !empty($selectedWish->completionDate)}
+                            <div class="row">
+                                <label class="col-xs-4">Vervuld datum: </label>
+                                <div class="col-xs-8">{htmlspecialcharsWithNL($selectedWish->completionDate)}</div>
+                            </div>
+                        {/if}
                     </div>
 
                     <div class="col-xs-8">
@@ -142,9 +149,10 @@
                                                 <span class="glyphicon glyphicon-remove"></span>
                                             </button>
                                             {if $comment->inGuestbook == "0"}
-                                            <button type="submit" class="btn btn-inbox" name="addGuestbook" value="add">
-                                                <span class="glyphicon glyphicon-book"></span>
-                                            </button>
+                                                <button type="submit" class="btn btn-inbox" name="addGuestbook"
+                                                        value="add">
+                                                    <span class="glyphicon glyphicon-book"></span>
+                                                </button>
                                             {/if}
                                         </form>
                                     {/if}
@@ -187,25 +195,28 @@
             </div>
 
             <div class="col-xs-4">
-                <div class="col-md-10 col-md-offset-1 panel panel-default">
+                <div class="col-md-10 col-md-offset-2 panel panel-default">
                     <h5>Geïnteresseerde gebruikers</h5>
                     {foreach from=$matches item=match}
                         {if !empty($matches)}
                             <div class="inner-border match-controls row">
                                 {if $match->isActive == 0}
                                     <p class="col-xs-6"><s>{$match->user->displayName}</s></p>
-                                    {else}
+                                {else}
                                     <p class="col-xs-6">{$match->user->displayName}</p>
                                 {/if}
 
-                                {if !empty($currentUser) && $selectedWish->user->email == $currentUser->email && $match->isActive == 1}
+                                {if !empty($currentUser) && $selectedWish->user->email == $currentUser->email && $match->isActive == 1 && !$match->isSelected}
                                     {*<button type="button" class="col-xs-3 btn btn-confirm btn-default" data-toggle="modal" data-target="#profileModal{$wish->id}">*}
                                     {*<span class="glyphicon glyphicon-user"></span>*}
                                     {*</button>*}
-                                    <a href="/wishes/action=selectMatch?wish={$match->wishId}"
-                                       class="col-xs-3 btn btn-confirm btn-default">
-                                        <span class="glyphicon glyphicon-ok"></span>
-                                    </a>
+                                    <form action="/wishes/action=selectMatch" method="post">
+                                        <input type="hidden" name="Id" value="{$match->wishId}">
+                                        <input type="hidden" name="User" value="{$match->user->email}">
+                                        <button type="submit" class="btn btn-confirm btn-default col-xs-3">
+                                            <span class="glyphicon glyphicon-ok"></span>
+                                        </button>
+                                    </form>
                                 {/if}
 
                                 {if $match->isSelected}
@@ -220,7 +231,32 @@
                         {/if}
                     {/foreach}
                 </div>
+                {if $selectedWish->status == "Match gevonden" && !empty($currentUser) && $selectedWish->user->email == $currentUser->email}
+                    <div class="col-md-10 col-md-offset-2 panel panel-default">
+                        <form method="post" action="/wishes/action=setCompletionDate">
+                            <div class="row">
+                                <div class="col-xs-5">
+                                    Vervul datum:
+                                </div>
+                                <div class="col-xs-7">
+                                    <input type="date" required title="completionDate" name="completionDate">
+                                    <input type="hidden" name="Id" value="{$selectedWish->id}">
+                                </div>
+                                <button class="btn btn-default btn-dashboard" type="submit">Bevestig</button>
+                            </div>
+                        </form>
+                    </div>
+                {elseif $selectedWish->status == "Wordt vervuld" && !empty($currentUser) && $selectedWish->user->email == $currentUser->email}
+                    <div class="col-md-10 col-md-offset-2 panel panel-default">
+                        <div>Vervul datum: {$selectedWish->completionDate}</div>
+                        <form method="post" action="/wishes/action=confirmCompletion">
+                            <input type="hidden" name="completionDate" value="{$selectedWish->completionDate}">
+                            <input type="hidden" name="Id" value="{$selectedWish->id}">
+                            <button type="submit" class="btn btn-default">Markeer wens als vervuld</button>
+                        </form>
+                    </div>
+                {/if}
             </div>
         </div>
-
     </div>
+</div>
