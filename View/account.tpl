@@ -460,7 +460,6 @@
                     }
 
                     if (submit == true) {
-                        console.log("submit!");
                         $('#form').submit();
                     }
                 }

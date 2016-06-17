@@ -431,7 +431,6 @@
                     }
 
                     if (submit == true) {
-                        console.log("submit!");
                         done = true;
                         $('#form').submit();
                     }
