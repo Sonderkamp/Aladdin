@@ -39,6 +39,10 @@
                     <td>Ouderen</td>
                     <td id="Ouderen"></td>
                 </tr>
+                <tr>
+                    <td>Bedrijven</td>
+                    <td id="Bedrijven"></td>
+                </tr>
                 </tbody>
             </table>
 

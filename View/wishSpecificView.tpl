@@ -49,7 +49,7 @@
     <div class="row">
 
         <div class="col-xs-3 small-margin-bot">
-            {if (!isset($adminView))}
+            {if (!$adminView)}
                 <ul class="nav nav-pills nav-stacked">
 
 
@@ -74,7 +74,7 @@
                 </ul>
             {/if}
         </div>
-        {if (!isset($adminView))}
+        {if (!$adminView)}
         <div class="col-xs-9 panel panel-default">
             {else}
             <div class="col-xs-12 panel panel-default">
@@ -123,7 +123,7 @@
                         {foreach from=$comments item=comment}
                             <li>
                                 <div class="commentText">
-                                    {if (isset($adminView))}
+                                    {if (!$adminView)}
                                         <form action="/wishes/action=editComment" method="post">
                                             <input type="hidden" name="wishId" value="{$selectedWish->id}" />
                                             <input type="hidden" name="creationDate" value="{$comment->dbDate}" />
@@ -152,7 +152,7 @@
                             </li>
                         {/foreach}
                     </ul>
-                    {if !$adminView}
+                    {if (!$adminView)}
                         {if $canComment}
                         <form class="form-inline"
                               action="/Wishes/Id={$selectedWish->id}/action=AddComment"

@@ -257,6 +257,51 @@ class UserRepository
 
     }
 
+
+    public function validateCompany($array)
+    {
+//        var_dump($array["dob"]);
+        $array["username"] = strtolower(trim($array["username"]));
+        $array["name"] = strtolower(trim($array["name"]));
+        $array["surname"] = trim($array["surname"]);
+        $array["address"] = strtolower(trim($array["address"]));
+        $array["postalcode"] = strtoupper(trim($array["postalcode"]));
+        $array["country"] = strtolower(trim($array["country"]));
+        $array["city"] = strtolower(trim($array["city"]));
+        $array["initial"] = strtoupper(trim($array["initial"]));
+
+        // USERNAME
+        // valid email
+        // NAME
+        if (preg_match("/^[a-zA-Z][A-Za-z\\- ]+$/", $array["name"]) == false)
+            return false;
+
+
+        // SURNAME
+        //[a-zA-Z][a-zA-Z ]+$
+        if (preg_match("/^[a-zA-Z][A-Za-z\\- ]+$/", $array["surname"]) == false)
+            return false;
+
+        // ADDRESS
+        if (preg_match("/^[a-zA-Z][A-Za-z0-9\\- ]+$/", $array["address"]) == false)
+            return false;
+
+
+        // INITIALS
+        // data-validation-regexp="^([a-zA-Z\.]+)$"
+        if (preg_match("/^([a-zA-Z\.]+)$/", $array["initial"]) == false)
+            return false;
+
+
+        if (is_numeric($array["Lat"]) == false)
+            return false;
+        if (is_numeric($array["Lon"]) == false)
+            return false;
+        // is number lat lon
+        return true;
+
+    }
+
     private function hoursPassed($time)
     {
         if ($time == null) {
@@ -370,6 +415,26 @@ class UserRepository
 
     public function tryRegister($array)
     {
+
+        if ($array["type"] != "business" && $array["type"] != "child") {
+
+            if (empty($array["dob"])) {
+                return "Niet alles ingevuld";
+            }
+
+            $age = strtotime(DateTime::createFromFormat('d-m-Y', $array["dob"])->getTimestamp()) / 60 / 60 / 24 / 365;
+            if ($age < 18) {
+                return "Je moet minimaal 18 jaar oud zijn. Ben je jonger? Registreer je als een kind.";
+            }
+        }
+        $method = "tryRegister" . $array["type"];
+        return $this->$method($array);
+    }
+
+    private function tryRegisteradult($array)
+    {
+
+
         if (Empty($array["username"])
             || Empty($array["password"])
             || Empty($array["name"])
@@ -429,16 +494,157 @@ class UserRepository
         $hashed = password_hash($array["password"], PASSWORD_DEFAULT);
         $token = bin2hex(openssl_random_pseudo_bytes(16));
 
-        $this->UserQueryBuilder->addUser(array(strtolower($array["username"]), $hashed, strtolower($array["name"]),
+        $ret = $this->UserQueryBuilder->addUser(array(strtolower($array["username"]), $hashed, strtolower($array["name"]),
             $array["surname"], $token, $array["address"],
             $array["postalcode"], $array["country"], $array["city"],
-            $d->format('Y-m-d'), $array["gender"], $array["handicap"], $displayname, $array["initial"], $array["Lat"], $array["Lon"]));
+            $d->format('Y-m-d'), $array["gender"], $array["handicap"], $displayname, $array["initial"], $array["Lat"], $array["Lon"], $array["handicap_info"]));
+
+        if ($ret === false)
+            return "Er was een error bij het toevoegen van uw gegevens aan onze database. Probeer dit alstublieft opnieuw.";
 
         return true;
     }
 
+    private
+    function tryRegisterchild($array)
+    {
 
-    public function login()
+        $guardian = $this->getUser($array["guardian"]);
+        if ($guardian == null) {
+            return "Voogd emailadres bestaat niet.";
+        };
+
+        if ($guardian->dob == null) {
+            return "Voogd moet een persoon zijn.";
+        }
+
+        $age = strtotime($guardian->dob) / 60 / 60 / 24 / 365;
+
+        if ($age < 18) {
+            return "Voogd moet minimaal 18 jaar oud zijn.";
+        }
+
+        $res = $this->tryRegisteradult($array);
+
+        if ($res === true) {
+
+            // set guardian
+            $this->UserQueryBuilder->setGuardian($array["username"], $guardian->email);
+
+            $messageRepo = new MessageRepository();
+            $kid = $this->getUser($array["username"]);
+
+            $message = "Beste " . $guardian->name . ", \n\n De gebruiker: " . $kid->name . " " . $kid->surname
+                . " heeft zich aangemeld met u als voogd."
+                . " Als voogd heeft u toegang tot uw kind zijn account. "
+                . "Omdat wij het wachtwoord van gebruikers niet opslaan, is dit het enige mailtje waar wij deze aan u kunnen geven.\n\n"
+                . "Gebruikersnaam: " . $kid->email . "\nWachtwoord: "
+                . $array["password"] . "\n \n "
+                . "Wij hopen u hiermee voldoende te hebben geinformeerd. "
+                . "Indien u niet de voogd bent van deze gebruiker, dan kan U hem rapporteren via dit bericht op de website.";
+            $messageRepo->sendMessage($kid->email, $guardian->email, "Iemand heeft u als voogd aangegeven", $message);
+
+            // Remove from inbox kid
+            $messageRepo->deleteMessagesUser($kid->email);
+        }
+
+        return $res;
+
+    }
+
+    private
+    function tryRegisterelder($array)
+    {
+
+        // heeft niks anders dan een volwassenen.
+        return $this->tryRegisteradult($array);
+    }
+
+    private
+    function tryRegisterdisabled($array)
+    {
+        $array["handicap"] = 1;
+        $this->tryRegisteradult($array);
+        exit();
+    }
+
+    private
+    function tryRegisterbusiness($array)
+    {
+        /*
+            Geen Geboortedatum.
+            Geen Geslacht.
+            Geen Handicap.
+            WEL: bedrijfsnaam.
+            Bedrijfsnaam == displayname. (indien mogelijk)
+         */
+
+        if (Empty($array["username"])
+            || Empty($array["password"])
+            || Empty($array["name"])
+            || Empty($array["surname"])
+            || Empty($array["address"])
+            || Empty($array["postalcode"])
+            || Empty($array["country"])
+            || Empty($array["city"])
+            || Empty($array["initial"])
+            || Empty($array["Lat"])
+            || Empty($array["Lon"])
+            || Empty($array["companyName"])
+        ) {
+            return "Niet alles is ingevuld.";
+        }
+
+        $array["username"] = strtolower(trim($array["username"]));
+        $array["name"] = strtolower(trim($array["name"]));
+        $array["surname"] = trim($array["surname"]);
+        $array["address"] = strtolower(trim($array["address"]));
+        $array["postalcode"] = strtoupper(trim($array["postalcode"]));
+        $array["country"] = strtolower(trim($array["country"]));
+        $array["city"] = strtolower(trim($array["city"]));
+        $array["initial"] = strtoupper(trim($array["initial"]));
+        $array["initial"] = trim($array["initial"], '.');
+        $array["username"] = strtolower(filter_var($array["username"], FILTER_SANITIZE_EMAIL));
+        $array["companyName"] = strtolower(trim($array["companyName"]));
+
+        if (!$this->validPass($array["password"])) {
+            return "het wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter en
+            een nummer bevatten.";
+        }
+        if (!preg_match("/^[A-Za-z\\- ]+$/", $array["name"]) || !preg_match("/^[A-Za-z\\- ]+$/", $array["surname"])) {
+            return "Contactpersoon naam mag alleen alphabetische characters, spaties en streepjes(-) bevatten.";
+        }
+
+        if ($this->getUser($array["username"]) !== null) {
+            return "Dit emailadress heeft al een account.";
+        }
+
+        $array["postalcode"] = preg_replace('/\s+/', '', $array["postalcode"]);
+
+
+        $displayName = $this->createDislayCompany($array);
+
+        if ($this->validateCompany($array) === false) {
+            return "Validatie mislukt. check uw gegevens. Voor interactieve validatie, zet uw javascipt aan.";
+        }
+
+        // SQL
+        $hashed = password_hash($array["password"], PASSWORD_DEFAULT);
+        $token = bin2hex(openssl_random_pseudo_bytes(16));
+
+        $ret = $this->UserQueryBuilder->addCompany(array(strtolower($array["username"]), $hashed, strtolower($array["name"]),
+            $array["surname"], $token, $array["address"],
+            $array["postalcode"], $array["country"], $array["city"],
+            $displayName, $array["initial"], $array["Lat"], $array["Lon"], $array["companyName"]));
+
+        if ($ret === false)
+            return "Er was een error bij het toevoegen van uw gegevens aan onze database. Probeer dit alstublieft opnieuw.";
+
+        return true;
+    }
+
+    public
+    function login()
     {
         if (!Empty($_POST["username"]) && !Empty($_POST["password"])) {
 
@@ -456,7 +662,8 @@ class UserRepository
         return "Niet alle gegevens zijn ingevuld";
     }
 
-    public function newRecover($username, &$websiteMessage)
+    public
+    function newRecover($username, &$websiteMessage)
     {
         if (!$this->validateUsername($_POST["username"])) {
             $this->recoverError("Invalid username");
@@ -476,7 +683,8 @@ class UserRepository
         return "deze gebruiker heeft afgelopen 24 uur al een recovery aangevraagd.";
     }
 
-    public function createDislay($arr)
+    public
+    function createDislay($arr)
     {
 
         $arr["initial"] = strtoupper(trim($arr["initial"], '.'));
@@ -487,6 +695,33 @@ class UserRepository
         }
         $from = new DateTime($arr["dob"]);
         $name .= " - " . $from->format('Y');
+        // first try
+        $res = Database::query_safe("SELECT count(*) AS Counter FROM `user` WHERE DisplayName LIKE ? ", array($name));
+        $res = $res[0];
+        $count = $res["Counter"];
+        if ($count == 0)
+            return $name;
+
+        $i = 0;
+        while (true) {
+            $tmp = $name . " (" . ($count + $i) . ")";
+
+            $res = Database::query_safe("SELECT count(*) AS Counter FROM `user` WHERE DisplayName = ? ", array($tmp));
+            $res = $res[0];
+            if ($res["Counter"] == 0)
+                return $tmp;
+
+            $i++;
+
+        }
+
+    }
+
+    public
+    function createDislayCompany($arr)
+    {
+
+        $name = $arr["companyName"];
         // first try
         $res = Database::query_safe("SELECT count(*) AS Counter FROM `user` WHERE DisplayName LIKE ? ", array($name));
         $res = $res[0];
@@ -611,7 +846,8 @@ class UserRepository
         return $this->userCreator($this->UserQueryBuilder->getAllUsers($keyword));
     }
 
-    private function userCreator($result)
+    private
+    function userCreator($result)
     {
         if (count(($result)) === 0) {
             return null;
@@ -624,7 +860,8 @@ class UserRepository
         }
     }
 
-    private function createUser($result)
+    private
+    function createUser($result)
     {
 
         if ($result == null || $result == false || count($result) == 0) {
@@ -658,7 +895,8 @@ class UserRepository
     }
 
     /** creates multipe user objects */
-    public function createUsers($result)
+    public
+    function createUsers($result)
     {
         $users = array();
         foreach ($result as $item) {

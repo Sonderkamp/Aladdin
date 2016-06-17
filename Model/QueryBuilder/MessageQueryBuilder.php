@@ -222,6 +222,11 @@ class MessageQueryBuilder
         DATABASE::query_safe("UPDATE `inbox` SET `folder_Name` = 'removed' WHERE `inbox`.`Id` = ?", array($message));
     }
 
+    public function deleteMessagesUser($username)
+    {
+        DATABASE::query_safe("UPDATE `inbox` SET `folder_Name` = 'removed' WHERE `inbox`.`user_Email` = ?", array($username));
+    }
+
     public function resetMessage($me, $message)
     {
         // get message from message
