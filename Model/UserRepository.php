@@ -144,54 +144,29 @@ class UserRepository
         return $res["Email"];
     }
 
-    public function updateUser($arr)
+    public function updateUser($user)
     {
-        if (Empty($arr["email"])
-            || Empty($arr["name"])
-            || Empty($arr["surname"])
-            || Empty($arr["address"])
-            || Empty($arr["postalcode"])
-            || Empty($arr["country"])
-            || Empty($arr["city"])
-            || Empty($arr["dob"])
-            || Empty($arr["initials"])
-            || Empty($arr["gender"])
-        ) {
-            return "Niet alles is ingevuld.";
-        }
 
-        $arr["username"] = strtolower(trim($arr["email"]));
-        $arr["name"] = strtolower(trim($arr["name"]));
-        $arr["surname"] = ucfirst(trim($arr["surname"]));
-        $arr["address"] = strtolower(trim($arr["address"]));
-        $arr["postalcode"] = strtoupper(trim($arr["postalcode"]));
-        $arr["country"] = strtolower(trim($arr["country"]));
-        $arr["city"] = strtolower(trim($arr["city"]));
-        $arr["dob"] = trim($arr["dob"]);
-        $arr["initial"] = strtoupper(trim($arr["initials"]));
-        $arr["gender"] = strtolower(trim($arr["gender"]));
-
-
-        if ($this->validateUser($arr) === false) {
+        if ($this->validateUserObject($user) === false) {
             return "Validatie mislukt. check uw gegevens. Voor interactieve validatie, zet uw javascipt aan.";
         }
-        $d = DateTime::createFromFormat('d-m-Y', $arr["dob"]);
-        $us = $this->getUser($arr["email"]);
-        if (!(strtolower($us->initials) == strtolower($arr["initial"]) && strtolower($us->surname) == strtolower($arr["surname"]))) {
 
-            $newdisplay = $this->createDislay($arr);
-        } else {
-            $newdisplay = $us->displayName;
+        $us = $this->getUser($user->email);
+        if (!(strtolower($us->initials) == strtolower($user->initials) && strtolower($us->surname) == strtolower($user->surname)) && empty($us->companyName)) {
+            $arr = [];
+            $arr["initial"] = $user->initials;
+            $arr["surname"] = $user->surname;
+            $arr["dob"] = $user->dob;
+
+            // create array
+            $user->displayName = $this->createDislay($arr);
         }
-        if ($arr["handicap"] != 1) {
-            $arr["handicap"] = 0;
-        }
 
-        Database::query_safe("UPDATE user SET `Name`=?, `Surname`=?, `Address`=?,`Postalcode`=?,`Country`=?,`City`=?,`Dob`=?,`Initials`=?,`Gender`=?,`Handicap`=?,`DisplayName`=?, Lat=?, Lon=?  WHERE Email=?", Array($arr["name"], $arr["surname"], $arr["address"], $arr["postalcode"], $arr["country"], $arr["city"], $d->format('Y-m-d'), $arr["initial"], $arr["gender"], $arr["handicap"], $newdisplay, $arr["Lat"], $arr["Lon"], $arr["username"]));
-
-        if ($arr["email"] === $_SESSION["user"]->email) {
+        //save changes
+        $this->UserQueryBuilder->saveUser($user);
+        if ($user->email === $_SESSION["user"]->email) {
             // Update
-            $_SESSION["user"] = $this->getUser($arr["email"]);
+            $_SESSION["user"] = $this->getUser($user->email);
         }
 
         return null;
@@ -199,7 +174,7 @@ class UserRepository
 
     public function validateUser($array)
     {
-//        var_dump($array["dob"]);
+
         $array["username"] = strtolower(trim($array["username"]));
         $array["name"] = strtolower(trim($array["name"]));
         $array["surname"] = trim($array["surname"]);
@@ -227,11 +202,6 @@ class UserRepository
         if (preg_match("/^[a-zA-Z][A-Za-z0-9\\- ]+$/", $array["address"]) == false)
             return false;
 
-//        // POSTALCODE
-//        //data-validation-regexp="^[0-9]{4}[\s]{0,1}[a-zA-z]{2}"
-//        if (preg_match("/^[0-9]{4}[\s]{0,1}[a-zA-z]{2}/", $array["postalcode"]) == false)
-//            return false;
-
 
         // INITIALS
         // data-validation-regexp="^([a-zA-Z\.]+)$"
@@ -251,6 +221,38 @@ class UserRepository
         if (is_numeric($array["Lat"]) == false)
             return false;
         if (is_numeric($array["Lon"]) == false)
+            return false;
+        // is number lat lon
+        return true;
+
+    }
+
+    public function validateUserObject($user)
+    {
+
+        // USERNAME
+        // valid email
+        // NAME
+        if (preg_match("/^[a-zA-Z][A-Za-z\\- ]+$/", $user->name) == false)
+            return false;
+
+        // SURNAME
+        //[a-zA-Z][a-zA-Z ]+$
+        if (preg_match("/^[a-zA-Z][A-Za-z\\- ]+$/", $user->surname) == false)
+            return false;
+
+        // ADDRESS
+        if (preg_match("/^[a-zA-Z][A-Za-z0-9\\- ]+$/", $user->address) == false)
+            return false;
+
+
+        // INITIALS
+        if (preg_match("/^([a-zA-Z\.]+)$/", $user->initials) == false)
+            return false;
+
+        if (is_numeric($user->lat) == false)
+            return false;
+        if (is_numeric($user->lon) == false)
             return false;
         // is number lat lon
         return true;
@@ -571,13 +573,7 @@ class UserRepository
     private
     function tryRegisterbusiness($array)
     {
-        /*
-            Geen Geboortedatum.
-            Geen Geslacht.
-            Geen Handicap.
-            WEL: bedrijfsnaam.
-            Bedrijfsnaam == displayname. (indien mogelijk)
-         */
+
 
         if (Empty($array["username"])
             || Empty($array["password"])
@@ -606,6 +602,10 @@ class UserRepository
         $array["initial"] = trim($array["initial"], '.');
         $array["username"] = strtolower(filter_var($array["username"], FILTER_SANITIZE_EMAIL));
         $array["companyName"] = strtolower(trim($array["companyName"]));
+
+        if (!preg_match("/^([0-9a-zA-Z][A-Za-z0-9\- ]+)$/", $array["companyName"])) {
+            return "Illegale characters in bedrijfsnaam";
+        }
 
         if (!$this->validPass($array["password"])) {
             return "het wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter en
@@ -886,6 +886,11 @@ class UserRepository
         $newUser->initials = $result[0]["Initials"];
         $newUser->RecoveryHash = $result[0]["RecoveryHash"];
         $newUser->RecoveryDate = $result[0]["RecoveryDate"];
+        $newUser->companyName = $result[0]["CompanyName"];
+        $newUser->guardian = $result[0]["Guardian"];
+        $newUser->handicapInfo = $result[0]["HandicapInfo"];
+        $newUser->lat = $result[0]["Lat"];
+        $newUser->lon = $result[0]["Lon"];
 
         if (isset($result[0]["isBlocked"])) {
             $newUser->blocked = $result[0]["isBlocked"];

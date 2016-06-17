@@ -324,16 +324,20 @@ class WishQueryBuilder extends QueryBuilder
 
     }
 
-    public function removeComment($creationDate , $username, $wishId){
+    public function removeComment($creationDate , $username, $wishId)
+    {
         $query = "DELETE FROM `wishmessage`
         WHERE `wishmessage`.`CreationDate` = ?
         AND `wishmessage`.`user_Email` = ?
         AND `wishmessage`.`wish_Id` = ?";
+        
+        $this->executeQuery($query , array($wishId , $username));
+    }
 
-        print_r($query);
-        print_r($creationDate . " " . $username . " " . $wishId);
-
-        $this->executeQuery($query , array($creationDate , $username, $wishId));
+    public function removeMatch($wishId , $username)
+    {
+        $query = "UPDATE `matches` SET `IsActive` = '0' WHERE `matches`.`wish_Id` = ? AND `matches`.`user_Email` = ?;";
+        $this->executeQuery($query , array($wishId , $username));
     }
 
     public function addComment($comment, $wishID, $user, $img = null)
@@ -364,7 +368,8 @@ class WishQueryBuilder extends QueryBuilder
     }
 
 
-    public function getMatchByFulfiller($wishId, $user) {
+    public function getMatchByFulfiller($wishId, $user)
+    {
         return Database::query_safe("SELECT * FROM `matches` WHERE `IsSelected` = 1 AND `user_Email` = ? AND `wish_Id` = ?",array($user,$wishId));
     }
 }

@@ -2,7 +2,7 @@
 
 /**
  * Created by PhpStorm.
- * User: simon
+ * User: Marius
  * Date: 8-3-2016
  * Time: 17:23
  */
@@ -20,51 +20,25 @@ class ProfileController extends Controller
         $this->manage();
     }
 
+    public function saved()
+    {
+        $this->manage(null, "Gegevens gewijzigd");
+        exit();
+    }
+
+    public function error()
+    {
+        if (isset($_GET["err"])) {
+            $this->manage(htmlspecialchars($_GET["err"]));
+            exit();
+        }
+        $this->manage();
+        exit();
+    }
 
 
-//    public function checkgender()
-//    {
-//        $myGender = $_SESSION["user"]->gender;
-//        // dit werkt maar ik moet alleen nog weten hoe ik vanuit deze class het geslacht van een user kan opvragen
-//        if ($myGender == 'male') {
-//            $result = "
-//                <input type='radio' name='gender' value ='male' checked> Man
-//                <input type='radio' name='gender' value ='female'> Vrouw
-//                <input type='radio' name='gender' value ='other'> Anders";
-//        } else if ($myGender == 'female') {
-//            $result = "
-//                <input type='radio' name='gender' value ='male'> Man
-//                <input type='radio' name='gender' value ='female'checked> Vrouw
-//                <input type='radio' name='gender' value ='other'> Anders";
-//        } else if ($myGender == 'other') {
-//            $result = "
-//                <input type='radio' name='gender' value ='male'> Man
-//                <input type='radio' name='gender' value ='female'> Vrouw
-//                <input type='radio' name='gender' value ='other' checked> Anders";
-//        } else {
-//            $result = "
-//                <input type='radio' name='gender'  value ='male'> Man
-//                <input type='radio' name='gender'  value ='female'> Vrouw
-//                <input type='radio' name='gender'  value ='other'> Anders";
-//        };
-//
-//        return $result;
-//    }
-
-//    public function checkHandicap()
-//    {
-//        $myHandicap = $_SESSION["user"]->handicap;
-//        if ($myHandicap == true) {
-//            $result = "
-//                <input type='checkbox' name='handicap' checked>";
-//        } else {
-//            $result = "
-//                <input type='checkbox' name='handicap' >";
-//        };
-//        return $result;
-//    }
-
-    private function manage($error = null, $success = null)
+    private
+    function manage($error = null, $success = null)
     {
         $email = ((new UserRepository())->getCurrentUser());
         $email = $email->email;
@@ -82,62 +56,54 @@ class ProfileController extends Controller
         exit();
     }
 
-    public function change()
+    public
+    function change()
     {
         $usermodel = new UserRepository();
 
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (Empty($_POST["name"])
-                || Empty($_POST["surname"])
-                || Empty($_POST["address"])
-                || Empty($_POST["postalcode"])
-                || Empty($_POST["country"])
-                || Empty($_POST["city"])
-                || Empty($_POST["initials"])
-                || Empty($_POST["Lat"])
-                || Empty($_POST["Lon"])
-                || Empty($_POST["dob"])
-                || Empty($_POST["gender"])
-            ) {
-                $this->manage("Vul AUB alles in");
-                exit(1);
+
+            $user = $usermodel->getUser($usermodel->getCurrentUser()->email);
+
+
+            $user->lat = $_POST["Lat"];
+            $user->lon = $_POST["Lon"];
+            $user->name = $_POST["name"];
+            $user->surname = $_POST["surname"];
+            $user->initials = $_POST["initials"];
+            $user->address = $_POST["address"];
+            $user->city = $_POST["city"];
+            $user->postalcode = $_POST["postalcode"];
+            $user->country = $_POST["country"];
+
+
+            if (isset($_POST["handicap_info"])) {
+                if (Empty(trim($_POST["handicap_info"]))) {
+                    $user->handicap = 0;
+                    $user->handicapInfo = null;
+                } else {
+                    $user->handicap = 1;
+                    $user->handicapInfo = trim($_POST["handicap_info"]);
+                }
             }
-            $arr = [];
-            $arr["email"] = strtolower(filter_var($_POST["email"], FILTER_SANITIZE_EMAIL));
 
-            $arr["name"] = strtolower($_POST["name"]);
-            $arr["surname"] = $_POST["surname"];
-            $arr["address"] = $_POST["address"];
-            $arr["postalcode"] = $_POST["postalcode"];
-            $arr["country"] = $_POST["country"];
-            $arr["Lat"] = $_POST["Lat"];
-            $arr["Lon"] = $_POST["Lon"];
-            $arr["city"] = $_POST["city"];
-            $arr["dob"] = $_POST["dob"];
-
-            $arr["initials"] = $_POST["initials"];
-            $arr["gender"] = $_POST["gender"];
-
-            if (Empty($_POST["handicap"]))
-                $arr["handicap"] = false;
-            else
-                $arr["handicap"] = true;
-
-            $res = $usermodel->updateUser($arr);
+            $res = $usermodel->updateUser($user);
 
             if (!is_string($res)) {
-                $this->manage(null, "Gegevens gewijzigd");
+                $this->redirect("/Profile/action=saved");
                 exit();
             }
-
+            $this->redirect("/Profile/action=error/err=" . $res);
+            exit();
 
         }
-        $this->manage("een van de ingevoerde invoer velden klopt niet");
+        $this->manage("Call klopt niet");
         exit();
     }
 
-    public function changepw()
+    public
+    function changepw()
     {
         $userModel = new UserRepository();
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
