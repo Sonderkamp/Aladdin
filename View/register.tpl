@@ -330,6 +330,20 @@
             $("#error").addClass("form-error");
             return false;
         }
+
+        {if $type != "business" && $type != "child"}
+
+        var dob = $('input[name=dob]').val();
+        var arr = dob.split("-");
+        var age = getAge(arr[2] + "-" + arr[1] + "-" + arr[0]);
+
+        if (age < 18) {
+            $("#error").text("Je moet ouder zijn dan 18. Ben je jonger dan 18? registreer dan als kind.");
+            $("#error").addClass("form-error");
+            return false;
+        }
+        {/if}
+
         return ret;
     }
 
@@ -337,6 +351,18 @@
     $.validate({
         modules: 'location, security, date'
     });
+
+
+    function getAge(birth) {
+
+        var d = new Date();
+        var n = d.getTime();
+        var c = Date.parse(birth);
+        var a = (d - c) / (1000 * 60 * 60 * 24 * 365);
+        var result = Math.round(a * 100) / 100;
+        return Math.floor(result);
+        //alert(result);
+    }
 
 
 </script>

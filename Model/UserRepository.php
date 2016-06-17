@@ -416,6 +416,17 @@ class UserRepository
     public function tryRegister($array)
     {
 
+        if ($array["type"] != "business" && $array["type"] != "child") {
+
+            if (empty($array["dob"])) {
+                return "Niet alles ingevuld";
+            }
+
+            $age = strtotime(DateTime::createFromFormat('d-m-Y', $array["dob"])->getTimestamp()) / 60 / 60 / 24 / 365;
+            if ($age < 18) {
+                return "Je moet minimaal 18 jaar oud zijn. Ben je jonger? Registreer je als een kind.";
+            }
+        }
         $method = "tryRegister" . $array["type"];
         return $this->$method($array);
     }

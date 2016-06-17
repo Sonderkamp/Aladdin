@@ -26,7 +26,9 @@ class Graph
     {
         $list = Database::query("
         SELECT count(*) AS count,
-          CASE WHEN (TIMESTAMPDIFF(YEAR,`Dob`,CURDATE()) < 18)
+          CASE WHEN (`Dob` is NULL)
+            THEN \"Bedrijf\"
+          WHEN (TIMESTAMPDIFF(YEAR,`Dob`,CURDATE()) < 18)
             THEN \"Kind (onder 18)\"
           WHEN TIMESTAMPDIFF(YEAR,`Dob`,CURDATE()) BETWEEN 18 AND 70
             THEN \"Volwassen\"
@@ -59,7 +61,9 @@ class Graph
         $list = Database::query_safe("
 
         SELECT count(*) AS count,
-          CASE WHEN (TIMESTAMPDIFF(YEAR,`Dob`,CURDATE()) < 18)
+          CASE WHEN (`Dob` is NULL)
+            THEN \"Bedrijven\"
+          WHEN (TIMESTAMPDIFF(YEAR,`Dob`,CURDATE()) < 18)
             THEN \"Kind (onder 18)\"
           WHEN TIMESTAMPDIFF(YEAR,`Dob`,CURDATE()) BETWEEN 18 AND 70
             THEN \"Volwassen\"
@@ -92,7 +96,8 @@ class Graph
         $csvString = 'amount,cat' . "\n";
 
         foreach ($list as $row) {
-            $csvString .= $row["count"] . ',' . $row["age"] . "\n";
+            if ($row["age"] != 0)
+                $csvString .= $row["count"] . ',' . $row["age"] . "\n";
         }
 
 
