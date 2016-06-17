@@ -212,7 +212,7 @@
                     </div>
 
                     <p>
-                        Hierboven ziet u een bericht van een moderator. Deze zijn bruin gekleurd. Ook heeft de moderator
+                        Hierboven ziet u een bericht van een moderator. Deze zijn blauw gekleurd. Ook heeft de moderator
                         een klein oog-icoon naast zijn naam staan.
                     </p>
                     <div class="panel panel-default">
