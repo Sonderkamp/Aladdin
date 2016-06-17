@@ -10,6 +10,38 @@ class UserQueryBuilder
 {
 
 
+    public function saveUser($newUser)
+    {
+        $params = array(
+
+            $newUser->name,
+            $newUser->surname,
+            $newUser->address,
+            $newUser->postalcode,
+            $newUser->country,
+            $newUser->city,
+            $newUser->dob,
+            $newUser->gender,
+            $newUser->handicap,
+            $newUser->displayName,
+            $newUser->initials,
+            $newUser->guardian,
+            $newUser->lat,
+            $newUser->lon,
+            $newUser->handicapInfo,
+            $newUser->companyName,
+            $newUser->email
+        );
+
+        Database::query_safe("UPDATE `user` SET `Name` = ?, `Surname` = ?,
+        `Address` = ?, `Postalcode` = ?, `Country` = ?, `City` = ?, `Dob` = ?,
+        `Gender` = ?, `Handicap` = ?, `DisplayName` = ?, `Initials` = ?,
+        `Guardian` = ?, `Lat` = ?, `Lon` = ?, `HandicapInfo` = ?, `CompanyName` = ?
+        WHERE `Email` = ?", $params);
+
+
+    }
+
     public function setGuardian($childEmail, $parentEmail)
     {
         if (Database::query_safe("UPDATE `user` SET `guardian` = ?  WHERE `Email` = ?", array($parentEmail, $childEmail)) === false) {

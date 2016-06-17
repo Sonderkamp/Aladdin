@@ -102,6 +102,18 @@
                             <label class="col-xs-4">Wenser: </label>
                             <div class="col-xs-8">{htmlspecialcharsWithNL($selectedWish->user->displayName)}</div>
                         </div>
+                        {if !empty($selectedWish->user->companyName)}
+                            <div class="row">
+                                <label class="col-xs-4">Bedrijf: </label>
+                                <div class="col-xs-8">Ja</div>
+                            </div>
+                        {/if}
+                        {if !empty($selectedWish->user->guardian)}
+                            <div class="row">
+                                <label class="col-xs-4">Voogd: </label>
+                                <div class="col-xs-8">{$selectedWish->user->guardian}</div>
+                            </div>
+                        {/if}
 
                         <div class="row">
                             <label class="col-xs-4">Status: </label>
@@ -112,10 +124,21 @@
                             <label class="col-xs-4">Plaats: </label>
                             <div class="col-xs-8">{htmlspecialcharsWithNL($selectedWish->user->city)}</div>
                         </div>
+                        {if !empty($selectedWish->user->handicapInfo)}
+                            <h6>
+                                Handicap Informatie
+                            </h6>
+                            <p>
+                                {htmlspecialcharsWithNL($selectedWish->user->handicapInfo)}
+                            </p>
+                        {/if}
                     </div>
 
                     <div class="col-xs-8">
+                        <h6>Content</h6>
                         <p>{htmlspecialcharsWithNL($selectedWish->content)}</p>
+
+
                     </div>
 
                 </div>
@@ -142,9 +165,10 @@
                                                 <span class="glyphicon glyphicon-remove"></span>
                                             </button>
                                             {if $comment->inGuestbook == "0"}
-                                            <button type="submit" class="btn btn-inbox" name="addGuestbook" value="add">
-                                                <span class="glyphicon glyphicon-book"></span>
-                                            </button>
+                                                <button type="submit" class="btn btn-inbox" name="addGuestbook"
+                                                        value="add">
+                                                    <span class="glyphicon glyphicon-book"></span>
+                                                </button>
                                             {/if}
                                         </form>
                                     {/if}
@@ -194,7 +218,7 @@
                             <div class="inner-border match-controls row">
                                 {if $match->isActive == 0}
                                     <p class="col-xs-6"><s>{$match->user->displayName}</s></p>
-                                    {else}
+                                {else}
                                     <p class="col-xs-6">{$match->user->displayName}</p>
                                 {/if}
 

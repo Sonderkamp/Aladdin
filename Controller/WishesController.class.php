@@ -457,21 +457,24 @@ class WishesController extends Controller
             $canMatch = false;
         }
 
-        if(!empty($this->userRepo->getCurrentUser())){
-            foreach($matches as $match) {
-                if($match->user->email == $this->userRepo->getCurrentUser()->email){
-                    if($match->isActive == 1){
-                        $isMatched = true;
-                    }
+        if (!empty($this->userRepo->getCurrentUser())) {
+            if ($matches !== false) {
+                foreach ($matches as $match) {
+                    if ($match->user->email == $this->userRepo->getCurrentUser()->email) {
+                        if ($match->isActive == 1) {
+                            $isMatched = true;
+                        }
 
-                    if($match->isSelected == 1){
-                        $canComment = true;
+                        if ($match->isSelected == 1) {
+                            $canComment = true;
+                        }
                     }
                 }
             }
+
         }
 
-        if($selectedWish->status != "Vervuld" ){
+        if ($selectedWish->status != "Vervuld") {
             $canComment = false;
         }
 
@@ -493,15 +496,15 @@ class WishesController extends Controller
         exit(0);
     }
 
-    public function editComment(){
-        if(!empty($_POST["wishId"]) && !empty($_POST["creationDate"]) && !empty($_POST["username"])){
+    public function editComment()
+    {
+        if (!empty($_POST["wishId"]) && !empty($_POST["creationDate"]) && !empty($_POST["username"])) {
             (new AdminController())->guaranteeAdmin("/wishes/action=getSpecificWish?Id=" . $_POST["wishId"]);
 
-            if(!empty($_POST["removeButton"]) && $_POST["removeButton"] == "remove") {
-                $this->wishRepo->removeComment($_POST["creationDate"] , $_POST["username"] , $_POST["wishId"]);
-            }
-            elseif (!empty($_POST["addGuestbook"]) && $_POST["addGuestbook"] == "add") {
-                $this->wishRepo->addToGuestbook($_POST["creationDate"] , $_POST["username"] , $_POST["wishId"]);
+            if (!empty($_POST["removeButton"]) && $_POST["removeButton"] == "remove") {
+                $this->wishRepo->removeComment($_POST["creationDate"], $_POST["username"], $_POST["wishId"]);
+            } elseif (!empty($_POST["addGuestbook"]) && $_POST["addGuestbook"] == "add") {
+                $this->wishRepo->addToGuestbook($_POST["creationDate"], $_POST["username"], $_POST["wishId"]);
             }
             $this->redirect("/wishes/action=getSpecificWish?Id=" . $_POST["wishId"]);
         } else {
@@ -511,7 +514,7 @@ class WishesController extends Controller
 
     public function removeMatch()
     {
-        if(!empty($_GET["Id"])){
+        if (!empty($_GET["Id"])) {
             $this->wishRepo->removeMatch($_GET["Id"]);
             $this->redirect("/wishes/action=getSpecificWish?Id=" . $_GET["Id"]);
         }

@@ -9,7 +9,11 @@
     <div class="row dashboard-row">
 
         <div class="col-xs-6">
-            <h3 class="dashboard-header">Informatie van {htmlspecialchars($user->name)}</h3>
+            {if !empty($user->dob)}
+                <h3 class="dashboard-header">Informatie van {htmlspecialchars($user->name)}</h3>
+            {else}
+                <h3 class="dashboard-header">Informatie van {htmlspecialchars($user->displayName)}</h3>
+            {/if}
             <div class="row">
                 <label class="col-md-4 col-xs-4">Adres:</label>
                 <label>{htmlspecialchars($user->address)}</label>
@@ -22,10 +26,12 @@
                 <label class="col-md-4 col-xs-4">Land:</label>
                 <label>{htmlspecialchars($user->country)}</label>
             </div>
-            <div class="row">
-                <label class="col-md-4">Geboortedatum:</label>
-                <label>{htmlspecialchars($user->dob)}</label>
-            </div>
+            {if !empty($user->dob)}
+                <div class="row">
+                    <label class="col-md-4">Geboortedatum:</label>
+                    <label>{htmlspecialchars($user->dob)}</label>
+                </div>
+            {/if}
             <div class="row">
                 <label class="col-md-4">Wens limiet:</label>
                 <label>{htmlspecialchars($wishLimit)}</label>
@@ -37,22 +43,24 @@
             </div>
         </div>
 
-        <div class="col-xs-6">
-            <div class="btn-text">
-                <h4 class="dashboard-header">Weet u niet waarvoor u moet wensen?</h4>
-                <a href="/survey" class="btn btn-info">
-                    Vul de vragenlijst in!
-                </a>
+        {if !empty($user->dob)}
+            <div class="col-xs-6">
+                <div class="btn-text">
+                    <h4 class="dashboard-header">Weet u niet waarvoor u moet wensen?</h4>
+                    <a href="/survey" class="btn btn-info">
+                        Vul de vragenlijst in!
+                    </a>
+                </div>
             </div>
-        </div>
+        {/if}
     </div>
 
     <div class="row">
         <h3 class="col-xs-6 col-sm-4 col-md-12 dashboard-header">Mijn wensen</h3>
         {if $wishCheck}
-        <a href="/wishes/action=openAddView" class="btn btn-info col-xs-1 visible-sm visible-xs">
-            <i class="fa fa-plus" aria-hidden="true"></i>
-        </a>
+            <a href="/wishes/action=openAddView" class="btn btn-info col-xs-1 visible-sm visible-xs">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </a>
         {/if}
     </div>
     <div class="row dashboard-row">

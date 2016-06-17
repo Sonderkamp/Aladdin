@@ -453,6 +453,7 @@
     <script>
         function toggle() {
             $("#tog").slideToggle(1);
+            $('input[name=handicap_info]').val('');
         }
 
         toggle();
