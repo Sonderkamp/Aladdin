@@ -35,13 +35,17 @@
                            placeholder="Wat is uw wens" {if isset($wishtitle)} value="{($wishtitle)}" {/if}>
                 </div>
             </div>
-
+            <br>
             <div class="form-group row">
-                <label class="col-sm-2 form-control-label">Uitgebreide wens beschrijving:</label>
+                <label class="col-sm-2 form-control-label">Beschrijf je wens:<br><br>
+                    Wat is er praktisch gezien nodig om deze wens in vervulling te laten gaan?<br><br>
+                    Waar zou je zelf voor kunnen zorgen?
+                </label>
+                
                 <div class="col-sm-10">
-
-                    <textarea class="form-control" rows="5" name="description"
-                              placeholder="Beschrijf hier uw wens uitgebreid">{if isset($description)}{($description)}{/if}</textarea>
+                    {*<textarea id="text2" placeholder="." rows="10"></textarea>​*}
+                    <textarea class="form-control" rows="7" name="description"
+                              placeholder="Uitgebreide wens beschrijving">{if isset($description)}{($description)}{/if}</textarea>
                     {*{else}*}
                     {*<textarea class="form-control" rows="5" name="description"*}
                     {*placeholder="Beschrijf hier uw wens uitgebreid"></textarea>*}
@@ -49,7 +53,7 @@
                 </div>
             </div>
 
-
+            <br>
             <div class="form-group row authors-list">
                 <label class="col-sm-2 form-control-label">Kernwoorden:</label>
                 <div class="col-sm-10">
