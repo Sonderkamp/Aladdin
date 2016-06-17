@@ -603,6 +603,10 @@ class UserRepository
         $array["username"] = strtolower(filter_var($array["username"], FILTER_SANITIZE_EMAIL));
         $array["companyName"] = strtolower(trim($array["companyName"]));
 
+        if (!preg_match("/^([0-9a-zA-Z][A-Za-z0-9\- ]+)$/", $array["companyName"])) {
+            return "Illegale characters in bedrijfsnaam";
+        }
+
         if (!$this->validPass($array["password"])) {
             return "het wachtwoord moet minimaal 8 tekens lang, een hoofdletter, een kleine letter en
             een nummer bevatten.";

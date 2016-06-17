@@ -160,7 +160,8 @@
                                         <form action="/wishes/action=removeComment" method="post">
                                             <input type="hidden" name="wishId" value="{$selectedWish->id}"/>
                                             <input type="hidden" name="creationDate" value="{$comment->dbDate}"/>
-                                            <input type="hidden" name="username" value="{$comment->displayName}"/>
+                                            <input type="hidden" name="username"
+                                                   value="{htmlspecialchars($comment->displayName)}"/>
                                             <button type="submit" class="btn btn-default">
                                                 <span class="glyphicon glyphicon-remove"></span>
                                             </button>
@@ -172,14 +173,14 @@
                                             {/if}
                                         </form>
                                     {/if}
-                                    <p class="">{$comment->message}
+                                    <p class="">{htmlspecialchars($comment->message)}
                                         {if !empty($comment->image)}
                                             <a href="{$comment->image}" target="_blank">
                                                 <img class="thumbnail commentImage" src="{$comment->image}">
                                             </a>
                                         {/if}
                                     </p>
-                                    <span class="date sub-text">{$comment->displayName}
+                                    <span class="date sub-text">{htmlspecialchars($comment->displayName)}
                                         op {$comment->creationDate}</span>
 
                                 </div>
