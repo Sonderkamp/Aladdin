@@ -249,7 +249,7 @@ class WishesController extends Controller
         $returnVal = 0;
 
         if (!$this->isValid($input) || (strlen($tempTitle) === 0) || strlen($tempContent) === 0 || ($size == 0)) {
-            if (isset($edit)){
+            if (isset($edit)) {
                 $returnVal = 1;
                 return;
             }
@@ -264,7 +264,7 @@ class WishesController extends Controller
         }
 
         if ($this->inForbiddenWords($title, $tempContent, $tag)) {
-            if (isset($edit)){
+            if (isset($edit)) {
                 $returnVal = 3;
                 return;
             }
@@ -456,6 +456,10 @@ class WishesController extends Controller
             $canMatch = false;
         }
 
+        // Todo: Al gematcht
+
+        // TODO: Ontmatch knop
+
         $this->render("wishSpecificView.tpl",
             ["title" => "Wens: " . $id,
                 "selectedWish" => $selectedWish,
@@ -469,10 +473,11 @@ class WishesController extends Controller
         exit(0);
     }
 
-    public function removeComment(){
-        if(!empty($_POST["wishId"]) && !empty($_POST["creationDate"]) && !empty($_POST["username"])){
+    public function removeComment()
+    {
+        if (!empty($_POST["wishId"]) && !empty($_POST["creationDate"]) && !empty($_POST["username"])) {
             (new AdminController())->guaranteeAdmin("/wishes/action=getSpecificWish?Id=" . $_POST["wishId"]);
-            $this->wishRepo->removeComment($_POST["creationDate"] , $_POST["username"] , $_POST["wishId"]);
+            $this->wishRepo->removeComment($_POST["creationDate"], $_POST["username"], $_POST["wishId"]);
             $this->redirect("/wishes/action=getSpecificWish?Id=" . $_POST["wishId"]);
         } else {
             $this->apologize("please provide a valid wishId & creationDate");
@@ -492,7 +497,7 @@ class WishesController extends Controller
         }
 
         if (!empty($wish = $this->wishRepo->getWish($_GET["Id"]))) {
-            if($wish->status != "Vervuld" && $this->userRepo->getCurrentUser()->email != $wish->user || !$this->wishRepo->canComment($_GET["Id"], $this->userRepo->getCurrentUser()->email)) {
+            if ($wish->status != "Vervuld" && $this->userRepo->getCurrentUser()->email != $wish->user || !$this->wishRepo->canComment($_GET["Id"], $this->userRepo->getCurrentUser()->email)) {
                 $this->redirect("/Wishes/action=getSpecificWish/Id=" . $_GET["Id"]);
                 exit();
             }

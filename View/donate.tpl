@@ -43,7 +43,11 @@
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                         <input id="name" class="form-control" type="text" name="name"
                                placeholder="Naam"
-                               value="{if isset($user)}{$user->name} {$user->surname}{/if}" {if isset($user)} readonly{/if}>
+                                {if empty($user->dob)}
+                            value="{$user->displayName}" readonly
+                                {elseif isset($user)}
+                            value="{$user->name} {$user->surname}" readonly
+                                {/if}>
                     </div>
 
                     <div class="input-group">

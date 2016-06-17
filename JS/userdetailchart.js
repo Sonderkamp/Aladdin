@@ -100,6 +100,7 @@ detailchart.prototype.setText = function (dataset, date) {
     $("#Kind").text("0");
     $("#Volwassen").text("0");
     $("#Ouderen").text("0");
+    $("#Bedrijven").text("0");
 
     var text = "Dit zijn alle nieuwe gebruikers voor " + d3.time.format("%m-%Y")(date);
     $("#detailText").text(text);

@@ -196,8 +196,16 @@ class AccountController extends Controller
 
     public function register()
     {
+        $types = ["business", "elder", "adult", "child", "disabled"];
         // check variables
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+            if (!in_array($_GET["type"], $types)) {
+                $this->render("register.tpl", [
+                    "title" => "register",
+                    "error" => "Formulier klopt niet."]);
+                exit(1);
+            }
 
             // compare passwords
             if ($_POST["password1"] !== $_POST["password2"] && !empty($_POST["password1"])) {
@@ -211,9 +219,15 @@ class AccountController extends Controller
             $arr = $_POST;
             $arr["username"] = strtolower(filter_var($_POST["username"], FILTER_SANITIZE_EMAIL));
             $arr["password"] = $_POST["password1"];
-            if (isset($_POST["handicap"]))
+            if (isset($_POST["handicap"])) {
                 $arr["handicap"] = 1;
-            else
+                if (!isset($arr["handicap_info"])) {
+                    $this->render("register.tpl", [
+                        "title" => "register",
+                        "error" => "Formulier klopt niet."]);
+                    exit(1);
+                }
+            } else
                 $arr["handicap"] = 0;
 
             $userRepo = new UserRepository();
@@ -245,11 +259,13 @@ class AccountController extends Controller
 
         } else {
 
+
             // register form
-            if (empty($_GET["type"])) {
+            if (empty($_GET["type"]) || !in_array($_GET["type"], $types)) {
                 $this->render("register.tpl", ["title" => "register"]);
                 exit();
             }
+
             $this->render("register.tpl", ["title" => "register", "type" => $_GET["type"]]);
             exit();
 
