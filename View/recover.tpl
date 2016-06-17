@@ -52,7 +52,6 @@
             dataType: "text",
             success: function (resultData) {
                 resultData = JSON.parse(resultData);
-                console.log(resultData);
                 if (resultData.result == false) {
                     ret = false;
                 }

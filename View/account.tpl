@@ -146,8 +146,24 @@
                                                        value="{$user->email}">
                                             <table class="table table-user-information">
                                                 <tbody>
+                                                {if !empty($user->companyName)}
+                                                    <tr>
+                                                        <td>Bedrijfsnaam:</td>
+                                                        <td>
+
+                                                            <input type="text" name="companyName"
+                                                                   data-validation="custom"
+                                                                   data-validation-regexp="^([0-9a-zA-Z][A-Za-z0-9\- ]+)$"
+                                                                   data-validation-error-msg="Geen valide naam ingevuld."
+                                                                   maxlength="45" value="{$user->companyName}" readonly>
+
+                                                        </td>
+                                                    </tr>
+                                                {/if}
                                                 <tr>
-                                                    <td>Voornaam:</td>
+                                                    <td> {if !empty($user->companyName)} Contactpersoon {/if}
+                                                        Voornaam:
+                                                    </td>
                                                     <td>
                                                         <input type="hidden" name="Lat">
                                                         <input type="hidden" name="Lon">
@@ -158,7 +174,9 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Achternaam:</td>
+                                                    <td>{if !empty($user->companyName)} Contactpersoon {/if}
+                                                        Achternaam:
+                                                    </td>
                                                     <td><input type="text" name="surname" value="{$user->surname}"
                                                                data-validation="custom"
                                                                data-validation-regexp="^([a-zA-Z][A-Za-z\- ]+)$"
@@ -166,7 +184,9 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>initialen:</td>
+                                                    <td>{if !empty($user->companyName)} Contactpersoon {/if}
+                                                        initialen:
+                                                    </td>
                                                     <td><input type="text" name="initials" value="{$user->initials}"
                                                                required data-validation="custom"
                                                                data-validation-regexp="^([a-zA-Z\.]+)$"
@@ -209,62 +229,29 @@
                                                                readonly value="{$user->country}">
                                                     </td>
                                                 </tr>
+                                                {if empty($user->companyName)}
+                                                    <tr>
+                                                        <td>Handicap:</td>
+                                                        <td>{if $user->handicap}
+                                                                <input onchange="toggle()" type='checkbox'
+                                                                       name='handicap'
+                                                                       checked>
+                                                            {elseif !$user->handicap}
+                                                                <input onchange="toggle()" type='checkbox'
+                                                                       name='handicap'>
+                                                            {/if}
+                                                        </td>
 
-                                                <tr>
-                                                    <td>Geboortedatum:</td>
-                                                    <td><input type="text" data-validation="birthdate"
-                                                               value="{$user->dob|date_format:"%d-%m-%Y"}"
-                                                               name="dob" data-validation-format="dd-mm-yyyy"
-                                                               required
-                                                               data-validation-error-msg="invalide datum."
-                                                               data-validation-help="dd-mm-yyyy">
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Geslacht:</td>
-                                                    <td>
-                                                        {if $user->gender eq 'male'}
-                                                            <input type='radio' name='gender' value='male' checked>
-                                                            Man
-                                                            <input type='radio' name='gender' value='female'>
-                                                            Vrouw
-                                                            <input type='radio' name='gender' value='other'>
-                                                            Anders
-                                                        {elseif $user->gender eq 'female'}
-                                                            <input type='radio' name='gender' value='male'>
-                                                            Man
-                                                            <input type='radio' name='gender' value='female' checked>
-                                                            Vrouw
-                                                            <input type='radio' name='gender' value='other'>
-                                                            Anders
-                                                        {elseif $user->gender eq 'other'}
-                                                            <input type='radio' name='gender' value='male'>
-                                                            Man
-                                                            <input type='radio' name='gender' value='female'>
-                                                            Vrouw
-                                                            <input type='radio' name='gender' value='other' checked>
-                                                            Anders
-                                                        {else}
-                                                            <input type='radio' name='gender' value='male'>
-                                                            Man
-                                                            <input type='radio' name='gender' value='female'>
-                                                            Vrouw
-                                                            <input type='radio' name='gender' value='other'>
-                                                            Anders
-                                                        {/if}
-                                                    </td>
+                                                    </tr>
+                                                    <tr id="tog">
+                                                        <td>Wat is uw beperking:</td>
+                                                        <td>
+                                                            <input type='text' name='handicap_info'
+                                                                   value="{$user->handicapInfo}">
+                                                        </td>
 
-                                                </tr>
-                                                <tr>
-                                                    <td>Handicap:</td>
-                                                    <td>{if $user->handicap}
-                                                            <input type='checkbox' name='handicap' checked>
-                                                        {elseif !$user->handicap}
-                                                            <input type='checkbox' name='handicap'>
-                                                        {/if}
-                                                    </td>
-
-                                                </tr>
+                                                    </tr>
+                                                {/if}
                                                 <tr>
                                                     <td colspan="2" class="right">
                                                         <input type="submit" value="wijzig"
@@ -273,6 +260,7 @@
 
 
                                                 </tr>
+
                                                 </tbody>
                                             </table>
 
@@ -290,6 +278,12 @@
                                     <div class="col-xs-10 col-xs-offset-1">
                                         <table class="table table-user-information">
                                             <tbody>
+                                            {if !empty($user->companyName)}
+                                                <tr>
+                                                    <td>Bedrijfsnaam:</td>
+                                                    <td> {$user->companyName} </td>
+                                                </tr>
+                                            {/if}
                                             <tr>
                                                 <td>Naam:</td>
                                                 <td>{$user->name} {$user->surname}</td>
@@ -318,28 +312,43 @@
                                                 <td>Land</td>
                                                 <td>{$user->country}</td>
                                             </tr>
-                                            <tr>
-                                                <td>Geboortedatum</td>
-                                                <td>{$user->dob|date_format:"%d-%m-%Y"}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Geslacht</td>
-                                                {if $user->gender eq 'male'}
-                                                    <td>Man</td>
-                                                {elseif $user->gender eq 'female'}
-                                                    <td>Vrouw</td>
-                                                {elseif $user->gender eq 'other'}
-                                                    <td>-</td>
+                                            {if empty($user->companyName)}
+                                                <tr>
+                                                    <td>Geboortedatum</td>
+                                                    <td>{$user->dob|date_format:"%d-%m-%Y"}</td>
+                                                </tr>
+                                                {if !empty($user->guardian)}
+                                                    <tr>
+                                                        <td>Voogd:</td>
+                                                        <td> {$user->guardian} </td>
+                                                    </tr>
                                                 {/if}
-                                            </tr>
-                                            <tr>
-                                                <td>Handicap</td>
+                                                <tr>
+                                                    <td>Geslacht</td>
+                                                    {if $user->gender eq 'male'}
+                                                        <td>Man</td>
+                                                    {elseif $user->gender eq 'female'}
+                                                        <td>Vrouw</td>
+                                                    {elseif $user->gender eq 'other'}
+                                                        <td>-</td>
+                                                    {/if}
+                                                </tr>
+                                                <tr>
+                                                    <td>Handicap</td>
+                                                    {if $user->handicap}
+                                                        <td>Ja</td>
+                                                    {else}
+                                                        <td>Nee</td>
+                                                    {/if}
+                                                </tr>
                                                 {if $user->handicap}
-                                                    <td>Ja</td>
-                                                {else}
-                                                    <td>Nee</td>
+                                                    <tr>
+                                                        <td>Handicap Informatie</td>
+                                                        <td>{$user->handicapInfo}</td>
+
+                                                    </tr>
                                                 {/if}
-                                            </tr>
+                                            {/if}
                                             </tbody>
                                         </table>
                                     </div>
@@ -377,6 +386,18 @@
 
 </script>
 
+<script>
+    {if empty($user->companyName)}
+    function toggle() {
+        $("#tog").slideToggle(1);
+        $('input[name=handicap_info]').val('');
+    }
+
+    {if empty($user->handicap)}
+    toggle();
+    {/if}
+    {/if}
+</script>
 
 <script>
     {literal}
@@ -439,7 +460,6 @@
                     }
 
                     if (submit == true) {
-                        console.log("submit!");
                         $('#form').submit();
                     }
                 }

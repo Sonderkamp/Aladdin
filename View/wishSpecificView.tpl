@@ -102,6 +102,18 @@
                             <label class="col-xs-4">Wenser: </label>
                             <div class="col-xs-8">{htmlspecialcharsWithNL($selectedWish->user->displayName)}</div>
                         </div>
+                        {if !empty($selectedWish->user->companyName)}
+                            <div class="row">
+                                <label class="col-xs-4">Bedrijf: </label>
+                                <div class="col-xs-8">Ja</div>
+                            </div>
+                        {/if}
+                        {if !empty($selectedWish->user->guardian)}
+                            <div class="row">
+                                <label class="col-xs-4">Voogd: </label>
+                                <div class="col-xs-8">{$selectedWish->user->guardian}</div>
+                            </div>
+                        {/if}
 
                         <div class="row">
                             <label class="col-xs-4">Status: </label>
@@ -119,10 +131,23 @@
                                 <div class="col-xs-8">{htmlspecialcharsWithNL($selectedWish->completionDate)}</div>
                             </div>
                         {/if}
+
+                        {if !empty($selectedWish->user->handicapInfo)}
+                            <h6>
+                                Handicap Informatie
+                            </h6>
+                            <p>
+                                {htmlspecialcharsWithNL($selectedWish->user->handicapInfo)}
+                            </p>
+
+                        {/if}
                     </div>
 
                     <div class="col-xs-8">
+                        <h6>Content</h6>
                         <p>{htmlspecialcharsWithNL($selectedWish->content)}</p>
+
+
                     </div>
 
                 </div>
@@ -144,7 +169,8 @@
                                         <form action="/wishes/action=removeComment" method="post">
                                             <input type="hidden" name="wishId" value="{$selectedWish->id}"/>
                                             <input type="hidden" name="creationDate" value="{$comment->dbDate}"/>
-                                            <input type="hidden" name="username" value="{$comment->displayName}"/>
+                                            <input type="hidden" name="username"
+                                                   value="{htmlspecialchars($comment->displayName)}"/>
                                             <button type="submit" class="btn btn-default">
                                                 <span class="glyphicon glyphicon-remove"></span>
                                             </button>
@@ -156,14 +182,14 @@
                                             {/if}
                                         </form>
                                     {/if}
-                                    <p class="">{$comment->message}
+                                    <p class="">{htmlspecialchars($comment->message)}
                                         {if !empty($comment->image)}
                                             <a href="{$comment->image}" target="_blank">
                                                 <img class="thumbnail commentImage" src="{$comment->image}">
                                             </a>
                                         {/if}
                                     </p>
-                                    <span class="date sub-text">{$comment->displayName}
+                                    <span class="date sub-text">{htmlspecialchars($comment->displayName)}
                                         op {$comment->creationDate}</span>
 
                                 </div>

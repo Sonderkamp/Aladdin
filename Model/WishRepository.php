@@ -69,6 +69,9 @@ class WishRepository
                     $user->dob = $item["Dob"];
                     $user->gender = $item["Gender"];
                     $user->handicap = $item["Handicap"];
+                    $user->companyName = $item["CompanyName"];
+                    $user->guardian = $item["Guardian"];
+                    $user->handicapInfo = $item["HandicapInfo"];
                     $wish->user = $user;
                 }
 

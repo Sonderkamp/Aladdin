@@ -120,8 +120,6 @@ userMap.prototype.updateVisualization = function () {
                 .offset([-10, 0]);
 
             vis.svg.call(vis.tip);
-
-            console.log(vis.data);
             // add circles to svg
             vis.lines.selectAll("circle")
                 .data(vis.data).enter()
