@@ -173,7 +173,7 @@ class AdminuserController extends Controller
 
             $reported = $this->reportRepository->getId($id);
             $reported = $reported[0];
-            $reported = $reported->getReported();
+            $reported = $reported->reported;
             $displayName = $reported->displayName;
             $email = $this->userRepository->getUser($displayName)->email;
             $this->userRepository->blockUser($email);

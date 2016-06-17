@@ -8,6 +8,6 @@
  */
 class Comment
 {
-public $message, $image, $creationDate , $dbDate, $userEmail, $wishId, $displayName;
+public $message, $image, $creationDate , $dbDate, $userEmail, $wishId, $displayName, $inGuestbook;
 
 }

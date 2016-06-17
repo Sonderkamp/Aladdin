@@ -8,7 +8,7 @@
  */
 class SponsorQueryBuilder
 {
-
+    
     public function getAllSponsors($keyword = null)
     {
         $sql = "SELECT * FROM `sponsor` as s";

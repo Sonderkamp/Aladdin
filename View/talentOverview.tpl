@@ -5,13 +5,16 @@
 
 <div class="container">
 
-     <span class="info">
-            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#InfoModal">
-                <span class="glyphicon glyphicon-info-sign"></span>
-            </button>
-     </span>
+{*<<<<<<< HEAD*}
+     {*<span class="info">*}
+            {*<button type="button" class="btn btn-default" data-toggle="modal" data-target="#InfoModal">*}
+                {*<span class="glyphicon glyphicon-info-sign"></span>*}
+            {*</button>*}
+     {*</span>*}
 
 
+{*=======*}
+{*>>>>>>> mariusdv/development*}
     {if !Empty($talentError)}
         <div class="alert alert-danger fade in">
             <a href="#" class="close" data-dismiss="alert"
@@ -27,6 +30,11 @@
             <strong>Succes!</strong> {htmlspecialchars($talentSuccess)}
         </div>
     {/if}
+    <span class="info">
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#infoTalents">
+            <span class="glyphicon glyphicon-info-sign"></span>
+        </button>
+    </span>
     <h3>Talenten</h3>
     <div id="rootwizard">
 
@@ -54,14 +62,19 @@
                         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                             <input class="form-control" name="searchAdded" placeholder="Zoek een toegevoegd talent"
                                    {if !Empty($searchAdded)}value="{$searchAdded}"{/if}>
-                        </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                            <button type="submit" class="btn btn-primary">Zoek</button>
-                        </div>
+{*<<<<<<< HEAD*}
+                        {*</div>*}
+                        {*<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">*}
+                            {*<button type="submit" class="btn btn-primary">Zoek</button>*}
+                        {*</div>*}
 
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                            <a href="/talents/p=myTalents" class="btn btn-warning">Alle</a>
+                        {*<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">*}
+                            {*<a href="/talents/p=myTalents" class="btn btn-warning">Alle</a>*}
+{*=======*}
+{*>>>>>>> mariusdv/development*}
                         </div>
+                        <button type="submit" class="btn btn-primary">Zoek</button>
+                        <a href="/talents/p=myTalents" class="btn btn-warning">Alle</a>
                     </form>
 
                     <table class="table">
@@ -258,14 +271,19 @@
                         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                             <input class="form-control" name="searchAll" placeholder="Zoek een talent"
                                    {if !Empty($searchAll)}value="{$searchAll}"{/if}>
-                        </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                            <button type="submit" class="btn btn-primary">Zoek</button>
-                        </div>
+{*<<<<<<< HEAD*}
+                        {*</div>*}
+                        {*<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">*}
+                            {*<button type="submit" class="btn btn-primary">Zoek</button>*}
+                        {*</div>*}
 
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                            <a href="/talents/p=allTalents" class="btn btn-warning">Alle</a>
+                        {*<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">*}
+                            {*<a href="/talents/p=allTalents" class="btn btn-warning">Alle</a>*}
+{*=======*}
+{*>>>>>>> mariusdv/development*}
                         </div>
+                        <button type="submit" class="btn btn-primary">Zoek</button>
+                        <a href="/talents/p=allTalents" class="btn btn-warning">Alle</a>
                     </form>
 
                     <table class="table">
@@ -691,48 +709,91 @@
     </div>
 {/foreach}
 
-<div id="InfoModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+{*<<<<<<< HEAD*}
+{*<div id="InfoModal" class="modal fade" role="dialog">*}
+    {*<div class="modal-dialog">*}
 
+        {*<!-- Modal content-->*}
+        {*<div class="modal-content">*}
+            {*<div class="modal-header">*}
+                {*<button type="button" class="close" data-dismiss="modal">&times;</button>*}
+                {*<h4 class="modal-title">Talenten</h4>*}
+            {*</div>*}
+            {*<div class="modal-body">*}
+
+                {*<p>*}
+                    {*Dit is het talenten overzicht, hier kunt u nieuwe talenten toevoegen, uw talenten verwijderen of*}
+                    {*talenten aanvragen.*}
+                    {*In het zoekveld kunt u talenten zoeken.<br><br>*}
+
+                    {*<a>Mijn talenten</a> hier staan al uw eigen talenten.<br>*}
+                    {*<a>Alle talenten</a> hier staan alle talenten die bekend zijn bij ons.<br>*}
+                    {*<a>Talent toevoegen</a> ziet u geen talent dat bij u past, dan kunt u hier een nieuwe talent*}
+                    {*aanvragen<br>*}
+                {*</p>*}
+
+                {*<div class="col-xs-12 info-row">*}
+                    {*<button class="btn btn-sm">*}
+                        {*<span class="glyphicon glyphicon glyphicon-ok"/>*}
+                    {*</button>*}
+                    {*<span class="info-text">Hiermee kunt u een talent toevoegen aan uw eigen talenten.</span>*}
+                {*</div>*}
+
+                {*<div class="col-xs-12 info-row">*}
+                    {*<button class="btn btn-sm">*}
+                        {*<span class="glyphicon glyphicon glyphicon-remove"></span>*}
+                    {*</button>*}
+                    {*<span class="info-text">Hiermee kunt u een talent verwijderen.</span>*}
+                {*</div>*}
+
+                {*<div class="modal-footer">*}
+                    {*<button type="button" class="btn btn-default" data-dismiss="modal">*}
+                        {*Sluiten*}
+                    {*</button>*}
+                {*</div>*}
+            {*</div>*}
+        {*</div>*}
+    {*</div>*}
+{*</div>*}
+{*=======*}
+<div id="infoTalents" class="modal fade"
+     role="dialog">
+    <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Talenten</h4>
+                <button type="button" class="close"
+                        data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Informatie talenten</h4>
             </div>
             <div class="modal-body">
-
-                <p>
-                    Dit is het talenten overzicht, hier kunt u nieuwe talenten toevoegen, uw talenten verwijderen of
-                    talenten aanvragen.
-                    In het zoekveld kunt u talenten zoeken.<br><br>
-
-                    <a>Mijn talenten</a> hier staan al uw eigen talenten.<br>
-                    <a>Alle talenten</a> hier staan alle talenten die bekend zijn bij ons.<br>
-                    <a>Talent toevoegen</a> ziet u geen talent dat bij u past, dan kunt u hier een nieuwe talent
-                    aanvragen<br>
-                </p>
-
-                <div class="col-xs-12 info-row">
-                    <button class="btn btn-sm">
-                        <span class="glyphicon glyphicon glyphicon-ok"/>
-                    </button>
-                    <span class="info-text">Hiermee kunt u een talent toevoegen aan uw eigen talenten.</span>
-                </div>
-
-                <div class="col-xs-12 info-row">
-                    <button class="btn btn-sm">
-                        <span class="glyphicon glyphicon glyphicon-remove"></span>
-                    </button>
-                    <span class="info-text">Hiermee kunt u een talent verwijderen.</span>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
-                        Sluiten
-                    </button>
-                </div>
+                <h5>Mijn Talenten</h5>
+                <p>Hier worden de door de gebruiker toegevoegde talenten weergegeven. Hier kunt u zoeken via de
+                    zoekbalk. Als u een zoekopdracht heeft uitgevoerd kunt u deze ongedaan maken met de "alle" knop.</p>
+                <button class="btn btn-inbox btn-sm">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+                Deze knop word gebruikt om het toegevoegde talent weg te halen.
+                <h5>Alle Talenten</h5>
+                <p>Hier worden alle talenten weergegeven die niet door u zijn toegevoegd. De zoekfunctie werkt hetzelfde
+                    als bij "mijn talenten".</p>
+                <button class="btn btn-add btn-sm">
+                    <span class="glyphicon glyphicon-ok"></span>
+                </button>
+                Deze knop voegt het talent toe.
+                <h5>Talent toevoegen</h5>
+                <p>Hier kunt u een nieuw talent toevoegen die nog niet bestaat. Als een talent word toegevoegd dan moet
+                    de aanvraag eerst worden geaccepteerd door een moderator. Als het talent al bestaat dan word deze
+                    direct toegevoegd of wanneer de aanvraag al is geplaatst dan word het talent toegevoegd zodra de
+                    aanvraag word geaccepteerd.</p>
+                <p>Vul uw talent in bij "naam talent" en daarna klik op de "aanvragen" knop</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default infoLeft"
+                        data-dismiss="modal">Sluiten
+                </button>
             </div>
         </div>
     </div>
 </div>
+{*>>>>>>> mariusdv/development*}

@@ -1,12 +1,12 @@
 <div class="container">
 
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12  pull-right">
-        <span class="info" style="margin-bottom: 20px;">
-            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#InfoModal">
-                <span class="glyphicon glyphicon-info-sign"></span>
-            </button>
-        </span>
-    </div>
+    {*<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12  pull-right">*}
+        {*<span class="info" style="margin-bottom: 20px;">*}
+            {*<button type="button" class="btn btn-default" data-toggle="modal" data-target="#InfoModal">*}
+                {*<span class="glyphicon glyphicon-info-sign"></span>*}
+            {*</button>*}
+        {*</span>*}
+    {*</div>*}
 
     {* If succes message is not empty than show it *}
     {if !empty($successMessage)}
@@ -59,11 +59,17 @@
 
     </form>
 
+    <h5 class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{if $wordsCount > 0}Verboden woorden{/if}
+        <span class="info">
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#infoForbiddenWords">
+                <span class="glyphicon glyphicon-info-sign"></span>
+            </button>
+        </span>
+    </h5>
 
     {* if there is 1 word or more show table *}
     {* ELSE show no words found *}
     {if $wordsCount > 0}
-        <h5 class="col-xs-12 col-sm-12 col-md-12 col-lg-12">Verboden woorden</h5>
         <table class="table col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <thead>
             <tr>
@@ -266,7 +272,7 @@
             </div>
         {/if}
     {else}
-        <h5 class="table col-xs-12 col-sm-12 col-md-12 col-lg-12">Geen woorden gevonden!</h5>
+        <h3 class="table col-xs-12 col-sm-12 col-md-12 col-lg-12">Geen woorden gevonden!</h3>
     {/if}
 </div>
 
@@ -340,48 +346,42 @@
     </div>
 {/foreach}
 
-<div id="InfoModal" class="modal fade" role="dialog">
+<div id="infoForbiddenWords" class="modal fade"
+     role="dialog">
     <div class="modal-dialog">
-
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Verboden woorden beheer</h4>
+                <button type="button" class="close"
+                        data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Informatie verboden woorden</h4>
             </div>
             <div class="modal-body">
-
+                <h5>Verboden woorden beheren</h5>
+                <p>Hier worden alle verboden woorden beheert. Als een wens of talent word aangevraagd waar een woord
+                    hiervan in zit dan word deze automatisch geweigerd. Er kan gezocht worden op de verboden woorden of
+                    de pagination kan uit worden gezet voor een complete weergave van alle woorden.</p>
+                <p><b>LET OP: </b> als u een verboden woord toevoegd wat gelijk is aan een talent dan word deze talent
+                    en alle referenties hiernaar verwijderd uit de database. Dit is <b>onomkeerbaar</b>!</p>
                 <p>
-                    Op deze pagina kun je de verboden woorden beheren, zoals toevoegen, verwijderen en wijzigen. Met de
-                    zoekbalk kunt u woorden zoeken.<br><br>
-
-                    <a>Pagination uit</a> toont alle woorden op één en dezelfde pagina getoond.<br>
-                    <a>Pagination aan</a> verdeeld de woorden over meerdere paginas.<br>
-                    <br>
-
-                    Hier vind u uitleg over de icoontjes die in het verboden woorden systeem voorkomen:
+                    <button class="btn btn-inbox btn-small">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </button>
+                    Hier kan de naam van het woord worden geweigerd. Het woord wordt automatisch omgezet naar kleine
+                    letters.
                 </p>
-
-
-                <div class="col-xs-12 info-row">
-                    <button class="btn btn-sm">
-                        <span class="glyphicon glyphicon glyphicon-edit"></span>
+                <p>
+                    <button class="btn btn-danger btn-small">
+                        <span class="glyphicon glyphicon-trash"></span>
                     </button>
-                    <span class="info-text">Woord wijzigen</span>
-                </div>
-
-                <div class="col-xs-12 info-row">
-                    <button class="btn btn-sm">
-                        <span class="glyphicon glyphicon glyphicon-remove"></span>
-                    </button>
-                    <span class="info-text">Woord verwijderen</span>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
-                        Sluiten
-                    </button>
-                </div>
+                    Hiermee word het talent verwijderd. Dit is <b>onomkeerbaar</b>! Er word altijd nog om bevestiging
+                    gevraagd ter beveiliging van bijvoorbeeld per ongeluk op klikken.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default infoLeft"
+                        data-dismiss="modal">Sluiten
+                </button>
             </div>
         </div>
     </div>

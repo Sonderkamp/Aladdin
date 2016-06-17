@@ -3,13 +3,21 @@
 <!--Date: 10-3-2016-->
 <!--Time: 09:37-->
 <div class="container">
+{*<<<<<<< HEAD*}
 
-     <span class="info">
-            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#InfoModal">
-                <span class="glyphicon glyphicon-info-sign"></span>
-            </button>
-         </span>
+     {*<span class="info">*}
+            {*<button type="button" class="btn btn-default" data-toggle="modal" data-target="#InfoModal">*}
+                {*<span class="glyphicon glyphicon-info-sign"></span>*}
+            {*</button>*}
+         {*</span>*}
 
+{*=======*}
+    <span class="info">
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#infoTalentManage">
+            <span class="glyphicon glyphicon-info-sign"></span>
+        </button>
+    </span>
+{*>>>>>>> mariusdv/development*}
     <div id="rootwizard">
         <h5>Talenten beheren</h5>
         <div class="col-md-2">
@@ -23,17 +31,14 @@
         <div class="col-md-10">
             <div class="tab-content">
                 <div class="tab-pane{if $page == "allTalents"} fade in active{/if}" id="tab1">
-                    <form class="col-xs-12 col-sm-12 col-md-12 col-lg-12" action="/admintalents/p=allTalents"
+                    <form class="col-xs-12" action="/admintalents/p=allTalents"
                           method="get">
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                        <div class="col-xs-8">
                             <input class="form-control" name="search" placeholder="Zoek een talent"
                                    {if !Empty($search)}value="{$search}"{/if}>
                         </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <div class="col-xs-4">
                             <button type="submit" class="btn btn-primary">Zoek</button>
-                        </div>
-
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                             <a href="/admintalents/p=allTalents" class="btn btn-warning">Alle</a>
                         </div>
                     </form>
@@ -459,58 +464,58 @@
     </div>
 {/foreach}
 
-<div id="InfoModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+{*<div id="InfoModal" class="modal fade" role="dialog">*}
+    {*<div class="modal-dialog">*}
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Talenten beheer</h4>
-            </div>
-            <div class="modal-body">
+        {*<!-- Modal content-->*}
+        {*<div class="modal-content">*}
+            {*<div class="modal-header">*}
+                {*<button type="button" class="close" data-dismiss="modal">&times;</button>*}
+                {*<h4 class="modal-title">Talenten beheer</h4>*}
+            {*</div>*}
+            {*<div class="modal-body">*}
 
-                <p>
-                    Hier vind u uitleg over de icoontjes die in het talentbeheer systeem voorkomen:
-                </p>
+                {*<p>*}
+                    {*Hier vind u uitleg over de icoontjes die in het talentbeheer systeem voorkomen:*}
+                {*</p>*}
 
-                <div class="col-xs-12 info-row">
-                    <button class="btn btn-sm">
-                        <span class="glyphicon glyphicon glyphicon-wrench"></span>
-                    </button>
-                    <span class="info-text">Synoniemen van een talent toevoegen/verwijderen</span>
-                </div>
+                {*<div class="col-xs-12 info-row">*}
+                    {*<button class="btn btn-sm">*}
+                        {*<span class="glyphicon glyphicon glyphicon-wrench"></span>*}
+                    {*</button>*}
+                    {*<span class="info-text">Synoniemen van een talent toevoegen/verwijderen</span>*}
+                {*</div>*}
 
-                <div class="col-xs-12 info-row">
-                    <button class="btn btn-sm">
-                        <span class="glyphicon glyphicon glyphicon-edit"></span>
-                    </button>
-                    <span class="info-text">Talent wijzigen</span>
-                </div>
+                {*<div class="col-xs-12 info-row">*}
+                    {*<button class="btn btn-sm">*}
+                        {*<span class="glyphicon glyphicon glyphicon-edit"></span>*}
+                    {*</button>*}
+                    {*<span class="info-text">Talent wijzigen</span>*}
+                {*</div>*}
 
-                <div class="col-xs-12 info-row">
-                    <button class="btn btn-sm">
-                        <span class="glyphicon glyphicon glyphicon-ok"></span>
-                    </button>
-                    <span class="info-text">Talent accepteren</span>
-                </div>
+                {*<div class="col-xs-12 info-row">*}
+                    {*<button class="btn btn-sm">*}
+                        {*<span class="glyphicon glyphicon glyphicon-ok"></span>*}
+                    {*</button>*}
+                    {*<span class="info-text">Talent accepteren</span>*}
+                {*</div>*}
 
-                <div class="col-xs-12 info-row">
-                    <button class="btn btn-sm">
-                        <span class="glyphicon glyphicon glyphicon-remove"></span>
-                    </button>
-                    <span class="info-text">Talent afwijzen</span>
-                </div>
+                {*<div class="col-xs-12 info-row">*}
+                    {*<button class="btn btn-sm">*}
+                        {*<span class="glyphicon glyphicon glyphicon-remove"></span>*}
+                    {*</button>*}
+                    {*<span class="info-text">Talent afwijzen</span>*}
+                {*</div>*}
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
-                        Sluiten
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                {*<div class="modal-footer">*}
+                    {*<button type="button" class="btn btn-default" data-dismiss="modal">*}
+                        {*Sluiten*}
+                    {*</button>*}
+                {*</div>*}
+            {*</div>*}
+        {*</div>*}
+    {*</div>*}
+{*</div>*}
 
 
 {if !Empty($synonymId)}
@@ -528,3 +533,61 @@
         });
     </script>
 {/if}
+
+<div id="infoTalentManage" class="modal fade"
+     role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Informatie talentbeheer</h4>
+            </div>
+            <div class="modal-body">
+                <h5>Talenten beheren</h5>
+                <p>Hier kunnen alle talenten worden beheert. Alle talenten die nog niet zijn geaccepteerd hebben een
+                    streep bij "Is geaccepteerd" en "Gecheckt door". De talenten staan op alfabetische volgorden en er
+                    kan gezocht worden via de zoekbalk.</p>
+                <p>
+                    <button class="btn btn-inbox btn-sm">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </button>
+                    Hier kan de naam van een talent of de "Is geaccepteerd" status worden gewijzigd.
+                </p>
+                <p>
+                    <button class="btn btn-warning btn-sm">
+                        <span class="glyphicon glyphicon-wrench"></span>
+                    </button>
+                    Hier kan een synoniem worden toegevoegd of verwijderd van dit talent.
+                </p>
+                <p><b>LET OP: </b> als een talent die geaccepteerd is weer wordt geweigerd worden alle synoniem hiervan
+                    ook verwijderd. Dit voorkomt dat hij kan worden gematched via een ander talent die als synoniem is
+                    toegevoegd. Een geweigerd talent kan ook door deze rede niet gekoppeld worden aan een synoniem en is
+                    hier de synoniem knop verborgen.</p>
+                <h5>Aanvragen talenten</h5>
+                <p>Hier worden alle aanvragen van talenten gevonden. Ze kunnen worden goedgekeurd of geweigerd. In beide
+                    gevallen word een bericht naar de gebruiker verzonden. Bij het weigeren van een talent kan het
+                    veldje "rede afwijzing" leeg worden gelaten. Indien hij leeg is dan word er een standaard bericht
+                    verzonden.</p>
+                <p>
+                    <button class="btn btn-inbox btn-sm">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    Hiermee word een talentaanvraag geweigerd.
+                </p>
+                <p>
+                    <button class="btn btn-add btn-sm">
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </button>
+                    Hiermee word een talentaanvraag geaccepteerd.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default infoLeft"
+                        data-dismiss="modal">Sluiten
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

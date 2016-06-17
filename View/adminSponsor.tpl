@@ -107,18 +107,27 @@
                 <div class="modal-body">
                     <form action="/adminsponsor/action=addSponsor" method="post" enctype="multipart/form-data">
                         <fieldset class="form-group">
+                            <h6 class="modal-title">Contactpersoon:</h6>
                             <select name="userEmail">
-                                <option value="default">- kies gebruiker -</option>
+                                <option value="default"> - kies gebruiker - </option>
                                 {foreach $users as $user}
-                                    <option value="{$user->email}">{$user->email}</option>
+                                    <option value="{$user->displayName}">{$user->displayName} </option>
                                 {/foreach}
                             </select>
+                            <br><br>
+                            <h6 class="modal-title">Bedrijfsnaam:</h6>
                             <input type="text" class="form-control" name="name"
                                    placeholder="Bedrijfsnaam">
+                            <br>
+                            <h6 class="modal-title">Beschrijving:</h6>
                             <input type="text" class="form-control" name="description"
                                    placeholder="Beschrijving">
+                            <br>
+                            <h6 class="modal-title">Url:</h6>
                             <input type="text" class="form-control" name="url"
                                    placeholder="Link naar website">
+                            <br>
+                            <h6 class="modal-title">Kies afbeelding:</h6>
                             <input class="form-control" name="img" type="file"/><br/>
                         </fieldset>
                         <button type="submit" class="btn btn-default">Opslaan</button>
@@ -143,7 +152,7 @@
 
                             <h6 class="modal-title">ID:</h6>
                             <input name="id" class="form-control" value="{$sponsor->id}" readonly>
-
+                            <br>
                             <h6 class="modal-title">Contactpersoon:</h6>
                             <select name="userEmail">
                                 <option value="{$sponsor -> userMail}">{$sponsor -> userMail}</option>
@@ -153,19 +162,20 @@
                                     {/if}
                                 {/foreach}
                             </select>
-
+                            <br><br>
                             <h6 class="modal-title">Bedrijfsnaam:</h6>
                             <input type="text" class="form-control" name="name"
                                    placeholder="Bedrijfsnaam" value="{$sponsor -> name}">
-
+                            <br>
                             <h6 class="modal-title">Beschrijving:</h6>
                             <input type="text" class="form-control" name="description"
                                    placeholder="Beschrijving" value="{$sponsor -> description}">
-
+                            <br>
                             <h6 class="modal-title">URL:</h6>
                             <input type="text" class="form-control" name="url"
                                    placeholder="Link naar website" value="{$sponsor -> url}">
-
+                            <br>
+                            <h6 class="modal-title">Kies afbeelding:</h6>
                             <input class="form-control" name="img" type="file"/><br/>
                             <a href="{$sponsor->image}" target="_blank">
                                 <img class="thumbnail commentImage" src="{$sponsor->image}">
