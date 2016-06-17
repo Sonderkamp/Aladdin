@@ -40,6 +40,7 @@ class WishesController extends Controller
         $incompletedWishes = $this->wishRepo->getIncompletedWishes();
         $matchedWishes = $this->wishRepo->getPossibleMatches();
 
+
         $canAddWish = $this->wishRepo->canAddWish($this->userRepo->getCurrentUser()->email);
         $displayNames = array();
 
@@ -498,7 +499,7 @@ class WishesController extends Controller
                 "currentUser" => $this->userRepo->getCurrentUser()]);
         exit(0);
     }
-    
+
     public function setCompletionDate(){
         if(!empty($_POST["completionDate"]) && !empty($_POST["Id"])){
             if(strtotime($_POST["completionDate"]) > time()){
