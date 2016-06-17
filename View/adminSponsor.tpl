@@ -198,7 +198,8 @@
 
                 <p>
                     Bij het aanmaken van een sponsor is de bedrijfsnaam of de gebruiker verplicht.<br>
-                    <a>Kies<span class="glyphicon glyphicon-triangle-bottom"/></a> hiermee kunt u kiezen om een sponsor te bewerken of te verwijderen.<br><br>
+                    <a>Kies<span class="glyphicon glyphicon-triangle-bottom"/></a> hiermee kunt u kiezen om een sponsor
+                    te bewerken of te verwijderen.<br><br>
 
                     Hier vind u uitleg over de icoontjes die in het talentbeheer systeem voorkomen:
                 </p>
