@@ -26,7 +26,7 @@ class MatchRepository
             foreach ($queryResult as $item) {
 
                 $userParams = array("Email", "Name", "DisplayName", "Surname", "Address",
-                    "Postalcode", "Country", "City", "Dob", "Gender", "Handicap");
+                    "Postalcode", "Country", "City");
                 $userCheck = true;
 
                 foreach ($userParams as $param) {
@@ -36,12 +36,11 @@ class MatchRepository
                     }
                 }
 
-
                 $match = new Match();
 
                 $match->user = $item["user_Email"];
                 $match->isSelected = $item["IsSelected"];
-                $match->isActive = $item["IsActive"];
+                $match->isActive = $item["matchIsActive"];
                 $match->wishId = $item["wish_Id"];
 
                 if ($userCheck) {
@@ -54,9 +53,9 @@ class MatchRepository
                     $user->postalcode = $item[$userParams[5]];
                     $user->country = $item[$userParams[6]];
                     $user->city = $item[$userParams[7]];
-                    $user->dob = $item[$userParams[8]];
-                    $user->gender = $item[$userParams[9]];
-                    $user->handicap = $item[$userParams[10]];
+                    $user->dob = $item["Dob"];
+                    $user->gender = $item["Gender"];
+                    $user->handicap = $item["Handicap"];
                     $match->user = $user;
                 }
 

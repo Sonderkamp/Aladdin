@@ -61,11 +61,21 @@
                     </li>
 
                     {if $canMatch}
-                        <li>
-                            <a class="btn btn-side btn-default" data-toggle="modal" data-target="#matchModal">
-                                Match
-                            </a>
-                        </li>
+                        {if !empty($isMatched) && $isMatched}
+                            <li>
+                                <a href="/Wishes/action=removeMatch?Id={$selectedWish->id}"
+                                   class="btn btn-side btn-default">
+                                    Trek match terug
+                                </a>
+                            </li>
+                        {else}
+                            <li>
+                                <a class="btn btn-side btn-default" data-toggle="modal" data-target="#matchModal">
+                                    Match
+                                </a>
+                            </li>
+                        {/if}
+
                     {else}
                         <li>
                             <strong>Het is niet mogelijk om met deze wens te matchen</strong>
@@ -123,11 +133,11 @@
                         {foreach from=$comments item=comment}
                             <li>
                                 <div class="commentText">
-                                    {if (!$adminView)}
+                                    {if ($adminView)}
                                         <form action="/wishes/action=removeComment" method="post">
-                                            <input type="hidden" name="wishId" value="{$selectedWish->id}" />
-                                            <input type="hidden" name="creationDate" value="{$comment->dbDate}" />
-                                            <input type="hidden" name="username" value="{$comment->displayName}" />
+                                            <input type="hidden" name="wishId" value="{$selectedWish->id}"/>
+                                            <input type="hidden" name="creationDate" value="{$comment->dbDate}"/>
+                                            <input type="hidden" name="username" value="{$comment->displayName}"/>
                                             <button type="submit" class="btn btn-default">
                                                 <span class="glyphicon glyphicon-remove"></span>
                                             </button>
@@ -149,18 +159,19 @@
                     </ul>
                     {if !$adminView}
                         {if $canComment}
-                        <form class="form-inline"
-                              action="/Wishes/Id={$selectedWish->id}/action=AddComment"
-                              method="post"
-                              enctype="multipart/form-data">
-                            <div class="form-group">
-                                <input class="form-control" name="img" type="file"/><br/>
-                                <input class="form-control" type="text" name="comment" placeholder="Nieuwe Reactie"/>
-                            </div>
-                            <div class="form-group">
-                                <button class="btn btn-default">Add</button>
-                            </div>
-                        </form>
+                            <form class="form-inline"
+                                  action="/Wishes/Id={$selectedWish->id}/action=AddComment"
+                                  method="post"
+                                  enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <input class="form-control" name="img" type="file"/><br/>
+                                    <input class="form-control" type="text" name="comment"
+                                           placeholder="Nieuwe Reactie"/>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-default">Add</button>
+                                </div>
+                            </form>
                         {else}
                             <span>Reageren is alleen mogelijk bij vervulde wensen</span>
                         {/if}
@@ -176,8 +187,13 @@
                     {foreach from=$matches item=match}
                         {if !empty($matches)}
                             <div class="inner-border match-controls row">
-                                <p class="col-xs-6">{$match->user->displayName}</p>
-                                {if !empty($currentUser) && $selectedWish->user->email == $currentUser->email}
+                                {if $match->isActive == 0}
+                                    <p class="col-xs-6"><s>{$match->user->displayName}</s></p>
+                                    {else}
+                                    <p class="col-xs-6">{$match->user->displayName}</p>
+                                {/if}
+
+                                {if !empty($currentUser) && $selectedWish->user->email == $currentUser->email && $match->isActive == 1}
                                     {*<button type="button" class="col-xs-3 btn btn-confirm btn-default" data-toggle="modal" data-target="#profileModal{$wish->id}">*}
                                     {*<span class="glyphicon glyphicon-user"></span>*}
                                     {*</button>*}

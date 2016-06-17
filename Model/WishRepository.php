@@ -210,7 +210,7 @@ class WishRepository
 
     // This function checks if the given user can comment on the selected wish
     public function canComment($wishId, $user) {
-        return !empty($this->WishQueryBuilder->getMatchByFulfiller($wishId, $user));
+        return !empty($this->wishQueryBuilder->getMatchByFulfiller($wishId, $user));
     }
 
     public function getWishAmount($email)
@@ -361,12 +361,17 @@ class WishRepository
         $this->wishQueryBuilder->removeComment($creationDate , $user, $wishId);
     }
 
+    public function removeMatch($wishId){
+        if(!empty($this->userRepository->getCurrentUser())){
+            $this->wishQueryBuilder->removeMatch($wishId , $this->userRepository->getCurrentUser()->email);
+        }
+    }
+
     public function addComment($comment, $wishID, $user, $img = null)
     {
 
         // if user can comment this wish (alleen als de wens klaar is && de gebruiker de wenser is of de match)
         // TODO
-
 
         // if there has been a comment < 3 minutes ago
         $res = $this->wishQueryBuilder->lastCommentMinutes($wishID, $user);

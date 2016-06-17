@@ -421,6 +421,7 @@ class WishesController extends Controller
         $matches = $this->matchRepo->getMatches($id);
         $comments = $this->wishRepo->getComments($id);
         $canMatch = false;
+        $isMatched = false;
         $canComment = false;
 
         if (!empty($selectedWish)) {
@@ -456,6 +457,24 @@ class WishesController extends Controller
             $canMatch = false;
         }
 
+        if(!empty($this->userRepo->getCurrentUser())){
+            foreach($matches as $match) {
+                if($match->user->email == $this->userRepo->getCurrentUser()->email){
+                    if($match->isActive == 1){
+                        $isMatched = true;
+                    }
+
+                    if($match->isSelected == 1){
+                        $canComment = true;
+                    }
+                }
+            }
+        }
+
+        if($selectedWish->status != "Vervuld" ){
+            $canComment = false;
+        }
+
         // Todo: Al gematcht
 
         // TODO: Ontmatch knop
@@ -468,6 +487,7 @@ class WishesController extends Controller
                 "adminView" => false,
                 "comments" => $comments,
                 "canMatch" => $canMatch,
+                "isMatched" => $isMatched,
                 "canComment" => $canComment,
                 "currentUser" => $this->userRepo->getCurrentUser()]);
         exit(0);
@@ -481,6 +501,14 @@ class WishesController extends Controller
             $this->redirect("/wishes/action=getSpecificWish?Id=" . $_POST["wishId"]);
         } else {
             $this->apologize("please provide a valid wishId & creationDate");
+        }
+    }
+
+    public function removeMatch()
+    {
+        if(!empty($_GET["Id"])){
+            $this->wishRepo->removeMatch($_GET["Id"]);
+            $this->redirect("/wishes/action=getSpecificWish?Id=" . $_GET["Id"]);
         }
     }
 

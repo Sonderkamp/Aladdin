@@ -27,7 +27,7 @@ class MatchQueryBuilder extends QueryBuilder
             return null;
         }
 
-        $query = "SELECT * FROM `matches`
+        $query = "SELECT *, `matches`.IsActive as matchIsActive FROM `matches`
                   JOIN `user` ON `matches`.user_Email = `user`.Email ";
 
         if($username != null){
@@ -44,6 +44,8 @@ class MatchQueryBuilder extends QueryBuilder
             $param[] = $username;
         }
 
+//        $query .= "AND `matches`.IsActive = 1 ";
+
         $query .= "AND user_Email IS NOT NULL AND NOT EXISTS
                   ( SELECT NULL FROM blockedusers AS b WHERE b.user_Email = `matches`.user_Email AND b.IsBlocked = 1
                   AND b.Id = (SELECT Id FROM blockedusers as c WHERE c.user_Email = `matches`.user_Email
@@ -55,11 +57,18 @@ class MatchQueryBuilder extends QueryBuilder
 
     public function addMatch($wishId , $username){
         $query = "INSERT INTO `matches` (`wish_Id`, `user_Email`, `IsActive`, `IsSelected`) VALUES (?, ?, 1, 0);";
-        return $this->executeQuery($query , array($wishId , $username));
+        $res = $this->executeQuery($query , array($wishId , $username));
+
+        if($res === false) {
+            $query = "UPDATE `matches` SET `IsActive` = 1 WHERE `wish_Id` = ? AND `user_Email` = ?";
+            $res = $this->executeQuery($query , array($wishId , $username));
+        }
+
+        return $res;
     }
 
     public function checkForUser($username , $wishId){
-        $query = "SELECT * FROM `matches` WHERE `matches`.user_Email = ? AND `matches`.wish_Id = ?";
+        $query = "SELECT * FROM `matches` WHERE `matches`.user_Email = ? AND `matches`.wish_Id = ? AND `matches`.IsActive = 1";
         return $this->executeQuery($query , array($username, $wishId));
     }
 
