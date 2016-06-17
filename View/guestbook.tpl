@@ -6,6 +6,7 @@
             </button>
         </span>
     {/if}
+    <h1 class="col-sm-12">Gastenboek</h1>
     {if count($comments) > 0}
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             {for $comment=0 to count($comments) step 2}
