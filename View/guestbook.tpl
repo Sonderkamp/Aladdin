@@ -85,7 +85,7 @@
     {else}
         <h3>Helaas is het gastenboek nog leeg.</h3>
     {/if}
-</h1>
+</div>
 
 {if $isAdmin}
     <div id="infoGuestbook" class="modal fade"
