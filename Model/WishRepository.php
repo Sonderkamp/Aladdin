@@ -15,10 +15,10 @@ class WishRepository
     public function __construct()
     {
         $this->wishQueryBuilder = new WishQueryBuilder();
-        $this->matchRepo        = new MatchRepository();
+        $this->matchRepo = new MatchRepository();
         $this->talentRepository = new TalentRepository();
-        $this->userRepository   = new UserRepository();
-        $this->adminRepo        = new AdminRepository();
+        $this->userRepository = new UserRepository();
+        $this->adminRepo = new AdminRepository();
     }
 
     /**
@@ -209,7 +209,8 @@ class WishRepository
     }
 
     // This function checks if the given user can comment on the selected wish
-    public function canComment($wishId, $user) {
+    public function canComment($wishId, $user)
+    {
         return !empty($this->wishQueryBuilder->getMatchByFulfiller($wishId, $user));
     }
 
@@ -223,7 +224,8 @@ class WishRepository
         }
     }
 
-    public function getWishLimit($username){
+    public function getWishLimit($username)
+    {
         $extraWishes = count($this->matchRepo->getCompletedMatches($username));
         return $this->wishLimit + $extraWishes;
     }
@@ -350,21 +352,35 @@ class WishRepository
         return $message;
     }
 
-    public function getComments($wishID)
+    public function getComments($wishID = null)
     {
         return $this->wishQueryBuilder->getComments($wishID);
     }
 
-    public function removeComment($creationDate , $username, $wishId){
+    public function removeComment($creationDate, $username, $wishId)
+    {
         $user = $this->userRepository->getUser($username)->email;
 
-        $this->wishQueryBuilder->removeComment($creationDate , $user, $wishId);
+        $this->wishQueryBuilder->removeComment($creationDate, $user, $wishId);
     }
 
-    public function removeMatch($wishId){
-        if(!empty($this->userRepository->getCurrentUser())){
-            $this->wishQueryBuilder->removeMatch($wishId , $this->userRepository->getCurrentUser()->email);
+    public function removeMatch($wishId)
+    {
+        if (!empty($this->userRepository->getCurrentUser())) {
+            $this->wishQueryBuilder->removeMatch($wishId, $this->userRepository->getCurrentUser()->email);
         }
+    }
+
+    public function addToGuestbook($creationDate, $username, $wishId)
+    {
+        $user = $this->userRepository->getUser($username)->email;
+        $this->wishQueryBuilder->addToGuestbook($creationDate, $user, $wishId);
+    }
+
+    public function removeFromGuestbook($creationDate, $username, $wishId)
+    {
+        $user = $this->userRepository->getUser($username)->email;
+        $this->wishQueryBuilder->removeFromGuestbook($creationDate, $user, $wishId);
     }
 
     public function addComment($comment, $wishID, $user, $img = null)
@@ -473,14 +489,12 @@ class WishRepository
     public function cleanWishes()
     {
 
-       $res = Database::query("SELECT * FROM `updatelog` order by Time Desc Limit 1");
+        $res = Database::query("SELECT * FROM `updatelog` order by Time Desc Limit 1");
 
-        if($res !== false)
-        {
-             if(round((strtotime("now") - strtotime($res[0]["Time"]))/3600, 1) < 24)
-             {
-                 return;
-             }
+        if ($res !== false) {
+            if (round((strtotime("now") - strtotime($res[0]["Time"])) / 3600, 1) < 24) {
+                return;
+            }
         }
 
         Database::query_safe("INSERT INTO `updatelog` (`Time`) VALUES (?);", array(date("Y-m-d H:i:s")));
@@ -497,7 +511,7 @@ class WishRepository
             if (is_array($oldWishes)) {
                 foreach ($oldWishes as $wish) {
 
-                    $date1 = new DateTime( $wish->contentDate);
+                    $date1 = new DateTime($wish->contentDate);
                     $date2 = new DateTime();
                     $interval = $date2->diff($date1);
                     $diff = ($interval->format('%y') * 12) + $interval->format('%m');
@@ -509,7 +523,7 @@ class WishRepository
                         $mail = new Email();
                         $mail->fromName = "Alladin";
                         $mail->subject = "Automatisch verwijderen.";
-                        $mail->message = "Hallo " . $wish->user->name . ", \n  Wensen die al meer dan 6 maanden niet zijn gewijzigd worden door het systeem verwijderd. Uw wens genaamd: '". $wish->title ."' is nu verwijderd.";
+                        $mail->message = "Hallo " . $wish->user->name . ", \n  Wensen die al meer dan 6 maanden niet zijn gewijzigd worden door het systeem verwijderd. Uw wens genaamd: '" . $wish->title . "' is nu verwijderd.";
                         $mail->to = $wish->user->email;
 
                         $newmail = new messageRepository();

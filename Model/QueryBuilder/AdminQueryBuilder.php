@@ -28,7 +28,7 @@ class AdminQueryBuilder
         if (isset($param)) {
             return Database::query_safe($query, $param);
         } else {
-            $query .= " ORDER BY `Username` ASC";
+            $query .= " ORDER BY `CreationDate` ASC";
             return Database::query($query);
         }
     }

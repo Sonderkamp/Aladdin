@@ -141,6 +141,11 @@
                                             <button type="submit" class="btn btn-default">
                                                 <span class="glyphicon glyphicon-remove"></span>
                                             </button>
+                                            {if $comment->inGuestbook == "0"}
+                                            <button type="submit" class="btn btn-inbox" name="addGuestbook" value="add">
+                                                <span class="glyphicon glyphicon-book"></span>
+                                            </button>
+                                            {/if}
                                         </form>
                                     {/if}
                                     <p class="">{$comment->message}
@@ -157,7 +162,7 @@
                             </li>
                         {/foreach}
                     </ul>
-                    {if !$adminView}
+                    {if (!$adminView)}
                         {if $canComment}
                             <form class="form-inline"
                                   action="/Wishes/Id={$selectedWish->id}/action=AddComment"

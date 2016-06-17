@@ -294,12 +294,17 @@ class WishQueryBuilder extends QueryBuilder
     }
 
 
-    public function getComments($wishID)
+    public function getComments($wishID = null)
     {
 
         setlocale(LC_TIME, 'Dutch');
-        $array = Database::query_safe("SELECT `wishmessage`.`Message`, `wishmessage`.`Image`,  `wishmessage`.`CreationDate`, `wishmessage`.`user_Email`, `wishmessage`.`wish_Id`, `user`.`DisplayName` FROM `wishmessage` join `user` on `email` = `user_Email`
-WHERE `wish_Id` = ? ORDER BY `wishmessage`.`CreationDate` ASC ", array($wishID));
+        if($wishID != null) {
+            $array = Database::query_safe("SELECT `wishmessage`.`Message`, `wishmessage`.`Image`,  `wishmessage`.`CreationDate`, `wishmessage`.`user_Email`, `wishmessage`.`wish_Id`, `wishmessage`.`InGuestbook`, `user`.`DisplayName` FROM `wishmessage` join `user` on `email` = `user_Email`
+            WHERE `wish_Id` = ? ORDER BY `wishmessage`.`CreationDate` ASC ", array($wishID));
+        } else {
+            $array = Database::query("SELECT `wishmessage`.`Message`, `wishmessage`.`Image`,  `wishmessage`.`CreationDate`, `wishmessage`.`user_Email`, `wishmessage`.`wish_Id`, `wishmessage`.`InGuestbook`, `user`.`DisplayName` FROM `wishmessage` join `user` on `email` = `user_Email`
+            WHERE InGuestbook = 1 ORDER BY `wishmessage`.`CreationDate` DESC ");
+        }
 
         $comments = array();
         foreach ($array as $row) {
@@ -311,6 +316,7 @@ WHERE `wish_Id` = ? ORDER BY `wishmessage`.`CreationDate` ASC ", array($wishID))
             $comment->userEmail = $row["user_Email"];
             $comment->wishId = $row["wish_Id"];
             $comment->displayName = $row["DisplayName"];
+            $comment->inGuestbook = $row["InGuestbook"];
 
             $comments[] = $comment;
         }
@@ -337,6 +343,14 @@ WHERE `wish_Id` = ? ORDER BY `wishmessage`.`CreationDate` ASC ", array($wishID))
     public function addComment($comment, $wishID, $user, $img = null)
     {
         Database::query_safe("INSERT INTO `wishmessage` (`Message`, `Image`, `CreationDate`, `user_Email`, `wish_Id`) VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?);", array($comment, $img, $user->email, $wishID));
+    }
+    
+    public function addToGuestbook($creationDate , $username, $wishId) {
+        Database::query_safe("UPDATE `wishmessage` SET `InGuestbook`=1 WHERE `CreationDate` = ? AND `user_Email` = ? AND `wish_Id` = ?" , array($creationDate , $username, $wishId));
+    }
+
+    public function removeFromGuestbook($creationDate , $username, $wishId) {
+        Database::query_safe("UPDATE `wishmessage` SET `InGuestbook`=0 WHERE `CreationDate` = ? AND `user_Email` = ? AND `wish_Id` = ?" , array($creationDate , $username, $wishId));
     }
 
     public function lastCommentMinutes($wishID, $user)
