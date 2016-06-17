@@ -93,6 +93,9 @@
                                 <label>{$value->status}</label>
                             </div>
                             <div class="row">
+                                <a href="/wishes/action=getSpecificWish?Id={$value->id}">Bekijk de volledige wens</a>
+                            </div>
+                            <div class="row">
                                 <button type="button" class="btn btn-info btn-dashboard" data-toggle="collapse"
                                         data-target="#wishcontent{$value->id}">Omschrijving
                                 </button>
