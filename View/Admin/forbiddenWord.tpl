@@ -1,5 +1,13 @@
 <div class="container">
 
+    {*<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12  pull-right">*}
+        {*<span class="info" style="margin-bottom: 20px;">*}
+            {*<button type="button" class="btn btn-default" data-toggle="modal" data-target="#InfoModal">*}
+                {*<span class="glyphicon glyphicon-info-sign"></span>*}
+            {*</button>*}
+        {*</span>*}
+    {*</div>*}
+
     {* If succes message is not empty than show it *}
     {if !empty($successMessage)}
         <div class="alert alert-success">
@@ -48,8 +56,8 @@
         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
             <a href="/forbiddenwords" class="btn btn-warning">Alle</a>
         </div>
-    </form>
 
+    </form>
 
     <h5 class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{if $wordsCount > 0}Verboden woorden{/if}
         <span class="info">

@@ -3,11 +3,21 @@
 <!--Date: 10-3-2016-->
 <!--Time: 09:37-->
 <div class="container">
+{*<<<<<<< HEAD*}
+
+     {*<span class="info">*}
+            {*<button type="button" class="btn btn-default" data-toggle="modal" data-target="#InfoModal">*}
+                {*<span class="glyphicon glyphicon-info-sign"></span>*}
+            {*</button>*}
+         {*</span>*}
+
+{*=======*}
     <span class="info">
         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#infoTalentManage">
             <span class="glyphicon glyphicon-info-sign"></span>
         </button>
     </span>
+{*>>>>>>> mariusdv/development*}
     <div id="rootwizard">
         <h5>Talenten beheren</h5>
         <div class="col-md-2">
@@ -453,6 +463,60 @@
         </div>
     </div>
 {/foreach}
+
+{*<div id="InfoModal" class="modal fade" role="dialog">*}
+    {*<div class="modal-dialog">*}
+
+        {*<!-- Modal content-->*}
+        {*<div class="modal-content">*}
+            {*<div class="modal-header">*}
+                {*<button type="button" class="close" data-dismiss="modal">&times;</button>*}
+                {*<h4 class="modal-title">Talenten beheer</h4>*}
+            {*</div>*}
+            {*<div class="modal-body">*}
+
+                {*<p>*}
+                    {*Hier vind u uitleg over de icoontjes die in het talentbeheer systeem voorkomen:*}
+                {*</p>*}
+
+                {*<div class="col-xs-12 info-row">*}
+                    {*<button class="btn btn-sm">*}
+                        {*<span class="glyphicon glyphicon glyphicon-wrench"></span>*}
+                    {*</button>*}
+                    {*<span class="info-text">Synoniemen van een talent toevoegen/verwijderen</span>*}
+                {*</div>*}
+
+                {*<div class="col-xs-12 info-row">*}
+                    {*<button class="btn btn-sm">*}
+                        {*<span class="glyphicon glyphicon glyphicon-edit"></span>*}
+                    {*</button>*}
+                    {*<span class="info-text">Talent wijzigen</span>*}
+                {*</div>*}
+
+                {*<div class="col-xs-12 info-row">*}
+                    {*<button class="btn btn-sm">*}
+                        {*<span class="glyphicon glyphicon glyphicon-ok"></span>*}
+                    {*</button>*}
+                    {*<span class="info-text">Talent accepteren</span>*}
+                {*</div>*}
+
+                {*<div class="col-xs-12 info-row">*}
+                    {*<button class="btn btn-sm">*}
+                        {*<span class="glyphicon glyphicon glyphicon-remove"></span>*}
+                    {*</button>*}
+                    {*<span class="info-text">Talent afwijzen</span>*}
+                {*</div>*}
+
+                {*<div class="modal-footer">*}
+                    {*<button type="button" class="btn btn-default" data-dismiss="modal">*}
+                        {*Sluiten*}
+                    {*</button>*}
+                {*</div>*}
+            {*</div>*}
+        {*</div>*}
+    {*</div>*}
+{*</div>*}
+
 
 {if !Empty($synonymId)}
     <script type="text/javascript">

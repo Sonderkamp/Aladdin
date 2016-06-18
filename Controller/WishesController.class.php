@@ -279,7 +279,7 @@ class WishesController extends Controller
      */
     public function hasSameWish($wishes, $title)
     {
-        if (count($wishes) > 0) {
+        if (count($wishes) > 1) {
             foreach ($wishes as $item) {
                 if ($item instanceof Wish) {
                     similar_text($item->title, $title, $percent);

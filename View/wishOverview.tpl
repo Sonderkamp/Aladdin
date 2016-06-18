@@ -6,6 +6,13 @@
 <!-- */-->
 
 <div class="container">
+
+    <span class="info">
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#InfoModal">
+                <span class="glyphicon glyphicon-info-sign"></span>
+            </button>
+       </span>
+
     <div class="row">
         <h3>Wensen overzicht</h3>
         {if isset($wishError)}
@@ -160,7 +167,8 @@
                     {/if}
                 </div>
 
-                <div class="tab-pane fade in {if $currentPage == "myCompletedWishes"}active{/if}" id="myCompletedWishes">
+                <div class="tab-pane fade in {if $currentPage == "myCompletedWishes"}active{/if}"
+                     id="myCompletedWishes">
                     {if $myCompletedWishes}
                         {foreach from=$myCompletedwishes item=wish}
                             <div class="panel panel-default">
@@ -220,6 +228,83 @@
                     {else}
                         <div class="center-block text-center"><h4>Er zijn momenteel geen mogelijke matches</h4></div>
                     {/if}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="InfoModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Wensen</h4>
+            </div>
+            <div class="modal-body">
+
+                <p>
+                    Dit is het wensenoverzicht, hier kunt u gemakkelijk door uw eigen wensen kijken en door wensen van
+                    anderen.
+                    In het zoekveld kunt u wensen zoeken.<br><br>
+
+                    <a>Mijn wensen</a> hier staan uw eigen wensen.<br>
+                    <a>Onvervulde wensen</a> hier staan alle wensen die <u>niet</u> zijn vervuld.<br>
+                    <a>Vervulde wensen</a> hier staan alle wensen die <u>wel</u> zijn vervuld.<br>
+                    <a>Mijn vervulde wensen</a> hier ziet u de wensen die door u zijn vervuld.<br>
+                    <a>Mogelijke matches</a> hier kunt u wensen zien welke u mogelijk kunt vervullen<br>
+                </p>
+
+                <div class="col-xs-12 info-row">
+                    <button class="btn btn-sm">
+                        <span class="glyphicon glyphicon glyphicon-edit"></span>
+                    </button>
+                    <span class="info-text">Hiermee kunt u uw wens wijzigen.</span>
+                </div>
+
+                <div class="col-xs-12 info-row">
+                    <button class="btn btn-sm">
+                        <span class="glyphicon glyphicon glyphicon-trash"></span>
+                    </button>
+                    <span class="info-text">Hiermee verwijdert u uw wens.</span>
+                </div>
+
+                <div class="col-xs-12 info-row">
+                    <button class="btn btn-sm">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </button>
+                    <span class="info-text">Hiermee kunt u de wens bekijken.</span>
+                </div>
+
+                <div class="col-xs-12 info-row">
+                    <button class="btn btn-sm">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                    <span class="info-text">Hiermee kunt u een nieuwe wens aanmaken.</span>
+                </div>
+
+                <br>
+
+
+                Om een gebruiker te rapporteren klikt u op de naam en vervolgens op rapporteren.
+                <div class="dropdown">
+                    <a class="dropdown-toggle" type="button" data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-user"></span>
+                        Gebruiker
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Rapporteren</a></li>
+                    </ul>
+                </div>
+
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Sluiten
+                    </button>
                 </div>
             </div>
         </div>

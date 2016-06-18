@@ -9,39 +9,53 @@
 class SponsorRepository
 {
 
-    private $sponsorQB;
+    private $sponsorQB, $userRepo;
 
     public function __construct()
     {
         $this->sponsorQB = new SponsorQueryBuilder();
+        $this->userRepo = new UserRepository();
     }
-    
+
     public function getAllSponsors()
     {
         $result = $this->sponsorQB->getAllSponsors();
         return $this->sponsorCreator($result);
     }
-    
+
     public function addSponsor(Sponsor $sponsor)
     {
         if ($sponsor != null) {
-            $this->sponsorQB->addSponsor($sponsor);
+            $this->sponsorQB->addSponsor($this->addUserEmail($sponsor));
         }
     }
-    
-    public function updateSponsor(Sponsor $sponsor){
-        if($sponsor != null){
-            $this->sponsorQB->updateSponsor($sponsor);
+
+    public function updateSponsor(Sponsor $sponsor)
+    {
+        $user = $this->userRepo->getUser($sponsor->userMail);
+        $sponsor->userMail = $user->email;
+
+        if ($sponsor != null) {
+            $this->sponsorQB->updateSponsor($this->addUserEmail($sponsor));
         }
     }
-    
-    public function deleteSponsor(Sponsor $sponsor){
-        if($sponsor != null){
-            $this->sponsorQB->deleteSponsor($sponsor);
+
+    public function addUserEmail(Sponsor $sponsor)
+    {
+        $user = $this->userRepo->getUser($sponsor->userMail);
+        $sponsor->userMail = $user->email;
+        return $sponsor;
+    }
+
+    public function deleteSponsor(Sponsor $sponsor)
+    {
+        if ($sponsor != null) {
+            $this->sponsorQB->deleteSponsor($this->addUserEmail($sponsor));
         }
     }
-    
-    public function searchSponsor($searchKey){
+
+    public function searchSponsor($searchKey)
+    {
         $result = $this->sponsorQB->getAllSponsors($searchKey);
         return $this->sponsorCreator($result);
     }

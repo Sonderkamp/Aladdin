@@ -3,19 +3,15 @@
 <!-- * User: Simon / Max-->
 <!-- * Date: 8-3-2016 Rewritten on: 14-05-2016-->
 <!-- */-->
-<script>
-    function popup(mylink, windowname, w, h) {
-        if (!window.focus)return true;
-        var href;
-        if (typeof(mylink) == 'string') href = mylink; else href = mylink.href;
-        window.open(href, windowname, 'width=' + w + ',height=' + h + ',scrollbars=yes');
-        return false;
-    }
-</script>
 
 
 <div class="container">
 
+    <span class="info infoButtonMargin">
+            <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#InfoModal">
+                <span class="glyphicon glyphicon-info-sign"></span>
+            </button>
+    </span>
 
     <h5>Gebruikers Beheer</h5>
     <div class="col-md-2">
@@ -279,6 +275,52 @@
     </div>
 </div>
 
+<div id="InfoModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Gebruikersbeheer</h4>
+            </div>
+            <div class="modal-body">
+
+                <p>
+                    Op deze pagina kun je de gebruikers en rapportages bekijken.<br><br>
+                    <a><b>Gebruikers</b></a><br>
+                    - Toont alle gebruikers<br>
+                    - Status: toont of de gebruikers is geblokkeerd<br>
+                    - Actie: hiermee kun je de gebruiker (de)blokkeren of naar het dasboard van de gebruiker
+                    kijken<br><br>
+
+                    <a><b>Onbehandelde rapportages</b></a><br>
+                    - Toont een lijst met rapportages die door gebruikers zijn gemeld, door op de gebruikersnaam te
+                    klikken kun je navigeren naar het profiel van de gebruiker
+                    <br><br>
+
+                    <b>Acties dat je kunt uitvoeren:</b> <br>
+                    - Bekijk wens: toont de wens van de gebruiker waarop hij/zei is gerapporteerd<br>
+                    - Verwijder wens: hiermee kun je de wens verwijderen<br>
+                    - Verwijderen: hiermee verwijder je de rapportage, dus als je vindt dat er niets abnormaals in
+                    staat<br>
+                    - Blokkeren: hiermee kun je de gebruiker eenvoudig blokkeren als deze de regels heeft overtreden<br><br>
+
+                    <a><b>Behandelde rapportages</b></a><br>
+                    - Een lijst met rapportages welke door een admin zijn behandelt.
+
+                </p>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Sluiten
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 {foreach from=$unhandled item=report}
     <div id="myModal{preg_replace('/\s+/', '', $report->getId())}" class="modal fade" role="dialog">
@@ -399,4 +441,13 @@
     </div>
 {/foreach}
 
+<script>
+    function popup(mylink, windowname, w, h) {
+        if (!window.focus)return true;
+        var href;
+        if (typeof(mylink) == 'string') href = mylink; else href = mylink.href;
+        window.open(href, windowname, 'width=' + w + ',height=' + h + ',scrollbars=yes');
+        return false;
+    }
+</script>
 
