@@ -82,6 +82,10 @@ class MatchRepository
         $this->matchQueryBuilder->selectMatch($wishId, $username);
     }
 
+    public function clearSelected($wishId){
+        $this->matchQueryBuilder->clearSelected($wishId);
+    }
+
     public function checkDuplicates($username, $wishId)
     {
         if (empty($this->matchQueryBuilder->checkForUser($username, $wishId))) {

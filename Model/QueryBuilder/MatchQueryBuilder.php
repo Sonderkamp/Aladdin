@@ -72,6 +72,11 @@ class MatchQueryBuilder extends QueryBuilder
         return $this->executeQuery($query , array($username, $wishId));
     }
 
+    public function clearSelected($wishId){
+        $query = "UPDATE `matches` SET IsSelected = 0 WHERE `matches`.wish_Id = ?";
+        $this->executeQuery($query , $wishId);
+    }
+
     public function checkOwnWish($username, $wishId){
         $query = "SELECT * FROM `wish` WHERE `wish`.User = ? AND `wish`.Id = ?";
         return $this->executeQuery($query , array($username , $wishId));
@@ -79,8 +84,11 @@ class MatchQueryBuilder extends QueryBuilder
 
     public function selectMatch($wishId , $username){
         $query = "UPDATE `matches` SET IsSelected = 1 WHERE wish_Id = ? AND user_Email = ?; ";
-        $query .= "UPDATE `wish` SET Status = 'Match gevonden' WHERE `wish`.Id = ?;";
 
-        $this->executeQuery($query , array($wishId , $username , $wishId));
+        $this->executeQuery($query , array($wishId , $username));
+
+        $query = "UPDATE `wish` SET Status = 'Match gevonden' WHERE `wish`.Id = ?;";
+
+        $this->executeQuery($query , array($wishId));
     }
 }
