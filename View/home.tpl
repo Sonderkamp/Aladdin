@@ -92,28 +92,35 @@
     </div>
 </div>
 
-<div class=" white">
-    <div class="container bg">
-        <div class="col-xs-12">
 
-            <h5 class="text-center"><b>Sponsors</b></h5>
-            <div class="text-center">
-                {foreach $sponsors as $sponsor}
-                    {if !empty($sponsor->image)}
-                        {if !empty($sponsor->url)}
-                        <a href="http://{$sponsor->url}" target="_blank" >
-                            <img class=" sponsorImage " src="{$sponsor->image}" style="text-align: center">
-                        </a>
-                        {else}
-                            <img class=" sponsorImage " src="{$sponsor->image}" style="text-align: center">
+    <div class=" white">
+        <div class="container bg">
+            <div class="col-xs-12">
+
+                <h5 class="text-center"><b>Sponsors</b></h5>
+                <div class="text-center">
+
+                    {if $sponsors|@count gt 0}
+
+                    {foreach $sponsors as $sponsor}
+                        {if !empty($sponsor->image)}
+                            {if !empty($sponsor->url)}
+                                <a href="http://{$sponsor->url}" target="_blank">
+                                    <img class=" sponsorImage " src="{$sponsor->image}" style="text-align: center">
+                                </a>
+                            {else}
+                                <img class=" sponsorImage " src="{$sponsor->image}" style="text-align: center">
+                            {/if}
                         {/if}
+                    {/foreach}
                     {/if}
-                {/foreach}
+                    <br><br>
+                    Sponsor worden? Neem dan contact met ons op via <a href="mailto:sponsors@alladin.nl">sponsors@aladdin.nl</a>
+                </div>
             </div>
+            </row>
         </div>
-        </row>
     </div>
-</div>
 
 
 </div>
@@ -123,7 +130,6 @@
     // use the whole window and a *named function*
     window.addEventListener('touchstart', function videoStart() {
         video.play();
-        console.log('first touch');
         // remove from the window and call the function we are removing
         this.removeEventListener('touchstart', videoStart);
     });

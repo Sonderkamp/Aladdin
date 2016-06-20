@@ -9,7 +9,7 @@
 class User
 {
     public $email, $isAdmin, $name, $surname, $token, $address, $hash, $RecoveryHash, $RecoveryDate,
-        $handicap, $postalcode, $country, $city, $dob, $gender, $displayName, $initials, $blocked;
+        $handicap, $postalcode, $country, $city, $dob, $gender, $displayName, $initials, $blocked, $companyName, $guardian, $handicapInfo, $lat, $lon;
 
 
     public function checkPassword($password)
@@ -17,27 +17,6 @@ class User
         $result = Database::query_safe("SELECT password from user where email = ?", array($this->email));
         $result = $result[0];
         return password_verify($password, $result["password"]);
-    }
-
-
-    public function getDisplayName()
-    {
-        return $this->displayName;
-    }
-
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    public function getBlocked()
-    {
-        return $this->blocked;
-    }
-
-    public function setBlocked($blocked)
-    {
-        $this->blocked = $blocked;
     }
 
 

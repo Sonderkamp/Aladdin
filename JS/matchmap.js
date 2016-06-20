@@ -12,9 +12,6 @@ matchmap = function (_parentElement, _data) {
         .await(function (error, matches) {
 
 
-            console.log("AAA");
-            console.log(matches);
-
             vis.margin = {top: 40, right: 40, bottom: 40, left: 40};
 
             vis.width = 1000 - vis.margin.left - vis.margin.right,
