@@ -165,7 +165,7 @@
                         {foreach from=$comments item=comment}
                             <li>
                                 <div class="commentText">
-                                    {if ($adminView)}
+                                    {if $adminView}
                                         <form action="/wishes/action=editComment" method="post">
                                             <input type="hidden" name="wishId" value="{$selectedWish->id}"/>
                                             <input type="hidden" name="creationDate" value="{$comment->dbDate}"/>

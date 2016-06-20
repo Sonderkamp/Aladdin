@@ -61,7 +61,7 @@ class WishesController extends Controller
     {
         //Werkt als de sql versie geupdate wordt.
         $searchReturn = $this->wishRepo->searchMyWishes($key);
-        render("wishOverview.tpl", ["title" => "Wensen overzicht", "wishes" => $searchReturn]);
+        $this->render("wishOverview.tpl", ["title" => "Wensen overzicht", "wishes" => $searchReturn]);
     }
 
     //used to shorten string if need be
@@ -481,11 +481,7 @@ class WishesController extends Controller
         if ($selectedWish->status != "Vervuld") {
             $canComment = false;
         }
-
-        // Todo: Al gematcht
-
-        // TODO: Ontmatch knop
-
+        
         $this->render("wishSpecificView.tpl",
             ["title" => "Wens: " . $id,
                 "selectedWish" => $selectedWish,
