@@ -61,7 +61,7 @@ class WishesController extends Controller
     {
         //Werkt als de sql versie geupdate wordt.
         $searchReturn = $this->wishRepo->searchMyWishes($key);
-//        render("wishOverview.tpl", ["title" => "Wensen overzicht", "wishes" => $searchReturn]);
+        render("wishOverview.tpl", ["title" => "Wensen overzicht", "wishes" => $searchReturn]);
     }
 
     //used to shorten string if need be
