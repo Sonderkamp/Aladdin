@@ -330,8 +330,8 @@ class WishQueryBuilder extends QueryBuilder
         WHERE `wishmessage`.`CreationDate` = ?
         AND `wishmessage`.`user_Email` = ?
         AND `wishmessage`.`wish_Id` = ?";
-        
-        $this->executeQuery($query , array($wishId , $username));
+
+        $this->executeQuery($query , array($creationDate ,$username , $wishId));
     }
 
     public function removeMatch($wishId , $username)

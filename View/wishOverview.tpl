@@ -170,7 +170,7 @@
                 <div class="tab-pane fade in {if $currentPage == "myCompletedWishes"}active{/if}"
                      id="myCompletedWishes">
                     {if $myCompletedWishes}
-                        {foreach from=$myCompletedwishes item=wish}
+                        {foreach from=$myCompletedWishes item=wish}
                             <div class="panel panel-default">
 
                                 <div class="panel-heading">

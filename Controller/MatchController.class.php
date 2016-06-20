@@ -6,79 +6,60 @@
 // * Date: 21-03-16
 // * Time: 16:56
 // */
-//class MatchController extends Controller
-//{
-//    
-//    
-//    // TODO: De hele controller kan als goed is verwijdert worden, voor zekerheid nog even laten staan.
-//
-//    private $wishRepository, $talenRepository, $reportRepository, $userRepository;
-//
-//    public function __construct()
-//    {
-//        (new AccountController())->guaranteeLogin("/Wishes");
-//        $this->wishRepository = new WishRepository();
-//        $this->talenRepository = new TalentRepository();
-//        $this->reportRepository = new ReportRepository();
-//        $this->userRepository = new UserRepository();
-//    }
-//
-//    public function run()
-//    {
-//        $this->open_match_view();
-//    }
-//
-//    public function ex(){
-//        exit(1);
-//    }
-//
-//    public function open_match_view()
-//    {
-//        /** get my own talents */
-//        $userTalents = $this->talenRepository->getAddedTalents();
-//        
-//        /** get all sysnoynms of my talents */
-//        $synonmys = $this->talenRepository->getSynonymsOfTalents($userTalents);
-//
-//        /** delete multipe talents */
-//        $allTalents = array_merge($userTalents, $synonmys);
-//
-//        /** get wishes who match by talents/synonyms */
-//        $possibleMatches = $this->wishRepository->wishesByTalents($allTalents);
-//
-//        /** Nothing with matching, only check if user can add a wish  */
-//        $canAddWish = $this->wishRepository->canAddWish($_SESSION["user"]->email);
-//        
-//        /** Get users I have reported */
-//        $report = $this->reportRepository->getReportedUsers();
-//
-//        /** Get the displaynames of the users which I have reported */
-//        $displayNames = array();
-//        if (count($report) !== 0) {
-//            foreach ($report as $item) {
-////                if ($item instanceof Report) {
-//                    $user = $item->getReported();
-////                    if ($user instanceof User) {
-//                        $displayNames[] = $user->displayName;
-////                        getDisplayName();
-////                    };
-////                }
-//            }
-//        }
-//
-//        /** get my own displayname */
-//        $user = $this->userRepository->getUser($_SESSION["user"]->email);
-//        $displayName = $user->displayName;
-////        getDisplayName();
-//        
-//        
-//        $_SESSION["current"] = "matchedWishes";
-//        
-//
-//        $this->render("wishOverview.tpl",
-//            ["title" => "Vervulde wensen overzicht", "matchedWishes" => $possibleMatches,
-//                "canAddWish" => $canAddWish, "currentPage" => "match", "displayName" => $displayName, "reported" => $displayNames]);
-//    }
-//
-//
-//}
+class MatchController extends Controller
+{
+    private $wishRepo , $matchRepo, $userRepo;
+
+    public function __construct()
+    {
+        $this->wishRepo = new WishRepository();
+        $this->matchRepo = new MatchRepository();
+        $this->userRepo = new UserRepository();
+    }
+
+    public function removeMatch()
+    {
+        if (!empty($_GET["Id"])) {
+            if(count($this->matchRepo->getMatches($_GET["Id"])) <= 1){
+                $this->wishRepo->removeMatchStatus($_GET["Id"]);
+            }
+            $this->matchRepo->clearSelected($_GET["Id"]);
+            $this->wishRepo->removeMatch($_GET["Id"]);
+            $this->redirect("/wishes/action=getSpecificWish?Id=" . $_GET["Id"]);
+        }
+    }
+
+    public function requestMatch()
+    {
+        if (!empty($_GET["Id"]) && !empty($this->userRepo->getCurrentUser())) {
+
+            if ($this->matchRepo->checkOwnWish($this->userRepo->getCurrentUser()->email, $_GET["Id"])) {
+                $this->apologize("You can't match with your own wishes");
+                exit(0);
+            }
+
+            if ($this->matchRepo->checkDuplicates($this->userRepo->getCurrentUser()->email, $_GET["Id"])) {
+                $this->apologize("You already matched with this wish");
+                exit(0);
+            }
+
+            $this->matchRepo->setMatch($_GET["Id"], $this->userRepo->getCurrentUser()->email);
+
+        } else {
+            $this->apologize("Please supply a valid wishId and make sure to be logged in");
+        }
+
+        $this->redirect("/wishes/action=getSpecificWish?Id=" . $_POST["Id"]);
+    }
+
+    public function selectMatch()
+    {
+        if ($this->userRepo->getCurrentUser()->email && !empty($_POST["Id"]) && !empty($_POST["User"])) {
+            $this->matchRepo->clearSelected($_POST["Id"]);
+            $this->matchRepo->selectMatch($_POST["Id"], $_POST["User"]);
+            $this->redirect("/wishes/action=getSpecificWish?Id=" . $_POST["Id"]);
+        } else {
+            $this->apologize("Please supply a valid wishId and User email");
+        }
+    }
+}

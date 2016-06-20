@@ -209,6 +209,10 @@ class WishRepository
         $this->wishQueryBuilder->setWishStatus("Vervuld" , $id);
     }
 
+    public function removeMatchStatus($id){
+        $this->wishQueryBuilder->setWishStatus("Gepubliceerd" , $id);
+    }
+
     public function clearExpiredDates(){
         $res = $this->getReturnArray($this->wishQueryBuilder->getExpiredDate());
 

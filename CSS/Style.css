@@ -137,34 +137,39 @@ a:hover {
     float: right;
 }
 
-.brown {
+.titanic{
+    float: none;
 }
 
-.small-dropdown-menu {
-    padding: 5px;
-    left: -175px;
-    max-width: none;
-    min-width: 285px;
+.small-dropdown-menu{
+    left: -25px;
 }
 
-.small-dropdown-menu li {
-    display: inline;
-    margin-right: 10px;
-    margin-bottom: 10px;
-}
+/*.small-dropdown-menu {*/
+    /*!*margin-right: 1px;*!*/
+    /*left: -175px;*/
+    /*!*max-width: none;*!*/
+    /*!*min-width: 285px;*!*/
+/*}*/
 
-.small-dropdown-menu li > a {
-    padding: 10px;
-    display: inline;
-}
+/*!*.small-dropdown-menu li {*!*/
+    /*!*display: inline;*!*/
+    /*!*margin-right: 10px;*!*/
+    /*!*margin-bottom: 10px;*!*/
+/*!*}*!*/
 
-.small-dropdown-menu li > * {
-    display: inline;
-}
+/*.small-dropdown-menu li > a {*/
+    /*padding: 10px;*/
+    /*display: inline;*/
+/*}*/
 
-.small-dropdown-menu li:last-child {
-    margin-right: 0;
-}
+/*.small-dropdown-menu li > * {*/
+    /*display: inline;*/
+/*}*/
+
+/*.small-dropdown-menu li:last-child {*/
+    /*margin-right: 0;*/
+/*}*/
 
 .infoLeft {
     float: left;

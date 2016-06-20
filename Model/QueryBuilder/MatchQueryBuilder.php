@@ -74,7 +74,7 @@ class MatchQueryBuilder extends QueryBuilder
 
     public function clearSelected($wishId){
         $query = "UPDATE `matches` SET IsSelected = 0 WHERE `matches`.wish_Id = ?";
-        $this->executeQuery($query , $wishId);
+        $this->executeQuery($query , array($wishId));
     }
 
     public function checkOwnWish($username, $wishId){
