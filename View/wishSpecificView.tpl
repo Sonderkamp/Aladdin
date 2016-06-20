@@ -29,7 +29,7 @@
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3 row">
                             <div class="col-xs-6">
-                                <a href="/wishes/action=requestMatch?Id={$selectedWish->id}"
+                                <a href="/match/action=requestMatch?Id={$selectedWish->id}"
                                    class="btn btn-confirm btn-default">
                                     Ja
                                 </a>
@@ -61,21 +61,18 @@
                     </li>
 
                     {if $canMatch}
-                        {if !empty($isMatched) && $isMatched}
-                            <li>
-                                <a href="/Wishes/action=removeMatch?Id={$selectedWish->id}"
-                                   class="btn btn-side btn-default">
-                                    Trek match terug
-                                </a>
-                            </li>
-                        {else}
                             <li>
                                 <a class="btn btn-side btn-default" data-toggle="modal" data-target="#matchModal">
                                     Match
                                 </a>
                             </li>
-                        {/if}
-
+                    {elseif !empty($isMatched) && $isMatched}
+                            <li>
+                                <a href="/match/action=removeMatch?Id={$selectedWish->id}"
+                                   class="btn btn-side btn-default">
+                                    Trek match terug
+                                </a>
+                            </li>
                     {else}
                         <li>
                             <strong>Het is niet mogelijk om met deze wens te matchen</strong>
@@ -171,11 +168,6 @@
                                             <input type="hidden" name="creationDate" value="{$comment->dbDate}"/>
                                             <input type="hidden" name="username" value="{$comment->displayName}"/>
                                             <button type="submit" class="btn btn-default" name="removeButton" value="remove">
-{*=======*}
-                                            {*<input type="hidden" name="username"*}
-                                                   {*value="{htmlspecialchars($comment->displayName)}"/>*}
-                                            {*<button type="submit" class="btn btn-default">*}
-{*>>>>>>> 9dad9cf3e6916143deb68aad40b929cb4a017bb4*}
                                                 <span class="glyphicon glyphicon-remove"></span>
                                             </button>
                                             {if $comment->inGuestbook == "0"}
@@ -186,7 +178,7 @@
                                             {/if}
                                         </form>
                                     {/if}
-                                    <p class="">{htmlspecialchars($comment->message)}
+                                    <p>{htmlspecialchars($comment->message)}
                                         {if !empty($comment->image)}
                                             <a href="{$comment->image}" target="_blank">
                                                 <img class="thumbnail commentImage" src="{$comment->image}">
@@ -240,7 +232,7 @@
                                     {*<button type="button" class="col-xs-3 btn btn-confirm btn-default" data-toggle="modal" data-target="#profileModal{$wish->id}">*}
                                     {*<span class="glyphicon glyphicon-user"></span>*}
                                     {*</button>*}
-                                    <form action="/wishes/action=selectMatch" method="post">
+                                    <form action="/match/action=selectMatch" method="post">
                                         <input type="hidden" name="Id" value="{$match->wishId}">
                                         <input type="hidden" name="User" value="{$match->user->email}">
                                         <button type="submit" class="btn btn-confirm btn-default col-xs-3">

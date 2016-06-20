@@ -149,10 +149,11 @@
                                         <ul class="dropdown-menu small-dropdown-menu">
 
                                             <li>
-                                                <a class="btn btn-sm"
+                                                <a
                                                    href="/wishes/action=getSpecificWish/admin=true/Id={$wish->id}"
                                                    onClick="return popup(this, 'notes',900,400)">
                                                     <span class="glyphicon glyphicon-eye-open"></span>
+                                                    Wens bekijken
                                                 </a>
                                                 {*<a href="/wishes/action=getSpecificWish?Id={$wish->id}" class="btn btn-sm">*}
                                                 {*<span class="glyphicon glyphicon-eye-open"></span>*}
@@ -160,29 +161,32 @@
                                             </li>
 
                                             <li>
-                                                <a class="btn btn-sm" data-toggle="modal"
+                                                <a data-toggle="modal"
                                                    data-target="#acceptModal{$wish->id}">
                                                     <span class="glyphicon glyphicon-ok"></span>
+                                                    Wens accepteren
                                                 </a>
                                             </li>
 
                                             <li>
-                                                <a class="btn btn-sm" data-toggle="modal"
+                                                <a data-toggle="modal"
                                                    data-target="#refuseModal{$wish->id}">
                                                     <span class="glyphicon glyphicon-remove"></span>
+                                                    Wens weigeren
                                                 </a>
                                             </li>
 
                                             <li>
                                                 <a href="/profileoverview/action=viewProfile/user={$wish->user->email}">
                                                     <span class="glyphicon glyphicon-user"></span>
+                                                    Gebruiker bekijken
                                                 </a>
                                             </li>
 
                                             <li>
-                                                <a href="/AdminWish/action=deleteWish?Id={$wish->id}"
-                                                   class="btn btn-sm">
+                                                <a href="/AdminWish/action=deleteWish?Id={$wish->id}">
                                                     <span class="glyphicon glyphicon-trash"></span>
+                                                    Verwijder wens
                                                 </a>
                                             </li>
                                         </ul>
@@ -232,26 +236,25 @@
                                         <ul class="dropdown-menu small-dropdown-menu">
 
                                             <li>
-                                                <a class="btn btn-sm"
+                                                <a
                                                    href="/wishes/action=getSpecificWish/admin=true/Id={$wish->id}"
                                                    onClick="return popup(this, 'notes',900,400)">
                                                     <span class="glyphicon glyphicon-eye-open"></span>
+                                                    Wens bekijken
                                                 </a>
-                                                {*<a href="/wishes/action=getSpecificWish?Id={$wish->id}" class="btn btn-sm">*}
-                                                {*<span class="glyphicon glyphicon-eye-open"></span>*}
-                                                {*</a>*}
                                             </li>
 
                                             <li>
                                                 <a href="/profileoverview/action=viewProfile/user={$wish->user->email}">
                                                     <span class="glyphicon glyphicon-user"></span>
+                                                    Gebruiker bekijken
                                                 </a>
                                             </li>
 
                                             <li>
-                                                <a href="/AdminWish/action=deleteWish?Id={$wish->id}"
-                                                   class="btn btn-sm">
+                                                <a href="/AdminWish/action=deleteWish?Id={$wish->id}">
                                                     <span class="glyphicon glyphicon-trash"></span>
+                                                    Verwijder wens
                                                 </a>
                                             </li>
                                         </ul>
@@ -300,19 +303,18 @@
                                         </a>
                                         <ul class="dropdown-menu small-dropdown-menu">
                                             <li>
-                                                <a class="btn btn-sm"
+                                                <a
                                                    href="/wishes/action=getSpecificWish/admin=true/Id={$wish->id}"
                                                    onClick="return popup(this, 'notes',900,400)">
                                                     <span class="glyphicon glyphicon-eye-open"></span>
+                                                    Wens bekijken
                                                 </a>
-                                                {*<a href="/wishes/action=getSpecificWish?Id={$wish->id}" class="btn btn-sm">*}
-                                                {*<span class="glyphicon glyphicon-eye-open"></span>*}
-                                                {*</a>*}
                                             </li>
 
                                             <li>
                                                 <a href="/profileoverview/action=viewProfile/user={$wish->user->email}">
                                                     <span class="glyphicon glyphicon-user"></span>
+                                                    Gebruiker bekijken
                                                 </a>
                                             </li>
                                         </ul>
@@ -362,26 +364,25 @@
                                         <ul class="dropdown-menu small-dropdown-menu">
 
                                             <li>
-                                                <a class="btn btn-sm"
+                                                <a
                                                    href="/wishes/action=getSpecificWish/admin=true/Id={$wish->id}"
                                                    onClick="return popup(this, 'notes',900,400)">
                                                     <span class="glyphicon glyphicon-eye-open"></span>
+                                                    Wens bekijken
                                                 </a>
-                                                {*<a href="/wishes/action=getSpecificWish?Id={$wish->id}" class="btn btn-sm">*}
-                                                {*<span class="glyphicon glyphicon-eye-open"></span>*}
-                                                {*</a>*}
                                             </li>
 
                                             <li>
                                                 <a href="/profileoverview/action=viewProfile/user={$wish->user->email}">
                                                     <span class="glyphicon glyphicon-user"></span>
+                                                    Gebruiker bekijken
                                                 </a>
                                             </li>
 
                                             <li>
-                                                <a href="/AdminWish/action=deleteWish?Id={$wish->id}"
-                                                   class="btn btn-sm">
+                                                <a href="/AdminWish/action=deleteWish?Id={$wish->id}">
                                                     <span class="glyphicon glyphicon-trash"></span>
+                                                    Wens verwijderen
                                                 </a>
                                             </li>
                                         </ul>
@@ -432,19 +433,18 @@
                                         <ul class="dropdown-menu small-dropdown-menu">
 
                                             <li>
-                                                <a class="btn btn-sm"
+                                                <a
                                                    href="/wishes/action=getSpecificWish/admin=true/Id={$wish->id}"
                                                    onClick="return popup(this, 'notes',900,400)">
                                                     <span class="glyphicon glyphicon-eye-open"></span>
+                                                    Wens bekijken
                                                 </a>
-                                                {*<a href="/wishes/action=getSpecificWish?Id={$wish->id}" class="btn btn-sm">*}
-                                                {*<span class="glyphicon glyphicon-eye-open"></span>*}
-                                                {*</a>*}
                                             </li>
 
                                             <li>
                                                 <a href="/profileoverview/action=viewProfile/user={$wish->user->email}">
                                                     <span class="glyphicon glyphicon-user"></span>
+                                                    Wens verwijderen
                                                 </a>
                                             </li>
                                         </ul>
@@ -494,33 +494,33 @@
                                         <ul class="dropdown-menu small-dropdown-menu">
 
                                             <li>
-                                                <a class="btn btn-sm"
+                                                <a
                                                    href="/wishes/action=getSpecificWish/admin=true/Id={$wish->id}"
                                                    onClick="return popup(this, 'notes',900,400)">
                                                     <span class="glyphicon glyphicon-eye-open"></span>
+                                                    Wens bekijken
                                                 </a>
-                                                {*<a href="/wishes/action=getSpecificWish?Id={$wish->id}" class="btn btn-sm">*}
-                                                {*<span class="glyphicon glyphicon-eye-open"></span>*}
-                                                {*</a>*}
                                             </li>
 
                                             <li>
-                                                <a class="btn btn-sm" data-toggle="modal"
+                                                <a data-toggle="modal"
                                                    data-target="#acceptModal{$wish->id}">
                                                     <span class="glyphicon glyphicon-ok"></span>
+                                                    Wens accepteren
                                                 </a>
                                             </li>
 
                                             <li>
                                                 <a href="/profileoverview/action=viewProfile/user={$wish->user->email}">
                                                     <span class="glyphicon glyphicon-user"></span>
+                                                    Gebruiker bekijken
                                                 </a>
                                             </li>
 
                                             <li>
-                                                <a href="/AdminWish/action=deleteWish?Id={$wish->id}"
-                                                   class="btn btn-sm">
+                                                <a href="/AdminWish/action=deleteWish?Id={$wish->id}">
                                                     <span class="glyphicon glyphicon-trash"></span>
+                                                    Wens verwijderen
                                                 </a>
                                             </li>
                                         </ul>
@@ -570,26 +570,26 @@
                                         <ul class="dropdown-menu small-dropdown-menu">
 
                                             <li>
-                                                <a class="btn btn-sm"
+                                                <a
                                                    href="/wishes/action=getSpecificWish/admin=true/Id={$wish->id}"
                                                    onClick="return popup(this, 'notes',900,400)">
                                                     <span class="glyphicon glyphicon-eye-open"></span>
+                                                    Wens bekijken
                                                 </a>
-                                                {*<a href="/wishes/action=getSpecificWish?Id={$wish->id}" class="btn btn-sm">*}
-                                                {*<span class="glyphicon glyphicon-eye-open"></span>*}
-                                                {*</a>*}
                                             </li>
 
                                             <li>
-                                                <a class="btn btn-sm" data-toggle="modal"
+                                                <a data-toggle="modal"
                                                    data-target="#acceptModal{$wish->id}">
                                                     <span class="glyphicon glyphicon-ok"></span>
+                                                    Wens accepteren
                                                 </a>
                                             </li>
 
                                             <li>
                                                 <a href="/profileoverview/action=viewProfile/user={$wish->user->email}">
                                                     <span class="glyphicon glyphicon-user"></span>
+                                                    Gebruiker bekijken
                                                 </a>
                                             </li>
                                         </ul>
