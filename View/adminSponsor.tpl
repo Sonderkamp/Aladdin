@@ -10,6 +10,11 @@
 
 <div class="container">
 
+    <span class="info">
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#InfoModal">
+                <span class="glyphicon glyphicon-info-sign"></span>
+            </button>
+    </span>
 
     <h5>Sponsor Beheer</h5>
     <div class="col-md-2">
@@ -58,7 +63,7 @@
                         {foreach from=$sponsors item=sponsor}
                             <tr>
                                 <td>{$sponsor->name}</td>
-                                <td><a href="http://{$sponsor->url}" target="_blank">{$sponsor->url}</a> </td>
+                                <td><a href="http://{$sponsor->url}" target="_blank">{$sponsor->url}</a></td>
 
                                 <td>{$sponsor->description}</td>
                                 <td>{$sponsor->userMail}</td>
@@ -102,18 +107,27 @@
                 <div class="modal-body">
                     <form action="/adminsponsor/action=addSponsor" method="post" enctype="multipart/form-data">
                         <fieldset class="form-group">
+                            <h6 class="modal-title">Contactpersoon:</h6>
                             <select name="userEmail">
-                                <option value="default">- kies gebruiker -</option>
+                                <option value="default"> - kies gebruiker - </option>
                                 {foreach $users as $user}
-                                    <option value="{$user->email}">{$user->email}</option>
+                                    <option value="{$user->displayName}">{$user->displayName} </option>
                                 {/foreach}
                             </select>
+                            <br><br>
+                            <h6 class="modal-title">Bedrijfsnaam:</h6>
                             <input type="text" class="form-control" name="name"
                                    placeholder="Bedrijfsnaam">
+                            <br>
+                            <h6 class="modal-title">Beschrijving:</h6>
                             <input type="text" class="form-control" name="description"
                                    placeholder="Beschrijving">
+                            <br>
+                            <h6 class="modal-title">Url:</h6>
                             <input type="text" class="form-control" name="url"
                                    placeholder="Link naar website">
+                            <br>
+                            <h6 class="modal-title">Kies afbeelding:</h6>
                             <input class="form-control" name="img" type="file"/><br/>
                         </fieldset>
                         <button type="submit" class="btn btn-default">Opslaan</button>
@@ -138,7 +152,7 @@
 
                             <h6 class="modal-title">ID:</h6>
                             <input name="id" class="form-control" value="{$sponsor->id}" readonly>
-
+                            <br>
                             <h6 class="modal-title">Contactpersoon:</h6>
                             <select name="userEmail">
                                 <option value="{$sponsor -> userMail}">{$sponsor -> userMail}</option>
@@ -148,19 +162,20 @@
                                     {/if}
                                 {/foreach}
                             </select>
-
+                            <br><br>
                             <h6 class="modal-title">Bedrijfsnaam:</h6>
                             <input type="text" class="form-control" name="name"
                                    placeholder="Bedrijfsnaam" value="{$sponsor -> name}">
-
+                            <br>
                             <h6 class="modal-title">Beschrijving:</h6>
                             <input type="text" class="form-control" name="description"
                                    placeholder="Beschrijving" value="{$sponsor -> description}">
-
+                            <br>
                             <h6 class="modal-title">URL:</h6>
                             <input type="text" class="form-control" name="url"
                                    placeholder="Link naar website" value="{$sponsor -> url}">
-
+                            <br>
+                            <h6 class="modal-title">Kies afbeelding:</h6>
                             <input class="form-control" name="img" type="file"/><br/>
                             <a href="{$sponsor->image}" target="_blank">
                                 <img class="thumbnail commentImage" src="{$sponsor->image}">
@@ -178,8 +193,42 @@
             </div>
         </div>
     {/foreach}
+</div>
 
+<div id="InfoModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
 
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Sponsor beheer</h4>
+            </div>
+            <div class="modal-body">
+
+                <p>
+                    Bij het aanmaken van een sponsor is de bedrijfsnaam of de gebruiker verplicht.<br>
+                    <a>Kies<span class="glyphicon glyphicon-triangle-bottom"/></a> hiermee kunt u kiezen om een sponsor
+                    te bewerken of te verwijderen.<br><br>
+
+                    Hier vind u uitleg over de icoontjes die in het talentbeheer systeem voorkomen:
+                </p>
+
+                <div class="col-xs-12 info-row">
+                    <button class="btn btn-sm">
+                        <span class="glyphicon glyphicon glyphicon-plus"/>
+                    </button>
+                    <span class="info-text">Sponsor toevoegen</span>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Sluiten
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 

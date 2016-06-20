@@ -27,7 +27,8 @@ class AdminuserController extends Controller
 
 
     /** loads page if clicked on the Administrator -> Gebruikersbeehr
-     * @param the page to redirect to */
+     * @param the page to redirect to
+     */
     public function renderPrepare($currentPage)
     {
         $users = $this->getUsers();
@@ -97,10 +98,10 @@ class AdminuserController extends Controller
             foreach ($report as $item) {
                 $user = $item->reported;
                 $temp = new UserRepository();
-                if ($temp->isBlocked($user->getEmail())) {
+                if ($temp->isBlocked($user->email)) {
                     $user->blocked = true;
                 }
-            }   
+            }
         }
         return $report;
     }
@@ -153,7 +154,7 @@ class AdminuserController extends Controller
         }
         $this->redirect("/AdminUser");
     }
-    
+
     /** Renders to profile page of selected user */
     public function showProfile()
     {
@@ -173,7 +174,7 @@ class AdminuserController extends Controller
 
             $reported = $this->reportRepository->getId($id);
             $reported = $reported[0];
-            $reported = $reported->getReported();
+            $reported = $reported->reported;
             $displayName = $reported->displayName;
             $email = $this->userRepository->getUser($displayName)->email;
             $this->userRepository->blockUser($email);
