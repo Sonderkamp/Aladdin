@@ -1,12 +1,11 @@
 <div class="container">
-    {if $isAdmin}
-        <span class="info col-sm-12">
+    <h1 class="col-sm-12">Gastenboek
+        {if $isAdmin}
             <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#infoGuestbook">
                 <span class="glyphicon glyphicon-info-sign"></span>
             </button>
-        </span>
-    {/if}
-    <h1 class="col-sm-12">Gastenboek</h1>
+        {/if}
+    </h1>
     {if count($comments) > 0}
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             {for $comment=0 to count($comments) step 2}

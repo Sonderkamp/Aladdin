@@ -166,12 +166,16 @@
                             <li>
                                 <div class="commentText">
                                     {if ($adminView)}
-                                        <form action="/wishes/action=removeComment" method="post">
+                                        <form action="/wishes/action=editComment" method="post">
                                             <input type="hidden" name="wishId" value="{$selectedWish->id}"/>
                                             <input type="hidden" name="creationDate" value="{$comment->dbDate}"/>
-                                            <input type="hidden" name="username"
-                                                   value="{htmlspecialchars($comment->displayName)}"/>
-                                            <button type="submit" class="btn btn-default">
+                                            <input type="hidden" name="username" value="{$comment->displayName}"/>
+                                            <button type="submit" class="btn btn-default" name="removeButton" value="remove">
+{*=======*}
+                                            {*<input type="hidden" name="username"*}
+                                                   {*value="{htmlspecialchars($comment->displayName)}"/>*}
+                                            {*<button type="submit" class="btn btn-default">*}
+{*>>>>>>> 9dad9cf3e6916143deb68aad40b929cb4a017bb4*}
                                                 <span class="glyphicon glyphicon-remove"></span>
                                             </button>
                                             {if $comment->inGuestbook == "0"}
