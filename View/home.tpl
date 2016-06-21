@@ -62,7 +62,7 @@
 
             </p>
         </div>
-        <div class="col-lg-6 col-md-8 text-center">
+        <div class="col-lg-6 col-md-8 hidden-xs hidden-sm text-center">
             <br>
             <iframe width="560" height="315" src="https://www.youtube.com/embed/ZsO2gbE2f80" frameborder="0"
                     allowfullscreen></iframe>
