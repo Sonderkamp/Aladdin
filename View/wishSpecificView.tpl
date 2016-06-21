@@ -7,6 +7,7 @@
 
 {assign var="rightCol" value=(($selectedWish->status == "Match gevonden" && !empty($currentUser) && $selectedWish->user->email == $currentUser->email)
 || ($selectedWish->status == "Wordt vervuld" && !empty($currentUser) && $selectedWish->user->email == $currentUser->email))}
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
 
     {if isset($errorString)}

@@ -11,7 +11,7 @@
         return false;
     }
 </script>
-
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
     <div class="row">
         <div class="col-sm-3">

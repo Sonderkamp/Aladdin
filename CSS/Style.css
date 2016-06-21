@@ -30,7 +30,6 @@
     min-height: 270px;
 }
 
-
 h3 .h3 {
     color: brown;
 }
@@ -44,6 +43,10 @@ h3 .h3 {
     color: whitesmoke;
 }
 
+.nav-pills > li > a, .nav-pills > li > a:hover, .nav-pills > li > a:focus {
+    background-color: white;
+}
+
 .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
     color: #ffffff;
     background-color: brown;
@@ -52,6 +55,10 @@ h3 .h3 {
 .register {
     height: 120px;
     width: 120px;
+}
+
+.form-control {
+    background-color: rgba(255, 255, 255, 0.59);
 }
 
 .answer-container label {

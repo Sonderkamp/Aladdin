@@ -1,3 +1,4 @@
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
     <form action="/survey/submit" method="post">
         {foreach from=$questions item=$value}

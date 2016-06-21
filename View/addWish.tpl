@@ -7,7 +7,7 @@
  */
 ?>
 
-
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div id="wishcontaier" class="container" xmlns="http://www.w3.org/1999/html">
 
     <div class="container">

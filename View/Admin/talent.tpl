@@ -2,6 +2,7 @@
 <!--User: Joost-->
 <!--Date: 10-3-2016-->
 <!--Time: 09:37-->
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
 {*<<<<<<< HEAD*}
 
@@ -42,7 +43,8 @@
                             <a href="/admintalents/p=allTalents" class="btn btn-warning">Alle</a>
                         </div>
                     </form>
-                    <table class="table">
+                    <br><br>
+                    <table class="table panel">
                         <thead>
                         <tr>
                             <th>Alle talenten</th>
@@ -250,7 +252,8 @@
 
                 <div class="tab-pane{if $page == "unacceptedTalents"} fade in active{/if}" id="tab2">
                     <div>
-                        <table class="table">
+                        <br><br>
+                        <table class="table panel">
                             <thead>
                             <tr>
                                 <th>Aangevraagde talenten</th>

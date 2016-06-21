@@ -6,6 +6,7 @@
  * Time: 00:39
  */
 ?>
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
 
 
@@ -148,11 +149,11 @@
                         {foreach from=$message->links item=link}
                             {if $link->action == "Talent"}
                                 <a href="/Talents" class="btn btn-inbox">Mijn Talenten</a>
-                            {else if $link->action == "Wens"}
+                            {elseif $link->action == "Wens"}
                                 <a href="/wishes/action=getSpecificWish?Id={$link->content}" class="btn btn-inbox">Bekijk wens</a>
-                            {else if $link->action == "PaginaLink"}
+                            {elseif $link->action == "PaginaLink"}
                                 <a href="{$link->content}" class="btn btn-inbox">Naar Pagina</a>
-                            {else if $link->action == "Bericht"}
+                            {elseif $link->action == "Bericht"}
                                 <a href="/Inbox/action=message/message={$link->content}" class="btn btn-inbox">Naar
                                     Pagina</a>
                             {/if}
@@ -171,11 +172,11 @@
                         href="/Inbox/folder={$folderShortcut}/action=search/p={$page[0]   + 1}?search={$search}"
                         class="btn btn-default">Volgende</a></span><span class="info">Pagina {$page[0]}
                 / {$page[1]}</span>
-            {else if $page[0] > 1}
+            {elseif $page[0] > 1}
             <span><a href="/Inbox/folder={$folderShortcut}/action=search/p={$page[0]  - 1}?search={$search}"
                      class="btn btn-default">Vorige</a><span
                         class="info">Pagina {$page[0]} / {$page[1]}</span>
-                {else if $page[1] > 1}
+                {elseif $page[1] > 1}
                 <span><a href="/Inbox/folder={$folderShortcut}/action=search/p={$page[0]  + 1}?search={$search}"
                          class="btn btn-default">Volgende</a></span><span class="info">Pagina 1 / {$page[1]}</span>
                 {else}
