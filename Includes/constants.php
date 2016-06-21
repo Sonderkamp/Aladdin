@@ -2,16 +2,16 @@
 
 // ****************   Database   *************************
 // your database's name
-define("DATABASE", "aladdin_db2");
+define("DATABASE", "mariusdevogel_nl_Aladdin");
 
 // your database's password
-define("PASSWORD", "Ab12345");
+define("PASSWORD", "r9aTqM7VeNZf");
 
 // your database's server
-define("SERVER", "databases.aii.avans.nl");
+define("SERVER", "localhost");
 
 // your database's username
-define("USERNAME", "aladdin");
+define("USERNAME", "mariu_nl_Aladdin");
 
 
 // ****************   EMAIL   ****************************
