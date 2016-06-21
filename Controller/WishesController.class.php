@@ -84,7 +84,6 @@ class WishesController extends Controller
     public function openEditView()
     {
         (new AccountController())->guaranteeLogin("/Wishes");
-        (new DashboardController())->guaranteeProfile();
         $this->wishCreationController->openWishView(false);
     }
 

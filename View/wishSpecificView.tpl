@@ -56,6 +56,12 @@
                href="{if !empty($returnPage)}{$returnPage}{else}/Wishes/action=back{/if}">
                 Go Back
             </a>
+            {if $selectedWish->user->email == $user->email}
+                <a class="btn btn-side btn-default" href="/wishes/action=openEditView?Id={$selectedWish->id}">
+                    Wijzig wens
+                </a>
+            {/if}
+
             {if $canMatch }
                 <a class="btn btn-side btn-default" data-toggle="modal" data-target="#matchModal">
                     Match

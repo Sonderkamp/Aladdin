@@ -156,6 +156,8 @@ class WishRepository
 
         $this->addWishContent($wish);
         $this->editWishTalents($wish);
+
+        return $wish->id;
     }
 
     private function addWishContent(Wish $wish)
