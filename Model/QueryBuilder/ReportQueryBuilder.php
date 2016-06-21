@@ -134,7 +134,7 @@ class ReportQueryBuilder
     public function setStatus($status, $id)
     {
         if ($id > 0) {
-            $sql = "UPDATE `aladdin_db2`.`reportedusers` 
+            $sql = "UPDATE `reportedusers`
                     SET `reportStatus_Status` = ? 
                     WHERE `reportedusers`.`Id` = ?";
             $parameters = array($status, $id);

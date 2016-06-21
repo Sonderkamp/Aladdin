@@ -33,7 +33,7 @@ class SponsorQueryBuilder
     public function addSponsor(Sponsor $sponsor)
     {
         if ($sponsor == null) return;
-        $sql = "INSERT INTO `aladdin_db2`.`sponsor`";
+        $sql = "INSERT INTO `sponsor`";
         $sql .= " (`Name`, `Image`, `Description`, `WebsiteLink`, `user_Email`)";
         $sql .= " VALUES (?,?,?,?,?)";
         $parameters = array($sponsor->name, $sponsor->image, $sponsor->description, $sponsor->url, $sponsor->userMail);
@@ -56,7 +56,7 @@ class SponsorQueryBuilder
     public function deleteSponsor(Sponsor $sponsor)
     {
         if ($sponsor == null) return;
-        $sql = "DELETE FROM `aladdin_db2`.`sponsor` WHERE `Id` = ?";
+        $sql = "DELETE FROM `sponsor` WHERE `Id` = ?";
         Database::query_safe($sql, array($sponsor->id));
     }
 
