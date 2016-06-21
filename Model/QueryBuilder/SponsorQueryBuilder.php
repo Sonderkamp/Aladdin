@@ -8,7 +8,7 @@
  */
 class SponsorQueryBuilder
 {
-    
+
     public function getAllSponsors($keyword = null)
     {
         $sql = "SELECT * FROM `sponsor` as s";
@@ -18,7 +18,7 @@ class SponsorQueryBuilder
                   OR s.WebsiteLink LIKE ?
                   OR s.user_Email LIKE ?
                   OR s.Description LIKE ?";
-            $keyword = preg_replace('/\s+/', '', "%".$keyword."%");
+            $keyword = preg_replace('/\s+/', '', "%" . $keyword . "%");
             $parameters = array($keyword, $keyword, $keyword, $keyword);
         }
 
@@ -39,15 +39,24 @@ class SponsorQueryBuilder
         $parameters = array($sponsor->name, $sponsor->image, $sponsor->description, $sponsor->url, $sponsor->userMail);
         Database::query_safe($sql, $parameters);
     }
-    
+
     public function updateSponsor(Sponsor $sponsor)
     {
         if ($sponsor == null) return;
-        $sql = "UPDATE `sponsor` SET `Name` = ?,`Image`= ?,`Description`= ?,`WebsiteLink`= ?,`user_Email` = ? WHERE Id = ?";
-        if ($sponsor->userMail == null) {
-            $parameters = array($sponsor->name, $sponsor->image, $sponsor->description, $sponsor->url, null, $sponsor->id);
+        if ($sponsor->image == null) {
+            $sql = "UPDATE `sponsor` SET `Name` = ?,`Description`= ?,`WebsiteLink`= ?,`user_Email` = ? WHERE Id = ?";
+            if ($sponsor->userMail == null) {
+                $parameters = array($sponsor->name, $sponsor->description, $sponsor->url, null, $sponsor->id);
+            } else {
+                $parameters = array($sponsor->name, $sponsor->description, $sponsor->url, $sponsor->userMail, $sponsor->id);
+            }
         } else {
-            $parameters = array($sponsor->name, $sponsor->image, $sponsor->description, $sponsor->url, $sponsor->userMail, $sponsor->id);
+            $sql = "UPDATE `sponsor` SET `Name` = ?,`Image`= ?,`Description`= ?,`WebsiteLink`= ?,`user_Email` = ? WHERE Id = ?";
+            if ($sponsor->userMail == null) {
+                $parameters = array($sponsor->name, $sponsor->image, $sponsor->description, $sponsor->url, null, $sponsor->id);
+            } else {
+                $parameters = array($sponsor->name, $sponsor->image, $sponsor->description, $sponsor->url, $sponsor->userMail, $sponsor->id);
+            }
         }
 
         Database::query_safe($sql, $parameters);
