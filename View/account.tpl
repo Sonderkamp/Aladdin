@@ -193,12 +193,12 @@
                                                 </tr>
                                                 <tr>
                                                     <td>{if !empty($user->companyName)} Contactpersoon {/if}
-                                                        initialen:
+                                                        Voorletters:
                                                     </td>
                                                     <td><input type="text" name="initials" value="{$user->initials}"
                                                                required data-validation="custom"
                                                                data-validation-regexp="^([a-zA-Z\.]+)$"
-                                                               data-validation-error-msg="Initialen mogen alleen letters en punten bevatten.">
+                                                               data-validation-error-msg="Voorletters mogen alleen letters en punten bevatten.">
 
                                                     </td>
                                                 </tr>
@@ -301,7 +301,7 @@
                                                 <td>{$user->email}</td>
                                             </tr>
                                             <tr>
-                                                <td>Initialen</td>
+                                                <td>Voorletters</td>
                                                 <td>{$user->initials}</td>
                                             </tr>
                                             <tr>

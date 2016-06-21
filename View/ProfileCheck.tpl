@@ -93,7 +93,7 @@
                                                 <td>{$curUser->email}</td>
                                             </tr>
                                             <tr>
-                                                <td>Initialen</td>
+                                                <td>Voorletters</td>
                                                 <td>{$curUser->initials}</td>
                                             </tr>
                                             <tr>

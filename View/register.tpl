@@ -129,11 +129,11 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>initialen:</td>
+                                <td>Voorletters:</td>
                                 <td><input type="text" name="initial"
                                            required data-validation="custom"
                                            data-validation-regexp="^([a-zA-Z\.]+)$"
-                                           data-validation-error-msg="Initialen mogen alleen letters en punten bevatten.">
+                                           data-validation-error-msg="Voorletters mogen alleen letters en punten bevatten.">
 
                                 </td>
                             </tr>
@@ -156,11 +156,11 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Contactpersoon initialen:</td>
+                                <td>Contactpersoon Voorletters:</td>
                                 <td><input type="text" name="initial"
                                            required data-validation="custom"
                                            data-validation-regexp="^([a-zA-Z\.]+)$"
-                                           data-validation-error-msg="Initialen mogen alleen letters en punten bevatten.">
+                                           data-validation-error-msg="Voorletters mogen alleen letters en punten bevatten.">
 
                                 </td>
                             </tr>
