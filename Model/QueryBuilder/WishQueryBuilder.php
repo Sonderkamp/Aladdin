@@ -266,7 +266,7 @@ class WishQueryBuilder extends QueryBuilder
     public function getPossibleMatches($talents, $myWishes)
     {
         $talentList = $this->getSQLString($talents);
-        $published = "gepubliseerd";
+        $published = "Gepubliceerd";
         $temp = array();
         foreach ($myWishes as $item) {
             $temp[] = $item->id;
