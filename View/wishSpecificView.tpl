@@ -7,10 +7,11 @@
 
 <div class="container">
 
-    {if isset($wishError)}
-        <div class="form-error" id="err">Error: {htmlspecialcharsWithNL($wishError)}</div>
-    {else}
-        <div id="err"></div>
+    {if isset($errorString)}
+        <div class="alert alert-warning">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            {$errorString}
+        </div>
     {/if}
 
     <div id="matchModal" class="modal fade" role="dialog">
@@ -66,7 +67,7 @@
                                     Match
                                 </a>
                             </li>
-                    {elseif !empty($isMatched) && $isMatched}
+                    {elseif !empty($isMatched) && $isMatched && $selectedWish->status != "Vervuld"}
                             <li>
                                 <a href="/match/action=removeMatch?Id={$selectedWish->id}"
                                    class="btn btn-side btn-default">
