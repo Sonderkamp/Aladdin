@@ -116,7 +116,7 @@ class UserRepository
 
         $mail->to = $username;
         $mail->toName = $val->name . " " . $val->surname;
-        $mail->subject = "Activeer Account Webshop";
+        $mail->subject = "Activeer Account Aladdin";
         $mail->message =
             "Beste " . $val->name . ",\n
             Deze mail is verstuurd omdat u een nieuw account aan heeft gemaakt.\n
@@ -124,7 +124,7 @@ class UserRepository
             http://" . $_SERVER["SERVER_NAME"] . "/account/action=activate/token=" . $this->UserQueryBuilder->getTokenByName($username, "validation")["ValidationHash"] . "\n
 
             Met vriendelijke groet,\n
-            Webshop";
+            Aladdin";
         return true;
 
     }
@@ -347,7 +347,7 @@ class UserRepository
             // Get
             $mail->to = $username;
             $mail->toName = $val->name . " " . $val->surname;
-            $mail->subject = "Wachtwoord vergeten Webshop";
+            $mail->subject = "Wachtwoord vergeten Aladdin";
             $mail->message =
                 "Beste " . $val->name . ",\n
             Deze mail is verstuurd omdat u uw wachtwoord vergeten bent.\n
@@ -356,7 +356,7 @@ class UserRepository
             Deze link is 24 uur geldig \n
 
             Met vriendelijke groet,\n
-            Webshop";
+            Aladdin";
 
             $websiteMessage = "Er is een email verstuurd naar " . $username .
                 "met een link om uw wachtwoord te resetten.Deze link verschijnt binnen drie minuten.

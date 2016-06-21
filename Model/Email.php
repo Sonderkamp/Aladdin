@@ -15,7 +15,7 @@ class Email
         $this->from = EMAILADRESS;
         $this->fromName = "Aladdin no-reply";
         $this->to = EMAILADRESS;
-        $this->toName = "Webs2 Webshop";
+        $this->toName = "Aladdin no-reply";
         $this->subject = "not set.";
         $this->message = "not set.";
 
