@@ -1,18 +1,19 @@
 <img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
 
-    <span class="info">
-            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#InfoModal">
-                <span class="glyphicon glyphicon-info-sign"></span>
-            </button>
-    </span>
-
 
     <div id="loginbox" class="mainbox col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
 
         <div class="panel panel-default">
             <div class="panel-heading">
-                <div class="panel-title text-center">Doneren</div>
+                <div class="panel-title text-center">Doneren
+                 <span class="info">
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#InfoModal">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </button>
+                </span>
+                </div>
+
             </div>
 
             <div class="panel-body">
