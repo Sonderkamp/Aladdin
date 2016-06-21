@@ -22,7 +22,7 @@
             </li>
 
             <li {if $currentPage == "published"}class="active"{/if}>
-                <a href="#publishedTab" data-toggle="tab">Gepubliseerde wensen</a>
+                <a href="#publishedTab" data-toggle="tab">Gepubliceerde wensen</a>
             </li>
 
             <li {if $currentPage == "matched"}class="active"{/if}>
@@ -265,7 +265,7 @@
                         </tbody>
                     </table>
                 {else}
-                    <div class="center-block text-center"><h4>Er zijn momenteel geen gepubliseerde wensen</h4></div>
+                    <div class="center-block text-center"><h4>Er zijn momenteel geen gepubliceerde wensen</h4></div>
                 {/if}
             </div>
 

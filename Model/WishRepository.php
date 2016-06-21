@@ -90,7 +90,7 @@ class WishRepository
     {
         return $this->getReturnArray($this->wishQueryBuilder->getWishes
         ($this->userRepository->getCurrentUser()->email, [0 => "Aangemaakt",
-            1 => "Gepubliseerd",
+            1 => "Gepubliceerd",
             2 => "Geweigerd",
             3 => "Match gevonden",
             4 => "Vervuld",
@@ -104,7 +104,7 @@ class WishRepository
     {
         return $this->getReturnArray($this->wishQueryBuilder->getWishes
         ($this->userRepository->getCurrentUser()->email, [0 => "Aangemaakt",
-            1 => "Gepubliseerd",
+            1 => "Gepubliceerd",
             2 => "Geweigerd",
             3 => "Match gevonden",
             5 => "Wordt vervuld"]));
@@ -128,7 +128,7 @@ class WishRepository
      */
     public function getIncompletedWishes()
     {
-        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Gepubliseerd", 1 => "Match gevonden"], null, false));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Gepubliceerd", 1 => "Match gevonden"], null, false));
     }
 
     /**
@@ -270,12 +270,12 @@ class WishRepository
 
     public function getRequestedWishes()
     {
-        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Aangemaakt", 1 => "Gepubliseerd"], null, true));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Aangemaakt", 1 => "Gepubliceerd"], null, true));
     }
 
     public function getPublishedWishes()
     {
-        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Gepubliseerd"], null, null));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Gepubliceerd"], null, null));
     }
 
     public function getMatchedWishes()
@@ -318,7 +318,7 @@ class WishRepository
 
     public function acceptWish($id)
     {
-        $this->wishQueryBuilder->executeAdminAction($id, 1, $this->adminRepo->getCurrentAdmin()->username, "Gepubliseerd");
+        $this->wishQueryBuilder->executeAdminAction($id, 1, $this->adminRepo->getCurrentAdmin()->username, "Gepubliceerd");
     }
 
     public function refuseWish($id)
@@ -341,7 +341,7 @@ class WishRepository
     {
         return $this->getReturnArray($this->wishQueryBuilder->getWishes
         ($username, [0 => "Aangemaakt",
-            1 => "Gepubliseerd",
+            1 => "Gepubliceerd",
             2 => "Geweigerd",
             3 => "Match gevonden",
             5 => "Wordt vervuld"], null, null, true));
@@ -539,7 +539,7 @@ class WishRepository
 
         // Ik ga dit met php doen. sorry. Ik krijg het niet voor elkaar met Mysql
         $oldWishes = $this->getReturnArray($this->wishQueryBuilder->getWishes
-        (null, ["Aangemaakt", "Gepubliseerd"], null, true, null));
+        (null, ["Aangemaakt", "Gepubliceerd"], null, true, null));
 
 
         if (count($oldWishes) > 0) {
