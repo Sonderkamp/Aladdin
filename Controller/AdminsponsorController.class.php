@@ -44,10 +44,7 @@ class AdminsponsorController extends Controller
         $users = $this->userRepo->getAllUsers();
         $sponsors = $this->getSponsors();
 
-        if(count($sponsors) === 1){
-            $sponsors = array($sponsors);
-        }
-        
+
         if (isset($this->error)) {
             $this->render("adminSponsor.tpl", ["title" => $this->pageTitle,
                 "sponsors" => $sponsors,

@@ -311,7 +311,7 @@ class WishQueryBuilder extends QueryBuilder
             $comment = new Comment();
             $comment->message = $row["Message"];
             $comment->image = $row["Image"];
-            $comment->creationDate = strftime("%#d %B %Y", strtotime($row["CreationDate"]));
+            $comment->creationDate = strftime("%e %B %Y", strtotime($row["CreationDate"]));
             $comment->dbDate = $row["CreationDate"];
             $comment->userEmail = $row["user_Email"];
             $comment->wishId = $row["wish_Id"];

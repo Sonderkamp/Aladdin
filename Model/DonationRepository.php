@@ -114,7 +114,7 @@ class DonationRepository
             $donation->description = $item["Description"];
             $donation->anonymous = $item["Anonymous"];
             $donation->IP = $item["IP"];
-            $donation->date = strftime(" %H:%M %#d %B %Y", strtotime($item["Date"]));
+            $donation->date = strftime(" %H:%M %e %B %Y", strtotime($item["Date"]));
 
             if ($userCheck) {
                 $user = new User();
