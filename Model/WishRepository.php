@@ -118,9 +118,13 @@ class WishRepository
         return $this->getReturnArray($this->wishQueryBuilder->getWishes([0 => "Vervuld", 1 => "Wordt vervuld"], null, false));
     }
 
-    public function getMyCompletedWishes()
+    public function getMyCompletedWishes($username = null)
     {
-        return $this->getReturnArray($this->wishQueryBuilder->getWishes($this->userRepository->getCurrentUser()->email, [0 => "Vervuld", 1 => "Wordt vervuld"], null));
+        if(empty($username)){
+            $username = $this->userRepository->getCurrentUser()->email;
+        }
+
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes($username, [0 => "Vervuld", 1 => "Wordt vervuld"], null));
     }
 
     /**
