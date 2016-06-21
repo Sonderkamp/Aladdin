@@ -115,7 +115,7 @@
                     {/foreach}
                     {/if}
                     <br><br>
-                    Sponsor worden? Neem dan contact met ons op via <a href="mailto:sponsors@alladin.nl">sponsors@aladdin.nl</a>
+                    Sponsor worden? Neem dan contact met ons op via <a href="mailto:alladin.wishes.and.skills@gmail.com">alladin.wishes.and.skills@gmail.com</a>
                 </div>
             </div>
             </row>
