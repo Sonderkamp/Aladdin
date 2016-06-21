@@ -167,7 +167,7 @@ class WishesController extends Controller
             exit(0);
         }
 
-        if ($selectedWish->status == "Aangemaakt" || $selectedWish->status == "Gepubliseerd") {
+        if ($selectedWish->status == "Aangemaakt" || $selectedWish->status == "Gepubliceerd") {
             $canMatch = true;
         }
 
