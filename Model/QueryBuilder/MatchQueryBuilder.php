@@ -47,8 +47,8 @@ class MatchQueryBuilder extends QueryBuilder
 //        $query .= "AND `matches`.IsActive = 1 ";
 
         $query .= "AND user_Email IS NOT NULL AND NOT EXISTS
-                  ( SELECT NULL FROM blockedusers AS b WHERE b.user_Email = `matches`.user_Email AND b.IsBlocked = 1
-                  AND b.Id = (SELECT Id FROM blockedusers as c WHERE c.user_Email = `matches`.user_Email
+                  ( SELECT NULL FROM blockedUsers AS b WHERE b.user_Email = `matches`.user_Email AND b.IsBlocked = 1
+                  AND b.Id = (SELECT Id FROM blockedUsers as c WHERE c.user_Email = `matches`.user_Email
                   ORDER BY DateBlocked DESC LIMIT 1))";
 
 

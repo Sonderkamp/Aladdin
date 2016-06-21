@@ -31,7 +31,7 @@ class ReportQueryBuilder
             $var = $report->messageID;
         }
 
-        $sql = "INSERT INTO `reportedusers`
+        $sql = "INSERT INTO `reportedUsers`
                 (`user_Reporter`,`user_Reported`, `reportStatus_status`, " . $string . ", `Message`)
                 VALUES (?,?,?,?,?)";
 
@@ -54,7 +54,7 @@ class ReportQueryBuilder
      */
     public function get($requested = null, $id = null, $handled = null)
     {
-        $query = "SELECT * FROM reportedusers";
+        $query = "SELECT * FROM reportedUsers";
         $parameters = array();
 
         if ($requested != null) {
@@ -78,7 +78,7 @@ class ReportQueryBuilder
     public function getReportedUsers($email)
     {
         // TODO: control for duplicate with getMyReports
-        $sql = "SELECT * FROM `reportedusers` WHERE `user_Reporter` = ?";
+        $sql = "SELECT * FROM `reportedUsers` WHERE `user_Reporter` = ?";
         $parameters = array($email);
 
         return Database::query_safe($sql, $parameters);
@@ -90,7 +90,7 @@ class ReportQueryBuilder
      */
     public function getMyReports($email)
     {
-        $sql = "SELECT * FROM `reportedusers` WHERE `user_Reported` = ?";
+        $sql = "SELECT * FROM `reportedUsers` WHERE `user_Reported` = ?";
         $parameters = array($email);
 
         return Database::query_safe($sql, $parameters);
@@ -134,9 +134,9 @@ class ReportQueryBuilder
     public function setStatus($status, $id)
     {
         if ($id > 0) {
-            $sql = "UPDATE `reportedusers`
+            $sql = "UPDATE `reportedUsers`
                     SET `reportStatus_Status` = ? 
-                    WHERE `reportedusers`.`Id` = ?";
+                    WHERE `reportedUsers`.`Id` = ?";
             $parameters = array($status, $id);
 
             Database::query_safe($sql, $parameters);

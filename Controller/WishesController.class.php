@@ -41,7 +41,6 @@ class WishesController extends Controller
         $incompletedWishes = $this->wishRepo->getIncompletedWishes();
         $matchedWishes = $this->wishRepo->getPossibleMatches();
 
-
         $canAddWish = $this->wishRepo->canAddWish($this->userRepo->getCurrentUser()->email);
         $displayNames = array();
 

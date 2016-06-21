@@ -88,13 +88,26 @@ class WishRepository
      */
     public function getMyWishes()
     {
-        return $this->getReturnArray($this->wishQueryBuilder->getWishes
-        ($this->userRepository->getCurrentUser()->email, [0 => "Aangemaakt",
+        $ress = $this->wishQueryBuilder->getWishes($this->userRepository->getCurrentUser()->email, [0 => "Aangemaakt",
             1 => "Gepubliceerd",
             2 => "Geweigerd",
             3 => "Match gevonden",
             4 => "Vervuld",
-            5 => "Wordt vervuld"]));
+            5 => "Wordt vervuld"]);
+
+        exit(0);
+
+//        print_r($this->getReturnArray($this->wishQueryBuilder->getWishes
+//        ($this->userRepository->getCurrentUser()->email, [0 => "Aangemaakt",
+//            1 => "Gepubliceerd",
+//            2 => "Geweigerd",
+//            3 => "Match gevonden",
+//            4 => "Vervuld",
+//            5 => "Wordt vervuld"])));
+
+        print_r($ress);
+
+        return $this->getReturnArray($ress);
     }
 
     /**
@@ -115,7 +128,7 @@ class WishRepository
      */
     public function getCurrentCompletedWishes()
     {
-        return $this->getReturnArray($this->wishQueryBuilder->getWishes([0 => "Vervuld", 1 => "Wordt vervuld"], null, false));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Vervuld", 1 => "Wordt vervuld"], null, false));
     }
 
     public function getMyCompletedWishes($username = null)
@@ -528,7 +541,7 @@ class WishRepository
     public function cleanWishes()
     {
 
-        $res = Database::query("SELECT * FROM `updatelog` order by Time Desc Limit 1");
+        $res = Database::query("SELECT * FROM `updateLog` order by Time Desc Limit 1");
 
         if ($res !== false) {
             if (round((strtotime("now") - strtotime($res[0]["Time"])) / 3600, 1) < 24) {
@@ -536,7 +549,7 @@ class WishRepository
             }
         }
 
-        Database::query_safe("INSERT INTO `updatelog` (`Time`) VALUES (?);", array(date("Y-m-d H:i:s")));
+        Database::query_safe("INSERT INTO `updateLog` (`Time`) VALUES (?);", array(date("Y-m-d H:i:s")));
 
 
         $monthsCap = 6;
@@ -544,7 +557,6 @@ class WishRepository
         // Ik ga dit met php doen. sorry. Ik krijg het niet voor elkaar met Mysql
         $oldWishes = $this->getReturnArray($this->wishQueryBuilder->getWishes
         (null, ["Aangemaakt", "Gepubliceerd"], null, true, null));
-
 
         if (count($oldWishes) > 0) {
             if (is_array($oldWishes)) {

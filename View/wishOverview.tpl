@@ -64,7 +64,7 @@
             <br>
             <div class="tab-content">
                 <div class="tab-pane fade in {if $currentPage == "myWishes"}active{/if}" id="myWishes">
-                    {if $myWishes}
+                    {if !empty($myWishes)}
                         {foreach from=$myWishes item=wish}
                             <div class="panel panel-default">
 
@@ -100,7 +100,7 @@
                             </div>
                         {/foreach}
                     {else}
-                        <div class="center-block text-center"><h4>U heeft momenteel geen wensenn</h4></div>
+                        <div class="center-block text-center"><h4>U heeft momenteel geen wensen</h4></div>
                     {/if}
                 </div>
 
