@@ -14,7 +14,7 @@ class MatchRepository
     public function __construct()
     {
         $this->matchQueryBuilder = new MatchQueryBuilder();
-        $this->messageRepo = new messageRepository();
+        $this->messageRepo = new MessageRepository();
         $this->userRepo = new UserRepository();
     }
 
