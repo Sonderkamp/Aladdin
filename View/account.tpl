@@ -4,7 +4,7 @@
 <!-- * Date: 7-Mar-16-->
 <!-- * Time: 12:42-->
 <!-- */-->
-<div class="container">
+<div class="container ">
 
     <span class="info">
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#InfoModal">

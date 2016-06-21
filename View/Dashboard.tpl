@@ -1,11 +1,12 @@
 <script src="/JS/dashboard.js"></script>
+<img src="/Resources/Images/banner.jpg" class="img-responsive fullwidth background">
 <div class="container">
 
        <span class="info">
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#InfoModal">
                 <span class="glyphicon glyphicon-info-sign"></span>
             </button>
-       </span>
+    </span>
 
     {if isset($errorString)}
         <div class="alert alert-warning">
@@ -17,9 +18,9 @@
 
         <div class="col-xs-6">
             {if !empty($user->dob)}
-                <h3 class="dashboard-header">Informatie van {htmlspecialchars($user->name)}</h3>
+                <h3 class="dashboard-header">{htmlspecialchars(ucfirst ($user->name))}</h3>
             {else}
-                <h3 class="dashboard-header">Informatie van {htmlspecialchars($user->displayName)}</h3>
+                <h3 class="dashboard-header">{htmlspecialchars($user->displayName)}</h3>
             {/if}
             <div class="row">
                 <label class="col-md-4 col-xs-4">Adres:</label>
@@ -44,7 +45,7 @@
                 <label>{htmlspecialchars($wishLimit)}</label>
             </div>
             <div class="row">
-                <a href="/profile" class="btn btn-info">
+                <a href="/profile" class="btn btn-default">
                     Naar mijn profiel
                 </a>
             </div>
@@ -54,7 +55,7 @@
             <div class="col-xs-6">
                 <div class="btn-text">
                     <h4 class="dashboard-header">Weet u niet waarvoor u moet wensen?</h4>
-                    <a href="/survey" class="btn btn-info">
+                    <a href="/survey" class="btn btn-default">
                         Vul de vragenlijst in!
                     </a>
                 </div>
@@ -65,7 +66,7 @@
     <div class="row">
         <h3 class="col-xs-6 col-sm-4 col-md-12 dashboard-header">Mijn wensen</h3>
         {if $wishCheck}
-            <a href="/wishes/action=openAddView" class="btn btn-info col-xs-1 visible-sm visible-xs">
+            <a href="/wishes/action=openAddView" class="btn btn-default col-xs-1 visible-sm visible-xs">
                 <i class="fa fa-plus" aria-hidden="true"></i>
             </a>
         {/if}
@@ -78,7 +79,7 @@
                         <div class="caption">
                             <div class="row">
                                 <h4 class="col-md-12">Nieuwe Wens</h4>
-                                <a href="/wishes/action=openAddView" class="btn btn-info btn-dashboard">
+                                <a href="/wishes/action=openAddView" class="btn btn-default btn-dashboard">
                                     Voeg wens toe
                                     <i class="fa fa-plus" aria-hidden="true"></i>
                                 </a>
@@ -100,15 +101,12 @@
                                 <label>{$value->status}</label>
                             </div>
                             <div class="row">
-                                <a href="/wishes/action=getSpecificWish?Id={$value->id}">Bekijk de volledige wens</a>
+
                             </div>
                             <div class="row">
-                                <button type="button" class="btn btn-info btn-dashboard" data-toggle="collapse"
-                                        data-target="#wishcontent{$value->id}">Omschrijving
-                                </button>
-                                <div id="wishcontent{$value->id}" class="collapse collapse-button collapse-comment">
-                                    <strong>Omschrijving:</strong> {htmlspecialchars($value->content)}
-                                </div>
+                                <a class="btn btn-default btn-dashboard"
+                                   href="/wishes/action=getSpecificWish?Id={$value->id}">Bekijk de volledige wens</a>
+
                             </div>
                         </div>
                     </div>
@@ -121,7 +119,7 @@
     </div>
     <div class="row">
         <h3 class="col-xs-6 col-sm-4 col-md-12 dashboard-header">Mijn talenten</h3>
-        <a href="/Talents/p=allTalents" class="btn btn-info col-xs-1 visible-sm visible-xs">
+        <a href="/Talents/p=allTalents" class="btn btn-default col-xs-1 visible-sm visible-xs">
             <i class="fa fa-plus" aria-hidden="true"></i>
         </a>
     </div>
@@ -132,7 +130,7 @@
                     <div class="caption">
                         <div class="row">
                             <h4 class="col-md-12">Nieuw talent</h4>
-                            <a href="/Talents/p=allTalents" class="btn btn-info btn-dashboard">
+                            <a href="/Talents/p=allTalents" class="btn btn-default btn-dashboard">
                                 Voeg talent toe
                                 <i class="fa fa-plus" aria-hidden="true"></i>
                             </a>
