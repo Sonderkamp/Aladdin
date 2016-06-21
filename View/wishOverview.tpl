@@ -64,7 +64,7 @@
             <br>
             <div class="tab-content">
                 <div class="tab-pane fade in {if $currentPage == "myWishes"}active{/if}" id="myWishes">
-                    {if $myWishes}
+                    {if !empty($myWishes)}
                         {foreach from=$myWishes item=wish}
                             <div class="panel panel-default">
 
@@ -78,7 +78,7 @@
                                         <div class="col-xs-9">
                                             <p>{htmlspecialcharsWithNL($wish -> content)}</p>
                                         </div>
-                                        {include file='view/wishOverviewModals.tpl'}
+                                        {include file='View/wishOverviewModals.tpl'}
                                     </div>
                                 </div>
 
@@ -100,7 +100,7 @@
                             </div>
                         {/foreach}
                     {else}
-                        <div class="center-block text-center"><h4>U heeft momenteel geen wensenn</h4></div>
+                        <div class="center-block text-center"><h4>U heeft momenteel geen wensen</h4></div>
                     {/if}
                 </div>
 
@@ -120,7 +120,7 @@
                                         <div class="col-xs-9">
                                             <p>{htmlspecialcharsWithNL($wish -> content)}</p>
                                         </div>
-                                        {include file='view/wishOverviewModals.tpl'}
+                                        {include file='View/wishOverviewModals.tpl'}
                                     </div>
                                 </div>
 
@@ -151,7 +151,7 @@
                                         <div class="col-xs-9">
                                             <p>{htmlspecialcharsWithNL($wish -> content)}</p>
                                         </div>
-                                        {include file='view/wishOverviewModals.tpl'}
+                                        {include file='View/wishOverviewModals.tpl'}
                                     </div>
                                 </div>
 
@@ -183,7 +183,7 @@
                                         <div class="col-xs-9">
                                             <p>{htmlspecialcharsWithNL($wish -> content)}</p>
                                         </div>
-                                        {include file='view/wishOverviewModals.tpl'}
+                                        {include file='View/wishOverviewModals.tpl'}
                                     </div>
                                 </div>
 
@@ -214,7 +214,7 @@
                                         <div class="col-xs-9">
                                             <p>{htmlspecialcharsWithNL($wish -> content)}</p>
                                         </div>
-                                        {include file='view/wishOverviewModals.tpl'}
+                                        {include file='View/wishOverviewModals.tpl'}
                                     </div>
                                 </div>
 

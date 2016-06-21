@@ -38,8 +38,8 @@ class WishQueryBuilder extends QueryBuilder
                   WHERE `wish`.User IS NOT NULL AND ";
 
         if (!$allowBlock) {
-            $query .= "NOT EXISTS(SELECT NULL FROM blockedusers AS b WHERE b.user_Email = `wish`.User AND b.IsBlocked = 1 AND
-                   b.Id = (SELECT Id FROM blockedusers as c WHERE c.user_Email = `wish`.User ORDER BY DateBlocked DESC LIMIT 1)) AND ";
+            $query .= "NOT EXISTS(SELECT NULL FROM blockedUsers AS b WHERE b.user_Email = `wish`.User AND b.IsBlocked = 1 AND
+                   b.Id = (SELECT Id FROM blockedUsers as c WHERE c.user_Email = `wish`.User ORDER BY DateBlocked DESC LIMIT 1)) AND ";
         }
 
 
@@ -99,9 +99,6 @@ class WishQueryBuilder extends QueryBuilder
         if ($admin && $status == null) {
             $query = substr_replace($query, '', -3);
         }
-
-
-
 
         $query .= " GROUP BY `wish`.Id";
 
@@ -299,11 +296,11 @@ class WishQueryBuilder extends QueryBuilder
 
         setlocale(LC_TIME, 'Dutch');
         if($wishID != null) {
-            $array = Database::query_safe("SELECT `wishmessage`.`Message`, `wishmessage`.`Image`,  `wishmessage`.`CreationDate`, `wishmessage`.`user_Email`, `wishmessage`.`wish_Id`, `wishmessage`.`InGuestbook`, `user`.`DisplayName` FROM `wishmessage` join `user` on `email` = `user_Email`
-            WHERE `wish_Id` = ? ORDER BY `wishmessage`.`CreationDate` ASC ", array($wishID));
+            $array = Database::query_safe("SELECT `wishMessage`.`Message`, `wishMessage`.`Image`,  `wishMessage`.`CreationDate`, `wishMessage`.`user_Email`, `wishMessage`.`wish_Id`, `wishMessage`.`InGuestbook`, `user`.`DisplayName` FROM `wishMessage` join `user` on `email` = `user_Email`
+            WHERE `wish_Id` = ? ORDER BY `wishMessage`.`CreationDate` ASC ", array($wishID));
         } else {
-            $array = Database::query("SELECT `wishmessage`.`Message`, `wishmessage`.`Image`,  `wishmessage`.`CreationDate`, `wishmessage`.`user_Email`, `wishmessage`.`wish_Id`, `wishmessage`.`InGuestbook`, `user`.`DisplayName` FROM `wishmessage` join `user` on `email` = `user_Email`
-            WHERE InGuestbook = 1 ORDER BY `wishmessage`.`CreationDate` DESC ");
+            $array = Database::query("SELECT `wishMessage`.`Message`, `wishMessage`.`Image`,  `wishMessage`.`CreationDate`, `wishMessage`.`user_Email`, `wishMessage`.`wish_Id`, `wishMessage`.`InGuestbook`, `user`.`DisplayName` FROM `wishMessage` join `user` on `email` = `user_Email`
+            WHERE InGuestbook = 1 ORDER BY `wishMessage`.`CreationDate` DESC ");
         }
 
         $comments = array();
@@ -326,10 +323,10 @@ class WishQueryBuilder extends QueryBuilder
 
     public function removeComment($creationDate , $username, $wishId)
     {
-        $query = "DELETE FROM `wishmessage`
-        WHERE `wishmessage`.`CreationDate` = ?
-        AND `wishmessage`.`user_Email` = ?
-        AND `wishmessage`.`wish_Id` = ?";
+        $query = "DELETE FROM `wishMessage`
+        WHERE `wishMessage`.`CreationDate` = ?
+        AND `wishMessage`.`user_Email` = ?
+        AND `wishMessage`.`wish_Id` = ?";
 
         $this->executeQuery($query , array($creationDate ,$username , $wishId));
     }
@@ -362,20 +359,20 @@ class WishQueryBuilder extends QueryBuilder
 
     public function addComment($comment, $wishID, $user, $img = null)
     {
-        Database::query_safe("INSERT INTO `wishmessage` (`Message`, `Image`, `CreationDate`, `user_Email`, `wish_Id`) VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?);", array($comment, $img, $user->email, $wishID));
+        Database::query_safe("INSERT INTO `wishMessage` (`Message`, `Image`, `CreationDate`, `user_Email`, `wish_Id`) VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?);", array($comment, $img, $user->email, $wishID));
     }
     
     public function addToGuestbook($creationDate , $username, $wishId) {
-        Database::query_safe("UPDATE `wishmessage` SET `InGuestbook`=1 WHERE `CreationDate` = ? AND `user_Email` = ? AND `wish_Id` = ?" , array($creationDate , $username, $wishId));
+        Database::query_safe("UPDATE `wishMessage` SET `InGuestbook`=1 WHERE `CreationDate` = ? AND `user_Email` = ? AND `wish_Id` = ?" , array($creationDate , $username, $wishId));
     }
 
     public function removeFromGuestbook($creationDate , $username, $wishId) {
-        Database::query_safe("UPDATE `wishmessage` SET `InGuestbook`=0 WHERE `CreationDate` = ? AND `user_Email` = ? AND `wish_Id` = ?" , array($creationDate , $username, $wishId));
+        Database::query_safe("UPDATE `wishMessage` SET `InGuestbook`=0 WHERE `CreationDate` = ? AND `user_Email` = ? AND `wish_Id` = ?" , array($creationDate , $username, $wishId));
     }
 
     public function lastCommentMinutes($wishID, $user)
     {
-        $array = Database::query_safe("SELECT `wishmessage`.`CreationDate` FROM `wishmessage` WHERE `wish_Id` = ? AND user_Email = ? order by `wishmessage`.`CreationDate` DESC LIMIT 1", array($wishID, $user->email));
+        $array = Database::query_safe("SELECT `wishMessage`.`CreationDate` FROM `wishMessage` WHERE `wish_Id` = ? AND user_Email = ? order by `wishMessage`.`CreationDate` DESC LIMIT 1", array($wishID, $user->email));
 
         if(count($array) < 1 || empty($array[0]["CreationDate"]))
         {
