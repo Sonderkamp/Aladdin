@@ -1,12 +1,14 @@
 /*@import url("StyleMax.css");*/
 
-.navbar{
+.navbar {
     z-index: 100;
 }
-.background{
+
+.background {
     position: absolute;
     z-index: 0;
 }
+
 .smaller {
     height: 88px;
     width: auto;
@@ -49,7 +51,6 @@ h3 .h3 {
     float: right;
     margin: 10px 10px 5px 5px;
 }
-
 
 .collapse-comment {
     margin-left: 15px;
@@ -271,6 +272,11 @@ body {
     float: none;
     margin: 0 auto;
     max-width: 88px;
+}
+
+.errorcenter {
+    display: inherit;
+    text-align: center;
 }
 
 .header {

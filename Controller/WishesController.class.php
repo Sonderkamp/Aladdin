@@ -98,12 +98,14 @@ class WishesController extends Controller
         $this->wishCreationController->openWishView(true);
     }
 
-    public function addWish(){
+    public function addWish()
+    {
         (new AccountController())->guaranteeLogin("/Wishes");
         $this->wishCreationController->addWish();
     }
 
-    public function editWish(){
+    public function editWish()
+    {
         (new AccountController())->guaranteeLogin("/Wishes");
         $this->wishCreationController->editWish();
     }
@@ -119,6 +121,8 @@ class WishesController extends Controller
      */
     public function getSpecificWish($id = null, $error = null)
     {
+        $errorString = null;
+
         if ($id = null && empty($_GET["Id"])) {
             $this->apologize("Please provide a valid id");
             exit(0);
@@ -134,6 +138,11 @@ class WishesController extends Controller
         $isMatched = false;
         $canComment = false;
 
+        if (!empty($_SESSION["error"])) {
+            $errorString = $_SESSION["error"];
+            unset($_SESSION["error"]);
+        }
+
         if (!empty($selectedWish)) {
             if (!empty($_GET["admin"])) {
                 (new AdminController())->guaranteeAdmin("/");
@@ -145,17 +154,18 @@ class WishesController extends Controller
                         "matches" => $matches,
                         "comments" => $comments,
                         "adminView" => true,
+                        "errorString" => $errorString,
                         "canMatch" => false,
                         "canComment" => false,
                         "currentUser" => $this->userRepo->getCurrentUser()]);
                 exit(0);
 
             } else if ($this->userRepo->getCurrentUser() === false || ($selectedWish->status == "Aangemaakt" && $selectedWish->user->email != $this->userRepo->getCurrentUser()->email)) {
-                $this->apologize("You are not allowed to view this wish");
+                $this->apologize("U bent niet gemachtigd om deze wens te bekijken.");
             }
 
         } else {
-            $this->apologize("This wish doesn't exist");
+            $this->apologize("De wens die u heeft proberen te bezoeken bestaat niet.");
             exit(0);
         }
 
@@ -199,35 +209,46 @@ class WishesController extends Controller
                 "adminView" => false,
                 "comments" => $comments,
                 "canMatch" => $canMatch,
+                "errorString" => $errorString,
                 "isMatched" => $isMatched,
                 "canComment" => $canComment,
                 "currentUser" => $this->userRepo->getCurrentUser()]);
         exit(0);
     }
 
-    public function setCompletionDate(){
-        if(!empty($_POST["completionDate"]) && !empty($_POST["Id"])){
-            if(strtotime($_POST["completionDate"]) > time()){
-                $this->wishRepo->setCompletionDate($_POST["completionDate"] , $_POST["Id"]);
+    public function setCompletionDate()
+    {
+        if (!empty($_POST["completionDate"]) && !empty($_POST["Id"])) {
+            if (strtotime($_POST["completionDate"]) > time()) {
+                $this->wishRepo->setCompletionDate($_POST["completionDate"], $_POST["Id"]);
                 $this->redirect("/wishes/action=getSpecificWish?Id=" . $_POST["Id"]);
             } else {
-                $this->apologize("Geef alsjeblieft een geldige datum op. Een geldige datum is minimaal 1 dag vanaf de dag van vandaag.");
+                $errorString = "Geef alsjeblieft een geldige datum op. Een geldige datum is minimaal 1 dag vanaf de dag van vandaag.";
+                $_SESSION["error"] = $errorString;
+                $this->redirect("/wishes/action=getSpecificWish?Id=" . $_POST["Id"]);
             }
         } else {
-            $this->apologize("Geef alsjeblieft een geldige datum op");
+            $errorString = "Geef alsjeblieft een geldige datum en wens id op";
+            $_SESSION["error"] = $errorString;
+            $this->redirect("/wishes/action=getSpecificWish?Id=" . $_POST["Id"]);
         }
     }
 
-    public function confirmCompletion(){
-        if(!empty($_POST["completionDate"]) && !empty($_POST["Id"])){
-            if(strtotime($_POST["completionDate"]) < time()){
+    public function confirmCompletion()
+    {
+        if (!empty($_POST["completionDate"]) && !empty($_POST["Id"])) {
+            if (strtotime($_POST["completionDate"]) < time()) {
                 $this->wishRepo->confirmCompletionDate($_POST["Id"]);
                 $this->redirect("/wishes/action=getSpecificWish?Id=" . $_POST["Id"]);
             } else {
-                $this->apologize("De geplande datum is nog niet bereikt. De wens kan niet worden afgesloten");
+                $errorString = "De geplande datum is nog neit bereikt. De wens kan niet worden afgesloten.";
+                $_SESSION["error"] = $errorString;
+                $this->redirect("/wishes/action=getSpecificWish?Id=" . $_POST["Id"]);
             }
         } else {
-            $this->apologize("Er is iets fout gegaan bij het ophalen van de datum probeer later opnieuw");
+            $errorString = "Er is iets fout gegaan bij het ophalen van de datum porbeer later opnieuw";
+            $_SESSION["error"] = $errorString;
+            $this->redirect("/wishes/action=getSpecificWish?Id=" . $_POST["Id"]);
         }
     }
 
@@ -243,17 +264,11 @@ class WishesController extends Controller
             }
             $this->redirect("/wishes/action=getSpecificWish/admin=true/Id=" . $_POST["wishId"]);
         } else {
-            $this->apologize("Geef alsjeblieft een geldige wish id en creationDate op");
+            $errorString = "Geef alsjeblieft een geldige wish id en mutatiedatum op";
+            $_SESSION["error"] = $errorString;
+            $this->redirect("/wishes/action=getSpecificWish?Id=" . $_POST["Id"]);
         }
     }
-
-//    public function removeMatch()
-//    {
-//        if (!empty($_GET["Id"])) {
-//            $this->wishRepo->removeMatch($_GET["Id"]);
-//            $this->redirect("/wishes/action=getSpecificWish?Id=" . $_GET["Id"]);
-//        }
-//    }
 
     //Comment Panel for specific wish view
 
@@ -262,17 +277,25 @@ class WishesController extends Controller
      */
     public function AddComment()
     {
+
+
         if (!isset($_POST["comment"])) {
             $this->redirect("/Wishes/action=getSpecificWish/Id=" . $_GET["Id"]);
             exit();
         }
 
-        if (!empty($wish = $this->wishRepo->getWish($_GET["Id"]))) {
-            if ($wish->status != "Vervuld" && $this->userRepo->getCurrentUser()->email != $wish->user || !$this->wishRepo->canComment($_GET["Id"], $this->userRepo->getCurrentUser()->email)) {
-                $this->redirect("/Wishes/action=getSpecificWish/Id=" . $_GET["Id"]);
-                exit();
-            }
+        $wish = $this->wishRepo->getWish($_GET["Id"]);
+
+        if (empty($wish) || $wish->status != "Vervuld") {
+            $this->redirect("/Wishes/action=getSpecificWish/Id=" . $_GET["Id"]);
+            exit();
         }
+
+        if ($this->userRepo->getCurrentUser()->email != $wish->user->email && !$this->wishRepo->canComment($_GET["Id"], $this->userRepo->getCurrentUser()->email)) {
+            $this->redirect("/Wishes/action=getSpecificWish/Id=" . $_GET["Id"]);
+            exit();
+        }
+
 
         if (empty($_FILES["img"]["tmp_name"])) {
             $check = false;
@@ -282,7 +305,9 @@ class WishesController extends Controller
 
         if (!($check !== false)) {
             if (strlen(trim($_POST["comment"])) <= 1) {
-                $this->getSpecificwish($_GET["Id"], "Vul een reactie in of stuur een plaatje in.");
+                $errorString = "Vul een reactie in of stuur een plaatje in.";
+                $_SESSION["error"] = $errorString;
+                $this->redirect("/wishes/action=getSpecificWish?Id=" . $_GET["Id"]);
                 exit();
             }
         }
@@ -299,7 +324,8 @@ class WishesController extends Controller
                 $err = $this->wishRepo->addComment($_POST["comment"], $_GET["Id"], $user);
             }
             if ($err != null) {
-                $this->getSpecificwish($_GET["Id"], $err);
+                $_SESSION["error"] = $err;
+                $this->redirect("/wishes/action=getSpecificWish?Id=" . $_GET["Id"]);
             }
         }
 
@@ -307,40 +333,6 @@ class WishesController extends Controller
         exit();
 
     }
-
-//    public function requestMatch()
-//    {
-//        if (!empty($_GET["Id"]) && !empty($this->userRepo->getCurrentUser())) {
-//
-//            if ($this->matchRepo->checkOwnWish($this->userRepo->getCurrentUser()->email, $_GET["Id"])) {
-//                $this->apologize("You can't match with your own wishes");
-//                exit(0);
-//            }
-//
-//            if ($this->matchRepo->checkDuplicates($this->userRepo->getCurrentUser()->email, $_GET["Id"])) {
-//                $this->apologize("You already matched with this wish");
-//                exit(0);
-//            }
-//
-//            $this->matchRepo->setMatch($_GET["Id"], $this->userRepo->getCurrentUser()->email);
-//
-//        } else {
-//            $this->apologize("Please supply a valid wishId and make sure to be logged in");
-//        }
-//
-//        $this->getSpecificWish($_GET["Id"]);
-//    }
-//
-//    public function selectMatch()
-//    {
-//        if ($this->userRepo->getCurrentUser()->email && !empty($_POST["Id"]) && !empty($_POST["User"])) {
-//            $this->matchRepo->clearSelected($_POST["Id"]);
-//            $this->matchRepo->selectMatch($_POST["Id"], $_POST["User"]);
-//            $this->redirect("/wishes//wishes/action=getSpecificWish?Id=" . $_POST["Id"]);
-//        } else {
-//            $this->apologize("Please supply a valid wishId and User email");
-//        }
-//    }
 
     // utility methods
 
