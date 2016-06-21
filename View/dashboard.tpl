@@ -37,7 +37,7 @@
             {if !empty($user->dob)}
                 <div class="row">
                     <label class="col-md-4">Geboortedatum:</label>
-                    <label>{htmlspecialchars($user->dob)}</label>
+                    <label>{htmlspecialchars($user->dob)|date_format:"%d/%m/%y"}</label>
                 </div>
             {/if}
             <div class="row">
