@@ -178,7 +178,10 @@
                                                         <td>{$wish->user->displayName}</td>
                                                         <td>{$wish->title}</td>
                                                         <td>{$wish->status}</td>
-                                                        <td><a>Bekijk</a></td>
+                                                        <td>
+                                                            <a href="/wishes/action=getSpecificWish/admin=true/Id={$wish->id}"
+                                                               onClick="return popup(this, 'notes',900,400)">Bekijk</a>
+                                                        </td>
                                                     </tr>
                                                 {/foreach}
                                                 </tbody>
@@ -197,14 +200,16 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            {*{foreach from=$wishes item=wish}*}
-                                            {*<tr>*}
-                                            {*<td>{$wish->user->displayName}</td>*}
-                                            {*<td>{$wish->title}</td>*}
-                                            {*<td>{$wish->status}</td>*}
-                                            {*<td><a>Bekijk</a></td>*}
-                                            {*</tr>*}
-                                            {*{/foreach}*}
+                                            {foreach from=$completedWishes item=wish}
+                                                <tr>
+                                                    <td>{$wish->user->displayName}</td>
+                                                    <td>{$wish->title}</td>
+                                                    <td>{$wish->status}</td>
+                                                    <td>
+                                                        <a href="/wishes/action=getSpecificWish/admin=true/Id={$wish->id}"
+                                                           onClick="return popup(this, 'notes',900,400)">Bekijk</a></td>
+                                                </tr>
+                                            {/foreach}
                                             </tbody>
                                         </table>
                                     </div>
