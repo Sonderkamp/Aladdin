@@ -14,7 +14,7 @@
             {$errorString}
         </div>
     {/if}
-    <div class="row dashboard-row">
+    <div class="row dashboard-row min270">
 
         <div class="col-xs-6">
             {if !empty($user->dob)}
