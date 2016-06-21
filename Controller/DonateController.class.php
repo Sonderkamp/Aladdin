@@ -48,7 +48,6 @@ class DonateController extends Controller
 
             }
 
-
             // Show donate page
             $this->render("donate.tpl", ["title" => "Aladdin"]);
             exit(0);

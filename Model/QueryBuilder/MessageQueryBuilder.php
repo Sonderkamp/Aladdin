@@ -180,7 +180,7 @@ class MessageQueryBuilder
         $pdo->beginTransaction();
         $itemNR = null;
 
-        if ($user->getUser($me) !== false) {
+        if ($user->getUser($me) !== null) {
             DATABASE::transaction_action_safe($pdo, "INSERT INTO `message` (`Subject`, `Message`, `user_Sender`, `user_Receiver`) VALUES ( ?, ?, ?, ?)", array($title, $message, $me, $recipient));
             $itemNR = $pdo->lastInsertId();
             DATABASE::transaction_action_safe($pdo, "INSERT INTO `inbox` ( `folder_Name`, `message_Id`, `user_Email`) VALUES ('outbox', ?, ?)", array($itemNR, $me));
