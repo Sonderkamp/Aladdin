@@ -99,7 +99,7 @@ class AdminwishController extends Controller
             . "\n \n Wij hopen u hiermee voldoende te hebben geinformeerd.";
         $title = "Uw wens is " . $verdict . "!";
 
-        $messageId = $this->messRepo->sendMessage($_SESSION["admin"]->username, $acceptedWish->user->displayName, $title, $message);
+        $messageId = $this->messRepo->sendMessage($_SESSION["admin"]->username, $acceptedWish->user->email, $title, $message);
         $this->messRepo->setLink($wishId, 'Wens', $messageId);
     }
 }
