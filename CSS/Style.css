@@ -16,6 +16,11 @@
 
 .fullwidth {
     width: 100%;
+}
+
+.width {
+
+    width: 100%;
     height: 400px;
     margin-top: -150px;
 }

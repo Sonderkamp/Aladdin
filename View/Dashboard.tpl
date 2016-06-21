@@ -1,5 +1,5 @@
 <script src="/JS/dashboard.js"></script>
-<img src="/Resources/Images/banner.jpg" class="img-responsive fullwidth background">
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
 
        <span class="info">
