@@ -59,9 +59,7 @@ class ProfileoverviewController extends Controller
         $blocks = $userRepo->getAllBlocks($user->email);
         $blockStatus = $userRepo->isBlocked($user->email);
         $wishes = $wishRepo->getWishesByUser($user->email);
-
-        // MAX CHANGE THIS
-        $completedWishes = $wishRepo->getWishesByUser($user->email);
+        $completedWishes = $wishRepo->getMyCompletedWishes($user->email);
 
         if ($wishes[0] === null) {
             $wishes = null;
