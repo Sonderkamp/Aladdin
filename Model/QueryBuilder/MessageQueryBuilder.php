@@ -75,7 +75,7 @@ class MessageQueryBuilder
         $mess = $mess[0];
 
         $mesmodel = new Message();
-        $mesmodel->date = strftime(" %H:%M %#d %B %Y", strtotime($res["Date"]));
+        $mesmodel->date = strftime(" %H:%M %e %B %Y", strtotime($res["Date"]));
         $mesmodel->isopened = $res["IsOpend"];
         $mesmodel->title = $mess["Subject"];
         $mesmodel->content = $mess["Message"];
@@ -115,7 +115,7 @@ class MessageQueryBuilder
         foreach ($dbres as $row) {
 
             $mesmodel = new Message();
-            $mesmodel->date = strftime("%#d %B %Y", strtotime($row["Date"]));
+            $mesmodel->date = strftime("%e %B %Y", strtotime($row["Date"]));
             $mesmodel->isopened = $row["IsOpend"];
             $mesmodel->title = $row["Subject"];
             $mesmodel->content = substr($row["Message"], 0, 100);
