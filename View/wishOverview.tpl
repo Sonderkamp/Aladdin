@@ -78,7 +78,7 @@
                                         <div class="col-xs-9">
                                             <p>{htmlspecialcharsWithNL($wish -> content)}</p>
                                         </div>
-                                        {include file='view/wishOverviewModals.tpl'}
+                                        {include file='View/wishOverviewModals.tpl'}
                                     </div>
                                 </div>
 
@@ -120,7 +120,7 @@
                                         <div class="col-xs-9">
                                             <p>{htmlspecialcharsWithNL($wish -> content)}</p>
                                         </div>
-                                        {include file='view/wishOverviewModals.tpl'}
+                                        {include file='View/wishOverviewModals.tpl'}
                                     </div>
                                 </div>
 
@@ -151,7 +151,7 @@
                                         <div class="col-xs-9">
                                             <p>{htmlspecialcharsWithNL($wish -> content)}</p>
                                         </div>
-                                        {include file='view/wishOverviewModals.tpl'}
+                                        {include file='View/wishOverviewModals.tpl'}
                                     </div>
                                 </div>
 
@@ -183,7 +183,7 @@
                                         <div class="col-xs-9">
                                             <p>{htmlspecialcharsWithNL($wish -> content)}</p>
                                         </div>
-                                        {include file='view/wishOverviewModals.tpl'}
+                                        {include file='View/wishOverviewModals.tpl'}
                                     </div>
                                 </div>
 
@@ -214,7 +214,7 @@
                                         <div class="col-xs-9">
                                             <p>{htmlspecialcharsWithNL($wish -> content)}</p>
                                         </div>
-                                        {include file='view/wishOverviewModals.tpl'}
+                                        {include file='View/wishOverviewModals.tpl'}
                                     </div>
                                 </div>
 

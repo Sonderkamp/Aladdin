@@ -88,26 +88,13 @@ class WishRepository
      */
     public function getMyWishes()
     {
-        $ress = $this->wishQueryBuilder->getWishes($this->userRepository->getCurrentUser()->email, [0 => "Aangemaakt",
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes
+        ($this->userRepository->getCurrentUser()->email, [0 => "Aangemaakt",
             1 => "Gepubliceerd",
             2 => "Geweigerd",
             3 => "Match gevonden",
             4 => "Vervuld",
-            5 => "Wordt vervuld"]);
-
-        exit(0);
-
-//        print_r($this->getReturnArray($this->wishQueryBuilder->getWishes
-//        ($this->userRepository->getCurrentUser()->email, [0 => "Aangemaakt",
-//            1 => "Gepubliceerd",
-//            2 => "Geweigerd",
-//            3 => "Match gevonden",
-//            4 => "Vervuld",
-//            5 => "Wordt vervuld"])));
-
-        print_r($ress);
-
-        return $this->getReturnArray($ress);
+            5 => "Wordt vervuld"]));
     }
 
     /**

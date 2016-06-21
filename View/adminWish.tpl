@@ -136,7 +136,7 @@
                                 <td>{$wish->title}</td>
                                 <td>{$wish->status}</td>
                                 <td>
-                                    {include file='view/adminWishModals.tpl'}
+                                    {include file='View/adminWishModals.tpl'}
                                     <div class="dropdown">
                                         <a href="#"
                                            class="dropdown-toggle"
@@ -223,7 +223,7 @@
                                 <td>{$wish->title}</td>
                                 <td>{$wish->status}</td>
                                 <td>
-                                    {include file='view/adminWishModals.tpl'}
+                                    {include file='View/adminWishModals.tpl'}
                                     <div class="dropdown">
                                         <a href="#"
                                            class="dropdown-toggle"
@@ -291,7 +291,7 @@
                                 <td>{$wish->title}</td>
                                 <td>{$wish->status}</td>
                                 <td>
-                                    {include file='view/adminWishModals.tpl'}
+                                    {include file='View/adminWishModals.tpl'}
                                     <div class="dropdown">
                                         <a href="#"
                                            class="dropdown-toggle"
@@ -351,7 +351,7 @@
                                 <td>{$wish->title}</td>
                                 <td>{$wish->status}</td>
                                 <td>
-                                    {include file='view/adminWishModals.tpl'}
+                                    {include file='View/adminWishModals.tpl'}
                                     <div class="dropdown">
                                         <a href="#"
                                            class="dropdown-toggle"
@@ -420,7 +420,7 @@
                                 <td>{$wish->title}</td>
                                 <td>{$wish->status}</td>
                                 <td>
-                                    {include file='view/adminWishModals.tpl'}
+                                    {include file='View/adminWishModals.tpl'}
                                     <div class="dropdown">
                                         <a href="#"
                                            class="dropdown-toggle"
@@ -481,7 +481,7 @@
                                 <td>{$wish->title}</td>
                                 <td>{$wish->status}</td>
                                 <td>
-                                    {include file='view/adminWishModals.tpl'}
+                                    {include file='View/adminWishModals.tpl'}
                                     <div class="dropdown">
                                         <a href="#"
                                            class="dropdown-toggle"
@@ -557,7 +557,7 @@
                                 <td>{$wish->title}</td>
                                 <td>{$wish->status}</td>
                                 <td>
-                                    {include file='view/adminWishModals.tpl'}
+                                    {include file='View/adminWishModals.tpl'}
                                     <div class="dropdown">
                                         <a href="#"
                                            class="dropdown-toggle"
