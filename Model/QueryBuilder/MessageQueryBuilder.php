@@ -195,6 +195,7 @@ class MessageQueryBuilder
 
         $pdo->commit();
 
+
         return $itemNR;
     }
 
