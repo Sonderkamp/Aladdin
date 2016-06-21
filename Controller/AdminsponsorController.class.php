@@ -31,7 +31,6 @@ class AdminsponsorController extends Controller
 
     public function run()
     {
-        (new AccountController())->guaranteeLogin("/Wishes");
         if (!isset($currentPage)) {
             $currentPage = "sponsors";
         }
@@ -41,7 +40,6 @@ class AdminsponsorController extends Controller
 
     public function renderOverview($currentPage)
     {
-        (new AccountController())->guaranteeLogin("/Wishes");
 
         $users = $this->userRepo->getAllUsers();
         $sponsors = $this->getSponsors();

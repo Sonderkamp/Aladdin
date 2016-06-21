@@ -19,7 +19,6 @@ class AdminwishController extends Controller
 
     public function run()
     {
-        (new AdminController())->guaranteeAdmin("/AdminWish");
         $this->renderPage("requested");
     }
 

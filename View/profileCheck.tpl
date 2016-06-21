@@ -78,6 +78,12 @@
                                         <h5>Overzicht</h5>
                                         <table class="table table-user-information">
                                             <tbody>
+                                            {if !empty($curUser->companyName)}
+                                                <tr>
+                                                    <td>Bedrijfsnaam:</td>
+                                                    <td> {$curUser->companyName} </td>
+                                                </tr>
+                                            {/if}
                                             <tr>
                                                 <td>Naam:</td>
                                                 <td>{$curUser->name} {$curUser->surname}</td>
@@ -87,7 +93,7 @@
                                                 <td>{$curUser->email}</td>
                                             </tr>
                                             <tr>
-                                                <td>Initialen</td>
+                                                <td>Voorletters</td>
                                                 <td>{$curUser->initials}</td>
                                             </tr>
                                             <tr>
@@ -106,28 +112,43 @@
                                                 <td>Land</td>
                                                 <td>{$curUser->country}</td>
                                             </tr>
-                                            <tr>
-                                                <td>Geboortedatum</td>
-                                                <td>{$curUser->dob|date_format:"%d-%m-%Y"}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Geslacht</td>
-                                                {if $curUser->gender eq 'male'}
-                                                    <td>Man</td>
-                                                {elseif $curUser->gender eq 'female'}
-                                                    <td>Vrouw</td>
-                                                {elseif $curUser->gender eq 'other'}
-                                                    <td>-</td>
+                                            {if empty($curUser->companyName)}
+                                                <tr>
+                                                    <td>Geboortedatum</td>
+                                                    <td>{$curUser->dob|date_format:"%d-%m-%Y"}</td>
+                                                </tr>
+                                                {if !empty($curUser->guardian)}
+                                                    <tr>
+                                                        <td>Voogd:</td>
+                                                        <td> {$curUser->guardian} </td>
+                                                    </tr>
                                                 {/if}
-                                            </tr>
-                                            <tr>
-                                                <td>Handicap</td>
+                                                <tr>
+                                                    <td>Geslacht</td>
+                                                    {if $curUser->gender eq 'male'}
+                                                        <td>Man</td>
+                                                    {elseif $curUser->gender eq 'female'}
+                                                        <td>Vrouw</td>
+                                                    {elseif $curUser->gender eq 'other'}
+                                                        <td>-</td>
+                                                    {/if}
+                                                </tr>
+                                                <tr>
+                                                    <td>Handicap</td>
+                                                    {if $curUser->handicap}
+                                                        <td>Ja</td>
+                                                    {else}
+                                                        <td>Nee</td>
+                                                    {/if}
+                                                </tr>
                                                 {if $curUser->handicap}
-                                                    <td>Ja</td>
-                                                {else}
-                                                    <td>Nee</td>
+                                                    <tr>
+                                                        <td>Handicap Informatie</td>
+                                                        <td>{$curUser->handicapInfo}</td>
+
+                                                    </tr>
                                                 {/if}
-                                            </tr>
+                                            {/if}
                                             </tbody>
                                         </table>
                                     </div>
@@ -157,7 +178,10 @@
                                                         <td>{$wish->user->displayName}</td>
                                                         <td>{$wish->title}</td>
                                                         <td>{$wish->status}</td>
-                                                        <td><a>Bekijk</a></td>
+                                                        <td>
+                                                            <a href="/wishes/action=getSpecificWish/admin=true/Id={$wish->id}"
+                                                               onClick="return popup(this, 'notes',900,400)">Bekijk</a>
+                                                        </td>
                                                     </tr>
                                                 {/foreach}
                                                 </tbody>
@@ -176,14 +200,16 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            {*{foreach from=$wishes item=wish}*}
-                                            {*<tr>*}
-                                            {*<td>{$wish->user->displayName}</td>*}
-                                            {*<td>{$wish->title}</td>*}
-                                            {*<td>{$wish->status}</td>*}
-                                            {*<td><a>Bekijk</a></td>*}
-                                            {*</tr>*}
-                                            {*{/foreach}*}
+                                            {foreach from=$completedWishes item=wish}
+                                                <tr>
+                                                    <td>{$wish->user->displayName}</td>
+                                                    <td>{$wish->title}</td>
+                                                    <td>{$wish->status}</td>
+                                                    <td>
+                                                        <a href="/wishes/action=getSpecificWish/admin=true/Id={$wish->id}"
+                                                           onClick="return popup(this, 'notes',900,400)">Bekijk</a></td>
+                                                </tr>
+                                            {/foreach}
                                             </tbody>
                                         </table>
                                     </div>

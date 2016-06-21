@@ -114,8 +114,8 @@ class AdminRepository
         }
 
         // Checks if the admin whose password is about to change is added later than the current admin
-        $date1 = strftime(" %H:%M %#d %B %Y", strtotime($admin[0]["CreationDate"]));
-        $date2 = strftime(" %H:%M %#d %B %Y", strtotime($this->getCurrentAdmin()->creationDate));
+        $date1 = strtotime($admin[0]["CreationDate"]);
+        $date2 = strtotime($this->getCurrentAdmin()->creationDate);
         if ($date1 <= $date2) {
             return "Deze admin kan niet door u gewijzigd worden";
         }
@@ -179,8 +179,8 @@ class AdminRepository
         if (empty($admin))
             return false;
 
-        $date1 = strftime(" %H:%M %#d %B %Y", strtotime($admin[0]["CreationDate"]));
-        $date2 = strftime(" %H:%M %#d %B %Y", strtotime($this->getCurrentAdmin()->creationDate));
+        $date1 = strtotime($admin[0]["CreationDate"]);
+        $date2 = strtotime($this->getCurrentAdmin()->creationDate);
         if ($date1 <= $date2)
             return false;
         return true;

@@ -116,7 +116,7 @@ class UserRepository
 
         $mail->to = $username;
         $mail->toName = $val->name . " " . $val->surname;
-        $mail->subject = "Activeer Account Webshop";
+        $mail->subject = "Activeer Account Aladdin";
         $mail->message =
             "Beste " . $val->name . ",\n
             Deze mail is verstuurd omdat u een nieuw account aan heeft gemaakt.\n
@@ -124,7 +124,7 @@ class UserRepository
             http://" . $_SERVER["SERVER_NAME"] . "/account/action=activate/token=" . $this->UserQueryBuilder->getTokenByName($username, "validation")["ValidationHash"] . "\n
 
             Met vriendelijke groet,\n
-            Webshop";
+            Aladdin";
         return true;
 
     }
@@ -347,7 +347,7 @@ class UserRepository
             // Get
             $mail->to = $username;
             $mail->toName = $val->name . " " . $val->surname;
-            $mail->subject = "Wachtwoord vergeten Webshop";
+            $mail->subject = "Wachtwoord vergeten Aladdin";
             $mail->message =
                 "Beste " . $val->name . ",\n
             Deze mail is verstuurd omdat u uw wachtwoord vergeten bent.\n
@@ -356,7 +356,7 @@ class UserRepository
             Deze link is 24 uur geldig \n
 
             Met vriendelijke groet,\n
-            Webshop";
+            Aladdin";
 
             $websiteMessage = "Er is een email verstuurd naar " . $username .
                 "met een link om uw wachtwoord te resetten.Deze link verschijnt binnen drie minuten.
@@ -418,13 +418,16 @@ class UserRepository
     public function tryRegister($array)
     {
 
+
         if ($array["type"] != "business" && $array["type"] != "child") {
 
             if (empty($array["dob"])) {
                 return "Niet alles ingevuld";
             }
 
-            $age = strtotime(DateTime::createFromFormat('d-m-Y', $array["dob"])->getTimestamp()) / 60 / 60 / 24 / 365;
+            $age = DateTime::createFromFormat('d-m-Y', $array["dob"]);
+            $to = new DateTime('today');
+            $age = $age->diff($to)->y;
             if ($age < 18) {
                 return "Je moet minimaal 18 jaar oud zijn. Ben je jonger? Registreer je als een kind.";
             }

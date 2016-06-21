@@ -12,10 +12,10 @@ class Email
 
     public function __construct()
     {
-        $this->from = "webs2eindopdracht@gmail.com";
+        $this->from = EMAILADRESS;
         $this->fromName = "Aladdin no-reply";
-        $this->to = "webs2eindopdracht@gmail.com";
-        $this->toName = "Webs2 Webshop";
+        $this->to = EMAILADRESS;
+        $this->toName = "Aladdin no-reply";
         $this->subject = "not set.";
         $this->message = "not set.";
 
@@ -23,8 +23,7 @@ class Email
 
     public function sendMail()
     {
-        if( $this->from == $this->to)
-        {
+        if ($this->from == $this->to) {
             echo "Mailer Error: Receipient not set";
             exit();
         }
@@ -34,21 +33,21 @@ class Email
         //Set PHPMailer to use SMTP.
         $mail->isSMTP();
         //Set SMTP host name
-        $mail->Host = "smtp.gmail.com";
+        $mail->Host = SMTP_HOST;
         //Set this to true if SMTP host requires authentication to send email
         $mail->SMTPAuth = true;
         //Provide username and password
         $mail->Username = EMAILADRESS;
         $mail->Password = EMAILWACHTWOORD;
         //If SMTP requires TLS encryption then set it
-        $mail->SMTPSecure = "tls";
+        $mail->SMTPSecure = SMTP_SECURITY;
         //Set TCP port to connect to
-        $mail->Port = 587;
+        $mail->Port = SMTP_PORT;
 
         $mail->From = $this->from;
         $mail->FromName = $this->fromName;
 
-        $mail->addAddress($this->to , $this->toName);
+        $mail->addAddress($this->to, $this->toName);
 
         $mail->isHTML(false);
 

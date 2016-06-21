@@ -33,7 +33,7 @@ class DashboardController extends Controller
     public function guaranteeProfile()
     {
         if (!$this->checkAmounts()) {
-            $this->showForcedProfile();
+            $this->redirect("/dashboard");
         }
     }
 

@@ -98,12 +98,14 @@ class WishesController extends Controller
         $this->wishCreationController->openWishView(true);
     }
 
-    public function addWish(){
+    public function addWish()
+    {
         (new AccountController())->guaranteeLogin("/Wishes");
         $this->wishCreationController->addWish();
     }
 
-    public function editWish(){
+    public function editWish()
+    {
         (new AccountController())->guaranteeLogin("/Wishes");
         $this->wishCreationController->editWish();
     }
@@ -136,7 +138,7 @@ class WishesController extends Controller
         $isMatched = false;
         $canComment = false;
 
-        if(!empty($_SESSION["error"])){
+        if (!empty($_SESSION["error"])) {
             $errorString = $_SESSION["error"];
             unset($_SESSION["error"]);
         }
@@ -214,10 +216,11 @@ class WishesController extends Controller
         exit(0);
     }
 
-    public function setCompletionDate(){
-        if(!empty($_POST["completionDate"]) && !empty($_POST["Id"])){
-            if(strtotime($_POST["completionDate"]) > time()){
-                $this->wishRepo->setCompletionDate($_POST["completionDate"] , $_POST["Id"]);
+    public function setCompletionDate()
+    {
+        if (!empty($_POST["completionDate"]) && !empty($_POST["Id"])) {
+            if (strtotime($_POST["completionDate"]) > time()) {
+                $this->wishRepo->setCompletionDate($_POST["completionDate"], $_POST["Id"]);
                 $this->redirect("/wishes/action=getSpecificWish?Id=" . $_POST["Id"]);
             } else {
                 $errorString = "Geef alsjeblieft een geldige datum op. Een geldige datum is minimaal 1 dag vanaf de dag van vandaag.";
@@ -231,9 +234,10 @@ class WishesController extends Controller
         }
     }
 
-    public function confirmCompletion(){
-        if(!empty($_POST["completionDate"]) && !empty($_POST["Id"])){
-            if(strtotime($_POST["completionDate"]) < time()){
+    public function confirmCompletion()
+    {
+        if (!empty($_POST["completionDate"]) && !empty($_POST["Id"])) {
+            if (strtotime($_POST["completionDate"]) < time()) {
                 $this->wishRepo->confirmCompletionDate($_POST["Id"]);
                 $this->redirect("/wishes/action=getSpecificWish?Id=" . $_POST["Id"]);
             } else {
@@ -273,17 +277,25 @@ class WishesController extends Controller
      */
     public function AddComment()
     {
+
+
         if (!isset($_POST["comment"])) {
             $this->redirect("/Wishes/action=getSpecificWish/Id=" . $_GET["Id"]);
             exit();
         }
 
-        if (!empty($wish = $this->wishRepo->getWish($_GET["Id"]))) {
-            if ($wish->status != "Vervuld" && $this->userRepo->getCurrentUser()->email != $wish->user || !$this->wishRepo->canComment($_GET["Id"], $this->userRepo->getCurrentUser()->email)) {
-                $this->redirect("/Wishes/action=getSpecificWish/Id=" . $_GET["Id"]);
-                exit();
-            }
+        $wish = $this->wishRepo->getWish($_GET["Id"]);
+
+        if (empty($wish) || $wish->status != "Vervuld") {
+            $this->redirect("/Wishes/action=getSpecificWish/Id=" . $_GET["Id"]);
+            exit();
         }
+
+        if ($this->userRepo->getCurrentUser()->email != $wish->user->email && !$this->wishRepo->canComment($_GET["Id"], $this->userRepo->getCurrentUser()->email)) {
+            $this->redirect("/Wishes/action=getSpecificWish/Id=" . $_GET["Id"]);
+            exit();
+        }
+
 
         if (empty($_FILES["img"]["tmp_name"])) {
             $check = false;
@@ -313,7 +325,7 @@ class WishesController extends Controller
             }
             if ($err != null) {
                 $_SESSION["error"] = $err;
-                $this->redirect("/wishes/action=getSpecificWish?Id=" . $_POST["Id"]);
+                $this->redirect("/wishes/action=getSpecificWish?Id=" . $_GET["Id"]);
             }
         }
 

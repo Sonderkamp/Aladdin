@@ -28,6 +28,7 @@ class Controller
                 $smarty->assign("admin", $_SESSION["admin"]);
             }
 
+            $smarty->assign("TEMPLATE", $template);
             $quote = new Quote();
             $_SESSION["quote"] = $quote->getQuote();
 

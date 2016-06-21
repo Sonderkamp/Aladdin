@@ -21,6 +21,11 @@ class messageRepository
     }
 
 
+    public function deleteMessagesUser($username)
+    {
+        $this->messageBuilder->deleteMessagesUser($username);
+    }
+
     public function getbox($search, $page, $box)
     {
         $pages = 0;
@@ -30,7 +35,7 @@ class messageRepository
 
         return $messages;
     }
-    
+
 
     public function isValidPage()
     {
@@ -41,8 +46,6 @@ class messageRepository
     {
         return $this->messageBuilder->getMessage($messageID, $me);
     }
-
-
 
 
     public function connectMessage($me, $message)

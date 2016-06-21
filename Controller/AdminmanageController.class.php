@@ -6,7 +6,7 @@
  * Date: 29-5-2016
  * Time: 14:51
  */
-class AdminManageController extends Controller
+class AdminmanageController extends Controller
 {
     private $adminRepo;
 
