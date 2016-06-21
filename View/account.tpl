@@ -386,10 +386,10 @@
                     Hier kunt u uw profiel bekijken en wijzigen, uw donaties inzien en uw wachtwoord wijzigen.
                     <br><br>
 
-                    <a><span class="glyphicon glyphicon glyphicon-user"/> Overzicht</a> hier staat uw profiel zoals u dat heeft ingesteld.<br>
-                    <a><span class="glyphicon glyphicon glyphicon-euro"/> Donaties</a> hier staan al uw donaties.<br>
-                    <a><span class="glyphicon glyphicon glyphicon-edit"/> Bewerken</a> hier kunt u uw profiel bewerken<br>
-                    <a><span class="glyphicon glyphicon glyphicon-option-horizontal"/> Wachtwoord</a> hier kunt u uw wachtwoord wijzigen.<br>
+                    <a><i class="glyphicon glyphicon glyphicon-user"></i> Overzicht</a> hier staat uw profiel zoals u dat heeft ingesteld.<br>
+                    <a><i class="glyphicon glyphicon glyphicon-euro"></i> Donaties</a> hier staan al uw donaties.<br>
+                    <a><i class="glyphicon glyphicon glyphicon-edit"></i> Bewerken</a> hier kunt u uw profiel bewerken<br>
+                    <a><i class="glyphicon glyphicon glyphicon-option-horizontal"></i> Wachtwoord</a> hier kunt u uw wachtwoord wijzigen.<br>
                 </p>
 
                 <div class="modal-footer">
