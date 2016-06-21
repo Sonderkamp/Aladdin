@@ -1,7 +1,7 @@
 <div class="container">
-<h1>
-    ERROR VIEW!
-</h1>
+<h3>
+    Er is iets fout gegaan.
+</h3>
 <p>
     {htmlspecialchars($message)}
 </p>

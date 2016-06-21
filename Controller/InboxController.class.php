@@ -46,6 +46,13 @@ class InboxController extends Controller
             unset($names[$key]);
         }
 
+
+        if (count($names) === 0) {
+            $this->error = "U moet match hebben voordat u uw inbox kunt gebruiken.";
+            $this->renderInbox();
+            exit();
+        }
+
         $this->render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "names" => $names]);
     }
 
