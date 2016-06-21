@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Color on mobile devices. Example: mariusdv.nl -->
-    <meta name="theme-color" content="#2196F3">
+    <meta name="theme-color" content="brown">
 
     <link rel="stylesheet" href="https://bootswatch.com/paper/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css">
