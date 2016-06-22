@@ -245,68 +245,68 @@
             </div>
             <div class="modal-body">
 
-                <p>
-                    Dit is het wensenoverzicht, hier kunt u gemakkelijk door uw eigen wensen kijken en door wensen van
-                    anderen.
-                    In het zoekveld kunt u wensen zoeken.<br><br>
-
-                    <a>Mijn wensen</a> hier staan uw eigen wensen.<br>
-                    <a>Onvervulde wensen</a> hier staan alle wensen die <u>niet</u> zijn vervuld.<br>
-                    <a>Vervulde wensen</a> hier staan alle wensen die <u>wel</u> zijn vervuld.<br>
-                    <a>Mijn vervulde wensen</a> hier ziet u de wensen die door u zijn vervuld.<br>
-                    <a>Mogelijke matches</a> hier kunt u wensen zien welke u mogelijk kunt vervullen<br>
-                </p>
+                <p> Hier vind u uitleg over de icoontjes die in het wensbeheer systeem voor komen:</p>
 
                 <div class="col-xs-12 info-row">
                     <button class="btn btn-sm">
-                        <span class="glyphicon glyphicon glyphicon-edit"></span>
+                        <span class="glyphicon glyphicon-eye-open"></span>
                     </button>
-                    <span class="info-text">Hiermee kunt u uw wens wijzigen.</span>
+                    <span class="info-text">Opent een pagina waar je de bijbehorende wens kan ziens</span>
                 </div>
 
                 <div class="col-xs-12 info-row">
                     <button class="btn btn-sm">
-                        <span class="glyphicon glyphicon glyphicon-trash"></span>
+                        <span class="glyphicon glyphicon-ok"></span>
                     </button>
-                    <span class="info-text">Hiermee verwijdert u uw wens.</span>
+                    <span class="info-text">Accepteert de wens</span>
                 </div>
 
                 <div class="col-xs-12 info-row">
                     <button class="btn btn-sm">
-                        <span class="glyphicon glyphicon-chevron-right"></span>
+                        <span class="glyphicon glyphicon-remove"></span>
                     </button>
-                    <span class="info-text">Hiermee kunt u de wens bekijken.</span>
+                    <span class="info-text">Weigert de wens</span>
                 </div>
 
                 <div class="col-xs-12 info-row">
                     <button class="btn btn-sm">
-                        <span class="glyphicon glyphicon-plus"></span>
-                    </button>
-                    <span class="info-text">Hiermee kunt u een nieuwe wens aanmaken.</span>
-                </div>
-
-                <br>
-
-
-                Om een gebruiker te rapporteren klikt u op de naam en vervolgens op rapporteren.
-                <div class="dropdown">
-                    <a class="dropdown-toggle" type="button" data-toggle="dropdown">
                         <span class="glyphicon glyphicon-user"></span>
-                        Gebruiker
-                        <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Rapporteren</a></li>
-                    </ul>
-                </div>
-
-
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
-                        Sluiten
                     </button>
+                    <span class="info-text">Gaat naar profiel pagina van een gebruiker</span>
                 </div>
+
+                <div class="col-xs-12 info-row">
+                    <button class="btn btn-sm">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                    <span class="info-text">Verwijderd wens</span>
+                </div>
+
+                <p>Om een reactie toe te voegen aan het gastenboek gaat u naar de vervulde wensen. Hierna kunt u door op
+                    het pijltje naar beneden te klikken op bekijk wens klikken. Hierdoor opent een nieuw venster.</p>
+
+                <div class="col-xs-12 info-row">
+                    <button class="btn btn-default btn-sm">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    <span class="info-text">Verwijder de reactie</span>
+                </div>
+
+                <div class="col-xs-12 info-row">
+                    <button class="btn btn-inbox btn-sm">
+                        <span class="glyphicon glyphicon-book"></span>
+                    </button>
+                    <span class="info-text">Voeg reactie to aan gastenboek</span>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Sluiten
+                </button>
             </div>
         </div>
     </div>
 </div>
+
