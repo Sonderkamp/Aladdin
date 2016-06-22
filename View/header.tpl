@@ -101,7 +101,7 @@
                            aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
                             {$user->displayName}<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="/profile"><span class="glyphicon glyphicon-user"></span>Mijn profiel</a></li>
+                            <li><a href="/profile"><span class="glyphicon glyphicon-user"></span> Mijn profiel</a></li>
                             <li><a href="/wishes"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
                             <li><a href="/Talents"> <span class="glyphicon glyphicon-align-justify"></span> Talenten</a></li>
                             <li role="separator" class="divider">

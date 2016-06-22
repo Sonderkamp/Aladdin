@@ -14,7 +14,7 @@
        </span>
 
     <div class="row">
-        <h3>Wensen overzicht</h3>
+        <h3>Wensen overzicht {if !empty($searchKey)} - {$searchKey}{/if}</h3>
         {if isset($wishError)}
             <div class="form-error" id="err">Error: {htmlspecialchars($wishError)}</div>
         {else}
@@ -46,7 +46,7 @@
 
         <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
             <div class="row">
-                <form class="col-xs-10 row" action="/wishes/search" method="get">
+                <form class="col-xs-10 row" action="/wishes/action=searchWish" method="get">
                     <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
                         <input class="form-control" name="search" placeholder="Zoek een wens">
                     </div>

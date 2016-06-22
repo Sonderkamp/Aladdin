@@ -19,7 +19,7 @@ class MatchQueryBuilder extends QueryBuilder
      * do not provide both since this will result in an error
      * Neither provide none cause this will cause error as well
      */
-    public function getMatches($wishId = null , $username = null){
+    public function getMatches($wishId = null , $username = null, $wishUser = false){
 
         $param = array();
 
@@ -27,11 +27,17 @@ class MatchQueryBuilder extends QueryBuilder
             return null;
         }
 
-        $query = "SELECT *, `matches`.IsActive as matchIsActive FROM `matches`
-                  JOIN `user` ON `matches`.user_Email = `user`.Email ";
+        $query = "SELECT *, `matches`.IsActive as matchIsActive FROM `matches` ";
 
         if($username != null){
             $query .= "JOIN `wish` ON `matches`.wish_Id = `wish`.Id ";
+            $query .= "JOIN `wishContent` ON `wish`.Id = `wishContent`.wish_Id ";
+        }
+
+        if($wishUser){
+            $query .= "JOIN `user` ON `wish`.User = `user`.Email ";
+        } else {
+            $query .= "JOIN `user` ON `matches`.user_Email = `user`.Email ";
         }
 
         if($wishId != null){
@@ -44,13 +50,10 @@ class MatchQueryBuilder extends QueryBuilder
             $param[] = $username;
         }
 
-//        $query .= "AND `matches`.IsActive = 1 ";
-
         $query .= "AND user_Email IS NOT NULL AND NOT EXISTS
                   ( SELECT NULL FROM blockedUsers AS b WHERE b.user_Email = `matches`.user_Email AND b.IsBlocked = 1
                   AND b.Id = (SELECT Id FROM blockedUsers as c WHERE c.user_Email = `matches`.user_Email
                   ORDER BY DateBlocked DESC LIMIT 1))";
-
 
         return $this->executeQuery($query , $param);
     }
