@@ -42,7 +42,7 @@ class WishQueryBuilder extends QueryBuilder
                    b.Id = (SELECT Id FROM blockedUsers as c WHERE c.user_Email = `wish`.User ORDER BY DateBlocked DESC LIMIT 1)) AND ";
         }
 
-        if($wishId != null){
+        if ($wishId != null) {
             $query .= "`wish`.Id = ? AND ";
         }
 
@@ -99,7 +99,7 @@ class WishQueryBuilder extends QueryBuilder
                         LIKE ? AND ";
         }
 
-        if($status == null || $searchKey != null){
+        if ($status == null || $searchKey != null) {
             $query = substr_replace($query, ')', -4);
         } else {
             $query = substr_replace($query, ')))', -4);
@@ -111,7 +111,7 @@ class WishQueryBuilder extends QueryBuilder
         //acquire params if any
         $params = array();
 
-        if($wishId != null){
+        if ($wishId != null) {
             $params[] = $wishId;
         }
 
@@ -129,8 +129,9 @@ class WishQueryBuilder extends QueryBuilder
 
     /** get one wish
      * @param $wishId = the id of the wish you want
-     * @param $admin, set if only wants the accepted wishes
-     * @return result of the query */
+     * @param $admin , set if only wants the accepted wishes
+     * @return result of the query
+     */
     public function getSingleWish($wishId, $admin = null)
     {
         $query = "SELECT * FROM `wish` LEFT JOIN `wishContent`
@@ -168,7 +169,8 @@ class WishQueryBuilder extends QueryBuilder
 
     /** returns the last wish from the user given in the param
      * @param $user = email of the user
-     * @return result of the query */
+     * @return result of the query
+     */
     public function getLatestWish($user)
     {
         $sql = "SELECT * FROM `wish` where `User` = ? ORDER BY `Date` DESC LIMIT 1";
@@ -178,7 +180,8 @@ class WishQueryBuilder extends QueryBuilder
 
     /** add wish to database
      * @param $email = email of the user
-     * @return result of the query */
+     * @return result of the query
+     */
     public function addWish($email)
     {
         $status = "Aangemaakt";
@@ -189,7 +192,8 @@ class WishQueryBuilder extends QueryBuilder
     }
 
     /** add content of the wish to the database
-     * @param $wish = Wish object */
+     * @param $wish = Wish object
+     */
     public function addWishContent(Wish $wish)
     {
         $query = "INSERT INTO `wishContent` (`Content`, `Title`, `wish_Id`)
@@ -201,7 +205,8 @@ class WishQueryBuilder extends QueryBuilder
 
     /** change status of a wish
      * @param $wishId = id of the wish
-     * @param $status = status to change the wish to */
+     * @param $status = status to change the wish to
+     */
     public function editWishStatus($wishId, $status)
     {
         $query = "UPDATE `wish` SET Status = ? WHERE id = ?;";
@@ -209,7 +214,8 @@ class WishQueryBuilder extends QueryBuilder
     }
 
     /** delete all talents which are linked to a wish
-     * @param $wish = Wish object*/
+     * @param $wish = Wish object
+     */
     public function deleteWishTalents(Wish $wish)
     {
         $query = "DELETE from `talent_has_wish` WHERE `wish_Id` = ?";
@@ -219,18 +225,20 @@ class WishQueryBuilder extends QueryBuilder
     }
 
     /** delete wish content which is linked to a wish
-     * @param $wish = Wish object*/
+     * @param $wish = Wish object
+     */
     public function deleteWishContent(Wish $wish)
     {
-        $query = "DELETE FROM `wishcontent` WHERE `wish_Id` = ?";
-        $value = array($wish->id);
 
-        $this->executeQuery($query, $value);
+        $query = "DELETE FROM `wishContent` WHERE `wish_Id` = ? And `IsAccepted` = 0 and `moderator_Username` IS NULL";
+        $value = array($wish->id);
+        Database::query_safe($query, $value);
     }
-    
-    /** binds talent to wish 
+
+    /** binds talent to wish
      * @param $talentName = name of the talent to bind to a wish
-     * @param $wish = Wish object */
+     * @param $wish = Wish object
+     */
     public function bindToTalent($talentName, Wish $wish)
     {
         $query = "SELECT `Id` as talentId FROM `talent` WHERE `Name`=?";
@@ -244,9 +252,10 @@ class WishQueryBuilder extends QueryBuilder
         Database::query_safe($query2, $array2);
     }
 
-    /** get all wish id's which are linked by talent_id's 
+    /** get all wish id's which are linked by talent_id's
      * @param $talents = array of talents
-     * @return list with wish id's */
+     * @return list with wish id's
+     */
     public function wishIDByTalents($talents)
     {
         $talentList = array();
@@ -267,10 +276,11 @@ class WishQueryBuilder extends QueryBuilder
         return $list;
     }
 
-    /** get's wishes which can be a match  
-     * @param $talents = array with talent id's 
-     * @param $myWishes = list with wishes of user 
-     * @return list with wishes */
+    /** get's wishes which can be a match
+     * @param $talents = array with talent id's
+     * @param $myWishes = list with wishes of user
+     * @return list with wishes
+     */
     public function getPossibleMatches($talents, $myWishes, $searchkey = null)
     {
         $talentList = $this->getSQLString($talents);
@@ -282,7 +292,7 @@ class WishQueryBuilder extends QueryBuilder
 
         $wishList = $this->getSQLString($temp);
 
-        if($searchkey != null){
+        if ($searchkey != null) {
             return $this->getWishes(null, array($published, "Match gevonden"), $searchkey, false, false, $wishList, $talentList);
         } else {
             return $this->getWishes(null, array($published, "Match gevonden"), null, false, false, $wishList, $talentList);
@@ -290,9 +300,9 @@ class WishQueryBuilder extends QueryBuilder
     }
 
 
-    /** creates a sql string with comma's 
-     * @param $array an array with numbers 
-     * @return an sql string like: (1,2,3,4) so that it can be used in an sql query 
+    /** creates a sql string with comma's
+     * @param $array an array with numbers
+     * @return an sql string like: (1,2,3,4) so that it can be used in an sql query
      * like select * from .. where in getSQLString(..) */
     public function getSQLString($array)
     {
@@ -311,7 +321,7 @@ class WishQueryBuilder extends QueryBuilder
     {
 
         setlocale(LC_TIME, 'Dutch');
-        if($wishID != null) {
+        if ($wishID != null) {
             $array = Database::query_safe("SELECT `wishMessage`.`Message`, `wishMessage`.`Image`,  `wishMessage`.`CreationDate`, `wishMessage`.`user_Email`, `wishMessage`.`wish_Id`, `wishMessage`.`InGuestbook`, `user`.`DisplayName` FROM `wishMessage` join `user` on `email` = `user_Email`
             WHERE `wish_Id` = ? ORDER BY `wishMessage`.`CreationDate` ASC ", array($wishID));
         } else {
@@ -337,71 +347,74 @@ class WishQueryBuilder extends QueryBuilder
 
     }
 
-    public function removeComment($creationDate , $username, $wishId)
+    public function removeComment($creationDate, $username, $wishId)
     {
         $query = "DELETE FROM `wishMessage`
         WHERE `wishMessage`.`CreationDate` = ?
         AND `wishMessage`.`user_Email` = ?
         AND `wishMessage`.`wish_Id` = ?";
 
-        $this->executeQuery($query , array($creationDate ,$username , $wishId));
+        $this->executeQuery($query, array($creationDate, $username, $wishId));
     }
 
-    public function removeMatch($wishId , $username)
+    public function removeMatch($wishId, $username)
     {
         $query = "UPDATE `matches` SET `IsActive` = '0' WHERE `matches`.`wish_Id` = ? AND `matches`.`user_Email` = ?;";
-        $this->executeQuery($query , array($wishId , $username));
+        $this->executeQuery($query, array($wishId, $username));
     }
 
-    public function setCompletionDate($date , $wishId){
+    public function setCompletionDate($date, $wishId)
+    {
         $query = "UPDATE `wish` SET `CompletionDate` = ? WHERE `wish`.Id = ?";
-        $this->executeQuery($query , array($date , $wishId));
+        $this->executeQuery($query, array($date, $wishId));
     }
 
-    public function setWishStatus($status , $wishId){
+    public function setWishStatus($status, $wishId)
+    {
         $query = "UPDATE `wish` SET `Status` = ? WHERE `wish`.Id = ?";
-        $this->executeQuery($query , array($status , $wishId));
+        $this->executeQuery($query, array($status, $wishId));
     }
 
-    public function getExpiredDate(){
+    public function getExpiredDate()
+    {
         $query = "SELECT * FROM `wish` WHERE `wish`.CompletionDate < CURRENT_DATE() AND `wish`.Status != 'Vervuld'";
-        return $this->executeQuery($query , array());
+        return $this->executeQuery($query, array());
     }
 
-    public function clearExpiredDate(){
+    public function clearExpiredDate()
+    {
         $query = "UPDATE `wish` SET `CompletionDate` = null WHERE `wish`.CompletionDate < CURRENT_DATE() AND `wish`.Status != 'Vervuld'";
-        $this->executeQuery($query , array());
+        $this->executeQuery($query, array());
     }
 
     public function addComment($comment, $wishID, $user, $img = null)
     {
         Database::query_safe("INSERT INTO `wishMessage` (`Message`, `Image`, `CreationDate`, `user_Email`, `wish_Id`) VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?);", array($comment, $img, $user->email, $wishID));
     }
-    
-    public function addToGuestbook($creationDate , $username, $wishId) {
-        Database::query_safe("UPDATE `wishMessage` SET `InGuestbook`=1 WHERE `CreationDate` = ? AND `user_Email` = ? AND `wish_Id` = ?" , array($creationDate , $username, $wishId));
+
+    public function addToGuestbook($creationDate, $username, $wishId)
+    {
+        Database::query_safe("UPDATE `wishMessage` SET `InGuestbook`=1 WHERE `CreationDate` = ? AND `user_Email` = ? AND `wish_Id` = ?", array($creationDate, $username, $wishId));
     }
 
-    public function removeFromGuestbook($creationDate , $username, $wishId) {
-        Database::query_safe("UPDATE `wishMessage` SET `InGuestbook`=0 WHERE `CreationDate` = ? AND `user_Email` = ? AND `wish_Id` = ?" , array($creationDate , $username, $wishId));
+    public function removeFromGuestbook($creationDate, $username, $wishId)
+    {
+        Database::query_safe("UPDATE `wishMessage` SET `InGuestbook`=0 WHERE `CreationDate` = ? AND `user_Email` = ? AND `wish_Id` = ?", array($creationDate, $username, $wishId));
     }
 
     public function lastCommentMinutes($wishID, $user)
     {
         $array = Database::query_safe("SELECT `wishMessage`.`CreationDate` FROM `wishMessage` WHERE `wish_Id` = ? AND user_Email = ? order by `wishMessage`.`CreationDate` DESC LIMIT 1", array($wishID, $user->email));
 
-        if(count($array) < 1 || empty($array[0]["CreationDate"]))
-        {
+        if (count($array) < 1 || empty($array[0]["CreationDate"])) {
             return -1;
-        }
-        else
-        {
-            return ( time() - strtotime($array[0]["CreationDate"])) / 60;
+        } else {
+            return (time() - strtotime($array[0]["CreationDate"])) / 60;
         }
     }
 
     public function getMatchByFulfiller($wishId, $user)
     {
-        return Database::query_safe("SELECT * FROM `matches` WHERE `IsSelected` = 1 AND `user_Email` = ? AND `wish_Id` = ?",array($user,$wishId));
+        return Database::query_safe("SELECT * FROM `matches` WHERE `IsSelected` = 1 AND `user_Email` = ? AND `wish_Id` = ?", array($user, $wishId));
     }
 }

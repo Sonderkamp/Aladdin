@@ -39,7 +39,7 @@ class WishCreationController extends Controller
             $wishContentId = $_GET["Id"];
             $_SESSION["wishcontentid"] = $_GET["Id"];
 
-            $wish = $this->wishRepo->getWish($wishContentId);
+            $wish = $this->wishRepo->getNewestWish($wishContentId);
 
             $title = $wish->title;
             $description = $wish->content;

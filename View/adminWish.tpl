@@ -135,7 +135,7 @@
                             <tr>
                                 <td>{$wish->id}</td>
                                 <td>{$wish->user->displayName}</td>
-                                <td>{$wish->title}</td>
+                                <td>{htmlspecialchars($wish->title)}</td>
                                 <td>{$wish->status}</td>
                                 <td>
                                     {include file='View/adminWishModals.tpl'}
@@ -222,7 +222,7 @@
                             <tr>
                                 <td>{$wish->id}</td>
                                 <td>{$wish->user->displayName}</td>
-                                <td>{$wish->title}</td>
+                                <td>{htmlspecialchars($wish->title)}</td>
                                 <td>{$wish->status}</td>
                                 <td>
                                     {include file='View/adminWishModals.tpl'}
@@ -290,7 +290,7 @@
                             <tr>
                                 <td>{$wish->id}</td>
                                 <td>{$wish->user->displayName}</td>
-                                <td>{$wish->title}</td>
+                                <td>{htmlspecialchars($wish->title)}</td>
                                 <td>{$wish->status}</td>
                                 <td>
                                     {include file='View/adminWishModals.tpl'}
@@ -350,7 +350,7 @@
                             <tr>
                                 <td>{$wish->id}</td>
                                 <td>{$wish->user->displayName}</td>
-                                <td>{$wish->title}</td>
+                                <td>{htmlspecialchars($wish->title)}</td>
                                 <td>{$wish->status}</td>
                                 <td>
                                     {include file='View/adminWishModals.tpl'}
@@ -419,7 +419,7 @@
                             <tr>
                                 <td>{$wish->id}</td>
                                 <td>{$wish->user->displayName}</td>
-                                <td>{$wish->title}</td>
+                                <td>{htmlspecialchars($wish->title)}</td>
                                 <td>{$wish->status}</td>
                                 <td>
                                     {include file='View/adminWishModals.tpl'}
@@ -440,13 +440,6 @@
                                                    onClick="return popup(this, 'notes',900,400)">
                                                     <span class="glyphicon glyphicon-eye-open"></span>
                                                     Wens bekijken
-                                                </a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/profileoverview/action=viewProfile/user={$wish->user->email}">
-                                                    <span class="glyphicon glyphicon-user"></span>
-                                                    Wens verwijderen
                                                 </a>
                                             </li>
                                         </ul>
@@ -480,7 +473,7 @@
                             <tr>
                                 <td>{$wish->id}</td>
                                 <td>{$wish->user->displayName}</td>
-                                <td>{$wish->title}</td>
+                                <td>{htmlspecialchars($wish->title)}</td>
                                 <td>{$wish->status}</td>
                                 <td>
                                     {include file='View/adminWishModals.tpl'}
@@ -556,7 +549,7 @@
                             <tr>
                                 <td>{$wish->id}</td>
                                 <td>{$wish->user->displayName}</td>
-                                <td>{$wish->title}</td>
+                                <td>{htmlspecialchars($wish->title)}</td>
                                 <td>{$wish->status}</td>
                                 <td>
                                     {include file='View/adminWishModals.tpl'}

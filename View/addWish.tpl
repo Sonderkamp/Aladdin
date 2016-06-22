@@ -32,7 +32,7 @@
                 <label class="col-sm-2 form-control-label">Titel:</label>
                 <div class="col-sm-10">
                     <input class="form-control" name="title" maxlength="45"
-                           placeholder="Wat is uw wens" {if isset($wishtitle)} value="{($wishtitle)}" {/if}>
+                           placeholder="Wat is uw wens" {if isset($wishtitle)} value="{htmlspecialchars($wishtitle)}" {/if}>
                 </div>
             </div>
             <br>
@@ -45,7 +45,7 @@
                 <div class="col-sm-10">
                     {*<textarea id="text2" placeholder="." rows="10"></textarea>​*}
                     <textarea class="form-control" rows="7" name="description"
-                              placeholder="Uitgebreide wens beschrijving">{if isset($description)}{($description)}{/if}</textarea>
+                              placeholder="Uitgebreide wens beschrijving">{if isset($description)}{htmlspecialchars($description)}{/if}</textarea>
                     {*{else}*}
                     {*<textarea class="form-control" rows="5" name="description"*}
                     {*placeholder="Beschrijf hier uw wens uitgebreid"></textarea>*}

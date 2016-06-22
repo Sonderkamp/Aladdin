@@ -57,9 +57,14 @@
                 Go Back
             </a>
             {if $selectedWish->user->email == $user->email}
-                <a class="btn btn-side btn-default" href="/wishes/action=openEditView?Id={$selectedWish->id}">
-                    Wijzig wens
-                </a>
+                {if $selectedWish->status == "Aangemaakt"
+                || $selectedWish->status == "Gepubliceerd"
+                || $selectedWish->status == "Match gevonden"
+                || $selectedWish->status == "Wordt vervuld"}
+                    <a class="btn btn-side btn-default" href="/wishes/action=openEditView?Id={$selectedWish->id}">
+                        Wijzig wens
+                    </a>
+                {/if}
             {/if}
 
             {if !empty($isMatched) && $isMatched && $selectedWish->status != "Vervuld"}
