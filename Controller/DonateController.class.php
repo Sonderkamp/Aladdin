@@ -79,11 +79,6 @@ class DonateController extends Controller
         $donation = $this->donateRepo->getCurrentDonation();
 
 
-//        // print_r($_SESSION["payment"]);
-//        echo "AA";
-//        print_r($donation);
-//        exit();
-
         if ($donation == null) {
             $this->render("donate.tpl", ["title" => "Aladdin", "error" => "geen geldige waarde ingevoerd."]);
             exit();

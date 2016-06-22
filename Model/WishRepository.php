@@ -543,6 +543,7 @@ class WishRepository
         // DIE if imgur breaks.
         if (curl_errno($ch)) {
             echo "IMGUR ERROR. Please try again: ";
+            //deze wilen we houden :)
             print_r(curl_error($ch));
             exit();
         }
