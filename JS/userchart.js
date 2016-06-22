@@ -12,6 +12,7 @@ userchart = function (_parentElement, _data) {
 
     this.svg = d3.select("#chart-area").append("svg")
         .attr("width", this.width + this.margin.left + this.margin.right)
+        .attr('class', 'panel')
         .attr("height", this.height + this.margin.top + this.margin.bottom)
         .append("g")
         .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");

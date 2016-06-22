@@ -3,6 +3,15 @@
 <!-- * User: Simon / Max-->
 <!-- * Date: 8-3-2016 Rewritten on: 14-05-2016-->
 <!-- */-->
+<script>
+    function popup(mylink, windowname, w, h) {
+        if (!window.focus)return true;
+        var href;
+        if (typeof(mylink) == 'string') href = mylink; else href = mylink.href;
+        window.open(href, windowname, 'width=' + w + ',height=' + h + ',scrollbars=yes');
+        return false;
+    }
+</script>
 
 <img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
@@ -447,13 +456,4 @@
     </div>
 {/foreach}
 
-<script>
-    function popup(mylink, windowname, w, h) {
-        if (!window.focus)return true;
-        var href;
-        if (typeof(mylink) == 'string') href = mylink; else href = mylink.href;
-        window.open(href, windowname, 'width=' + w + ',height=' + h + ',scrollbars=yes');
-        return false;
-    }
-</script>
 

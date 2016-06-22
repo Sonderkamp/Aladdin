@@ -115,7 +115,7 @@ class AdmintalentsController extends Controller
                         $this->talentRepo->updateTalent($talent->name, 0, $id);
 
                         if (!Empty($message)) {
-                            $messageId = $this->messageModel->sendMessage("Admin", $talent->user_email, "Het talent '" . $talent->name . "' is afgewezen", $message);
+                            $messageId = $this->messageModel->sendMessage("Admin", $talent->user_email, "Het talent '" . $talent->name . "' is afgewezen", "Het talent '" . $talent->name . "' is afgewezen, omdat het niet voldoet aan de algemene voorwaarden. \nReden opgegeven door administrator: \n" . $message);
                         } else {
 
                             $messageId = $this->messageModel->sendMessage("Admin", $talent->user_email, "Het talent '" . $talent->name . "' is afgewezen", "Het talent '" . $talent->name . "' is afgewezen, omdat het niet voldoet aan de algemene voorwaarden.");

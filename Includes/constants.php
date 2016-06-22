@@ -16,7 +16,7 @@ define("USERNAME", "mariu_nl_Aladdin");
 
 // ****************   EMAIL   ****************************
 define("EMAILADRESS", "no-reply@mariusdevogel.nl");
-define("EMAILWACHTWOORD", "A5ZLuar7DO");
+define("EMAILWACHTWOORD", "Admin123");
 define("SMTP_SECURITY", "ssl"); // kan ook tls zijn
 define("SMTP_HOST", "smtp.transip.email");
 define("SMTP_PORT", 465);
