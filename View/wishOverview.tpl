@@ -90,9 +90,11 @@
                                             <span class="glyphicon glyphicon-edit"></span>
                                         </a>
                                     {/if}
-                                    <a href="/Wishes/action=remove?Id={$wish->id}" class="btn btn-danger infoLeft">
-                                        <span class="glyphicon glyphicon-trash"></span>
-                                    </a>
+                                    {if {htmlspecialcharsWithNL($wish -> status) != "Vervuld" && htmlspecialcharsWithNL($wish -> status) != "Wordt vervuld"}}
+                                        <a href="/Wishes/action=remove?Id={$wish->id}" class="btn btn-danger infoLeft">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </a>
+                                    {/if}
                                     <a href="/wishes/action=getSpecificWish?Id={$wish->id}" class="btn btn-default">
                                         <span class="glyphicon glyphicon-menu-right"></span>
                                     </a>

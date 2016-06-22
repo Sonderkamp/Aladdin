@@ -1,7 +1,8 @@
 /*@import url("StyleMax.css");*/
-.rightText{
+.rightText {
     text-align: right;
 }
+
 .navbar {
     z-index: 100;
 }
@@ -34,6 +35,11 @@
 
 h3 .h3 {
     color: brown;
+}
+
+.goodWidth {
+    width: 100%;
+    heigth: 100%;
 }
 
 .h4 {

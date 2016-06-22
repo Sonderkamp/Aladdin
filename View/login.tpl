@@ -37,12 +37,12 @@
 
                     <div class="form-group">
                         <!-- Button -->
-                        <div class="col-sm-12 controls">
+                        <div class="col-xs-12 controls">
                             <button type="submit" href="#" class="btn btn-primary pull-right"><i
                                     class="glyphicon glyphicon-log-in"></i> Log in
                             </button>
                         </div>
-                        <div class="col-sm-12">
+                        <div class="col-xs-12">
                             <br>
                             <a type="button" href="/Account/action=register">Registreer</a><br>
                             <a type="button" href="/Account/action=recover">Wachtwoord vergeten?</a>

@@ -8,7 +8,7 @@
 // */
 class MatchController extends Controller
 {
-    private $wishRepo , $matchRepo, $userRepo;
+    private $wishRepo, $matchRepo, $userRepo;
 
     public function __construct()
     {
@@ -20,9 +20,11 @@ class MatchController extends Controller
     public function removeMatch()
     {
         if (!empty($_GET["Id"])) {
-            if($this->wishRepo->getWish("Id")->status != "Vervuld"){
-                if(count($this->matchRepo->getMatches($_GET["Id"])) <= 1){
+            if ($this->wishRepo->getWish("Id")->status != "Vervuld") {
+                if (count($this->matchRepo->getMatches($_GET["Id"])) <= 1) {
                     $this->wishRepo->removeMatchStatus($_GET["Id"]);
+                    // remove date
+                    $this->wishRepo->setCompletionDate(null, $_GET["Id"]);
                 }
                 $this->matchRepo->clearSelected($_GET["Id"]);
                 $this->wishRepo->removeMatch($_GET["Id"]);

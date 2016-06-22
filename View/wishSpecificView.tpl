@@ -57,19 +57,24 @@
                 Go Back
             </a>
             {if $selectedWish->user->email == $user->email}
-                <a class="btn btn-side btn-default" href="/wishes/action=openEditView?Id={$selectedWish->id}">
-                    Wijzig wens
-                </a>
+                {if $selectedWish->status == "Aangemaakt"
+                || $selectedWish->status == "Gepubliceerd"
+                || $selectedWish->status == "Match gevonden"
+                || $selectedWish->status == "Wordt vervuld"}
+                    <a class="btn btn-side btn-default" href="/wishes/action=openEditView?Id={$selectedWish->id}">
+                        Wijzig wens
+                    </a>
+                {/if}
             {/if}
 
-            {if $canMatch }
-                <a class="btn btn-side btn-default" data-toggle="modal" data-target="#matchModal">
-                    Match
-                </a>
-            {elseif !empty($isMatched) && $isMatched && $selectedWish->status != "Vervuld"}
+            {if !empty($isMatched) && $isMatched && $selectedWish->status != "Vervuld"}
                 <a href="/match/action=removeMatch?Id={$selectedWish->id}"
                    class="btn btn-side btn-default">
                     Trek match terug
+                </a>
+            {elseif $canMatch }
+                <a class="btn btn-side btn-default" data-toggle="modal" data-target="#matchModal">
+                    Match
                 </a>
             {else}
                 <strong class="errorcenter">Het is niet mogelijk om met deze wens te matchen</strong>
