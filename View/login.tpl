@@ -1,3 +1,4 @@
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
 
     <div id="loginbox" class="mainbox col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">

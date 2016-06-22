@@ -156,6 +156,8 @@ class WishRepository
 
         $this->addWishContent($wish);
         $this->editWishTalents($wish);
+
+        return $wish->id;
     }
 
     private function addWishContent(Wish $wish)
@@ -450,7 +452,7 @@ class WishRepository
         } else {
             // validate comment
             $forbiddenRepo = new ForbiddenWordRepository();
-            $wordArray = explode(" ", trim(preg_replace("/[^0-9a-z]+/i", " ", $comment)));
+            $wordArray = preg_split('/[\s]+/', trim(preg_replace("/[^0-9a-z]+/i", " ", $comment)));
             foreach ($wordArray as $word) {
 
                 // if word is not valid

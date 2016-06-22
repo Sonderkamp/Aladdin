@@ -1,3 +1,4 @@
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
 
     <h3 class="col-xs-12 col-sm-6 col-md-6 col-lg-6">Moderators beheren</h3>
@@ -16,7 +17,7 @@
 
 
     </div>
-    <table class="table">
+    <table class="table panel">
         <thead>
         <tr>
             <th>Gebruikersnaam</th>

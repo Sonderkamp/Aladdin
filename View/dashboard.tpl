@@ -2,11 +2,6 @@
 <img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
 
-       <span class="info">
-            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#InfoModal">
-                <span class="glyphicon glyphicon-info-sign"></span>
-            </button>
-    </span>
 
     {if !empty($errorString)}
         <div class="alert alert-warning">
@@ -14,6 +9,12 @@
             {$errorString}
         </div>
     {/if}
+
+    <span class="info">
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#InfoModal">
+                <span class="glyphicon glyphicon-info-sign"></span>
+            </button>
+    </span>
     <div class="row dashboard-row min270">
 
         <div class="col-xs-6">

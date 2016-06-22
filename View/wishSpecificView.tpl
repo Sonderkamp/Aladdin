@@ -7,6 +7,7 @@
 
 {assign var="rightCol" value=(($selectedWish->status == "Match gevonden" && !empty($currentUser) && $selectedWish->user->email == $currentUser->email)
 || ($selectedWish->status == "Wordt vervuld" && !empty($currentUser) && $selectedWish->user->email == $currentUser->email))}
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
 
     {if isset($errorString)}
@@ -50,13 +51,17 @@
     </div>
 
     <div>
-        {if $adminView && !empty($returnPage) || !$adminView}
+        {if (!$adminView)}
             <a class="btn btn-side btn-default"
                href="{if !empty($returnPage)}{$returnPage}{else}/Wishes/action=back{/if}">
                 Go Back
             </a>
-        {/if}
-        {if (!$adminView)}
+            {if $selectedWish->user->email == $user->email}
+                <a class="btn btn-side btn-default" href="/wishes/action=openEditView?Id={$selectedWish->id}">
+                    Wijzig wens
+                </a>
+            {/if}
+
             {if $canMatch }
                 <a class="btn btn-side btn-default" data-toggle="modal" data-target="#matchModal">
                     Match
@@ -173,7 +178,7 @@
                 <p class="well">{htmlspecialcharsWithNL($selectedWish->content)}</p>
 
 
-                {if $canComment}
+                {if $selectedWish->status == "Vervuld"}
                     <div id="COMMENTS" class="well">
                         <div>
                             <label>Reacties</label>

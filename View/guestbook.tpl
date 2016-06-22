@@ -1,3 +1,4 @@
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
     <h1 class="col-sm-12">Gastenboek
         {if $isAdmin}

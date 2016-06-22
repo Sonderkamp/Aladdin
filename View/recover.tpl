@@ -1,21 +1,25 @@
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
 
-    {if isset($error)}
-    <div class="form-error" id="err">Error: {htmlspecialchars($error)}</div>
-    {else}
-    <div id="err"></div>
-    {/if}
-    <div id="error"></div>
+    <div class="panel panel-default">
 
-    <form name="recover" action="/Account/action=recover" method="post" onsubmit="return validateEmail()">
-       <input placeholder="Email" type="text" name="username" value="{$username}" data-validation="email"
-              data-validation-error-msg="vul een valide gebruikersnaam in.">
-        <input class="btn btn-default" value="Reset Wachtwoord" type="submit">
-    </form>
-    <br>
-    <a type="button" class="btn btn-default" href="/Account/action=Register">Register</a>
-    <a type="button" class="btn btn-default" href="/Account">log in</a>
+        <div class="panel-body text-center">
 
+
+            {if isset($error)}
+                <div class="form-error" id="err">Error: {htmlspecialchars($error)}</div>
+            {else}
+                <div id="err"></div>
+            {/if}
+            <div id="error"></div>
+
+            <form name="recover" action="/Account/action=recover" method="post" onsubmit="return validateEmail()">
+                <input placeholder="Email" type="text" name="username" value="{$username}" data-validation="email"
+                       data-validation-error-msg="vul een valide gebruikersnaam in.">
+                <input class="btn btn-default" value="Reset Wachtwoord" type="submit">
+            </form>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -23,16 +27,15 @@
     var $messages = $('#err');
     // http://www.formvalidator.net/
     $.validate({
-        validateOnBlur : false,
-        errorMessagePosition : $messages,
-        onValidate : function() {
+        validateOnBlur: false,
+        errorMessagePosition: $messages,
+        onValidate: function () {
             $messages.empty();
             $("#error").empty();
             $("#error").removeClass("form-error");
         },
-        onSuccess : function(){
-            if(!validateEmail())
-            {
+        onSuccess: function () {
+            if (!validateEmail()) {
                 $("#error").text("Er bestaat geen gebruiker met dit email adres.");
                 $("#error").addClass("form-error");
             }

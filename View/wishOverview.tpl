@@ -4,7 +4,7 @@
 <!-- * Date: 25-Feb-16-->
 <!-- * Time: 15:12-->
 <!-- */-->
-
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
 
     <span class="info">

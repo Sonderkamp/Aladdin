@@ -59,6 +59,7 @@ class AccountController extends Controller
         }
         $this->checkActivateToken($_GET["token"]);
         $this->redirect("/Account");
+        exit();
     }
 
     // password recovery

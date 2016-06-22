@@ -4,7 +4,7 @@
 <!-- * Date: 8-3-2016 Rewritten on: 14-05-2016-->
 <!-- */-->
 
-
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
 
     <span class="info infoButtonMargin">
@@ -56,7 +56,8 @@
         <div class="tab-content">
             <div class="tab-pane fade in {if $currentPage == "users"}active{/if}" id="requestedTab">
                 {if $users}
-                    <table class="table">
+                    <br><br>
+                    <table class="table panel">
                         <thead>
                         <tr>
                             <th>Naam</th>
@@ -117,7 +118,8 @@
 
             <div class="tab-pane fade in {if $currentPage == "unhandled"}active{/if}" id="publishedTab">
                 {if $unhandled}
-                    <table class="table">
+                    <br><br>
+                    <table class="table panel">
                         <thead>
                         <tr>
                             <th>Melder</th>
@@ -208,7 +210,8 @@
 
             <div class="tab-pane fade in {if $currentPage == "handled"}active{/if}" id="matchedTab">
                 {if $handled}
-                    <table class="table">
+                    <br><br>
+                    <table class="table panel">
                         <thead>
                         <tr>
                             <th>Melder</th>

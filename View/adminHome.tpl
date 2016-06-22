@@ -1,3 +1,4 @@
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
  <span class="info infoButtonMargin">
             <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#InfoModal">
@@ -76,8 +77,8 @@
                         <button type="button" onclick="perAge();" class="btn btn-default">Leeftijd</button>
 
                     </div>
-
-                    <div id="chart-area"></div>
+                    <br>  <br>
+                    <div id="chart-area" class="panel"></div>
                     <p><span id="dateinfo">Datum bereik: 2013-1-1 - 2013-1-1</span>  <span id="slideObject"
                                                                                            class="slide-object">
                 </div>
@@ -91,7 +92,7 @@
                 <div class="tab-pane fade" id="tab3">
 
                     {if count($donations) > 0}
-                        <table class="table sortable">
+                        <table class="table sortable panel">
                             <thead>
                             <tr>
                                 <th id="first">Datum</th>

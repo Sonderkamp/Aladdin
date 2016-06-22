@@ -67,10 +67,10 @@
                 <li><a href="/guestbook"><span class="glyphicon glyphicon-book"></span> Gastenboek</a></li>
                 {if isset($user)}
                     <li><a href="/dashboard"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
-                    <li><a href="/wishes"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
+
                     <li><a href="/Inbox"> <span class="glyphicon glyphicon glyphicon-envelope"></span> Berichten</a>
                     </li>
-                    <li><a href="/Talents"> <span class="glyphicon glyphicon-align-justify"></span> Talenten</a></li>
+
                 {/if}
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -101,7 +101,9 @@
                            aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
                             {$user->displayName}<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="/profile">Mijn profiel</a></li>
+                            <li><a href="/profile"><span class="glyphicon glyphicon-user"></span>Mijn profiel</a></li>
+                            <li><a href="/wishes"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
+                            <li><a href="/Talents"> <span class="glyphicon glyphicon-align-justify"></span> Talenten</a></li>
                             <li role="separator" class="divider">
                             <li><a href="/account/action=logout">Log uit</a></li>
                         </ul>

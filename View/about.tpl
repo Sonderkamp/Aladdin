@@ -1,5 +1,6 @@
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container bg">
-    <div class="col-xs-12">
+    <div class="col-xs-12 panel">
 
         <h3>Over ons</h3>
         <p>

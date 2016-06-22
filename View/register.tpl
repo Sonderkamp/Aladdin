@@ -1,3 +1,4 @@
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
     <br>
 
@@ -267,8 +268,7 @@
 
             </div>
         </div>
-        <a type="button" class="btn btn-default" href="/Account">Log in</a>
-        <a type="button" class="btn btn-default" href="/Account/action=Recover">Vergeten</a>
+        <br><br>
         {/if}
     </div>
 

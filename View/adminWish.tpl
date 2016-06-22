@@ -12,6 +12,8 @@
         return false;
     }
 </script>
+
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
 
     <h5>Wensen Beheer</h5>
@@ -118,7 +120,7 @@
 
             <div class="tab-pane fade in {if $currentPage == "requested"}active{/if}" id="requestedTab">
                 {if $requested}
-                    <table class="table">
+                    <table class="table panel">
                         <thead>
                         <tr>
                             <th>Wish id</th>
@@ -205,7 +207,7 @@
 
             <div class="tab-pane fade in {if $currentPage == "published"}active{/if}" id="publishedTab">
                 {if $published}
-                    <table class="table">
+                    <table class="table panel">
                         <thead>
                         <tr>
                             <th>Wish id</th>
@@ -273,7 +275,7 @@
 
             <div class="tab-pane fade in {if $currentPage == "matched"}active{/if}" id="matchedTab">
                 {if $matched}
-                    <table class="table">
+                    <table class="table panel">
                         <thead>
                         <tr>
                             <th>Wish id</th>
@@ -333,7 +335,7 @@
 
             <div class="tab-pane fade in {if $currentPage == "current"}active{/if}" id="currentTab">
                 {if $current}
-                    <table class="table">
+                    <table class="table panel">
                         <thead>
                         <tr>
                             <th>Wish id</th>
@@ -402,7 +404,7 @@
 
             <div class="tab-pane fade in {if $currentPage == "completed"}active{/if}" id="completedTab">
                 {if $completed}
-                    <table class="table">
+                    <table class="table panel">
                         <thead>
                         <tr>
                             <th>Wish id</th>
@@ -463,7 +465,7 @@
 
             <div class="tab-pane fade in {if $currentPage == "denied"}active{/if}" id="deniedTab">
                 {if $denied}
-                    <table class="table">
+                    <table class="table panel">
                         <thead>
                         <tr>
                             <th>Wish id</th>
@@ -539,7 +541,7 @@
 
             <div class="tab-pane fade in {if $currentPage == "deleted"}active{/if}" id="deletedTab">
                 {if $deleted}
-                    <table class="table">
+                    <table class="table panel">
                         <thead>
                         <tr>
                             <th>Wish id</th>

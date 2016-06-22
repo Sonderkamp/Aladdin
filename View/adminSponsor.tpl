@@ -7,7 +7,7 @@
         return false;
     }
 </script>
-
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
 
     <span class="info">
@@ -49,7 +49,9 @@
             {/if}
             <div class="tab-pane fade in {if $currentPage == "sponsors"}active{/if}" id="requestedTab">
                 {if $sponsors}
-                    <table class="table">
+                    <br>
+                    <br>
+                    <table class="table panel">
                         <thead>
                         <tr>
                             <th>Bedrijfsnaam</th>
@@ -109,7 +111,7 @@
                         <fieldset class="form-group">
                             <h6 class="modal-title">Contactpersoon:</h6>
                             <select name="userEmail">
-                                <option value="default"> - kies gebruiker - </option>
+                                <option value="default"> - kies gebruiker -</option>
                                 {foreach $users as $user}
                                     <option value="{$user->displayName}">{$user->displayName} </option>
                                 {/foreach}
@@ -150,9 +152,9 @@
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
 
-                            <h6 class="modal-title">ID:</h6>
-                            <input name="id" class="form-control" value="{$sponsor->id}" readonly>
-                            <br>
+
+                            <input name="id" type="hidden" value="{$sponsor->id}" readonly>
+
                             <h6 class="modal-title">Contactpersoon:</h6>
                             <select name="userEmail">
                                 <option value="{$sponsor -> userMail}">{$sponsor -> userMail}</option>

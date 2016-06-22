@@ -7,7 +7,7 @@
  */
 ?>
 
-
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div id="wishcontaier" class="container" xmlns="http://www.w3.org/1999/html">
 
     <div class="container">
@@ -31,7 +31,7 @@
             <div class="form-group row">
                 <label class="col-sm-2 form-control-label">Titel:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" name="title"
+                    <input class="form-control" name="title" maxlength="45"
                            placeholder="Wat is uw wens" {if isset($wishtitle)} value="{($wishtitle)}" {/if}>
                 </div>
             </div>

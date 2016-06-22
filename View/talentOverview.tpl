@@ -2,7 +2,7 @@
 <!--User: Joost-->
 <!--Date: 27-2-2016-->
 <!--Time: 21:48-->
-
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
 
 {*<<<<<<< HEAD*}
@@ -76,8 +76,8 @@
                         <button type="submit" class="btn btn-primary">Zoek</button>
                         <a href="/talents/p=myTalents" class="btn btn-warning">Alle</a>
                     </form>
-
-                    <table class="table">
+                    <br> <br>
+                    <table class="table panel">
                         <thead>
                         <tr>
                             <th>Mijn talenten</th>
@@ -285,8 +285,8 @@
                         <button type="submit" class="btn btn-primary">Zoek</button>
                         <a href="/talents/p=allTalents" class="btn btn-warning">Alle</a>
                     </form>
-
-                    <table class="table">
+                    <br> <br>
+                    <table class="table panel" >
                         <thead>
                         <tr>
                             <th>Alle talenten</th>
@@ -493,8 +493,8 @@
                                 </div>
                             </div>
                         </form>
-
-                        <table class="table">
+                        <br> <br>
+                        <table class="table panel">
                             <thead>
                             <tr>
                                 <th>Aangevraagde talenten</th>

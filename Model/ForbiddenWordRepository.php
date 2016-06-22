@@ -9,64 +9,79 @@
 class ForbiddenWordRepository
 {
     private $wordBuilder;
-    
+
     public function __construct()
     {
         $this->wordBuilder = new ForbiddenWordQueryBuilder();
     }
 
     // ###### CREATE ######
-    public function createForbiddenWord($word) {
+    public function createForbiddenWord($word)
+    {
         $this->wordBuilder->createForbiddenWord($word);
     }
-    
+
     // ###### READ ######
     // Get multiple words
-    public function getForbiddenWords($page = null, $search = null) {
+    public function getForbiddenWords($page = null, $search = null)
+    {
         return $this->createReturnArray($this->wordBuilder->getForbiddenWords($page, null, $search));
     }
-    
+
     // Get a single word
-    public function getForbiddenWord($word) {
+    public function getForbiddenWord($word)
+    {
         return $this->createReturnArray($this->wordBuilder->getForbiddenWords(null, $word));
     }
-    
+
     // ###### UPDATE ######
-    public function updateForbiddenWord($oldWord, $newWord) {
+    public function updateForbiddenWord($oldWord, $newWord)
+    {
         $this->wordBuilder->updateForbiddenWord($oldWord, $newWord);
     }
-    
+
     // ###### DELETE ######
-    public function deleteForbiddenWord($word) {
+    public function deleteForbiddenWord($word)
+    {
         $this->wordBuilder->deleteForbiddenWord($word);
     }
 
     // True als hij niet fout is, False als het woord niet goedgekeurt is
-    public function isValid($word) {
+    public function isValid($word)
+    {
 
-        return Empty($this->wordBuilder->getForbiddenWords(null,strtolower($word)));
+        $word = str_replace(array('.', ','), '', $word);
+        return Empty($this->wordBuilder->getForbiddenWords(null, strtolower($word)));
     }
-    
-    public function isValidArray($wordArray) {
-        
-        return Empty($this->wordBuilder->getForbiddenWords(null,null,null,$wordArray));
+
+    public function isValidArray($wordArray)
+    {
+
+        $arr = [];
+        foreach ($wordArray as $word) {
+            $arr[] = str_replace(array('.', ','), '', $word);
+        }
+
+
+        return Empty($this->wordBuilder->getForbiddenWords(null, null, null, $arr));
     }
 
     // Prevent duplicate code
-    public function createReturnArray($result) {
+    public function createReturnArray($result)
+    {
 
-        if(!Empty($result)) {
+        if (!Empty($result)) {
 
             $returnArray = array();
 
-            foreach($result as $item) {
+            foreach ($result as $item) {
 
                 array_push($returnArray, $item["Word"]);
             }
 
             return $returnArray;
         } else {
-            
+
             return null;
         }
     }

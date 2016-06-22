@@ -41,8 +41,8 @@ class InboxController extends Controller
 
         // get all DisplayNames
         $userRepo = new UserRepository();
-        $names = $userRepo->getAllMatchedDislaynames($_SESSION["user"]);
-        if (($key = array_search($_SESSION["user"]->displayName, $names)) !== false) {
+        $names = $userRepo->getAllMatchedDislaynames($userRepo->getCurrentUser());
+        if (($key = array_search($userRepo->getCurrentUser()->displayName, $names)) !== false) {
             unset($names[$key]);
         }
 
@@ -105,7 +105,8 @@ class InboxController extends Controller
         }
 
         // get message
-        $message = $this->messageModel->getMessage($message, $_SESSION["user"]->email);
+        $userRepo = new UserRepository();
+        $message = $this->messageModel->getMessage($message, $userRepo->getCurrentUser()->email);
 
         if ($message === false) {
             $this->error = "Bericht bestaat niet.";
@@ -119,15 +120,16 @@ class InboxController extends Controller
 
     public function undoDelete()
     {
+        $userRepo = new UserRepository();
         if (filter_var($_POST["reset"], FILTER_VALIDATE_INT) === false) {
             $this->error = "Invalide parameter meegegeven.";
             $this->renderInbox();
         }
-        if ($this->messageModel->connectMessage($_SESSION["user"]->email, $_POST["reset"]) === false) {
+        if ($this->messageModel->connectMessage($userRepo->getCurrentUser()->email, $_POST["reset"]) === false) {
             $this->error = "Het is niet mogelijk om andermans berichten te verwijderen.";
             $this->renderInbox();
         }
-        $this->messageModel->resetMessage($_SESSION["user"]->email, $_POST["reset"]);
+        $this->messageModel->resetMessage($userRepo->getCurrentUser()->email, $_POST["reset"]);
         $this->renderInbox();
     }
 
@@ -137,16 +139,16 @@ class InboxController extends Controller
             $this->error = "Invalide parameter meegegeven.";
             $this->renderInbox();
         }
-
-        $message = $this->messageModel->getMessage($_POST["reply"], $_SESSION["user"]->email);
+        $userRepo = new UserRepository();
+        $message = $this->messageModel->getMessage($_POST["reply"], $userRepo->getCurrentUser()->email);
         if ($message === false) {
             $this->error = "Bericht bestaat niet.";
             $this->renderInbox();
         }
 
-        $userRepo = new UserRepository();
-        $names = $userRepo->getAllMatchedDislaynames($_SESSION["user"]);
-        if (($key = array_search($_SESSION["user"]->displayName, $names)) !== false) {
+
+        $names = $userRepo->getAllMatchedDislaynames($userRepo->getCurrentUser());
+        if (($key = array_search($userRepo->getCurrentUser()->displayName, $names)) !== false) {
             unset($names[$key]);
         }
 
@@ -158,11 +160,12 @@ class InboxController extends Controller
 
     public function moveTrash()
     {
+        $userRepo = new UserRepository();
         if (filter_var($_POST["trash"], FILTER_VALIDATE_INT) === false) {
             $this->error = "Invalide parameter meegegeven.";
             $this->renderInbox();
         }
-        if ($this->messageModel->connectMessage($_SESSION["user"]->email, $_POST["trash"]) === false) {
+        if ($this->messageModel->connectMessage($userRepo->getCurrentUser()->email, $_POST["trash"]) === false) {
             $this->error = "Het is niet mogelijk om andermans berichten te verwijderen.";
             $this->renderInbox();
         }
@@ -172,11 +175,12 @@ class InboxController extends Controller
 
     public function delete()
     {
+        $userRepo = new UserRepository();
         if (filter_var($_POST["delete"], FILTER_VALIDATE_INT) === false) {
             $this->error = "Invalide parameter meegegeven.";
             $this->renderInbox();
         }
-        if ($this->messageModel->connectMessage($_SESSION["user"]->email, $_POST["delete"]) === false) {
+        if ($this->messageModel->connectMessage($userRepo->getCurrentUser()->email, $_POST["delete"]) === false) {
             $this->error = "Het is niet mogelijk om andermans berichten te verwijderen.";
             $this->renderInbox();
         }
@@ -222,8 +226,8 @@ class InboxController extends Controller
     public function sendNewMessage()
     {
         $userRepo = new UserRepository();
-        $names = $userRepo->getAllDislaynames();
-        if (($key = array_search($_SESSION["user"]->displayName, $names)) !== false) {
+        $names = $userRepo->getAllMatchedDislaynames($userRepo->getCurrentUser());
+        if (($key = array_search($userRepo->getCurrentUser()->displayName, $names)) !== false) {
             unset($names[$key]);
         }
 
@@ -253,24 +257,25 @@ class InboxController extends Controller
 
         // check if there is a block
         $mes = new messageRepository();
-        $res = $mes->checkblock($_SESSION["user"]->email, $username);
+        $res = $mes->checkblock($userRepo->getCurrentUser()->email, $username);
 
         if ($res !== false) {
             $this->render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => $res, "names" => $names]);
             exit();
         }
 
+
         // Check if the message contains a forbidden word
         $wordRepo = new ForbiddenWordRepository();
         $errorMessage = "";
 
         // Validate title
-        if (!$wordRepo->isValidArray(explode(" ", $_POST["title"]))) {
+        if (!$wordRepo->isValidArray(preg_split('/[\s]+/', $_POST["title"]))) {
             $errorMessage = "de titel van het bericht voldoet niet aan de regels!";
         }
 
         // Validate message
-        if (!$wordRepo->isValidArray(explode(" ", $_POST["message"]))) {
+        if (!$wordRepo->isValidArray(preg_split('/[\s]+/',  $_POST["message"]))) {
             if (!empty($errorMessage)) {
                 $errorMessage = "de titel en het bericht voldoen niet aan de regels!";
             } else {
@@ -281,12 +286,12 @@ class InboxController extends Controller
 
         if (!empty($errorMessage)) {
 
-            $this->render("newMessage.tpl", ["title" => "Inbox", "folder" => "Nieuw bericht", "error" => $errorMessage, "names" => $names]);
+            $this->error = $errorMessage;
+            $this->renderInbox();
             exit();
         }
-
         // send message
-        $mes->sendMessage($_SESSION["user"]->email, $username, $_POST["title"], $_POST["message"]);
+        $mes->sendMessage($userRepo->getCurrentUser()->email, $username, $_POST["title"], $_POST["message"]);
 
     }
 
