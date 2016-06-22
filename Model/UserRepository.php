@@ -143,6 +143,7 @@ class UserRepository
         //Clear
         $this->UserQueryBuilder->clearToken($res["Email"], "validation");
 
+
         return $res["Email"];
     }
 

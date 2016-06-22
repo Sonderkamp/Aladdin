@@ -137,8 +137,6 @@ class AccountController extends Controller
         $username = $userRepo->validateActivateToken($token);
         if ($username === false) {
             $userRepo->logRecovery();
-            $this->apologize("niet geldige token.");
-
         }
         return $username;
     }
