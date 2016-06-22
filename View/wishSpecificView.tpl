@@ -62,14 +62,14 @@
                 </a>
             {/if}
 
-            {if $canMatch }
-                <a class="btn btn-side btn-default" data-toggle="modal" data-target="#matchModal">
-                    Match
-                </a>
-            {elseif !empty($isMatched) && $isMatched && $selectedWish->status != "Vervuld"}
+            {if !empty($isMatched) && $isMatched && $selectedWish->status != "Vervuld"}
                 <a href="/match/action=removeMatch?Id={$selectedWish->id}"
                    class="btn btn-side btn-default">
                     Trek match terug
+                </a>
+            {elseif $canMatch }
+                <a class="btn btn-side btn-default" data-toggle="modal" data-target="#matchModal">
+                    Match
                 </a>
             {else}
                 <strong class="errorcenter">Het is niet mogelijk om met deze wens te matchen</strong>

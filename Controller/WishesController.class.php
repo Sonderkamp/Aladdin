@@ -159,7 +159,7 @@ class WishesController extends Controller
         $newestWish = $this->wishRepo->getNewestWish($id);
         $matches = $this->matchRepo->getMatches($id);
         $comments = $this->wishRepo->getComments($id);
-        $canMatch = $this->canMatch($selectedWish);
+
         $isMatched = false;
         $canComment = false;
         $errorString = null;
@@ -178,6 +178,7 @@ class WishesController extends Controller
             }
 
         }
+        $canMatch = $this->canMatch($selectedWish);
 
         if (!empty($this->userRepo->getCurrentUser())) {
             if ($matches !== false) {
@@ -293,7 +294,7 @@ class WishesController extends Controller
                 $this->wishRepo->confirmCompletionDate($_POST["Id"]);
                 $this->redirect("/wishes/action=getSpecificWish?Id=" . $_POST["Id"]);
             } else {
-                $errorString = "De geplande datum is nog neit bereikt. De wens kan niet worden afgesloten.";
+                $errorString = "De geplande datum is nog niet bereikt. De wens kan niet worden afgesloten.";
                 $_SESSION["error"] = $errorString;
                 $this->redirect("/wishes/action=getSpecificWish?Id=" . $_POST["Id"]);
             }
