@@ -111,9 +111,9 @@ class Graph
     public function matches()
     {
         $list = Database::query("select u1.Lat as 'from_lat', u1.Lon as 'from_lon', u2.Lat as 'to_lat', u2.Lon as 'to_lon' from matches as m
-join wish as w on m.wish_Id = w.Id
-join user as u1 on w.User = u1.Email
-join user as u2 on m.user_Email = u2.Email
+join `wish` as w on m.wish_Id = w.Id
+join `user` as u1 on w.User = u1.Email
+join `user` as u2 on m.user_Email = u2.Email
 where m.`IsActive` = 1 AND m.`IsSelected` = 1;");
 
         $csvString = 'from_lat,from_lon,to_lat,to_lon' . "\n";
