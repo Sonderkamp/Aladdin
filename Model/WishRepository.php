@@ -165,7 +165,7 @@ class WishRepository
 
     public function editWishContent(Wish $wish)
     {
-        $temp = $this->wishQueryBuilder->getSingleWish($wish->id);
+        $temp = $this->getNewestWish($wish->id);
         if ($temp[0]["moderator_Username"] === null) {
             $this->wishQueryBuilder->deleteWishContent($wish);
         }
@@ -279,12 +279,12 @@ class WishRepository
 
     public function getPublishedWishes()
     {
-        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Gepubliceerd"], null, null));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Gepubliceerd"], null, false));
     }
 
     public function getMatchedWishes()
     {
-        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Match gevonden"], null, null));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Match gevonden"], null, false));
     }
 
     public function getPossibleMatches()
@@ -302,12 +302,12 @@ class WishRepository
 
     public function getCurrentWishes()
     {
-        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Wordt vervuld"], null, null));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Wordt vervuld"], null, false));
     }
 
     public function getCompletedWishes()
     {
-        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Vervuld"], null, null));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Vervuld"], null, false));
     }
 
     public function getDeniedWishes()
@@ -337,9 +337,20 @@ class WishRepository
 
     public function getWish($id)
     {
-        return $this->getReturnArray($this->wishQueryBuilder->getSingleWish($id, null))[0];
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null,
+            [0 => "Aangemaakt",
+            1 => "Gepubliceerd",
+            2 => "Geweigerd",
+            3 => "Match gevonden",
+            4 => "Vervuld",
+            5 => "Wordt vervuld",
+            6 => "Verwijderd"],
+            null, false, false, null, null, $id))[0];
     }
 
+    public function getNewestWish($id){
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, null, null, null, false, null, null, $id))[0];
+    }
 
     public function getWishesByUser($username)
     {
@@ -348,7 +359,7 @@ class WishRepository
             1 => "Gepubliceerd",
             2 => "Geweigerd",
             3 => "Match gevonden",
-            5 => "Wordt vervuld"], null, null, true));
+            4 => "Wordt vervuld"], null, null, true));
     }
 
     // nog even laten staan, kan wss binnekort verwijdert worden

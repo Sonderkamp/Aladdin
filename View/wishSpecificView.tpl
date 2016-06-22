@@ -50,11 +50,13 @@
     </div>
 
     <div>
-        {if (!$adminView)}
+        {if $adminView && !empty($returnPage) || !$adminView}
             <a class="btn btn-side btn-default"
                href="{if !empty($returnPage)}{$returnPage}{else}/Wishes/action=back{/if}">
                 Go Back
             </a>
+        {/if}
+        {if (!$adminView)}
             {if $canMatch }
                 <a class="btn btn-side btn-default" data-toggle="modal" data-target="#matchModal">
                     Match
@@ -72,7 +74,6 @@
     </div>
 
     <div class="row panel panel-default">
-
         <h3 class="text-center">
             {htmlspecialcharsWithNL($selectedWish->title)}</h3>
         <div class="col-md-3">

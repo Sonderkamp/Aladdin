@@ -27,7 +27,7 @@ class WishQueryBuilder extends QueryBuilder
      * All gets from admin
      *
      */
-    public function getWishes($user = null, array $status = null, $searchKey = null, $admin = null, $allowBlock = false, $myWishesID = null, $matchWishesID = null)
+    public function getWishes($user = null, array $status = null, $searchKey = null, $admin = null, $allowBlock = false, $myWishesID = null, $matchWishesID = null, $wishId = null)
     {
 
         $query = "SELECT *
@@ -42,6 +42,9 @@ class WishQueryBuilder extends QueryBuilder
                    b.Id = (SELECT Id FROM blockedUsers as c WHERE c.user_Email = `wish`.User ORDER BY DateBlocked DESC LIMIT 1)) AND ";
         }
 
+        if($wishId != null){
+            $query .= "`wish`.Id = ? AND ";
+        }
 
         if ($admin) {
             $query .= "`wishContent`.moderator_Username IS NULL AND ";
@@ -69,7 +72,7 @@ class WishQueryBuilder extends QueryBuilder
                 } else {
                     if (isset($admin)) {
                         $query .= " AND `wishContent`.`IsAccepted` = ";
-                        if ($admin) {
+                        if ($admin == true) {
                             $query .= "0";
                         } else {
                             $query .= "1";
@@ -96,14 +99,21 @@ class WishQueryBuilder extends QueryBuilder
                         SOUNDS LIKE ? ";
         }
 
-        if ($admin && $status == null) {
-            $query = substr_replace($query, '', -3);
+        if($status == null){
+            $query = substr_replace($query, ')', -4);
+        } else {
+            $query = substr_replace($query, ')))', -4);
         }
+
 
         $query .= " GROUP BY `wish`.Id";
 
         //acquire params if any
         $params = array();
+
+        if($wishId != null){
+            $params[] = $wishId;
+        }
 
         if ($user != null) {
             $params[] = $user;
@@ -142,7 +152,7 @@ class WishQueryBuilder extends QueryBuilder
 
     public function executeAdminAction($wishId, $IsAccepted, $modName, $status)
     {
-        $wishContentDate = $this->getSingleWish($wishId, true)[0]["Date"];
+        $wishContentDate = $this->getWishes(null, null, null, true, false, null, null, $wishId)[0]["Date"];
 
         $query1 = "UPDATE `wishContent` SET IsAccepted = ? WHERE `wishContent`.Date = ? AND `wishContent`.wish_Id = ?;";
         $query2 = "UPDATE `wishContent` SET moderator_username = ? WHERE `wishContent`.Date = ? AND `wishContent`.wish_Id = ?;";
