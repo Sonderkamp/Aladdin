@@ -105,30 +105,33 @@
                 <h4 class="modal-title">Statistieken</h4>
             </div>
             <div class="modal-body">
+                <p>Op deze pagina kun u een nieuwe wens toevoegen of een bestaand wens wijzigen.</p>
 
-                <p>
-                    Op deze pagina kun u een nieuwe wens toevoegen of een bestaand wens wijzigen.<br><br>
-                    <a><b>Titel</b></a><br>
-                    - De titel van de wens<br><br>
+                <div class="col-xs-12 info-row">
+                    <span class="info-text"><b>Titel: </b>De titel van de wens</span>
+                </div>
 
-                    <a><b>Uitgebreide wens beschrijving:</b></a><br>
-                    - Beschrijf hier zo uitgebreid mogelijk uw wens, denk hierbij aan wat u wilt, hoe dit gedaan kan
-                    worden en op welke plaats<br><br>
+                <div class="col-xs-12 info-row">
+                    <span class="info-text"><b>Uitgebreide wens beschrijving: </b>
+                        Beschrijf hier zo uitgebreid mogelijk uw wens, denk hierbij aan wat u wilt, hoe dit gedaan kan
+                        worden en op welke plaats</span>
+                </div>
 
-                    <a><b>Kernwoorden</b></a><br>
-                    - Kernwoorden zijn woorden waarmee wij uw wensen kunnen koppelen aan potentiele vervullers.<br>
-                    - Vul hier zoveel mogelijk kernwoorden in die met uw wens te maken hebben<br>
-                    - Kernwoorden beginnen met een hashtag (#) op de toetsenbord kunt u dit doen met SHIFT+3<br><br>
+                <div class="col-xs-12 info-row">
+                    <span class="info-text"><b>Kernwoorden: </b><br>
+                            - Kernwoorden zijn woorden waarmee wij uw wensen kunnen koppelen aan potentiele vervullers.<br>
+                            - Vul hier zoveel mogelijk kernwoorden in die met uw wens te maken hebben<br>
+                            - Kernwoorden beginnen met een hashtag (#) op de toetsenbord kunt u dit doen met SHIFT-3</span>
+                </div>
 
-                    <a><b>Voorbeeld</b></a><br>
-                    <b>Titel:</b> Ballonvaart<br>
+                <div class="col-xs-12 info-row">
+                    <span class="info-text"><b>Voorbeeld: </b><br>
+                        <b>Titel:</b> Ballonvaart<br>
                     <b>Beschrijving:</b> Ik wil met mijn gezien een ballonvaart het liefst in de buurt van
                     Noord-Brabant. We zijn een gezin van 4, mijn kinderen zijn 6 en 8 jaar oud. Ik hoop dat er iemand is
                     die mijn wens kan vervullen.<br>
-                    <b>Kernwoorden:</b> #ballonvaart #luchtballon
-
-
-                </p>
+                    <b>Kernwoorden:</b> #ballonvaart #luchtballon</span>
+                </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">
@@ -139,16 +142,4 @@
         </div>
     </div>
 </div>
-
-
-<script>
-    // http://www.formvalidator.net/
-    $.validate({
-        modules: 'location, security, date',
-        onModulesLoaded: function () {
-            $('input[name="country"]').suggestCountry();
-        }
-    });
-
-</script>
 

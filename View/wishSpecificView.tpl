@@ -79,7 +79,6 @@
     </div>
 
     <div class="row panel panel-default">
-
         <h3 class="text-center">
             {htmlspecialcharsWithNL($selectedWish->title)}</h3>
         <div class="col-md-3">
