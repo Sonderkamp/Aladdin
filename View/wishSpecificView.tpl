@@ -126,7 +126,7 @@
                 {if !empty($selectedWish->completionDate)}
                     <div class="row">
                         <label class="col-xs-4">Vervuld datum: </label>
-                        <div class="col-xs-8">{htmlspecialcharsWithNL($selectedWish->completionDate)}</div>
+                        <div class="col-xs-8">{htmlspecialcharsWithNL($selectedWish->completionDate|date_format:"%d/%m/%y")}</div>
                     </div>
                 {/if}
             </div>
@@ -249,9 +249,10 @@
 
             </div>
             {if ($rightCol)}
-                <div class="col-md-4">
+            <div class="col-md-4">
 
-                {if $selectedWish->status == "Match gevonden" && !empty($currentUser) && $selectedWish->user->email == $currentUser->email}
+                {if ($selectedWish->status == "Match gevonden" || $selectedWish->status == "Wordt vervuld" )
+                && !empty($currentUser) && $selectedWish->user->email == $currentUser->email}
                     <div class="well">
                         <form method="post" action="/wishes/action=setCompletionDate">
 
@@ -263,10 +264,10 @@
                             <button class="btn btn-default" type="submit">Bevestig</button>
                         </form>
                     </div>
-                    </div>
-                {elseif $selectedWish->status == "Wordt vervuld" && !empty($currentUser) && $selectedWish->user->email == $currentUser->email}
-                    <div class="col-md-10 col-md-offset-2 well">
-                        <div>Vervul datum: {$selectedWish->completionDate}</div>
+                {/if}
+                {if $selectedWish->status == "Wordt vervuld" && !empty($currentUser) && $selectedWish->user->email == $currentUser->email}
+                    <div class="well">
+                        <div>Vervul datum: {$selectedWish->completionDate|date_format:"%d/%m/%y"}</div>
                         <br>
                         <form method="post" action="/wishes/action=confirmCompletion">
                             <input type="hidden" name="completionDate" value="{$selectedWish->completionDate}">
@@ -275,5 +276,6 @@
                         </form>
                     </div>
                 {/if}
-            {/if}
+                {/if}
+            </div>
         </div>
