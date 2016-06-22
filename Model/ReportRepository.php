@@ -130,7 +130,7 @@ class ReportRepository
         if ($email == null) {
             $email = $this->userRepository->getCurrentUser()->email;
         }
-        // TODO: control for duplicate with getMyReports
+
         $reported = $this->reportQueryBuilder->getReportedUsers($email);
         return $this->reportQueryBuilder->getReportArray($reported);
     }

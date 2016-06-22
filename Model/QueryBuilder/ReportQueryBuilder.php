@@ -68,6 +68,7 @@ class ReportQueryBuilder
             $parameters[] = "aangevraagd";
         }
 
+
         return Database::query_safe($query, $parameters);
     }
 
@@ -104,7 +105,7 @@ class ReportQueryBuilder
     public function getReportArray($result)
     {
         if (count($result) <= 0) return;
-        // TODO: [MEVLUT] check of reporter en reported samen in zelfde query kunnen
+
         $reports = array();
         foreach ($result as $item) {
             $id = $item["Id"];

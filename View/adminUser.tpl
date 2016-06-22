@@ -56,7 +56,8 @@
         <div class="tab-content">
             <div class="tab-pane fade in {if $currentPage == "users"}active{/if}" id="requestedTab">
                 {if $users}
-                    <br><br>
+                    <br>
+                    <br>
                     <table class="table panel">
                         <thead>
                         <tr>
@@ -115,10 +116,10 @@
                 {/if}
             </div>
 
-
             <div class="tab-pane fade in {if $currentPage == "unhandled"}active{/if}" id="publishedTab">
                 {if $unhandled}
-                    <br><br>
+                    <br>
+                    <br>
                     <table class="table panel">
                         <thead>
                         <tr>
@@ -133,8 +134,9 @@
                         </tr>
                         </thead>
                         <tbody>
+
                         {foreach from=$unhandled item=report}
-                            {if $report -> reported -> getBlocked() == false}
+                            {if $report -> reported -> blocked === false}
                                 <tr>
                                     <td>
                                         <a href="/AdminUser/action=showProfile/email={$report -> reporter -> email}">
@@ -210,7 +212,8 @@
 
             <div class="tab-pane fade in {if $currentPage == "handled"}active{/if}" id="matchedTab">
                 {if $handled}
-                    <br><br>
+                    <br>
+                    <br>
                     <table class="table panel">
                         <thead>
                         <tr>
