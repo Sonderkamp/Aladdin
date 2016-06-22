@@ -173,33 +173,8 @@ a:hover {
 
 .small-dropdown-menu {
     left: -25px;
+    z-index: 9001;
 }
-
-/*.small-dropdown-menu {*/
-/*!*margin-right: 1px;*!*/
-/*left: -175px;*/
-/*!*max-width: none;*!*/
-/*!*min-width: 285px;*!*/
-/*}*/
-
-/*!*.small-dropdown-menu li {*!*/
-/*!*display: inline;*!*/
-/*!*margin-right: 10px;*!*/
-/*!*margin-bottom: 10px;*!*/
-/*!*}*!*/
-
-/*.small-dropdown-menu li > a {*/
-/*padding: 10px;*/
-/*display: inline;*/
-/*}*/
-
-/*.small-dropdown-menu li > * {*/
-/*display: inline;*/
-/*}*/
-
-/*.small-dropdown-menu li:last-child {*/
-/*margin-right: 0;*/
-/*}*/
 
 .infoLeft {
     float: left;
