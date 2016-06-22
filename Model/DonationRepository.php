@@ -16,6 +16,10 @@ class DonationRepository
         $this->mollie = new Mollie_API_Client;
         $this->mollie->setApiKey(MOLLIE_ID);
         $this->donateQB = new DonateQueryBuilder();
+
+        if (empty($_SESSION["payment"])) {
+            $_SESSION["payment"] = null;
+        }
     }
 
     public function newDonation($amount, $name, $description, $user, $anonymous)

@@ -183,15 +183,15 @@
                                                 <li>
                                                     {*bekijk wens*}
                                                     {if !empty($report->wishID)}
-                                                        <a href="wishes/action=getSpecificWish?admin=true&Id={$report->wishID}"
+                                                        <a href="/wishes/action=getSpecificWish?admin=true&Id={$report->wishID}"
                                                            onClick="return popup(this, 'notes',900,400)">Bekijk
                                                             wens</a>
-                                                        <a href="AdminWish/action=deleteWish?Id={$report->wishID}">
+                                                        <a href="/AdminWish/action=deleteWish?Id={$report->wishID}">
                                                             Verwijder wens
                                                         </a>
                                                     {else}
                                                         {* bekijk bericht *}
-                                                        <a href="adminmail/action=show/id={$report->messageID}/user={$report -> reporter -> email}"
+                                                        <a href="/adminmail/action=show/id={$report->messageID}/user={$report -> reporter -> email}"
                                                            onClick="return popup(this, 'notes',700,400)">Bekijk
                                                             bericht</a>
                                                     {/if}
@@ -266,12 +266,12 @@
                                 <td>
 
                                     {if !empty($report->wishID)}
-                                        <a href="wishes/action=getSpecificWish?admin=true&Id={$report->wishID}"
+                                        <a href="/wishes/action=getSpecificWish?admin=true&Id={$report->wishID}"
                                            onClick="return popup(this, 'notes',900,400)">Bekijk
                                             wens</a>
                                     {else}
                                         {* bekijk bericht *}
-                                        <a href="adminmail/action=show/id={$report->messageID}/user={$report -> reporter -> email}"
+                                        <a href="/adminmail/action=show/id={$report->messageID}/user={$report -> reporter -> email}"
                                            onClick="return popup(this, 'notes',700,400)">Bekijk
                                             bericht</a>
                                     {/if}
