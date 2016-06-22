@@ -265,8 +265,9 @@
                     </div>
                     </div>
                 {elseif $selectedWish->status == "Wordt vervuld" && !empty($currentUser) && $selectedWish->user->email == $currentUser->email}
-                    <div class="col-md-10 col-md-offset-2 panel panel-default">
+                    <div class="col-md-10 col-md-offset-2 well">
                         <div>Vervul datum: {$selectedWish->completionDate}</div>
+                        <br>
                         <form method="post" action="/wishes/action=confirmCompletion">
                             <input type="hidden" name="completionDate" value="{$selectedWish->completionDate}">
                             <input type="hidden" name="Id" value="{$selectedWish->id}">
