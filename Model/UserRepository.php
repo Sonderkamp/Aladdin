@@ -133,13 +133,15 @@ class UserRepository
     {
 
         $res = $this->UserQueryBuilder->getMailByToken($token, "validation");
-        if ($res == null || $res === false)
+        if ($res === null || $res === false)
             return false;
         $res = $res[0];
 
-        // Clear
-        $this->UserQueryBuilder->clearToken($res["Email"], "validation");
+        if ($res === null || $res["ValidationHash"] === null)
+            return false;
 
+        //Clear
+        $this->UserQueryBuilder->clearToken($res["Email"], "validation");
 
         return $res["Email"];
     }

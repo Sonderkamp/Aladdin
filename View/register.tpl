@@ -268,8 +268,7 @@
 
             </div>
         </div>
-        <a type="button" class="btn btn-default" href="/Account">Log in</a>
-        <a type="button" class="btn btn-default" href="/Account/action=Recover">Vergeten</a>
+        <br><br>
         {/if}
     </div>
 

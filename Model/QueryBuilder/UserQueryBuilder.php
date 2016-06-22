@@ -79,8 +79,7 @@ class UserQueryBuilder
             case "validation":
                 return Database::query_safe("SELECT * FROM `user` WHERE `ValidationHash` = ?", array($hash));
             default:
-                echo "TYPE DOES NOT EXIST - GETMAILBYTOKEN->UserQueryBuilder()";
-                exit();
+                return false;
         }
 
 
