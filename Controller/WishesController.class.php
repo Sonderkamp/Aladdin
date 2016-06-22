@@ -30,14 +30,14 @@ class WishesController extends Controller
         $this->renderOverview("myWishes");
     }
 
-    private function renderOverview($currentPage , array $search = null)
+    private function renderOverview($currentPage, array $search = null)
     {
         (new AccountController())->guaranteeLogin("/Wishes");
         (new DashboardController())->guaranteeProfile();
 
         $searchKey = null;
 
-        if($search == null){
+        if ($search == null) {
             $myWishes = $this->wishRepo->getMyWishes();
             $completedWishes = $this->wishRepo->getCompletedWishes();
             $myCompletedWishes = $this->wishRepo->getMyCompletedWishes();
@@ -51,7 +51,6 @@ class WishesController extends Controller
             $matchedWishes = $search[4];
             $searchKey = $search[5];
         }
-
 
 
         $canAddWish = $this->wishRepo->canAddWish($this->userRepo->getCurrentUser()->email);
@@ -72,10 +71,10 @@ class WishesController extends Controller
 
     public function searchWish()
     {
-        if(!empty($_GET["search"])){
+        if (!empty($_GET["search"])) {
             $key = $_GET["search"];
 
-            if(preg_match("/[^a-z 0-9]/i" , $key)){
+            if (preg_match("/[^a-z 0-9]/i", $key)) {
                 $this->apologize("Zoeken kan alleen met alphanumerieke karakters");
                 exit(0);
             }
@@ -88,7 +87,7 @@ class WishesController extends Controller
             $incompletedWishes = $this->wishRepo->searchIncopletedWishes($key);
             $possibleMatches = $this->wishRepo->searchPossibleMatches($key);
 
-            $this->renderOverview(null, array($myWishes , $completedWishes, $myCompletedWishes, $incompletedWishes, $possibleMatches, $_GET["search"]));
+            $this->renderOverview(null, array($myWishes, $completedWishes, $myCompletedWishes, $incompletedWishes, $possibleMatches, $_GET["search"]));
 
         }
         $this->redirect("/wishes");
@@ -171,7 +170,7 @@ class WishesController extends Controller
         }
 
         if (empty($selectedWish)) {
-            if(empty($newestWish)){
+            if (empty($newestWish)) {
                 $this->apologize("De wens die u heeft proberen te bezoeken bestaat niet.");
                 exit(0);
             } else {
@@ -184,7 +183,7 @@ class WishesController extends Controller
             if ($matches !== false) {
                 foreach ($matches as $match) {
                     if ($match->user->email == $this->userRepo->getCurrentUser()->email) {
-                        if($selectedWish->user->email != $this->userRepo->getCurrentUser()->email){
+                        if ($selectedWish->user->email != $this->userRepo->getCurrentUser()->email) {
                             if ($match->isActive == 1) {
                                 $isMatched = true;
                             }
@@ -199,7 +198,7 @@ class WishesController extends Controller
 
         if ($selectedWish->status != "Vervuld") {
             $canComment = false;
-        } elseif($selectedWish->user->email == $this->userRepo->getCurrentUser()->email){
+        } elseif ($selectedWish->user->email == $this->userRepo->getCurrentUser()->email) {
             $canComment = true;
         }
 
@@ -228,18 +227,21 @@ class WishesController extends Controller
         } else if ($this->userRepo->getCurrentUser() === false || (($selectedWish->status == "Aangemaakt"
                     || $selectedWish->status == "Geweigerd"
                     || $selectedWish->status == "Verwijderd")
-                && $selectedWish->user->email != $this->userRepo->getCurrentUser()->email))
-        {
+                && $selectedWish->user->email != $this->userRepo->getCurrentUser()->email)
+        ) {
             $this->apologize("U bent niet gemachtigd om deze wens te bekijken.");
         }
 
-        (new DashboardController())->guaranteeProfile();
+        if ($this->userRepo->getCurrentUser()->email !== $selectedWish->user->email) {
+            (new DashboardController())->guaranteeProfile();
+        }
 
-        if($this->userRepo->getCurrentUser()->email != $selectedWish->user->email){
-            $this->render("wishSpecificView.tpl" , $arr);
+
+        if ($this->userRepo->getCurrentUser()->email != $selectedWish->user->email) {
+            $this->render("wishSpecificView.tpl", $arr);
         } else {
             $arr["selectedWish"] = $newestWish;
-            $this->render("wishSpecificView.tpl" , $arr);
+            $this->render("wishSpecificView.tpl", $arr);
         }
     }
 
@@ -250,7 +252,8 @@ class WishesController extends Controller
         exit(0);
     }
 
-    private function canMatch($selectedWish){
+    private function canMatch($selectedWish)
+    {
 
         $canMatch = false;
 
