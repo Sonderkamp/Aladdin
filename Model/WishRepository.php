@@ -105,7 +105,6 @@ class WishRepository
         return $this->getReturnArray($this->wishQueryBuilder->getWishes
         ($this->userRepository->getCurrentUser()->email, [0 => "Aangemaakt",
             1 => "Gepubliceerd",
-            2 => "Geweigerd",
             3 => "Match gevonden",
             5 => "Wordt vervuld"]));
     }
@@ -274,7 +273,7 @@ class WishRepository
 
     public function getWishAmount($email)
     {
-        $wishByUser = $this->getWishesByUser($email);
+        $wishByUser = $this->getCountedWishes($email);
         if (!empty($wishByUser)) {
             return count($wishByUser);
         } else {
@@ -381,6 +380,15 @@ class WishRepository
         ($username, [0 => "Aangemaakt",
             1 => "Gepubliceerd",
             2 => "Geweigerd",
+            3 => "Match gevonden",
+            4 => "Wordt vervuld"], null, null, true));
+    }
+
+    public function getCountedWishes($username)
+    {
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes
+        ($username, [0 => "Aangemaakt",
+            1 => "Gepubliceerd",
             3 => "Match gevonden",
             4 => "Wordt vervuld"], null, null, true));
     }
