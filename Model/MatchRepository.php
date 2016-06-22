@@ -109,6 +109,10 @@ class MatchRepository
         return $this->getReturnArray($this->matchQueryBuilder->getMatches(null , $username));
     }
 
+    public function getCompletedWishes($username){
+        return $this->matchQueryBuilder->getMatches(null , $username , true);
+    }
+
     private function sentMatchMessage($wishId, $username)
     {
         $wishRepo = new WishRepository();

@@ -120,11 +120,13 @@ class WishRepository
 
     public function getMyCompletedWishes($username = null)
     {
-        if(empty($username)){
+        if($username == null){
             $username = $this->userRepository->getCurrentUser()->email;
         }
 
-        return $this->getReturnArray($this->wishQueryBuilder->getWishes($username, [0 => "Vervuld", 1 => "Wordt vervuld"], null));
+        return $this->getReturnArray($this->matchRepo->getCompletedWishes($username));
+
+//        return $this->getReturnArray($this->wishQueryBuilder->getWishes($username, [0 => "Vervuld", 1 => "Wordt vervuld"], null));
     }
 
     /**
@@ -143,6 +145,21 @@ class WishRepository
     public function searchMyWishes($key)
     {
         return $this->getReturnArray($this->wishQueryBuilder->getWishes($this->userRepository->getCurrentUser()->email, null, $key));
+    }
+
+    public function searchIncopletedWishes($key)
+    {
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Gepubliceerd", 1 => "Match gevonden"], $key, false));
+    }
+
+    public function searchCompletedWishes($key)
+    {
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Vervuld", 1 => "Wordt vervuld"], $key, false));
+    }
+
+    public function searchMyCompletedWishes($key)
+    {
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes($this->userRepository->getCurrentUser()->email, [0 => "Vervuld", 1 => "Wordt vervuld"], $key));
     }
 
 

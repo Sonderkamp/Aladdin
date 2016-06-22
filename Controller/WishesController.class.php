@@ -30,19 +30,29 @@ class WishesController extends Controller
         $this->renderOverview("myWishes");
     }
 
-    private function renderOverview($currentPage)
+    private function renderOverview($currentPage , array $search = null)
     {
         (new AccountController())->guaranteeLogin("/Wishes");
         (new DashboardController())->guaranteeProfile();
 
-        $myWishes = $this->wishRepo->getMyWishes();
-        $completedWishes = $this->wishRepo->getCompletedWishes();
-        $myCompletedWishes = $this->wishRepo->getMyCompletedWishes();
-        $incompletedWishes = $this->wishRepo->getIncompletedWishes();
+        $searchMode = false;
+
+        if($search == null){
+            $myWishes = $this->wishRepo->getMyWishes();
+            $completedWishes = $this->wishRepo->getCompletedWishes();
+            $myCompletedWishes = $this->wishRepo->getMyCompletedWishes();
+            $incompletedWishes = $this->wishRepo->getIncompletedWishes();
+        } else {
+            $searchMode = true;
+            $myWishes = $search[0];
+            $completedWishes = $search[1];
+            $myCompletedWishes = $search[2];
+            $incompletedWishes = $search[3];
+        }
+
         $matchedWishes = $this->wishRepo->getPossibleMatches();
 
         $canAddWish = $this->wishRepo->canAddWish($this->userRepo->getCurrentUser()->email);
-        $displayNames = array();
 
         $this->render("wishOverview.tpl", ["title" => "Wensen Overzicht",
             "myWishes" => $myWishes,
@@ -50,6 +60,7 @@ class WishesController extends Controller
             "myCompletedWishes" => $myCompletedWishes,
             "incompletedWishes" => $incompletedWishes,
             "matchedWishes" => $matchedWishes,
+            "searchMode" => $searchMode,
             "currentPage" => $currentPage,
             "canAddWish" => $canAddWish
         ]);
@@ -57,11 +68,20 @@ class WishesController extends Controller
         exit(0);
     }
 
-    private function searchWish($key)
+    public function searchWish()
     {
-        //Werkt als de sql versie geupdate wordt.
-        $searchReturn = $this->wishRepo->searchMyWishes($key);
-        $this->render("wishOverview.tpl", ["title" => "Wensen overzicht", "wishes" => $searchReturn]);
+        if(!empty($_GET["search"])){
+            $key = $_GET["search"];
+            $myWishes = $this->wishRepo->searchMyWishes($key);
+            $completedWishes = $this->wishRepo->searchCompletedWishes($key);
+            $myCompletedWishes = $this->wishRepo->searchMyCompletedWishes($key);
+            $incompletedWishes = $this->wishRepo->searchIncopletedWishes($key);
+
+            return array($myWishes , $completedWishes, $myCompletedWishes, $incompletedWishes);
+
+        }
+        $this->apologize("De zoekbalk moet ingevuld zijn");
+        return false;
     }
 
     //used to shorten string if need be
@@ -164,6 +184,8 @@ class WishesController extends Controller
 
         if ($selectedWish->status != "Vervuld") {
             $canComment = false;
+        } elseif($selectedWish->user->email == $this->userRepo->getCurrentUser()->email){
+            $canComment = true;
         }
 
         $arr = array("title" => "Wens: " . $id,
