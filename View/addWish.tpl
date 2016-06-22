@@ -102,7 +102,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Statistieken</h4>
+                <h4 class="modal-title">Wens Toevoegen</h4>
             </div>
             <div class="modal-body">
                 <p>Op deze pagina kun u een nieuwe wens toevoegen of een bestaand wens wijzigen.</p>

@@ -7,15 +7,14 @@
 <img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container ">
 
-    <span class="info">
+
+    <div class="row">
+        <div class="col-sm-3">
+              <span class="info">
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#InfoModal">
                 <span class="glyphicon glyphicon-info-sign"></span>
             </button>
          </span>
-
-
-    <div class="row">
-        <div class="col-sm-3">
             <div class="profile-usertitle">
                 <div class="text-center">
                     <b>{$user->displayName}</b>
@@ -386,10 +385,13 @@
                     Hier kunt u uw profiel bekijken en wijzigen, uw donaties inzien en uw wachtwoord wijzigen.
                     <br><br>
 
-                    <a><i class="glyphicon glyphicon glyphicon-user"></i> Overzicht</a> hier staat uw profiel zoals u dat heeft ingesteld.<br>
+                    <a><i class="glyphicon glyphicon glyphicon-user"></i> Overzicht</a> hier staat uw profiel zoals u
+                    dat heeft ingesteld.<br>
                     <a><i class="glyphicon glyphicon glyphicon-euro"></i> Donaties</a> hier staan al uw donaties.<br>
-                    <a><i class="glyphicon glyphicon glyphicon-edit"></i> Bewerken</a> hier kunt u uw profiel bewerken<br>
-                    <a><i class="glyphicon glyphicon glyphicon-option-horizontal"></i> Wachtwoord</a> hier kunt u uw wachtwoord wijzigen.<br>
+                    <a><i class="glyphicon glyphicon glyphicon-edit"></i> Bewerken</a> hier kunt u uw profiel
+                    bewerken<br>
+                    <a><i class="glyphicon glyphicon glyphicon-option-horizontal"></i> Wachtwoord</a> hier kunt u uw
+                    wachtwoord wijzigen.<br>
                 </p>
 
                 <div class="modal-footer">
