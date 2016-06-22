@@ -14,7 +14,7 @@
        </span>
 
     <div class="row">
-        <h3>Wensen overzicht</h3>
+        <h3>Wensen overzicht {if !empty($searchKey)} - {$searchKey}{/if}</h3>
         {if isset($wishError)}
             <div class="form-error" id="err">Error: {htmlspecialchars($wishError)}</div>
         {else}

@@ -93,13 +93,13 @@ class WishQueryBuilder extends QueryBuilder
                 $query .= " AND ";
             }
 
-            $query .= "wishContent.Content
-                        SOUNDS LIKE ?
+            $query .= "(wishContent.Content
+                        LIKE ?
                         OR wishContent.Title
-                        SOUNDS LIKE ? ";
+                        LIKE ? AND ";
         }
 
-        if($status == null){
+        if($status == null || $searchKey != null){
             $query = substr_replace($query, ')', -4);
         } else {
             $query = substr_replace($query, ')))', -4);
@@ -120,6 +120,7 @@ class WishQueryBuilder extends QueryBuilder
         }
 
         if ($searchKey != null) {
+            $params[] = $searchKey;
             $params[] = $searchKey;
         }
 
@@ -270,7 +271,7 @@ class WishQueryBuilder extends QueryBuilder
      * @param $talents = array with talent id's 
      * @param $myWishes = list with wishes of user 
      * @return list with wishes */
-    public function getPossibleMatches($talents, $myWishes)
+    public function getPossibleMatches($talents, $myWishes, $searchkey = null)
     {
         $talentList = $this->getSQLString($talents);
         $published = "Gepubliceerd";
@@ -280,7 +281,12 @@ class WishQueryBuilder extends QueryBuilder
         }
 
         $wishList = $this->getSQLString($temp);
-        return $this->getWishes(null, array($published, "Match gevonden"), null, false, false, $wishList, $talentList);
+
+        if($searchkey != null){
+            return $this->getWishes(null, array($published, "Match gevonden"), $searchkey, false, false, $wishList, $talentList);
+        } else {
+            return $this->getWishes(null, array($published, "Match gevonden"), null, false, false, $wishList, $talentList);
+        }
     }
 
 

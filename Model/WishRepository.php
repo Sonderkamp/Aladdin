@@ -162,6 +162,10 @@ class WishRepository
         return $this->getReturnArray($this->wishQueryBuilder->getWishes($this->userRepository->getCurrentUser()->email, [0 => "Vervuld", 1 => "Wordt vervuld"], $key));
     }
 
+    public function searchPossibleMatches($key){
+        return $this->getPossibleMatches($key);
+    }
+
 
     public function addWish(Wish $wish)
     {
@@ -306,7 +310,7 @@ class WishRepository
         return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Match gevonden"], null, false));
     }
 
-    public function getPossibleMatches()
+    public function getPossibleMatches($key = null)
     {
         $userTalents = $this->talentRepository->getAddedTalents();
         $synonyms = $this->talentRepository->getSynonymsOfTalents($userTalents);
@@ -314,7 +318,7 @@ class WishRepository
 
 
         $temp = $this->wishQueryBuilder->wishIDByTalents($allTalents);
-        $result = $this->wishQueryBuilder->getPossibleMatches($temp, $this->getMyWishes());
+        $result = $this->wishQueryBuilder->getPossibleMatches($temp, $this->getMyWishes(), $key);
 
         return $this->getReturnArray($result);
     }

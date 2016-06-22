@@ -35,22 +35,24 @@ class WishesController extends Controller
         (new AccountController())->guaranteeLogin("/Wishes");
         (new DashboardController())->guaranteeProfile();
 
-        $searchMode = false;
+        $searchKey = null;
 
         if($search == null){
             $myWishes = $this->wishRepo->getMyWishes();
             $completedWishes = $this->wishRepo->getCompletedWishes();
             $myCompletedWishes = $this->wishRepo->getMyCompletedWishes();
             $incompletedWishes = $this->wishRepo->getIncompletedWishes();
+            $matchedWishes = $this->wishRepo->getPossibleMatches();
         } else {
-            $searchMode = true;
             $myWishes = $search[0];
             $completedWishes = $search[1];
             $myCompletedWishes = $search[2];
             $incompletedWishes = $search[3];
+            $matchedWishes = $search[4];
+            $searchKey = $search[5];
         }
 
-        $matchedWishes = $this->wishRepo->getPossibleMatches();
+
 
         $canAddWish = $this->wishRepo->canAddWish($this->userRepo->getCurrentUser()->email);
 
@@ -60,7 +62,7 @@ class WishesController extends Controller
             "myCompletedWishes" => $myCompletedWishes,
             "incompletedWishes" => $incompletedWishes,
             "matchedWishes" => $matchedWishes,
-            "searchMode" => $searchMode,
+            "searchKey" => $searchKey,
             "currentPage" => $currentPage,
             "canAddWish" => $canAddWish
         ]);
@@ -72,16 +74,24 @@ class WishesController extends Controller
     {
         if(!empty($_GET["search"])){
             $key = $_GET["search"];
+
+            if(preg_match("/[^a-z 0-9]/i" , $key)){
+                $this->apologize("Zoeken kan alleen met alphanumerieke karakters");
+                exit(0);
+            }
+
+            $key = "%" . $key . "%";
+
             $myWishes = $this->wishRepo->searchMyWishes($key);
             $completedWishes = $this->wishRepo->searchCompletedWishes($key);
             $myCompletedWishes = $this->wishRepo->searchMyCompletedWishes($key);
             $incompletedWishes = $this->wishRepo->searchIncopletedWishes($key);
+            $possibleMatches = $this->wishRepo->searchPossibleMatches($key);
 
-            return array($myWishes , $completedWishes, $myCompletedWishes, $incompletedWishes);
+            $this->renderOverview(null, array($myWishes , $completedWishes, $myCompletedWishes, $incompletedWishes, $possibleMatches, $_GET["search"]));
 
         }
-        $this->apologize("De zoekbalk moet ingevuld zijn");
-        return false;
+        $this->redirect("/wishes");
     }
 
     //used to shorten string if need be
