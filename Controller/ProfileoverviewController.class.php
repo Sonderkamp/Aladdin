@@ -65,7 +65,7 @@ class ProfileoverviewController extends Controller
             $wishes = null;
         }
         if ($completedWishes[0] === null) {
-            $wishes = null;
+            $completedWishes = null;
         }
 
         $talents = $talentRepo->getAddedTalents($user->email);

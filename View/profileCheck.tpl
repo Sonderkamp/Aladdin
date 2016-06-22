@@ -190,28 +190,33 @@
                                             <h6>Deze gebruiker heeft nog geen wensen.</h6>
                                         {/if}
                                         <h5>Vervulde wensen</h5>
-                                        <table class="table">
-                                            <thead>
-                                            <tr>
-                                                <th>Gebruiker</th>
-                                                <th>Wens</th>
-                                                <th>Status</th>
-                                                <th></th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {foreach from=$completedWishes item=wish}
+                                        {if count($completedWishes) > 0}
+                                            <table class="table">
+                                                <thead>
                                                 <tr>
-                                                    <td>{$wish->user->displayName}</td>
-                                                    <td>{$wish->title}</td>
-                                                    <td>{$wish->status}</td>
-                                                    <td>
-                                                        <a href="/wishes/action=getSpecificWish/admin=true/Id={$wish->id}"
-                                                           onClick="return popup(this, 'notes',900,400)">Bekijk</a></td>
+                                                    <th>Gebruiker</th>
+                                                    <th>Wens</th>
+                                                    <th>Status</th>
+                                                    <th></th>
                                                 </tr>
-                                            {/foreach}
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                {foreach from=$completedWishes item=wish}
+                                                    <tr>
+                                                        <td>{$wish->user->displayName}</td>
+                                                        <td>{$wish->title}</td>
+                                                        <td>{$wish->status}</td>
+                                                        <td>
+                                                            <a href="/wishes/action=getSpecificWish/admin=true/Id={$wish->id}"
+                                                               onClick="return popup(this, 'notes',900,400)">Bekijk</a>
+                                                        </td>
+                                                    </tr>
+                                                {/foreach}
+                                                </tbody>
+                                            </table>
+                                        {else}
+                                            <h6>Deze gebruiker heeft nog geen wensen vervuld.</h6>
+                                        {/if}
                                     </div>
                                 </div>
                             </div>
