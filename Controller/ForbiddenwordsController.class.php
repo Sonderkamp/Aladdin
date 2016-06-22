@@ -255,7 +255,7 @@ class ForbiddenwordsController extends Controller
         }
 
         // Check if only letters
-        if(!preg_match('/^[[:alpha:]]+$/', $forbiddenWord)) {
+        if(!preg_match('/^[a-zA-Z]+$/', $forbiddenWord)) {
             $this->error .= ' Het woord "' . $forbiddenWord . '" bevat andere tekens dat letters!';
 
             // Set succes on failed.
