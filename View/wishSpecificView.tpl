@@ -179,7 +179,7 @@
                 <p class="well">{htmlspecialcharsWithNL($selectedWish->content)}</p>
 
 
-                {if $canComment || adminView}
+                {if $selectedWish->status == "Vervuld"}
                     <div id="COMMENTS" class="well">
                         <div>
                             <label>Reacties</label>
