@@ -52,6 +52,12 @@ class MatchQueryBuilder extends QueryBuilder
             $param[] = $username;
         }
 
+        if ($wishId == null && $username == null && $wishUser) {
+            $query .= "WHERE `matches`.IsSelected = 1 ";
+        } else if ($wishUser) {
+            $query .= "AND `matches`.IsSelected = 1 ";
+        }
+
         $query .= "AND user_Email IS NOT NULL AND NOT EXISTS
                   ( SELECT NULL FROM blockedUsers AS b WHERE b.user_Email = `matches`.user_Email AND b.IsBlocked = 1
                   AND b.Id = (SELECT Id FROM blockedUsers as c WHERE c.user_Email = `matches`.user_Email
