@@ -28,7 +28,7 @@ class UserRepository
         if ($current === false || $current->email !== $username) {
 
             // if user is not blocked
-            if (!$this->isBlocked($username) !== false)
+            if ($this->isBlocked($username) === false)
                 $this->UserQueryBuilder->setblock(1, $username, $reason);
         }
     }
@@ -897,9 +897,12 @@ class UserRepository
         $newUser->lat = $result[0]["Lat"];
         $newUser->lon = $result[0]["Lon"];
 
-        if (isset($result[0]["isBlocked"])) {
-            $newUser->blocked = $result[0]["isBlocked"];
+        if ($this->isBlocked($newUser->email) !== false) {
+            $newUser->blocked = true;
+        } else {
+            $newUser->blocked = false;
         }
+
 
         return $newUser;
     }

@@ -454,7 +454,7 @@
                         <small class="text-muted">Geef een reden op voor andere administratoren.
                         </small>
                     </fieldset>
-                    <button type="submit" class="btn btn-default">Blokkeer</button>
+                    <button type="submit" class="btn btn-default">Deblokkeer</button>
                 </form>
             </div>
             <div class="modal-footer">
