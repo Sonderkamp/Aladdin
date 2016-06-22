@@ -152,9 +152,9 @@
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
 
-                            <h6 class="modal-title">ID:</h6>
-                            <input name="id" class="form-control" value="{$sponsor->id}" readonly>
-                            <br>
+
+                            <input name="id" type="hidden" value="{$sponsor->id}" readonly>
+
                             <h6 class="modal-title">Contactpersoon:</h6>
                             <select name="userEmail">
                                 <option value="{$sponsor -> userMail}">{$sponsor -> userMail}</option>
