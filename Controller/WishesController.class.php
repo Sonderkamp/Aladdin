@@ -171,8 +171,13 @@ class WishesController extends Controller
         }
 
         if (empty($selectedWish)) {
-            $this->apologize("De wens die u heeft proberen te bezoeken bestaat niet.");
-            exit(0);
+            if(empty($newestWish)){
+                $this->apologize("De wens die u heeft proberen te bezoeken bestaat niet.");
+                exit(0);
+            } else {
+                $selectedWish = $newestWish;
+            }
+
         }
 
         if (!empty($this->userRepo->getCurrentUser())) {
@@ -220,10 +225,15 @@ class WishesController extends Controller
 
             $this->specificWishAdmin($arr);
 
-        } else if ($this->userRepo->getCurrentUser() === false || ($selectedWish->status == "Aangemaakt" && $selectedWish->user->email != $this->userRepo->getCurrentUser()->email))
+        } else if ($this->userRepo->getCurrentUser() === false || (($selectedWish->status == "Aangemaakt"
+                    || $selectedWish->status == "Geweigerd"
+                    || $selectedWish->status == "Verwijderd")
+                && $selectedWish->user->email != $this->userRepo->getCurrentUser()->email))
         {
             $this->apologize("U bent niet gemachtigd om deze wens te bekijken.");
         }
+
+        (new DashboardController())->guaranteeProfile();
 
         if($this->userRepo->getCurrentUser()->email != $selectedWish->user->email){
             $this->render("wishSpecificView.tpl" , $arr);
