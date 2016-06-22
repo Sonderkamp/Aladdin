@@ -1,5 +1,7 @@
 /*@import url("StyleMax.css");*/
-
+.rightText{
+    text-align: right;
+}
 .navbar {
     z-index: 100;
 }

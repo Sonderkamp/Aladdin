@@ -75,7 +75,7 @@
     <div class="row dashboard-row">
         {if !empty($wishes)}
             {if $wishCheck}
-                <div class="col-md-4 hidden-sm hidden-xs">
+                <div class="col-md-4 col-sm-4 hidden-xs">
                     <div class="thumbnail">
                         <div class="caption">
                             <div class="row">
@@ -93,22 +93,19 @@
                 <div class="col-sm-4">
                     <div class="thumbnail">
                         <div class="caption">
-                            <div class="row">
-                                <label class="col-md-4">Title:</label>
-                                <label>{htmlspecialchars($value->title)}</label>
-                            </div>
-                            <div class="row">
-                                <label class="col-md-4">Status:</label>
-                                <label>{$value->status}</label>
-                            </div>
-                            <div class="row">
 
-                            </div>
-                            <div class="row">
-                                <a class="btn btn-default btn-dashboard"
+                            <label><b>Title:</b></label><br>
+                            <label>{htmlspecialchars($value->title)}</label>
+                            <br>
+                            <label><b>Status:</b></label>
+                            <label>{$value->status}</label><br>
+                            <div class="rightText">
+
+
+                                <a class="btn btn-default"
                                    href="/wishes/action=getSpecificWish?Id={$value->id}">Bekijk de volledige wens</a>
-
                             </div>
+
                         </div>
                     </div>
                 </div>
