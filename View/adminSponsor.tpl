@@ -157,7 +157,7 @@
 
                             <h6 class="modal-title">Contactpersoon:</h6>
                             <select name="userEmail">
-                                <option value="{$sponsor -> userMail}">{$sponsor -> userMail}</option>
+                                <option value="{$sponsor -> userMail}">{$sponsor -> displayName}</option>
                                 {foreach $users as $user}
                                     {if ($user->email) != ($sponsor -> userMail)}
                                         <option value="{$user->email}">{$user->email}</option>
