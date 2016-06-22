@@ -254,9 +254,9 @@ class ForbiddenwordsController extends Controller
             }
         }
 
-        // Check on whitespace
-        if(preg_match('/\s/', $forbiddenWord)) {
-            $this->error .= ' Het woord "' . $forbiddenWord . '" bevat spaties!';
+        // Check if only letters
+        if(!preg_match('/^[[:alpha:]]+$/', $forbiddenWord)) {
+            $this->error .= ' Het woord "' . $forbiddenWord . '" bevat andere tekens dat letters!';
 
             // Set succes on failed.
             $success = "failed";
