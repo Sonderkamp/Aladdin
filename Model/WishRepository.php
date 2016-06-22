@@ -167,6 +167,8 @@ class WishRepository
 
     public function editWishContent(Wish $wish)
     {
+        print_r("reached");
+        exit(0);
         $temp = $this->getNewestWish($wish->id);
         if ($temp[0]["moderator_Username"] === null) {
             $this->wishQueryBuilder->deleteWishContent($wish);

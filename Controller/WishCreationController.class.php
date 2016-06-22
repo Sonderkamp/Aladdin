@@ -148,10 +148,6 @@ class WishCreationController extends Controller
                 $wish->id = $_SESSION["wishcontentid"];
                 $this->wishRepo->editWishContent($wish);
 
-//                /* uitgecomment anders wordt je volgespamt
-//                $this->wishRepo->sendEditMail($wish->id, $title, $description, $myTags);
-//                */
-
                 $this->redirect("/wishes/action=getSpecificWish?Id=" . $wish->id);
             }
             $this->wishController->back();
