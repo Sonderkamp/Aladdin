@@ -361,7 +361,7 @@ class UserRepository
             Aladdin";
 
             $websiteMessage = "Er is een email verstuurd naar " . $username .
-                "met een link om uw wachtwoord te resetten.Deze link verschijnt binnen drie minuten.
+                " met een link om uw wachtwoord te resetten.Deze link verschijnt binnen drie minuten.
                                 als u niks binnenkrijgt, kijk alstublieft in uw spam folder.";
 
             return true;
