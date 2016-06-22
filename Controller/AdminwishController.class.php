@@ -92,7 +92,7 @@ class AdminwishController extends Controller
             $verdict = "geweigerd";
         }
 
-        $acceptedWish = $this->wishRepo->getWish($wishId);
+        $acceptedWish = $this->wishRepo->getNewestWish($wishId);
 
         $message = "De wens met de titel '" . $acceptedWish->title . "' is " . $verdict . ". De reden opgegeven is: "
             . $reason . ".\n De inhoud van deze wens is alsvolgt: \n" . $acceptedWish->content

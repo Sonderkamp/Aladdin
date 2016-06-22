@@ -16,7 +16,7 @@
             </button>
     </span>
 
-    <h5>Sponsor Beheer</h5>
+    <h5>Sponsor Beheer {if !empty($search)} - {$search}{/if}</h5>
     <div class="col-md-2">
         <ul class="nav nav-pills nav-stacked">
             <li {if $currentPage == "sponsors"}class="active"{/if}>
@@ -34,7 +34,6 @@
                 <span class="glyphicon glyphicon-plus"></span>
             </button>
             <button type="submit" class="btn btn-primary">Zoek</button>
-            <button type="submit" class="btn btn-primary">Reset zoekfilter</button>
         </div>
     </form>
 
@@ -157,10 +156,12 @@
 
                             <h6 class="modal-title">Contactpersoon:</h6>
                             <select name="userEmail">
-                                <option value="{$sponsor -> userMail}">{$sponsor -> userMail}</option>
+                                <option value=""></option>
                                 {foreach $users as $user}
                                     {if ($user->email) != ($sponsor -> userMail)}
-                                        <option value="{$user->email}">{$user->email}</option>
+                                        <option value="{$user->email}">{$user -> displayName}</option>
+                                    {else}
+                                        <option selected value="{$user->email}">{$user -> displayName}</option>
                                     {/if}
                                 {/foreach}
                             </select>
