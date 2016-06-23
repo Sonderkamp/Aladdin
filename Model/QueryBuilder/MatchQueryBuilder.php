@@ -19,7 +19,7 @@ class MatchQueryBuilder extends QueryBuilder
      * do not provide both since this will result in an error
      * Neither provide none cause this will cause error as well
      */
-    public function getMatches($wishId = null, $username = null, $wishUser = false)
+    public function getMatches($wishId = null, $username = null, $wishUser = false , $status = ["Vervuld"] , $skipAccepted = false, $search = null)
     {
 
         $param = array();
@@ -48,20 +48,38 @@ class MatchQueryBuilder extends QueryBuilder
         }
 
         if ($username != null) {
-            $query .= "WHERE `matches`.user_Email = ? AND `wish`.Status = 'Vervuld' ";
+            $query .= "WHERE `matches`.user_Email = ? AND (`wish`.Status = '" . $status[0] ."' ";
+            if(count($status) > 1){
+                for($i = 1; $i < count($status); $i++){
+                    $query .= "OR `wish`.Status = '" . $status[$i] ."' ";
+                }
+            }
+            $query .= ") ";
             $param[] = $username;
         }
 
-        if ($wishId == null && $username == null && $wishUser) {
-            $query .= "WHERE `matches`.IsSelected = 1 ";
-        } else if ($wishUser) {
-            $query .= "AND `matches`.IsSelected = 1 ";
+        if (!$skipAccepted) {
+            if ($wishId == null && $username == null && $wishUser) {
+                $query .= "WHERE `matches`.IsSelected = 1 ";
+            } else if ($wishUser) {
+                $query .= "AND `matches`.IsSelected = 1 ";
+            }
+        } else {
+            $query .= "AND `matches`.IsActive = 1 ";
+        }
+
+        if ($search !== null) {
+            $query .= "AND wishContent.Content LIKE ? OR wishContent.Title LIKE ? ";
+            $param[] = $search;
+            $param[] = $search;
         }
 
         $query .= "AND user_Email IS NOT NULL AND NOT EXISTS
                   ( SELECT NULL FROM blockedUsers AS b WHERE b.user_Email = `matches`.user_Email AND b.IsBlocked = 1
                   AND b.Id = (SELECT Id FROM blockedUsers as c WHERE c.user_Email = `matches`.user_Email
                   ORDER BY DateBlocked DESC LIMIT 1))";
+
+
 
         return $this->executeQuery($query, $param);
     }
