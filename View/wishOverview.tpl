@@ -38,6 +38,10 @@
                     <a href="#myCompletedWishes" data-toggle="tab">Mijn vervulde wensen</a>
                 </li>
 
+                <li {if $currentPage == "myMatchedWishes"} class="active" {/if}>
+                    <a href="#myMatchedWishes" data-toggle="tab">Mijn matches</a>
+                </li>
+
                 <li {if $currentPage == "matchedWishes"} class="active" {/if}>
                     <a href="#matchedWishes" data-toggle="tab">Mogelijke matches</a>
                 </li>
@@ -198,6 +202,38 @@
                         {/foreach}
                     {else}
                         <div class="center-block text-center"><h4>U heeft momenteel geen vervulde wensen</h4></div>
+                    {/if}
+                </div>
+
+                <div class="tab-pane fade in {if $currentPage == "myMatchedWishes"}active{/if}"
+                     id="myMatchedWishes">
+                    {if $myMatchedWishes}
+                        {foreach from=$myMatchedWishes item=wish}
+                            <div class="panel panel-default">
+
+                                <div class="panel-heading">
+                                    <a href="/Wishes/action=getSpecificWish?Id={$wish->id}"
+                                       class="h3">{htmlspecialcharsWithNL($wish -> title)}</a>
+                                </div>
+
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-xs-9">
+                                            <p>{htmlspecialcharsWithNL($wish -> content)}</p>
+                                        </div>
+                                        {include file='View/wishOverviewModals.tpl'}
+                                    </div>
+                                </div>
+
+                                <div class="panel-footer right">
+                                    <a href="/wishes/action=getSpecificWish?Id={$wish->id}" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-menu-right"></span>
+                                    </a>
+                                </div>
+                            </div>
+                        {/foreach}
+                    {else}
+                        <div class="center-block text-center"><h4>U heeft momenteel geen matches met wensen</h4></div>
                     {/if}
                 </div>
 

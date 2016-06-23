@@ -117,6 +117,10 @@ class WishRepository
         return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Vervuld", 1 => "Wordt vervuld"], null, false));
     }
 
+    public function getMyMatches($username , $key = null){
+        return $this->getReturnArray($this->matchRepo->getMatchedWishes($username , $key));
+    }
+
     public function getMyCompletedWishes($username = null)
     {
         if ($username == null) {
@@ -165,7 +169,6 @@ class WishRepository
     {
         return $this->getPossibleMatches($key);
     }
-
 
     public function addWish(Wish $wish)
     {

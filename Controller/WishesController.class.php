@@ -43,13 +43,16 @@ class WishesController extends Controller
             $myCompletedWishes = $this->wishRepo->getMyCompletedWishes();
             $incompletedWishes = $this->wishRepo->getIncompletedWishes();
             $matchedWishes = $this->wishRepo->getPossibleMatches();
+            $myMatchedWishes = $this->wishRepo->getMyMatches($this->userRepo->getCurrentUser()->email);
         } else {
             $myWishes = $search[0];
             $completedWishes = $search[1];
             $myCompletedWishes = $search[2];
             $incompletedWishes = $search[3];
             $matchedWishes = $search[4];
-            $searchKey = $search[5];
+            $myMatchedWishes = $search[5];
+            $searchKey = $search[6];
+            $currentPage = "myWishes";
         }
 
 
@@ -61,6 +64,7 @@ class WishesController extends Controller
             "myCompletedWishes" => $myCompletedWishes,
             "incompletedWishes" => $incompletedWishes,
             "matchedWishes" => $matchedWishes,
+            "myMatchedWishes" => $myMatchedWishes,
             "searchKey" => $searchKey,
             "currentPage" => $currentPage,
             "canAddWish" => $canAddWish
@@ -86,8 +90,9 @@ class WishesController extends Controller
             $myCompletedWishes = $this->wishRepo->searchMyCompletedWishes($key);
             $incompletedWishes = $this->wishRepo->searchIncopletedWishes($key);
             $possibleMatches = $this->wishRepo->searchPossibleMatches($key);
+            $matchedWishes = $this->wishRepo->getMyMatches($this->userRepo->getCurrentUser()->email , $key);
 
-            $this->renderOverview(null, array($myWishes, $completedWishes, $myCompletedWishes, $incompletedWishes, $possibleMatches, $_GET["search"]));
+            $this->renderOverview(null, array($myWishes, $completedWishes, $myCompletedWishes, $incompletedWishes, $possibleMatches, $matchedWishes, $_GET["search"]));
 
         }
         $this->redirect("/wishes");
