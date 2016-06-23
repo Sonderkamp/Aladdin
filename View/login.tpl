@@ -1,3 +1,4 @@
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
 
     <div id="loginbox" class="mainbox col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
@@ -31,20 +32,20 @@
                     <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                         <input id="password" type="password" class="form-control" name="password"
-                               placeholder="Password" data-validation="required" data-validation-error-msg="vul een wachtwoord in.">
+                               placeholder="Wachtwoord" data-validation="required" data-validation-error-msg="vul een wachtwoord in.">
                     </div>
 
                     <div class="form-group">
                         <!-- Button -->
-                        <div class="col-sm-12 controls">
+                        <div class="col-xs-12 controls">
                             <button type="submit" href="#" class="btn btn-primary pull-right"><i
                                     class="glyphicon glyphicon-log-in"></i> Log in
                             </button>
                         </div>
-                        <div class="col-sm-12">
+                        <div class="col-xs-12">
                             <br>
-                            <a type="button" href="/Account/action=register">Register</a><br>
-                            <a type="button" href="/Account/action=recover">Recover Password</a>
+                            <a type="button" href="/Account/action=register">Registreer</a><br>
+                            <a type="button" href="/Account/action=recover">Wachtwoord vergeten?</a>
                         </div>
                     </div>
                 </form>

@@ -1,3 +1,4 @@
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
  <span class="info infoButtonMargin">
             <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#InfoModal">
@@ -12,11 +13,6 @@
         <br><br>
         <article id="content">
          <span class="h4" id="detailText">
-             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-        laborum.
         </span>
 
 
@@ -76,7 +72,7 @@
                         <button type="button" onclick="perAge();" class="btn btn-default">Leeftijd</button>
 
                     </div>
-
+                    <br> <br>
                     <div id="chart-area"></div>
                     <p><span id="dateinfo">Datum bereik: 2013-1-1 - 2013-1-1</span>  <span id="slideObject"
                                                                                            class="slide-object">
@@ -91,7 +87,7 @@
                 <div class="tab-pane fade" id="tab3">
 
                     {if count($donations) > 0}
-                        <table class="table sortable">
+                        <table class="table sortable panel">
                             <thead>
                             <tr>
                                 <th id="first">Datum</th>
@@ -161,7 +157,8 @@
                     van de vervuller<br><br>
 
                     <a><b>Donaties</b></a><br>
-                    - Toont de gedane donaties, met datum, de donateur, het bedrag en een korte beschrijving dat de gebruiker
+                    - Toont de gedane donaties, met datum, de donateur, het bedrag en een korte beschrijving dat de
+                    gebruiker
                     kan toevoegen tijdens het doneren.
 
                 </p>

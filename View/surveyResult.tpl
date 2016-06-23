@@ -1,7 +1,8 @@
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
     <div class="row">
         <div class="col-md-8">
-            <img src="../Resources/Images/surveyImage.png">
+            <img class="goodWidth" src="../Resources/Images/surveyImage.png">
         </div>
 
         <div class="col-md-4">

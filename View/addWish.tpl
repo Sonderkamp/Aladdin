@@ -7,7 +7,7 @@
  */
 ?>
 
-
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div id="wishcontaier" class="container" xmlns="http://www.w3.org/1999/html">
 
     <div class="container">
@@ -31,8 +31,8 @@
             <div class="form-group row">
                 <label class="col-sm-2 form-control-label">Titel:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" name="title"
-                           placeholder="Wat is uw wens" {if isset($wishtitle)} value="{($wishtitle)}" {/if}>
+                    <input class="form-control" name="title" maxlength="45"
+                           placeholder="Wat is uw wens" {if isset($wishtitle)} value="{htmlspecialchars($wishtitle)}" {/if}>
                 </div>
             </div>
             <br>
@@ -45,7 +45,7 @@
                 <div class="col-sm-10">
                     {*<textarea id="text2" placeholder="." rows="10"></textarea>​*}
                     <textarea class="form-control" rows="7" name="description"
-                              placeholder="Uitgebreide wens beschrijving">{if isset($description)}{($description)}{/if}</textarea>
+                              placeholder="Uitgebreide wens beschrijving">{if isset($description)}{htmlspecialchars($description)}{/if}</textarea>
                     {*{else}*}
                     {*<textarea class="form-control" rows="5" name="description"*}
                     {*placeholder="Beschrijf hier uw wens uitgebreid"></textarea>*}
@@ -102,33 +102,36 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Statistieken</h4>
+                <h4 class="modal-title">Wens Toevoegen</h4>
             </div>
             <div class="modal-body">
+                <p>Op deze pagina kun u een nieuwe wens toevoegen of een bestaand wens wijzigen.</p>
 
-                <p>
-                    Op deze pagina kun u een nieuwe wens toevoegen of een bestaand wens wijzigen.<br><br>
-                    <a><b>Titel</b></a><br>
-                    - De titel van de wens<br><br>
+                <div class="col-xs-12 info-row">
+                    <span class="info-text"><b>Titel: </b>De titel van de wens</span>
+                </div>
 
-                    <a><b>Uitgebreide wens beschrijving:</b></a><br>
-                    - Beschrijf hier zo uitgebreid mogelijk uw wens, denk hierbij aan wat u wilt, hoe dit gedaan kan
-                    worden en op welke plaats<br><br>
+                <div class="col-xs-12 info-row">
+                    <span class="info-text"><b>Uitgebreide wens beschrijving: </b>
+                        Beschrijf hier zo uitgebreid mogelijk uw wens, denk hierbij aan wat u wilt, hoe dit gedaan kan
+                        worden en op welke plaats</span>
+                </div>
 
-                    <a><b>Kernwoorden</b></a><br>
-                    - Kernwoorden zijn woorden waarmee wij uw wensen kunnen koppelen aan potentiele vervullers.<br>
-                    - Vul hier zoveel mogelijk kernwoorden in die met uw wens te maken hebben<br>
-                    - Kernwoorden beginnen met een hashtag (#) op de toetsenbord kunt u dit doen met SHIFT+3<br><br>
+                <div class="col-xs-12 info-row">
+                    <span class="info-text"><b>Kernwoorden: </b><br>
+                            - Kernwoorden zijn woorden waarmee wij uw wensen kunnen koppelen aan potentiele vervullers.<br>
+                            - Vul hier zoveel mogelijk kernwoorden in die met uw wens te maken hebben<br>
+                            - Kernwoorden beginnen met een hashtag (#) op de toetsenbord kunt u dit doen met SHIFT-3</span>
+                </div>
 
-                    <a><b>Voorbeeld</b></a><br>
-                    <b>Titel:</b> Ballonvaart<br>
+                <div class="col-xs-12 info-row">
+                    <span class="info-text"><b>Voorbeeld: </b><br>
+                        <b>Titel:</b> Ballonvaart<br>
                     <b>Beschrijving:</b> Ik wil met mijn gezien een ballonvaart het liefst in de buurt van
                     Noord-Brabant. We zijn een gezin van 4, mijn kinderen zijn 6 en 8 jaar oud. Ik hoop dat er iemand is
                     die mijn wens kan vervullen.<br>
-                    <b>Kernwoorden:</b> #ballonvaart #luchtballon
-
-
-                </p>
+                    <b>Kernwoorden:</b> #ballonvaart #luchtballon</span>
+                </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">
@@ -139,16 +142,4 @@
         </div>
     </div>
 </div>
-
-
-<script>
-    // http://www.formvalidator.net/
-    $.validate({
-        modules: 'location, security, date',
-        onModulesLoaded: function () {
-            $('input[name="country"]').suggestCountry();
-        }
-    });
-
-</script>
 

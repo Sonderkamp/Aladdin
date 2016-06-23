@@ -1,4 +1,16 @@
 /*@import url("StyleMax.css");*/
+.rightText {
+    text-align: right;
+}
+
+.navbar {
+    z-index: 100;
+}
+
+.background {
+    position: absolute;
+    z-index: -10;
+}
 
 .smaller {
     height: 88px;
@@ -9,8 +21,25 @@
     width: 100%;
 }
 
+.width {
+
+    width: 100%;
+    height: 470px;
+    margin-top: -150px;
+}
+
+.min270 {
+
+    min-height: 270px;
+}
+
 h3 .h3 {
     color: brown;
+}
+
+.goodWidth {
+    width: 100%;
+    heigth: 100%;
 }
 
 .h4 {
@@ -20,6 +49,10 @@ h3 .h3 {
 .btn-default {
     background-color: brown;
     color: whitesmoke;
+}
+
+.nav-pills > li > a, .nav-pills > li > a:hover, .nav-pills > li > a:focus {
+    background-color: white;
 }
 
 .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
@@ -32,6 +65,10 @@ h3 .h3 {
     width: 120px;
 }
 
+.form-control {
+    background-color: rgba(255, 255, 255, 0.59);
+}
+
 .answer-container label {
     margin: 0 !important;
 }
@@ -41,7 +78,7 @@ h3 .h3 {
     margin: 10px 10px 5px 5px;
 }
 
-.collapse-comment{
+.collapse-comment {
     margin-left: 15px;
 }
 
@@ -57,11 +94,12 @@ h3 .h3 {
 
 .dashboard-row {
     margin-bottom: 50px;
+    color: black;
 }
 
 .dashboard-header {
     margin-top: 0;
-    color: #BF5F5F;
+    color: #532929;
 }
 
 .large-caption {
@@ -137,39 +175,14 @@ a:hover {
     float: right;
 }
 
-.titanic{
+.titanic {
     float: none;
 }
 
-.small-dropdown-menu{
+.small-dropdown-menu {
     left: -25px;
+    z-index: 9001;
 }
-
-/*.small-dropdown-menu {*/
-    /*!*margin-right: 1px;*!*/
-    /*left: -175px;*/
-    /*!*max-width: none;*!*/
-    /*!*min-width: 285px;*!*/
-/*}*/
-
-/*!*.small-dropdown-menu li {*!*/
-    /*!*display: inline;*!*/
-    /*!*margin-right: 10px;*!*/
-    /*!*margin-bottom: 10px;*!*/
-/*!*}*!*/
-
-/*.small-dropdown-menu li > a {*/
-    /*padding: 10px;*/
-    /*display: inline;*/
-/*}*/
-
-/*.small-dropdown-menu li > * {*/
-    /*display: inline;*/
-/*}*/
-
-/*.small-dropdown-menu li:last-child {*/
-    /*margin-right: 0;*/
-/*}*/
 
 .infoLeft {
     float: left;
@@ -215,7 +228,7 @@ input[type="checkbox"]:checked:after, .checkbox input[type="checkbox"]:checked:a
 }
 
 body {
-    background-color: white;
+    background-color: rgba(240, 240, 240, 0.44);
     font-family: 'PT Sans', sans-serif;
     margin-bottom: 60px;
 }
@@ -260,6 +273,11 @@ body {
     float: none;
     margin: 0 auto;
     max-width: 88px;
+}
+
+.errorcenter {
+    display: inherit;
+    text-align: center;
 }
 
 .header {
@@ -704,7 +722,7 @@ blockquote footer, blockquote small, blockquote .small {
 .sponsorImage {
     max-height: 100px;
     max-width: 100px;
-    margin-right:20px;
+    margin-right: 20px;
 }
 
 .backgroundMap {
@@ -715,7 +733,7 @@ blockquote footer, blockquote small, blockquote .small {
     fill: #BF5F5F;
 }
 
-.infoButtonMargin{
-    margin-left:20px;
+.infoButtonMargin {
+    margin-left: 20px;
 }
 

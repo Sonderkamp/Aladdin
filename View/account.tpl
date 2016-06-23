@@ -4,17 +4,17 @@
 <!-- * Date: 7-Mar-16-->
 <!-- * Time: 12:42-->
 <!-- */-->
-<div class="container">
-
-    <span class="info">
-            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#InfoModal">
-                <span class="glyphicon glyphicon-info-sign"></span>
-            </button>
-         </span>
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
+<div class="container ">
 
 
     <div class="row">
         <div class="col-sm-3">
+              <span class="info">
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#InfoModal">
+                <span class="glyphicon glyphicon-info-sign"></span>
+            </button>
+         </span>
             <div class="profile-usertitle">
                 <div class="text-center">
                     <b>{$user->displayName}</b>
@@ -193,12 +193,12 @@
                                                 </tr>
                                                 <tr>
                                                     <td>{if !empty($user->companyName)} Contactpersoon {/if}
-                                                        initialen:
+                                                        Voorletters:
                                                     </td>
                                                     <td><input type="text" name="initials" value="{$user->initials}"
                                                                required data-validation="custom"
                                                                data-validation-regexp="^([a-zA-Z\.]+)$"
-                                                               data-validation-error-msg="Initialen mogen alleen letters en punten bevatten.">
+                                                               data-validation-error-msg="Voorletters mogen alleen letters en punten bevatten.">
 
                                                     </td>
                                                 </tr>
@@ -301,7 +301,7 @@
                                                 <td>{$user->email}</td>
                                             </tr>
                                             <tr>
-                                                <td>Initialen</td>
+                                                <td>Voorletters</td>
                                                 <td>{$user->initials}</td>
                                             </tr>
                                             <tr>
@@ -385,10 +385,13 @@
                     Hier kunt u uw profiel bekijken en wijzigen, uw donaties inzien en uw wachtwoord wijzigen.
                     <br><br>
 
-                    <a><span class="glyphicon glyphicon glyphicon-user"/> Overzicht</a> hier staat uw profiel zoals u dat heeft ingesteld.<br>
-                    <a><span class="glyphicon glyphicon glyphicon-euro"/> Donaties</a> hier staan al uw donaties.<br>
-                    <a><span class="glyphicon glyphicon glyphicon-edit"/> Bewerken</a> hier kunt u uw profiel bewerken<br>
-                    <a><span class="glyphicon glyphicon glyphicon-option-horizontal"/> Wachtwoord</a> hier kunt u uw wachtwoord wijzigen.<br>
+                    <a><i class="glyphicon glyphicon glyphicon-user"></i> Overzicht</a> hier staat uw profiel zoals u
+                    dat heeft ingesteld.<br>
+                    <a><i class="glyphicon glyphicon glyphicon-euro"></i> Donaties</a> hier staan al uw donaties.<br>
+                    <a><i class="glyphicon glyphicon glyphicon-edit"></i> Bewerken</a> hier kunt u uw profiel
+                    bewerken<br>
+                    <a><i class="glyphicon glyphicon glyphicon-option-horizontal"></i> Wachtwoord</a> hier kunt u uw
+                    wachtwoord wijzigen.<br>
                 </p>
 
                 <div class="modal-footer">

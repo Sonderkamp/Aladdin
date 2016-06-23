@@ -1,5 +1,6 @@
-<div class="container">
-
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
+<div class="container panel">
+<br>
     {*<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12  pull-right">*}
         {*<span class="info" style="margin-bottom: 20px;">*}
             {*<button type="button" class="btn btn-default" data-toggle="modal" data-target="#InfoModal">*}

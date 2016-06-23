@@ -31,7 +31,6 @@ class AdminsponsorController extends Controller
 
     public function run()
     {
-        (new AccountController())->guaranteeLogin("/Wishes");
         if (!isset($currentPage)) {
             $currentPage = "sponsors";
         }
@@ -41,15 +40,11 @@ class AdminsponsorController extends Controller
 
     public function renderOverview($currentPage)
     {
-        (new AccountController())->guaranteeLogin("/Wishes");
 
         $users = $this->userRepo->getAllUsers();
         $sponsors = $this->getSponsors();
 
-        if(count($sponsors) === 1){
-            $sponsors = array($sponsors);
-        }
-        
+
         if (isset($this->error)) {
             $this->render("adminSponsor.tpl", ["title" => $this->pageTitle,
                 "sponsors" => $sponsors,
@@ -68,25 +63,50 @@ class AdminsponsorController extends Controller
     }
 
 
-    public function getSponsors()
+    public function getSponsors($search = null)
     {
-        $sponsors = null;
-        if (isset($_SESSION["search"])) {
-            $sponsors = $_SESSION["search"];
-
-            if (count($sponsors) === 0) {
-                $this->error = $this->errorNoSponsorsFound;
-                return $this->sponsorRepo->getAllSponsors();
-            }
-
-            if (count($sponsors) === 1) {
-                $sponsors = array($_SESSION["search"]);
-            }
-            unset($_SESSION["search"]);
+        if (empty($search)) {
+            return $this->sponsorRepo->getAllSponsors();
         } else {
-            $sponsors = $this->sponsorRepo->getAllSponsors();
+            return $this->sponsorRepo->searchSponsor($search);
         }
-        return $sponsors;
+
+    }
+
+    public function searchSponsor()
+    {
+        if (empty($_GET["searchKey"])) {
+            $this->run();
+        } else {
+
+            // validate $_GET["searchKey"];
+
+            if (preg_match("/[^a-z 0-9]/i", $_GET["searchKey"])) {
+                $this->error = "Zoeken kan alleen met alphanumerieke karakters";
+            }
+
+            $users = $this->userRepo->getAllUsers();
+            $sponsors = $this->getSponsors($_GET["searchKey"]);
+
+
+            if (isset($this->error)) {
+                $this->render("adminSponsor.tpl", ["title" => $this->pageTitle,
+                    "sponsors" => $this->getSponsors(),
+                    "users" => $users,
+                    "currentPage" => "sponsors",
+                    "error" => $this->error
+                ]);
+                exit();
+            }
+
+            $this->render("adminSponsor.tpl", ["title" => $this->pageTitle,
+                "sponsors" => $sponsors,
+                "users" => $users,
+                "currentPage" => "sponsors",
+                "search" => $_GET["searchKey"]
+            ]);
+        }
+
     }
 
     public function addSponsor(Sponsor $sponsor = null)
@@ -123,8 +143,11 @@ class AdminsponsorController extends Controller
             exit();
         }
 
-        $image = $this->wishRepo->upload($sponsor->image);
-        $sponsor->image = $image;
+        if ($sponsor->image !== null) {
+            $image = $this->wishRepo->upload($sponsor->image);
+            $sponsor->image = $image;
+        }
+
         $this->sponsorRepo->updateSponsor($sponsor);
         $this->goBack();
     }
@@ -139,23 +162,6 @@ class AdminsponsorController extends Controller
         $this->goBack();
     }
 
-    public function searchSponsor($searchKey = null)
-    {
-        if ($_SERVER["REQUEST_METHOD"] == "GET") {
-            $searchKey = $_GET["searchKey"];
-        }
-
-        $searchKey = str_replace(' ', '', $searchKey);
-        if (strlen($searchKey) > 0) {
-            $result = $this->sponsorRepo->searchSponsor($searchKey);
-            if (count($result) > 0) {
-                $_SESSION["search"] = $result;
-            } else {
-                $_SESSION["search"] = array();
-            }
-        }
-        $this->goBack();
-    }
 
     public function sponsorFromRequest()
     {
@@ -163,7 +169,8 @@ class AdminsponsorController extends Controller
             $sponsor = new Sponsor();
             $sponsor->name = $_POST["name"];
             $sponsor->description = $_POST["description"];
-            $sponsor->url = $_POST["url"];
+            $sponsor->url = str_replace("http://", "", $_POST["url"]);
+
 
             if ($_POST["userEmail"] != "default") {
                 $sponsor->userMail = $_POST["userEmail"];

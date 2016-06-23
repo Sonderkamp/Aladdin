@@ -38,7 +38,7 @@ class Survey
     }
 
     public function getSurveyText($surveyId){
-        $result = Database::query_safe("SELECT * FROM `surveyGroups` WHERE `surveygroups`.Group = ?" , array($surveyId));
+        $result = Database::query_safe("SELECT * FROM `surveyGroups` WHERE `surveyGroups`.Group = ?" , array($surveyId));
         return $result[0]["GroupText"];
     }
 }

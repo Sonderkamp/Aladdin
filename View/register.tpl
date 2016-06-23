@@ -1,3 +1,4 @@
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
     <br>
 
@@ -129,11 +130,11 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>initialen:</td>
+                                <td>Voorletters:</td>
                                 <td><input type="text" name="initial"
                                            required data-validation="custom"
                                            data-validation-regexp="^([a-zA-Z\.]+)$"
-                                           data-validation-error-msg="Initialen mogen alleen letters en punten bevatten.">
+                                           data-validation-error-msg="Voorletters mogen alleen letters en punten bevatten.">
 
                                 </td>
                             </tr>
@@ -156,11 +157,11 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Contactpersoon initialen:</td>
+                                <td>Contactpersoon Voorletters:</td>
                                 <td><input type="text" name="initial"
                                            required data-validation="custom"
                                            data-validation-regexp="^([a-zA-Z\.]+)$"
-                                           data-validation-error-msg="Initialen mogen alleen letters en punten bevatten.">
+                                           data-validation-error-msg="Voorletters mogen alleen letters en punten bevatten.">
 
                                 </td>
                             </tr>
@@ -267,14 +268,14 @@
 
             </div>
         </div>
-        <a type="button" class="btn btn-default" href="/Account">Log in</a>
-        <a type="button" class="btn btn-default" href="/Account/action=Recover">Vergeten</a>
+        <br><br>
         {/if}
     </div>
 
 </div>
 
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
 <script>
 
     var done = false;
@@ -337,7 +338,7 @@
         var arr = dob.split("-");
         var age = getAge(arr[2] + "-" + arr[1] + "-" + arr[0]);
 
-        if (age < 18) {
+        if (!age) {
             $("#error").text("Je moet ouder zijn dan 18. Ben je jonger dan 18? registreer dan als kind.");
             $("#error").addClass("form-error");
             return false;
@@ -355,13 +356,20 @@
 
     function getAge(birth) {
 
-        var d = new Date();
-        var n = d.getTime();
-        var c = Date.parse(birth);
-        var a = (d - c) / (1000 * 60 * 60 * 24 * 365);
-        var result = Math.round(a * 100) / 100;
-        return Math.floor(result);
-        //alert(result);
+        moment().format('dd-mm-yyyy');
+        var eighteenYearsAgo = moment().subtract(18, "years");
+        var birthday = moment(birth);
+
+
+        if (!birthday.isValid()) {
+            return false;
+        }
+        else if (eighteenYearsAgo.isAfter(birthday)) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 

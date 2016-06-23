@@ -65,7 +65,7 @@ class SponsorRepository
         if (count($result) === 0) return null;
 
         if (count($result) === 1) {
-            return $this->createSponsor($result);
+            return [$this->createSponsor($result)];
         } else {
             return $this->createSponsors($result);
         }

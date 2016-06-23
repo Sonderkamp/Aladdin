@@ -16,6 +16,10 @@ class DonationRepository
         $this->mollie = new Mollie_API_Client;
         $this->mollie->setApiKey(MOLLIE_ID);
         $this->donateQB = new DonateQueryBuilder();
+
+        if (empty($_SESSION["payment"])) {
+            $_SESSION["payment"] = null;
+        }
     }
 
     public function newDonation($amount, $name, $description, $user, $anonymous)
@@ -114,7 +118,7 @@ class DonationRepository
             $donation->description = $item["Description"];
             $donation->anonymous = $item["Anonymous"];
             $donation->IP = $item["IP"];
-            $donation->date = strftime(" %H:%M %#d %B %Y", strtotime($item["Date"]));
+            $donation->date = strftime(" %H:%M %e %B %Y", strtotime($item["Date"]));
 
             if ($userCheck) {
                 $user = new User();

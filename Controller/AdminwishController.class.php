@@ -19,7 +19,6 @@ class AdminwishController extends Controller
 
     public function run()
     {
-        (new AdminController())->guaranteeAdmin("/AdminWish");
         $this->renderPage("requested");
     }
 
@@ -93,14 +92,14 @@ class AdminwishController extends Controller
             $verdict = "geweigerd";
         }
 
-        $acceptedWish = $this->wishRepo->getWish($wishId);
+        $acceptedWish = $this->wishRepo->getNewestWish($wishId);
 
         $message = "De wens met de titel '" . $acceptedWish->title . "' is " . $verdict . ". De reden opgegeven is: "
             . $reason . ".\n De inhoud van deze wens is alsvolgt: \n" . $acceptedWish->content
             . "\n \n Wij hopen u hiermee voldoende te hebben geinformeerd.";
         $title = "Uw wens is " . $verdict . "!";
 
-        $messageId = $this->messRepo->sendMessage($_SESSION["admin"]->username, $acceptedWish->user->displayName, $title, $message);
+        $messageId = $this->messRepo->sendMessage($_SESSION["admin"]->username, $acceptedWish->user->email, $title, $message);
         $this->messRepo->setLink($wishId, 'Wens', $messageId);
     }
 }

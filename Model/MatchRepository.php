@@ -14,7 +14,7 @@ class MatchRepository
     public function __construct()
     {
         $this->matchQueryBuilder = new MatchQueryBuilder();
-        $this->messageRepo = new messageRepository();
+        $this->messageRepo = new MessageRepository();
         $this->userRepo = new UserRepository();
     }
 
@@ -107,6 +107,14 @@ class MatchRepository
     public function getCompletedMatches($username)
     {
         return $this->getReturnArray($this->matchQueryBuilder->getMatches(null , $username));
+    }
+
+    public function getCompletedWishes($username){
+        return $this->matchQueryBuilder->getMatches(null , $username , true);
+    }
+
+    public function getMatchedWishes($username, $key = null){
+        return $this->matchQueryBuilder->getMatches(null , $username , true, array("Gepubliceerd", "Match gevonden", "Wordt vervuld") , true, $key);
     }
 
     private function sentMatchMessage($wishId, $username)

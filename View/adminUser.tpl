@@ -3,8 +3,17 @@
 <!-- * User: Simon / Max-->
 <!-- * Date: 8-3-2016 Rewritten on: 14-05-2016-->
 <!-- */-->
+<script>
+    function popup(mylink, windowname, w, h) {
+        if (!window.focus)return true;
+        var href;
+        if (typeof(mylink) == 'string') href = mylink; else href = mylink.href;
+        window.open(href, windowname, 'width=' + w + ',height=' + h + ',scrollbars=yes');
+        return false;
+    }
+</script>
 
-
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
 
     <span class="info infoButtonMargin">
@@ -56,7 +65,9 @@
         <div class="tab-content">
             <div class="tab-pane fade in {if $currentPage == "users"}active{/if}" id="requestedTab">
                 {if $users}
-                    <table class="table">
+                    <br>
+                    <br>
+                    <table class="table panel">
                         <thead>
                         <tr>
                             <th>Naam</th>
@@ -114,10 +125,11 @@
                 {/if}
             </div>
 
-
             <div class="tab-pane fade in {if $currentPage == "unhandled"}active{/if}" id="publishedTab">
                 {if $unhandled}
-                    <table class="table">
+                    <br>
+                    <br>
+                    <table class="table panel">
                         <thead>
                         <tr>
                             <th>Melder</th>
@@ -131,8 +143,9 @@
                         </tr>
                         </thead>
                         <tbody>
+
                         {foreach from=$unhandled item=report}
-                            {if $report -> reported -> getBlocked() == false}
+                            {if $report -> reported -> blocked === false}
                                 <tr>
                                     <td>
                                         <a href="/AdminUser/action=showProfile/email={$report -> reporter -> email}">
@@ -170,15 +183,15 @@
                                                 <li>
                                                     {*bekijk wens*}
                                                     {if !empty($report->wishID)}
-                                                        <a href="wishes/action=getSpecificWish?admin=true&Id={$report->wishID}"
+                                                        <a href="/wishes/action=getSpecificWish?admin=true&Id={$report->wishID}"
                                                            onClick="return popup(this, 'notes',900,400)">Bekijk
                                                             wens</a>
-                                                        <a href="AdminWish/action=deleteWish?Id={$report->wishID}">
+                                                        <a href="/AdminWish/action=deleteWish?Id={$report->wishID}">
                                                             Verwijder wens
                                                         </a>
                                                     {else}
                                                         {* bekijk bericht *}
-                                                        <a href="adminmail/action=show/id={$report->messageID}/user={$report -> reporter -> email}"
+                                                        <a href="/adminmail/action=show/id={$report->messageID}/user={$report -> reporter -> email}"
                                                            onClick="return popup(this, 'notes',700,400)">Bekijk
                                                             bericht</a>
                                                     {/if}
@@ -208,7 +221,9 @@
 
             <div class="tab-pane fade in {if $currentPage == "handled"}active{/if}" id="matchedTab">
                 {if $handled}
-                    <table class="table">
+                    <br>
+                    <br>
+                    <table class="table panel">
                         <thead>
                         <tr>
                             <th>Melder</th>
@@ -251,12 +266,12 @@
                                 <td>
 
                                     {if !empty($report->wishID)}
-                                        <a href="wishes/action=getSpecificWish?admin=true&Id={$report->wishID}"
+                                        <a href="/wishes/action=getSpecificWish?admin=true&Id={$report->wishID}"
                                            onClick="return popup(this, 'notes',900,400)">Bekijk
                                             wens</a>
                                     {else}
                                         {* bekijk bericht *}
-                                        <a href="adminmail/action=show/id={$report->messageID}/user={$report -> reporter -> email}"
+                                        <a href="/adminmail/action=show/id={$report->messageID}/user={$report -> reporter -> email}"
                                            onClick="return popup(this, 'notes',700,400)">Bekijk
                                             bericht</a>
                                     {/if}
@@ -441,13 +456,4 @@
     </div>
 {/foreach}
 
-<script>
-    function popup(mylink, windowname, w, h) {
-        if (!window.focus)return true;
-        var href;
-        if (typeof(mylink) == 'string') href = mylink; else href = mylink.href;
-        window.open(href, windowname, 'width=' + w + ',height=' + h + ',scrollbars=yes');
-        return false;
-    }
-</script>
 

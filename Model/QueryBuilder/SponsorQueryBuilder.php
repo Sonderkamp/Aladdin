@@ -8,7 +8,7 @@
  */
 class SponsorQueryBuilder
 {
-    
+
     public function getAllSponsors($keyword = null)
     {
         $sql = "SELECT * FROM `sponsor` as s";
@@ -18,7 +18,7 @@ class SponsorQueryBuilder
                   OR s.WebsiteLink LIKE ?
                   OR s.user_Email LIKE ?
                   OR s.Description LIKE ?";
-            $keyword = preg_replace('/\s+/', '', "%".$keyword."%");
+            $keyword = preg_replace('/\s+/', '', "%" . $keyword . "%");
             $parameters = array($keyword, $keyword, $keyword, $keyword);
         }
 
@@ -33,21 +33,30 @@ class SponsorQueryBuilder
     public function addSponsor(Sponsor $sponsor)
     {
         if ($sponsor == null) return;
-        $sql = "INSERT INTO `aladdin_db2`.`sponsor`";
+        $sql = "INSERT INTO `sponsor`";
         $sql .= " (`Name`, `Image`, `Description`, `WebsiteLink`, `user_Email`)";
         $sql .= " VALUES (?,?,?,?,?)";
         $parameters = array($sponsor->name, $sponsor->image, $sponsor->description, $sponsor->url, $sponsor->userMail);
         Database::query_safe($sql, $parameters);
     }
-    
+
     public function updateSponsor(Sponsor $sponsor)
     {
         if ($sponsor == null) return;
-        $sql = "UPDATE `sponsor` SET `Name` = ?,`Image`= ?,`Description`= ?,`WebsiteLink`= ?,`user_Email` = ? WHERE Id = ?";
-        if ($sponsor->userMail == null) {
-            $parameters = array($sponsor->name, $sponsor->image, $sponsor->description, $sponsor->url, null, $sponsor->id);
+        if ($sponsor->image == null) {
+            $sql = "UPDATE `sponsor` SET `Name` = ?,`Description`= ?,`WebsiteLink`= ?,`user_Email` = ? WHERE Id = ?";
+            if ($sponsor->userMail == null) {
+                $parameters = array($sponsor->name, $sponsor->description, $sponsor->url, null, $sponsor->id);
+            } else {
+                $parameters = array($sponsor->name, $sponsor->description, $sponsor->url, $sponsor->userMail, $sponsor->id);
+            }
         } else {
-            $parameters = array($sponsor->name, $sponsor->image, $sponsor->description, $sponsor->url, $sponsor->userMail, $sponsor->id);
+            $sql = "UPDATE `sponsor` SET `Name` = ?,`Image`= ?,`Description`= ?,`WebsiteLink`= ?,`user_Email` = ? WHERE Id = ?";
+            if ($sponsor->userMail == null) {
+                $parameters = array($sponsor->name, $sponsor->image, $sponsor->description, $sponsor->url, null, $sponsor->id);
+            } else {
+                $parameters = array($sponsor->name, $sponsor->image, $sponsor->description, $sponsor->url, $sponsor->userMail, $sponsor->id);
+            }
         }
 
         Database::query_safe($sql, $parameters);
@@ -56,7 +65,7 @@ class SponsorQueryBuilder
     public function deleteSponsor(Sponsor $sponsor)
     {
         if ($sponsor == null) return;
-        $sql = "DELETE FROM `aladdin_db2`.`sponsor` WHERE `Id` = ?";
+        $sql = "DELETE FROM `sponsor` WHERE `Id` = ?";
         Database::query_safe($sql, array($sponsor->id));
     }
 

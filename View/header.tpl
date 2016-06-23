@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Color on mobile devices. Example: mariusdv.nl -->
-    <meta name="theme-color" content="#2196F3">
+    <meta name="theme-color" content="brown">
 
     <link rel="stylesheet" href="https://bootswatch.com/paper/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css">
@@ -31,6 +31,7 @@
 </head>
 
 <body>
+
 
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -66,10 +67,10 @@
                 <li><a href="/guestbook"><span class="glyphicon glyphicon-book"></span> Gastenboek</a></li>
                 {if isset($user)}
                     <li><a href="/dashboard"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
-                    <li><a href="/wishes"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
+
                     <li><a href="/Inbox"> <span class="glyphicon glyphicon glyphicon-envelope"></span> Berichten</a>
                     </li>
-                    <li><a href="/Talents"> <span class="glyphicon glyphicon-align-justify"></span> Talenten</a></li>
+
                 {/if}
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -100,7 +101,9 @@
                            aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
                             {$user->displayName}<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="/profile">Mijn profiel</a></li>
+                            <li><a href="/profile"><span class="glyphicon glyphicon-user"></span> Mijn profiel</a></li>
+                            <li><a href="/wishes"> <span class="glyphicon glyphicon glyphicon-globe"></span> Wensen</a></li>
+                            <li><a href="/Talents"> <span class="glyphicon glyphicon-align-justify"></span> Talenten</a></li>
                             <li role="separator" class="divider">
                             <li><a href="/account/action=logout">Log uit</a></li>
                         </ul>

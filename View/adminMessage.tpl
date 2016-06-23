@@ -6,6 +6,7 @@
  * Time: 00:39
  */
 ?>
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
 
 

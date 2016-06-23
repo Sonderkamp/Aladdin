@@ -53,6 +53,7 @@ class AdminuserController extends Controller
      */
     public function renderPage($users, $unhandled, $handled, $currentPage, $error = null)
     {
+
         if (isset($error)) {
             $this->render("adminUser.tpl", ["title" => "Gebruikers overzicht",
                 "handled" => $handled,
@@ -165,23 +166,23 @@ class AdminuserController extends Controller
     }
 
 
-    // kijken of in die blockUser kan verwerken
     public function block()
     {
         if (isset($_GET["id"])) {
             $id = $_GET["id"];
+
+
             $this->reportRepository->block($id);
 
-            $reported = $this->reportRepository->getId($id);
-            $reported = $reported[0];
-            $reported = $reported->reported;
+            $report = $this->reportRepository->getId($id)[0];
+            $reported = $report->reported;
             $displayName = $reported->displayName;
             $email = $this->userRepository->getUser($displayName)->email;
-            $this->userRepository->blockUser($email);
+            $message = $report->reporter->displayName . ": " . $report->message;
+            $this->userRepository->blockUser($email, $message);
         }
 
         $this->redirect("/AdminUser");
-//        $this->back();
     }
 
     /** delete report */

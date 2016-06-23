@@ -48,7 +48,6 @@ class DonateController extends Controller
 
             }
 
-
             // Show donate page
             $this->render("donate.tpl", ["title" => "Aladdin"]);
             exit(0);
@@ -79,11 +78,6 @@ class DonateController extends Controller
 
         $donation = $this->donateRepo->getCurrentDonation();
 
-
-//        // print_r($_SESSION["payment"]);
-//        echo "AA";
-//        print_r($donation);
-//        exit();
 
         if ($donation == null) {
             $this->render("donate.tpl", ["title" => "Aladdin", "error" => "geen geldige waarde ingevoerd."]);

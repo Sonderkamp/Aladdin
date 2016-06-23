@@ -30,20 +30,33 @@ class WishesController extends Controller
         $this->renderOverview("myWishes");
     }
 
-    private function renderOverview($currentPage)
+    private function renderOverview($currentPage, array $search = null)
     {
         (new AccountController())->guaranteeLogin("/Wishes");
         (new DashboardController())->guaranteeProfile();
 
-        $myWishes = $this->wishRepo->getMyWishes();
-        $completedWishes = $this->wishRepo->getCompletedWishes();
-        $myCompletedWishes = $this->wishRepo->getMyCompletedWishes();
-        $incompletedWishes = $this->wishRepo->getIncompletedWishes();
-        $matchedWishes = $this->wishRepo->getPossibleMatches();
+        $searchKey = null;
+
+        if ($search == null) {
+            $myWishes = $this->wishRepo->getMyWishes();
+            $completedWishes = $this->wishRepo->getCompletedWishes();
+            $myCompletedWishes = $this->wishRepo->getMyCompletedWishes();
+            $incompletedWishes = $this->wishRepo->getIncompletedWishes();
+            $matchedWishes = $this->wishRepo->getPossibleMatches();
+            $myMatchedWishes = $this->wishRepo->getMyMatches($this->userRepo->getCurrentUser()->email);
+        } else {
+            $myWishes = $search[0];
+            $completedWishes = $search[1];
+            $myCompletedWishes = $search[2];
+            $incompletedWishes = $search[3];
+            $matchedWishes = $search[4];
+            $myMatchedWishes = $search[5];
+            $searchKey = $search[6];
+            $currentPage = "myWishes";
+        }
 
 
         $canAddWish = $this->wishRepo->canAddWish($this->userRepo->getCurrentUser()->email);
-        $displayNames = array();
 
         $this->render("wishOverview.tpl", ["title" => "Wensen Overzicht",
             "myWishes" => $myWishes,
@@ -51,6 +64,8 @@ class WishesController extends Controller
             "myCompletedWishes" => $myCompletedWishes,
             "incompletedWishes" => $incompletedWishes,
             "matchedWishes" => $matchedWishes,
+            "myMatchedWishes" => $myMatchedWishes,
+            "searchKey" => $searchKey,
             "currentPage" => $currentPage,
             "canAddWish" => $canAddWish
         ]);
@@ -58,11 +73,29 @@ class WishesController extends Controller
         exit(0);
     }
 
-    private function searchWish($key)
+    public function searchWish()
     {
-        //Werkt als de sql versie geupdate wordt.
-        $searchReturn = $this->wishRepo->searchMyWishes($key);
-        $this->render("wishOverview.tpl", ["title" => "Wensen overzicht", "wishes" => $searchReturn]);
+        if (!empty($_GET["search"])) {
+            $key = $_GET["search"];
+
+            if (preg_match("/[^a-z 0-9]/i", $key)) {
+                $this->apologize("Zoeken kan alleen met alphanumerieke karakters");
+                exit(0);
+            }
+
+            $key = "%" . $key . "%";
+
+            $myWishes = $this->wishRepo->searchMyWishes($key);
+            $completedWishes = $this->wishRepo->searchCompletedWishes($key);
+            $myCompletedWishes = $this->wishRepo->searchMyCompletedWishes($key);
+            $incompletedWishes = $this->wishRepo->searchIncopletedWishes($key);
+            $possibleMatches = $this->wishRepo->searchPossibleMatches($key);
+            $matchedWishes = $this->wishRepo->getMyMatches($this->userRepo->getCurrentUser()->email , $key);
+
+            $this->renderOverview(null, array($myWishes, $completedWishes, $myCompletedWishes, $incompletedWishes, $possibleMatches, $matchedWishes, $_GET["search"]));
+
+        }
+        $this->redirect("/wishes");
     }
 
     //used to shorten string if need be
@@ -85,7 +118,6 @@ class WishesController extends Controller
     public function openEditView()
     {
         (new AccountController())->guaranteeLogin("/Wishes");
-        (new DashboardController())->guaranteeProfile();
         $this->wishCreationController->openWishView(false);
     }
 
@@ -98,12 +130,14 @@ class WishesController extends Controller
         $this->wishCreationController->openWishView(true);
     }
 
-    public function addWish(){
+    public function addWish()
+    {
         (new AccountController())->guaranteeLogin("/Wishes");
         $this->wishCreationController->addWish();
     }
 
-    public function editWish(){
+    public function editWish()
+    {
         (new AccountController())->guaranteeLogin("/Wishes");
         $this->wishCreationController->editWish();
     }
@@ -119,8 +153,6 @@ class WishesController extends Controller
      */
     public function getSpecificWish($id = null, $error = null)
     {
-        $errorString = null;
-
         if ($id = null && empty($_GET["Id"])) {
             $this->apologize("Please provide a valid id");
             exit(0);
@@ -128,46 +160,110 @@ class WishesController extends Controller
             $id = $_GET["Id"];
         }
 
-        $returnPage = null;
         $selectedWish = $this->wishRepo->getWish($id);
+        $newestWish = $this->wishRepo->getNewestWish($id);
         $matches = $this->matchRepo->getMatches($id);
         $comments = $this->wishRepo->getComments($id);
-        $canMatch = false;
+
         $isMatched = false;
         $canComment = false;
+        $errorString = null;
 
-        if(!empty($_SESSION["error"])){
+        if (!empty($_SESSION["error"])) {
             $errorString = $_SESSION["error"];
             unset($_SESSION["error"]);
         }
 
-        if (!empty($selectedWish)) {
-            if (!empty($_GET["admin"])) {
-                (new AdminController())->guaranteeAdmin("/");
-                $returnPage = "/AdminWish";
-
-                $this->renderAlone("wishSpecificView.tpl",
-                    ["title" => "Wens: " . $id,
-                        "selectedWish" => $selectedWish,
-                        "matches" => $matches,
-                        "comments" => $comments,
-                        "adminView" => true,
-                        "errorString" => $errorString,
-                        "canMatch" => false,
-                        "canComment" => false,
-                        "currentUser" => $this->userRepo->getCurrentUser()]);
+        if (empty($selectedWish)) {
+            if (empty($newestWish)) {
+                $this->apologize("De wens die u heeft proberen te bezoeken bestaat niet.");
                 exit(0);
-
-            } else if ($this->userRepo->getCurrentUser() === false || ($selectedWish->status == "Aangemaakt" && $selectedWish->user->email != $this->userRepo->getCurrentUser()->email)) {
-                $this->apologize("U bent niet gemachtigd om deze wens te bekijken.");
+            } else {
+                $selectedWish = $newestWish;
             }
 
-        } else {
-            $this->apologize("De wens die u heeft proberen te bezoeken bestaat niet.");
-            exit(0);
+        }
+        $canMatch = $this->canMatch($selectedWish);
+
+        if (!empty($this->userRepo->getCurrentUser())) {
+            if ($matches !== false) {
+                foreach ($matches as $match) {
+                    if ($match->user->email == $this->userRepo->getCurrentUser()->email) {
+                        if ($selectedWish->user->email != $this->userRepo->getCurrentUser()->email) {
+                            if ($match->isActive == 1) {
+                                $isMatched = true;
+                            }
+                        }
+                        if ($match->isSelected == 1) {
+                            $canComment = true;
+                        }
+                    }
+                }
+            }
         }
 
-        if ($selectedWish->status == "Aangemaakt" || $selectedWish->status == "Gepubliseerd") {
+        if ($selectedWish->status != "Vervuld") {
+            $canComment = false;
+        } elseif ($selectedWish->user->email == $this->userRepo->getCurrentUser()->email) {
+            $canComment = true;
+        }
+
+        $arr = array("title" => "Wens: " . $id,
+            "selectedWish" => $selectedWish,
+            "matches" => $matches,
+            "returnPage" => null,
+            "adminView" => false,
+            "comments" => $comments,
+            "canMatch" => $canMatch,
+            "errorString" => $errorString,
+            "isMatched" => $isMatched,
+            "canComment" => $canComment,
+            "currentUser" => $this->userRepo->getCurrentUser());
+
+        if (!empty($_GET["admin"])) {
+
+            $arr["selectedWish"] = $newestWish;
+            $arr["adminView"] = true;
+            $arr["canMatch"] = false;
+            $arr["canComment"] = false;
+            $arr["currentUser"] = null;
+
+            $this->specificWishAdmin($arr);
+
+        } else if ($this->userRepo->getCurrentUser() === false || (($selectedWish->status == "Aangemaakt"
+                    || $selectedWish->status == "Geweigerd"
+                    || $selectedWish->status == "Verwijderd")
+                && $selectedWish->user->email != $this->userRepo->getCurrentUser()->email)
+        ) {
+            $this->apologize("U bent niet gemachtigd om deze wens te bekijken.");
+        }
+
+        if ($this->userRepo->getCurrentUser()->email !== $selectedWish->user->email) {
+            (new DashboardController())->guaranteeProfile();
+        }
+
+
+        if ($this->userRepo->getCurrentUser()->email != $selectedWish->user->email) {
+            $this->render("wishSpecificView.tpl", $arr);
+        } else {
+            $arr["selectedWish"] = $newestWish;
+            $this->render("wishSpecificView.tpl", $arr);
+        }
+    }
+
+    private function specificWishAdmin(array $values)
+    {
+        (new AdminController())->guaranteeAdmin("/");
+        $this->renderAlone("wishSpecificView.tpl", $values);
+        exit(0);
+    }
+
+    private function canMatch($selectedWish)
+    {
+
+        $canMatch = false;
+
+        if ($selectedWish->status == "Aangemaakt" || $selectedWish->status == "Gepubliceerd") {
             $canMatch = true;
         }
 
@@ -175,49 +271,14 @@ class WishesController extends Controller
             $canMatch = false;
         }
 
-
-        if (!empty($this->userRepo->getCurrentUser())) {
-            if ($matches !== false) {
-                foreach ($matches as $match) {
-                    if ($match->user->email == $this->userRepo->getCurrentUser()->email
-                        || $selectedWish->user->email == $this->userRepo->getCurrentUser()->email
-                    ) {
-                        if ($match->isActive == 1) {
-                            $isMatched = true;
-                        }
-
-                        if ($match->isSelected == 1) {
-                            $canComment = true;
-                        }
-                    }
-                }
-            }
-
-        }
-
-        if ($selectedWish->status != "Vervuld") {
-            $canComment = false;
-        }
-
-        $this->render("wishSpecificView.tpl",
-            ["title" => "Wens: " . $id,
-                "selectedWish" => $selectedWish,
-                "matches" => $matches,
-                "returnPage" => $returnPage,
-                "adminView" => false,
-                "comments" => $comments,
-                "canMatch" => $canMatch,
-                "errorString" => $errorString,
-                "isMatched" => $isMatched,
-                "canComment" => $canComment,
-                "currentUser" => $this->userRepo->getCurrentUser()]);
-        exit(0);
+        return $canMatch;
     }
 
-    public function setCompletionDate(){
-        if(!empty($_POST["completionDate"]) && !empty($_POST["Id"])){
-            if(strtotime($_POST["completionDate"]) > time()){
-                $this->wishRepo->setCompletionDate($_POST["completionDate"] , $_POST["Id"]);
+    public function setCompletionDate()
+    {
+        if (!empty($_POST["completionDate"]) && !empty($_POST["Id"])) {
+            if (strtotime($_POST["completionDate"]) > time()) {
+                $this->wishRepo->setCompletionDate($_POST["completionDate"], $_POST["Id"]);
                 $this->redirect("/wishes/action=getSpecificWish?Id=" . $_POST["Id"]);
             } else {
                 $errorString = "Geef alsjeblieft een geldige datum op. Een geldige datum is minimaal 1 dag vanaf de dag van vandaag.";
@@ -231,13 +292,14 @@ class WishesController extends Controller
         }
     }
 
-    public function confirmCompletion(){
-        if(!empty($_POST["completionDate"]) && !empty($_POST["Id"])){
-            if(strtotime($_POST["completionDate"]) < time()){
+    public function confirmCompletion()
+    {
+        if (!empty($_POST["completionDate"]) && !empty($_POST["Id"])) {
+            if (strtotime($_POST["completionDate"]) < time()) {
                 $this->wishRepo->confirmCompletionDate($_POST["Id"]);
                 $this->redirect("/wishes/action=getSpecificWish?Id=" . $_POST["Id"]);
             } else {
-                $errorString = "De geplande datum is nog neit bereikt. De wens kan niet worden afgesloten.";
+                $errorString = "De geplande datum is nog niet bereikt. De wens kan niet worden afgesloten.";
                 $_SESSION["error"] = $errorString;
                 $this->redirect("/wishes/action=getSpecificWish?Id=" . $_POST["Id"]);
             }
@@ -273,17 +335,25 @@ class WishesController extends Controller
      */
     public function AddComment()
     {
+
+
         if (!isset($_POST["comment"])) {
             $this->redirect("/Wishes/action=getSpecificWish/Id=" . $_GET["Id"]);
             exit();
         }
 
-        if (!empty($wish = $this->wishRepo->getWish($_GET["Id"]))) {
-            if ($wish->status != "Vervuld" && $this->userRepo->getCurrentUser()->email != $wish->user || !$this->wishRepo->canComment($_GET["Id"], $this->userRepo->getCurrentUser()->email)) {
-                $this->redirect("/Wishes/action=getSpecificWish/Id=" . $_GET["Id"]);
-                exit();
-            }
+        $wish = $this->wishRepo->getWish($_GET["Id"]);
+
+        if (empty($wish) || $wish->status != "Vervuld") {
+            $this->redirect("/Wishes/action=getSpecificWish/Id=" . $_GET["Id"]);
+            exit();
         }
+
+        if ($this->userRepo->getCurrentUser()->email != $wish->user->email && !$this->wishRepo->canComment($_GET["Id"], $this->userRepo->getCurrentUser()->email)) {
+            $this->redirect("/Wishes/action=getSpecificWish/Id=" . $_GET["Id"]);
+            exit();
+        }
+
 
         if (empty($_FILES["img"]["tmp_name"])) {
             $check = false;
@@ -313,7 +383,7 @@ class WishesController extends Controller
             }
             if ($err != null) {
                 $_SESSION["error"] = $err;
-                $this->redirect("/wishes/action=getSpecificWish?Id=" . $_POST["Id"]);
+                $this->redirect("/wishes/action=getSpecificWish?Id=" . $_GET["Id"]);
             }
         }
 

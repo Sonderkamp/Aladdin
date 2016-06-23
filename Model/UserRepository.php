@@ -28,7 +28,7 @@ class UserRepository
         if ($current === false || $current->email !== $username) {
 
             // if user is not blocked
-            if (!$this->isBlocked($username) !== false)
+            if ($this->isBlocked($username) === false)
                 $this->UserQueryBuilder->setblock(1, $username, $reason);
         }
     }
@@ -116,7 +116,7 @@ class UserRepository
 
         $mail->to = $username;
         $mail->toName = $val->name . " " . $val->surname;
-        $mail->subject = "Activeer Account Webshop";
+        $mail->subject = "Activeer Account Aladdin";
         $mail->message =
             "Beste " . $val->name . ",\n
             Deze mail is verstuurd omdat u een nieuw account aan heeft gemaakt.\n
@@ -124,7 +124,7 @@ class UserRepository
             http://" . $_SERVER["SERVER_NAME"] . "/account/action=activate/token=" . $this->UserQueryBuilder->getTokenByName($username, "validation")["ValidationHash"] . "\n
 
             Met vriendelijke groet,\n
-            Webshop";
+            Aladdin";
         return true;
 
     }
@@ -133,11 +133,14 @@ class UserRepository
     {
 
         $res = $this->UserQueryBuilder->getMailByToken($token, "validation");
-        if ($res == null || $res === false)
+        if ($res === null || $res === false)
             return false;
         $res = $res[0];
 
-        // Clear
+        if ($res === null || $res["ValidationHash"] === null)
+            return false;
+
+        //Clear
         $this->UserQueryBuilder->clearToken($res["Email"], "validation");
 
 
@@ -347,7 +350,7 @@ class UserRepository
             // Get
             $mail->to = $username;
             $mail->toName = $val->name . " " . $val->surname;
-            $mail->subject = "Wachtwoord vergeten Webshop";
+            $mail->subject = "Wachtwoord vergeten Aladdin";
             $mail->message =
                 "Beste " . $val->name . ",\n
             Deze mail is verstuurd omdat u uw wachtwoord vergeten bent.\n
@@ -356,10 +359,10 @@ class UserRepository
             Deze link is 24 uur geldig \n
 
             Met vriendelijke groet,\n
-            Webshop";
+            Aladdin";
 
             $websiteMessage = "Er is een email verstuurd naar " . $username .
-                "met een link om uw wachtwoord te resetten.Deze link verschijnt binnen drie minuten.
+                " met een link om uw wachtwoord te resetten.Deze link verschijnt binnen drie minuten.
                                 als u niks binnenkrijgt, kijk alstublieft in uw spam folder.";
 
             return true;
@@ -418,13 +421,16 @@ class UserRepository
     public function tryRegister($array)
     {
 
+
         if ($array["type"] != "business" && $array["type"] != "child") {
 
             if (empty($array["dob"])) {
                 return "Niet alles ingevuld";
             }
 
-            $age = strtotime(DateTime::createFromFormat('d-m-Y', $array["dob"])->getTimestamp()) / 60 / 60 / 24 / 365;
+            $age = DateTime::createFromFormat('d-m-Y', $array["dob"]);
+            $to = new DateTime('today');
+            $age = $age->diff($to)->y;
             if ($age < 18) {
                 return "Je moet minimaal 18 jaar oud zijn. Ben je jonger? Registreer je als een kind.";
             }
@@ -892,9 +898,12 @@ class UserRepository
         $newUser->lat = $result[0]["Lat"];
         $newUser->lon = $result[0]["Lon"];
 
-        if (isset($result[0]["isBlocked"])) {
-            $newUser->blocked = $result[0]["isBlocked"];
+        if ($this->isBlocked($newUser->email) !== false) {
+            $newUser->blocked = true;
+        } else {
+            $newUser->blocked = false;
         }
+
 
         return $newUser;
     }

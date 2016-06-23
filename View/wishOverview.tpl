@@ -4,7 +4,7 @@
 <!-- * Date: 25-Feb-16-->
 <!-- * Time: 15:12-->
 <!-- */-->
-
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
 
     <span class="info">
@@ -14,7 +14,7 @@
        </span>
 
     <div class="row">
-        <h3>Wensen overzicht</h3>
+        <h3>Wensen overzicht {if !empty($searchKey)} - {$searchKey}{/if}</h3>
         {if isset($wishError)}
             <div class="form-error" id="err">Error: {htmlspecialchars($wishError)}</div>
         {else}
@@ -38,6 +38,10 @@
                     <a href="#myCompletedWishes" data-toggle="tab">Mijn vervulde wensen</a>
                 </li>
 
+                <li {if $currentPage == "myMatchedWishes"} class="active" {/if}>
+                    <a href="#myMatchedWishes" data-toggle="tab">Mijn matches</a>
+                </li>
+
                 <li {if $currentPage == "matchedWishes"} class="active" {/if}>
                     <a href="#matchedWishes" data-toggle="tab">Mogelijke matches</a>
                 </li>
@@ -46,7 +50,7 @@
 
         <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
             <div class="row">
-                <form class="col-xs-10 row" action="/wishes/search" method="get">
+                <form class="col-xs-10 row" action="/wishes/action=searchWish" method="get">
                     <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
                         <input class="form-control" name="search" placeholder="Zoek een wens">
                     </div>
@@ -64,7 +68,7 @@
             <br>
             <div class="tab-content">
                 <div class="tab-pane fade in {if $currentPage == "myWishes"}active{/if}" id="myWishes">
-                    {if $myWishes}
+                    {if !empty($myWishes)}
                         {foreach from=$myWishes item=wish}
                             <div class="panel panel-default">
 
@@ -78,7 +82,7 @@
                                         <div class="col-xs-9">
                                             <p>{htmlspecialcharsWithNL($wish -> content)}</p>
                                         </div>
-                                        {include file='view/wishOverviewModals.tpl'}
+                                        {include file='View/wishOverviewModals.tpl'}
                                     </div>
                                 </div>
 
@@ -90,9 +94,11 @@
                                             <span class="glyphicon glyphicon-edit"></span>
                                         </a>
                                     {/if}
-                                    <a href="/Wishes/action=remove?Id={$wish->id}" class="btn btn-danger infoLeft">
-                                        <span class="glyphicon glyphicon-trash"></span>
-                                    </a>
+                                    {if {htmlspecialcharsWithNL($wish -> status) != "Vervuld" && htmlspecialcharsWithNL($wish -> status) != "Wordt vervuld"}}
+                                        <a href="/Wishes/action=remove?Id={$wish->id}" class="btn btn-danger infoLeft">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </a>
+                                    {/if}
                                     <a href="/wishes/action=getSpecificWish?Id={$wish->id}" class="btn btn-default">
                                         <span class="glyphicon glyphicon-menu-right"></span>
                                     </a>
@@ -100,7 +106,7 @@
                             </div>
                         {/foreach}
                     {else}
-                        <div class="center-block text-center"><h4>U heeft momenteel geen wensenn</h4></div>
+                        <div class="center-block text-center"><h4>U heeft momenteel geen wensen</h4></div>
                     {/if}
                 </div>
 
@@ -120,7 +126,7 @@
                                         <div class="col-xs-9">
                                             <p>{htmlspecialcharsWithNL($wish -> content)}</p>
                                         </div>
-                                        {include file='view/wishOverviewModals.tpl'}
+                                        {include file='View/wishOverviewModals.tpl'}
                                     </div>
                                 </div>
 
@@ -151,7 +157,7 @@
                                         <div class="col-xs-9">
                                             <p>{htmlspecialcharsWithNL($wish -> content)}</p>
                                         </div>
-                                        {include file='view/wishOverviewModals.tpl'}
+                                        {include file='View/wishOverviewModals.tpl'}
                                     </div>
                                 </div>
 
@@ -183,7 +189,7 @@
                                         <div class="col-xs-9">
                                             <p>{htmlspecialcharsWithNL($wish -> content)}</p>
                                         </div>
-                                        {include file='view/wishOverviewModals.tpl'}
+                                        {include file='View/wishOverviewModals.tpl'}
                                     </div>
                                 </div>
 
@@ -196,6 +202,38 @@
                         {/foreach}
                     {else}
                         <div class="center-block text-center"><h4>U heeft momenteel geen vervulde wensen</h4></div>
+                    {/if}
+                </div>
+
+                <div class="tab-pane fade in {if $currentPage == "myMatchedWishes"}active{/if}"
+                     id="myMatchedWishes">
+                    {if $myMatchedWishes}
+                        {foreach from=$myMatchedWishes item=wish}
+                            <div class="panel panel-default">
+
+                                <div class="panel-heading">
+                                    <a href="/Wishes/action=getSpecificWish?Id={$wish->id}"
+                                       class="h3">{htmlspecialcharsWithNL($wish -> title)}</a>
+                                </div>
+
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-xs-9">
+                                            <p>{htmlspecialcharsWithNL($wish -> content)}</p>
+                                        </div>
+                                        {include file='View/wishOverviewModals.tpl'}
+                                    </div>
+                                </div>
+
+                                <div class="panel-footer right">
+                                    <a href="/wishes/action=getSpecificWish?Id={$wish->id}" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-menu-right"></span>
+                                    </a>
+                                </div>
+                            </div>
+                        {/foreach}
+                    {else}
+                        <div class="center-block text-center"><h4>U heeft momenteel geen matches met wensen</h4></div>
                     {/if}
                 </div>
 
@@ -214,7 +252,7 @@
                                         <div class="col-xs-9">
                                             <p>{htmlspecialcharsWithNL($wish -> content)}</p>
                                         </div>
-                                        {include file='view/wishOverviewModals.tpl'}
+                                        {include file='View/wishOverviewModals.tpl'}
                                     </div>
                                 </div>
 
@@ -245,68 +283,68 @@
             </div>
             <div class="modal-body">
 
-                <p>
-                    Dit is het wensenoverzicht, hier kunt u gemakkelijk door uw eigen wensen kijken en door wensen van
-                    anderen.
-                    In het zoekveld kunt u wensen zoeken.<br><br>
-
-                    <a>Mijn wensen</a> hier staan uw eigen wensen.<br>
-                    <a>Onvervulde wensen</a> hier staan alle wensen die <u>niet</u> zijn vervuld.<br>
-                    <a>Vervulde wensen</a> hier staan alle wensen die <u>wel</u> zijn vervuld.<br>
-                    <a>Mijn vervulde wensen</a> hier ziet u de wensen die door u zijn vervuld.<br>
-                    <a>Mogelijke matches</a> hier kunt u wensen zien welke u mogelijk kunt vervullen<br>
-                </p>
+                <p> Hier vind u uitleg over de icoontjes die in het wensbeheer systeem voor komen:</p>
 
                 <div class="col-xs-12 info-row">
                     <button class="btn btn-sm">
-                        <span class="glyphicon glyphicon glyphicon-edit"></span>
+                        <span class="glyphicon glyphicon-eye-open"></span>
                     </button>
-                    <span class="info-text">Hiermee kunt u uw wens wijzigen.</span>
+                    <span class="info-text">Opent een pagina waar je de bijbehorende wens kan ziens</span>
                 </div>
 
                 <div class="col-xs-12 info-row">
                     <button class="btn btn-sm">
-                        <span class="glyphicon glyphicon glyphicon-trash"></span>
+                        <span class="glyphicon glyphicon-ok"></span>
                     </button>
-                    <span class="info-text">Hiermee verwijdert u uw wens.</span>
+                    <span class="info-text">Accepteert de wens</span>
                 </div>
 
                 <div class="col-xs-12 info-row">
                     <button class="btn btn-sm">
-                        <span class="glyphicon glyphicon-chevron-right"></span>
+                        <span class="glyphicon glyphicon-remove"></span>
                     </button>
-                    <span class="info-text">Hiermee kunt u de wens bekijken.</span>
+                    <span class="info-text">Weigert de wens</span>
                 </div>
 
                 <div class="col-xs-12 info-row">
                     <button class="btn btn-sm">
-                        <span class="glyphicon glyphicon-plus"></span>
-                    </button>
-                    <span class="info-text">Hiermee kunt u een nieuwe wens aanmaken.</span>
-                </div>
-
-                <br>
-
-
-                Om een gebruiker te rapporteren klikt u op de naam en vervolgens op rapporteren.
-                <div class="dropdown">
-                    <a class="dropdown-toggle" type="button" data-toggle="dropdown">
                         <span class="glyphicon glyphicon-user"></span>
-                        Gebruiker
-                        <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Rapporteren</a></li>
-                    </ul>
-                </div>
-
-
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
-                        Sluiten
                     </button>
+                    <span class="info-text">Gaat naar profiel pagina van een gebruiker</span>
                 </div>
+
+                <div class="col-xs-12 info-row">
+                    <button class="btn btn-sm">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                    <span class="info-text">Verwijderd wens</span>
+                </div>
+
+                <p>Om een reactie toe te voegen aan het gastenboek gaat u naar de vervulde wensen. Hierna kunt u door op
+                    het pijltje naar beneden te klikken op bekijk wens klikken. Hierdoor opent een nieuw venster.</p>
+
+                <div class="col-xs-12 info-row">
+                    <button class="btn btn-default btn-sm">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    <span class="info-text">Verwijder de reactie</span>
+                </div>
+
+                <div class="col-xs-12 info-row">
+                    <button class="btn btn-inbox btn-sm">
+                        <span class="glyphicon glyphicon-book"></span>
+                    </button>
+                    <span class="info-text">Voeg reactie to aan gastenboek</span>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Sluiten
+                </button>
             </div>
         </div>
     </div>
 </div>
+

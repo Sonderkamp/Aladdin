@@ -31,7 +31,7 @@
 
     </div>
 </div>
-<div class="white">
+<div class="white" id="aladdin">
     <div class="container bg">
         <div class="col-lg-6 col-md-4">
 
@@ -62,7 +62,7 @@
 
             </p>
         </div>
-        <div class="col-lg-6 col-md-8 text-center">
+        <div class="col-lg-6 col-md-8 hidden-xs hidden-sm text-center">
             <br>
             <iframe width="560" height="315" src="https://www.youtube.com/embed/ZsO2gbE2f80" frameborder="0"
                     allowfullscreen></iframe>
@@ -93,14 +93,14 @@
 </div>
 
 
-    <div class=" white">
-        <div class="container bg">
-            <div class="col-xs-12">
+<div class=" white">
+    <div class="container bg">
+        <div class="col-xs-12">
 
-                <h5 class="text-center"><b>Sponsors</b></h5>
-                <div class="text-center">
+            <h5 class="text-center"><b>Sponsors</b></h5>
+            <div class="text-center">
 
-                    {if $sponsors|@count gt 0}
+                {if $sponsors|@count gt 0}
 
                     {foreach $sponsors as $sponsor}
                         {if !empty($sponsor->image)}
@@ -113,14 +113,14 @@
                             {/if}
                         {/if}
                     {/foreach}
-                    {/if}
-                    <br><br>
-                    Sponsor worden? Neem dan contact met ons op via <a href="mailto:sponsors@alladin.nl">sponsors@aladdin.nl</a>
-                </div>
+                {/if}
+                <br><br>
+                Sponsor worden? Neem dan contact met ons op via <a href="mailto:alladin.wishes.and.skills@gmail.com">alladin.wishes.and.skills@gmail.com</a>
             </div>
-            </row>
         </div>
+        </row>
     </div>
+</div>
 
 
 </div>
@@ -134,5 +134,14 @@
         this.removeEventListener('touchstart', videoStart);
     });
 
+
+    $(window).scroll(function () {
+        if ($(document).scrollTop() > $('#aladdin').offset().top) {
+            $("#bgvid").hide();
+        }
+        else {
+            $("#bgvid").show();
+        }
+    });
 </script>
 

@@ -6,6 +6,7 @@
  * Time: 00:39
  */
 ?>
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
 
 
@@ -120,7 +121,7 @@
                             {if $link->action == "Talent"}
                                 <a href="/Talents" class="btn btn-inbox">Mijn Talenten</a>
                             {else if $link->action == "Wens"}
-                                <a href="/Wishes/wish_id={$link->content}" class="btn btn-inbox">Bekijk wens</a>
+                                <a href="/wishes/action=getSpecificWish?Id={$link->content}" class="btn btn-inbox">Bekijk wens</a>
                             {else if $link->action == "PaginaLink"}
                                 <a href="{$link->content}" class="btn btn-inbox">Naar Pagina</a>
                             {else if $link->action == "Bericht"}

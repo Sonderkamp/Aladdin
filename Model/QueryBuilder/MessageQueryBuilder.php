@@ -75,7 +75,7 @@ class MessageQueryBuilder
         $mess = $mess[0];
 
         $mesmodel = new Message();
-        $mesmodel->date = strftime(" %H:%M %#d %B %Y", strtotime($res["Date"]));
+        $mesmodel->date = strftime(" %H:%M %e %B %Y", strtotime($res["Date"]));
         $mesmodel->isopened = $res["IsOpend"];
         $mesmodel->title = $mess["Subject"];
         $mesmodel->content = $mess["Message"];
@@ -115,7 +115,7 @@ class MessageQueryBuilder
         foreach ($dbres as $row) {
 
             $mesmodel = new Message();
-            $mesmodel->date = strftime("%#d %B %Y", strtotime($row["Date"]));
+            $mesmodel->date = strftime("%e %B %Y", strtotime($row["Date"]));
             $mesmodel->isopened = $row["IsOpend"];
             $mesmodel->title = $row["Subject"];
             $mesmodel->content = substr($row["Message"], 0, 100);
@@ -180,7 +180,7 @@ class MessageQueryBuilder
         $pdo->beginTransaction();
         $itemNR = null;
 
-        if ($user->getUser($me) !== false) {
+        if ($user->getUser($me) !== null) {
             DATABASE::transaction_action_safe($pdo, "INSERT INTO `message` (`Subject`, `Message`, `user_Sender`, `user_Receiver`) VALUES ( ?, ?, ?, ?)", array($title, $message, $me, $recipient));
             $itemNR = $pdo->lastInsertId();
             DATABASE::transaction_action_safe($pdo, "INSERT INTO `inbox` ( `folder_Name`, `message_Id`, `user_Email`) VALUES ('outbox', ?, ?)", array($itemNR, $me));
@@ -194,6 +194,7 @@ class MessageQueryBuilder
         DATABASE::transaction_action_safe($pdo, "INSERT INTO `inbox` ( `folder_Name`, `message_Id`, `user_Email`) VALUES ('inbox', ?, ?)", array($itemNR, $recipient));
 
         $pdo->commit();
+
 
         return $itemNR;
     }

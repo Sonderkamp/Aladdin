@@ -12,6 +12,8 @@
         return false;
     }
 </script>
+
+<img src="/Resources/Images/banner.jpg" class="img-responsive width background">
 <div class="container">
 
     <h5>Wensen Beheer</h5>
@@ -22,7 +24,7 @@
             </li>
 
             <li {if $currentPage == "published"}class="active"{/if}>
-                <a href="#publishedTab" data-toggle="tab">Gepubliseerde wensen</a>
+                <a href="#publishedTab" data-toggle="tab">Gepubliceerde wensen</a>
             </li>
 
             <li {if $currentPage == "matched"}class="active"{/if}>
@@ -118,7 +120,7 @@
 
             <div class="tab-pane fade in {if $currentPage == "requested"}active{/if}" id="requestedTab">
                 {if $requested}
-                    <table class="table">
+                    <table class="table panel">
                         <thead>
                         <tr>
                             <th>Wish id</th>
@@ -133,10 +135,10 @@
                             <tr>
                                 <td>{$wish->id}</td>
                                 <td>{$wish->user->displayName}</td>
-                                <td>{$wish->title}</td>
+                                <td>{htmlspecialchars($wish->title)}</td>
                                 <td>{$wish->status}</td>
                                 <td>
-                                    {include file='view/adminWishModals.tpl'}
+                                    {include file='View/adminWishModals.tpl'}
                                     <div class="dropdown">
                                         <a href="#"
                                            class="dropdown-toggle"
@@ -205,7 +207,7 @@
 
             <div class="tab-pane fade in {if $currentPage == "published"}active{/if}" id="publishedTab">
                 {if $published}
-                    <table class="table">
+                    <table class="table panel">
                         <thead>
                         <tr>
                             <th>Wish id</th>
@@ -220,10 +222,10 @@
                             <tr>
                                 <td>{$wish->id}</td>
                                 <td>{$wish->user->displayName}</td>
-                                <td>{$wish->title}</td>
+                                <td>{htmlspecialchars($wish->title)}</td>
                                 <td>{$wish->status}</td>
                                 <td>
-                                    {include file='view/adminWishModals.tpl'}
+                                    {include file='View/adminWishModals.tpl'}
                                     <div class="dropdown">
                                         <a href="#"
                                            class="dropdown-toggle"
@@ -265,7 +267,7 @@
                         </tbody>
                     </table>
                 {else}
-                    <div class="center-block text-center"><h4>Er zijn momenteel geen gepubliseerde wensen</h4></div>
+                    <div class="center-block text-center"><h4>Er zijn momenteel geen gepubliceerde wensen</h4></div>
                 {/if}
             </div>
 
@@ -273,7 +275,7 @@
 
             <div class="tab-pane fade in {if $currentPage == "matched"}active{/if}" id="matchedTab">
                 {if $matched}
-                    <table class="table">
+                    <table class="table panel">
                         <thead>
                         <tr>
                             <th>Wish id</th>
@@ -288,10 +290,10 @@
                             <tr>
                                 <td>{$wish->id}</td>
                                 <td>{$wish->user->displayName}</td>
-                                <td>{$wish->title}</td>
+                                <td>{htmlspecialchars($wish->title)}</td>
                                 <td>{$wish->status}</td>
                                 <td>
-                                    {include file='view/adminWishModals.tpl'}
+                                    {include file='View/adminWishModals.tpl'}
                                     <div class="dropdown">
                                         <a href="#"
                                            class="dropdown-toggle"
@@ -333,7 +335,7 @@
 
             <div class="tab-pane fade in {if $currentPage == "current"}active{/if}" id="currentTab">
                 {if $current}
-                    <table class="table">
+                    <table class="table panel">
                         <thead>
                         <tr>
                             <th>Wish id</th>
@@ -348,10 +350,10 @@
                             <tr>
                                 <td>{$wish->id}</td>
                                 <td>{$wish->user->displayName}</td>
-                                <td>{$wish->title}</td>
+                                <td>{htmlspecialchars($wish->title)}</td>
                                 <td>{$wish->status}</td>
                                 <td>
-                                    {include file='view/adminWishModals.tpl'}
+                                    {include file='View/adminWishModals.tpl'}
                                     <div class="dropdown">
                                         <a href="#"
                                            class="dropdown-toggle"
@@ -402,7 +404,7 @@
 
             <div class="tab-pane fade in {if $currentPage == "completed"}active{/if}" id="completedTab">
                 {if $completed}
-                    <table class="table">
+                    <table class="table panel">
                         <thead>
                         <tr>
                             <th>Wish id</th>
@@ -417,10 +419,10 @@
                             <tr>
                                 <td>{$wish->id}</td>
                                 <td>{$wish->user->displayName}</td>
-                                <td>{$wish->title}</td>
+                                <td>{htmlspecialchars($wish->title)}</td>
                                 <td>{$wish->status}</td>
                                 <td>
-                                    {include file='view/adminWishModals.tpl'}
+                                    {include file='View/adminWishModals.tpl'}
                                     <div class="dropdown">
                                         <a href="#"
                                            class="dropdown-toggle"
@@ -440,13 +442,6 @@
                                                     Wens bekijken
                                                 </a>
                                             </li>
-
-                                            <li>
-                                                <a href="/profileoverview/action=viewProfile/user={$wish->user->email}">
-                                                    <span class="glyphicon glyphicon-user"></span>
-                                                    Wens verwijderen
-                                                </a>
-                                            </li>
                                         </ul>
                                     </div>
                                 </td>
@@ -463,7 +458,7 @@
 
             <div class="tab-pane fade in {if $currentPage == "denied"}active{/if}" id="deniedTab">
                 {if $denied}
-                    <table class="table">
+                    <table class="table panel">
                         <thead>
                         <tr>
                             <th>Wish id</th>
@@ -478,10 +473,10 @@
                             <tr>
                                 <td>{$wish->id}</td>
                                 <td>{$wish->user->displayName}</td>
-                                <td>{$wish->title}</td>
+                                <td>{htmlspecialchars($wish->title)}</td>
                                 <td>{$wish->status}</td>
                                 <td>
-                                    {include file='view/adminWishModals.tpl'}
+                                    {include file='View/adminWishModals.tpl'}
                                     <div class="dropdown">
                                         <a href="#"
                                            class="dropdown-toggle"
@@ -539,7 +534,7 @@
 
             <div class="tab-pane fade in {if $currentPage == "deleted"}active{/if}" id="deletedTab">
                 {if $deleted}
-                    <table class="table">
+                    <table class="table panel">
                         <thead>
                         <tr>
                             <th>Wish id</th>
@@ -554,10 +549,10 @@
                             <tr>
                                 <td>{$wish->id}</td>
                                 <td>{$wish->user->displayName}</td>
-                                <td>{$wish->title}</td>
+                                <td>{htmlspecialchars($wish->title)}</td>
                                 <td>{$wish->status}</td>
                                 <td>
-                                    {include file='view/adminWishModals.tpl'}
+                                    {include file='View/adminWishModals.tpl'}
                                     <div class="dropdown">
                                         <a href="#"
                                            class="dropdown-toggle"

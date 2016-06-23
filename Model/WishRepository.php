@@ -90,7 +90,7 @@ class WishRepository
     {
         return $this->getReturnArray($this->wishQueryBuilder->getWishes
         ($this->userRepository->getCurrentUser()->email, [0 => "Aangemaakt",
-            1 => "Gepubliseerd",
+            1 => "Gepubliceerd",
             2 => "Geweigerd",
             3 => "Match gevonden",
             4 => "Vervuld",
@@ -104,8 +104,7 @@ class WishRepository
     {
         return $this->getReturnArray($this->wishQueryBuilder->getWishes
         ($this->userRepository->getCurrentUser()->email, [0 => "Aangemaakt",
-            1 => "Gepubliseerd",
-            2 => "Geweigerd",
+            1 => "Gepubliceerd",
             3 => "Match gevonden",
             5 => "Wordt vervuld"]));
     }
@@ -115,12 +114,22 @@ class WishRepository
      */
     public function getCurrentCompletedWishes()
     {
-        return $this->getReturnArray($this->wishQueryBuilder->getWishes([0 => "Vervuld", 1 => "Wordt vervuld"], null, false));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Vervuld", 1 => "Wordt vervuld"], null, false));
     }
 
-    public function getMyCompletedWishes()
+    public function getMyMatches($username , $key = null){
+        return $this->getReturnArray($this->matchRepo->getMatchedWishes($username , $key));
+    }
+
+    public function getMyCompletedWishes($username = null)
     {
-        return $this->getReturnArray($this->wishQueryBuilder->getWishes($this->userRepository->getCurrentUser()->email, [0 => "Vervuld", 1 => "Wordt vervuld"], null));
+        if ($username == null) {
+            $username = $this->userRepository->getCurrentUser()->email;
+        }
+
+        return $this->getReturnArray($this->matchRepo->getCompletedWishes($username));
+
+//        return $this->getReturnArray($this->wishQueryBuilder->getWishes($username, [0 => "Vervuld", 1 => "Wordt vervuld"], null));
     }
 
     /**
@@ -128,7 +137,7 @@ class WishRepository
      */
     public function getIncompletedWishes()
     {
-        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Gepubliseerd", 1 => "Match gevonden"], null, false));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Gepubliceerd", 1 => "Match gevonden"], null, false));
     }
 
     /**
@@ -141,6 +150,25 @@ class WishRepository
         return $this->getReturnArray($this->wishQueryBuilder->getWishes($this->userRepository->getCurrentUser()->email, null, $key));
     }
 
+    public function searchIncopletedWishes($key)
+    {
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Gepubliceerd", 1 => "Match gevonden"], $key, false));
+    }
+
+    public function searchCompletedWishes($key)
+    {
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Vervuld", 1 => "Wordt vervuld"], $key, false));
+    }
+
+    public function searchMyCompletedWishes($key)
+    {
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes($this->userRepository->getCurrentUser()->email, [0 => "Vervuld", 1 => "Wordt vervuld"], $key));
+    }
+
+    public function searchPossibleMatches($key)
+    {
+        return $this->getPossibleMatches($key);
+    }
 
     public function addWish(Wish $wish)
     {
@@ -152,6 +180,8 @@ class WishRepository
 
         $this->addWishContent($wish);
         $this->editWishTalents($wish);
+
+        return $wish->id;
     }
 
     private function addWishContent(Wish $wish)
@@ -161,8 +191,8 @@ class WishRepository
 
     public function editWishContent(Wish $wish)
     {
-        $temp = $this->wishQueryBuilder->getSingleWish($wish->id);
-        if ($temp[0]["moderator_Username"] === null) {
+        $temp = $this->getNewestWish($wish->id);
+        if ($temp->accepted == 0) {
             $this->wishQueryBuilder->deleteWishContent($wish);
         }
 
@@ -200,28 +230,36 @@ class WishRepository
         $this->wishQueryBuilder->bindToTalent($talentName, $wish);
     }
 
-    public function setCompletionDate($date , $id){
-        $this->wishQueryBuilder->setCompletionDate($date , $id);
-        $this->wishQueryBuilder->setWishStatus("Wordt vervuld" , $id);
+    public function setCompletionDate($date, $id)
+    {
+        $this->wishQueryBuilder->setCompletionDate($date, $id);
+
+        if ($date !== null) {
+            $this->wishQueryBuilder->setWishStatus("Wordt vervuld", $id);
+        }
+
     }
 
-    public function confirmCompletionDate($id){
-        $this->wishQueryBuilder->setWishStatus("Vervuld" , $id);
+    public function confirmCompletionDate($id)
+    {
+        $this->wishQueryBuilder->setWishStatus("Vervuld", $id);
     }
 
-    public function removeMatchStatus($id){
-        $this->wishQueryBuilder->setWishStatus("Gepubliceerd" , $id);
+    public function removeMatchStatus($id)
+    {
+        $this->wishQueryBuilder->setWishStatus("Gepubliceerd", $id);
     }
 
-    public function clearExpiredDates(){
+    public function clearExpiredDates()
+    {
         $res = $this->getReturnArray($this->wishQueryBuilder->getExpiredDate());
 
         $mes = new MessageRepository();
 
-        foreach($res as $item){
-            $m = $mes->sendMessage("Admin" , $item->user->email,"Wens is verlopen" , "Geachte " . $item->user->displayName .
+        foreach ($res as $item) {
+            $m = $mes->sendMessage("Admin", $item->user->email, "Wens is verlopen", "Geachte " . $item->user->displayName .
                 " Uw vervul datum is zonet verlopen en gereset. Vult u alstublieft z.s.m. een nieuwe datum in");
-            $mes->setLink($item->id , 'Wens' , $m );
+            $mes->setLink($item->id, 'Wens', $m);
         }
 
         $this->wishQueryBuilder->clearExpiredDate();
@@ -247,7 +285,7 @@ class WishRepository
 
     public function getWishAmount($email)
     {
-        $wishByUser = $this->getWishesByUser($email);
+        $wishByUser = $this->getCountedWishes($email);
         if (!empty($wishByUser)) {
             return count($wishByUser);
         } else {
@@ -259,7 +297,7 @@ class WishRepository
     {
         $res = $this->matchRepo->getCompletedMatches($username);
 
-        if($res === false){
+        if ($res === false) {
             $extraWishes = 0;
         } else {
             $extraWishes = count($res);
@@ -270,20 +308,20 @@ class WishRepository
 
     public function getRequestedWishes()
     {
-        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Aangemaakt", 1 => "Gepubliseerd"], null, true));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Aangemaakt", 1 => "Gepubliceerd", 2 => "Match gevonden", 3 => "Wordt vervuld"], null, true));
     }
 
     public function getPublishedWishes()
     {
-        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Gepubliseerd"], null, null));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Gepubliceerd"], null, false));
     }
 
     public function getMatchedWishes()
     {
-        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Match gevonden"], null, null));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Match gevonden"], null, false));
     }
 
-    public function getPossibleMatches()
+    public function getPossibleMatches($key = null)
     {
         $userTalents = $this->talentRepository->getAddedTalents();
         $synonyms = $this->talentRepository->getSynonymsOfTalents($userTalents);
@@ -291,19 +329,19 @@ class WishRepository
 
 
         $temp = $this->wishQueryBuilder->wishIDByTalents($allTalents);
-        $result = $this->wishQueryBuilder->getPossibleMatches($temp, $this->getMyWishes());
+        $result = $this->wishQueryBuilder->getPossibleMatches($temp, $this->getMyWishes(), $key);
 
         return $this->getReturnArray($result);
     }
 
     public function getCurrentWishes()
     {
-        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Wordt vervuld"], null, null));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Wordt vervuld"], null, false));
     }
 
     public function getCompletedWishes()
     {
-        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Vervuld"], null, null));
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, [0 => "Vervuld"], null, false));
     }
 
     public function getDeniedWishes()
@@ -318,7 +356,10 @@ class WishRepository
 
     public function acceptWish($id)
     {
-        $this->wishQueryBuilder->executeAdminAction($id, 1, $this->adminRepo->getCurrentAdmin()->username, "Gepubliseerd");
+        $status = $this->getNewestWish($id)->status;
+        if ($status == "Aangemaakt" || $status == "Geweigerd" || $status == "Verwijderd") {
+            $this->wishQueryBuilder->executeAdminAction($id, 1, $this->adminRepo->getCurrentAdmin()->username, "Gepubliceerd");
+        }
     }
 
     public function refuseWish($id)
@@ -333,18 +374,39 @@ class WishRepository
 
     public function getWish($id)
     {
-        return $this->getReturnArray($this->wishQueryBuilder->getSingleWish($id, null))[0];
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null,
+            [0 => "Aangemaakt",
+                1 => "Gepubliceerd",
+                2 => "Geweigerd",
+                3 => "Match gevonden",
+                4 => "Vervuld",
+                5 => "Wordt vervuld",
+                6 => "Verwijderd"],
+            null, false, false, null, null, $id))[0];
     }
 
+    public function getNewestWish($id)
+    {
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes(null, null, null, null, false, null, null, $id))[0];
+    }
 
     public function getWishesByUser($username)
     {
         return $this->getReturnArray($this->wishQueryBuilder->getWishes
         ($username, [0 => "Aangemaakt",
-            1 => "Gepubliseerd",
+            1 => "Gepubliceerd",
             2 => "Geweigerd",
             3 => "Match gevonden",
-            5 => "Wordt vervuld"], null, null, true));
+            4 => "Wordt vervuld"], null, null, true));
+    }
+
+    public function getCountedWishes($username)
+    {
+        return $this->getReturnArray($this->wishQueryBuilder->getWishes
+        ($username, [0 => "Aangemaakt",
+            1 => "Gepubliceerd",
+            3 => "Match gevonden",
+            4 => "Wordt vervuld"], null, null, true));
     }
 
     // nog even laten staan, kan wss binnekort verwijdert worden
@@ -357,7 +419,10 @@ class WishRepository
 
     public function deleteMyWish($id)
     {
-        $this->wishQueryBuilder->editWishStatus($id, "Verwijderd");
+        if (!$this->getNewestWish($id)->status === "Vervuld") {
+            $this->wishQueryBuilder->editWishStatus($id, "Verwijderd");
+        }
+
     }
 
     public function sendEditMail($id, $titel, $content, $tags)
@@ -435,7 +500,7 @@ class WishRepository
         } else {
             // validate comment
             $forbiddenRepo = new ForbiddenWordRepository();
-            $wordArray = explode(" ", trim(preg_replace("/[^0-9a-z]+/i", " ", $comment)));
+            $wordArray = preg_split('/[\s]+/', trim(preg_replace("/[^0-9a-z]+/i", " ", $comment)));
             foreach ($wordArray as $word) {
 
                 // if word is not valid
@@ -505,6 +570,7 @@ class WishRepository
         // DIE if imgur breaks.
         if (curl_errno($ch)) {
             echo "IMGUR ERROR. Please try again: ";
+            //deze wilen we houden :)
             print_r(curl_error($ch));
             exit();
         }
@@ -524,7 +590,7 @@ class WishRepository
     public function cleanWishes()
     {
 
-        $res = Database::query("SELECT * FROM `updatelog` order by Time Desc Limit 1");
+        $res = Database::query("SELECT * FROM `updateLog` order by Time Desc Limit 1");
 
         if ($res !== false) {
             if (round((strtotime("now") - strtotime($res[0]["Time"])) / 3600, 1) < 24) {
@@ -532,15 +598,14 @@ class WishRepository
             }
         }
 
-        Database::query_safe("INSERT INTO `updatelog` (`Time`) VALUES (?);", array(date("Y-m-d H:i:s")));
+        Database::query_safe("INSERT INTO `updateLog` (`Time`) VALUES (?);", array(date("Y-m-d H:i:s")));
 
 
         $monthsCap = 6;
 
         // Ik ga dit met php doen. sorry. Ik krijg het niet voor elkaar met Mysql
         $oldWishes = $this->getReturnArray($this->wishQueryBuilder->getWishes
-        (null, ["Aangemaakt", "Gepubliseerd"], null, true, null));
-
+        (null, ["Aangemaakt", "Gepubliceerd"], null, true, null));
 
         if (count($oldWishes) > 0) {
             if (is_array($oldWishes)) {

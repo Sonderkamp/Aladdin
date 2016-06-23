@@ -39,7 +39,7 @@ class WishCreationController extends Controller
             $wishContentId = $_GET["Id"];
             $_SESSION["wishcontentid"] = $_GET["Id"];
 
-            $wish = $this->wishRepo->getWish($wishContentId);
+            $wish = $this->wishRepo->getNewestWish($wishContentId);
 
             $title = $wish->title;
             $description = $wish->content;
@@ -86,7 +86,7 @@ class WishCreationController extends Controller
 
             // check if user can add a wish
             if (!($this->wishRepo->canAddWish($this->userRepo->getCurrentUser()->email))) {
-                $this->render("addWish.tpl", ["wishError" => "U heeft al 3 wensen, u kunt geen wensen meer toevoegen."]);
+                $this->render("addWish.tpl", ["wishError" => "U heeft al te veel wensen, u kunt geen wensen meer toevoegen."]);
                 exit(1);
             }
 
@@ -103,9 +103,9 @@ class WishCreationController extends Controller
                 $wish->title = $title;
                 $wish->content = $description;
                 $wish->tags = $myTags;
-                $this->wishRepo->addWish($wish);
+                $id = $this->wishRepo->addWish($wish);
 
-                $this->wishController->back();
+                $this->redirect("/wishes/action=getSpecificWish?Id=" . $id);
             }
         }
     }
@@ -148,9 +148,7 @@ class WishCreationController extends Controller
                 $wish->id = $_SESSION["wishcontentid"];
                 $this->wishRepo->editWishContent($wish);
 
-//                /* uitgecomment anders wordt je volgespamt
-//                $this->wishRepo->sendEditMail($wish->id, $title, $description, $myTags);
-//                */
+                $this->redirect("/wishes/action=getSpecificWish?Id=" . $wish->id);
             }
             $this->wishController->back();
         }

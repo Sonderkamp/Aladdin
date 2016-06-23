@@ -79,8 +79,7 @@ class UserQueryBuilder
             case "validation":
                 return Database::query_safe("SELECT * FROM `user` WHERE `ValidationHash` = ?", array($hash));
             default:
-                echo "TYPE DOES NOT EXIST - GETMAILBYTOKEN->UserQueryBuilder()";
-                exit();
+                return false;
         }
 
 
@@ -186,7 +185,7 @@ class UserQueryBuilder
 
     public function setblock($block, $username, $reason = null)
     {
-        Database::query_safe("INSERT INTO blockedusers (`IsBlocked`, `Reason`, `moderator_Username`, `user_Email`) VALUES (?, ?, ?, ?)", array($block, $reason, $_SESSION["admin"]->username, $username));
+        Database::query_safe("INSERT INTO blockedUsers (`IsBlocked`, `Reason`, `moderator_Username`, `user_Email`) VALUES (?, ?, ?, ?)", array($block, $reason, $_SESSION["admin"]->username, $username));
     }
 
     public function getUser($emailOrDisplayName)
@@ -196,10 +195,10 @@ class UserQueryBuilder
 
     public function isBlocked($username)
     {
-        if (Database::query_safe("SELECT count(*) as count  from `blockedusers` where `user_Email` = ?", array($username))[0]["count"] == 0)
+        if (Database::query_safe("SELECT count(*) as count  from `blockedUsers` where `user_Email` = ?", array($username))[0]["count"] == 0)
             return false;
 
-        $status = Database::query_safe("SELECT *  from `blockedusers` where `user_Email` = ? order by DateBlocked DESC", array($username))[0];
+        $status = Database::query_safe("SELECT *  from `blockedUsers` where `user_Email` = ? order by DateBlocked DESC", array($username))[0];
         if ($status["IsBlocked"] == 1)
             return $status["Reason"];
 
@@ -210,7 +209,7 @@ class UserQueryBuilder
     public function getAllBlocks($username)
     {
         $result = Database::query_safe("SELECT *
-              from blockedusers
+              from blockedUsers
               where user_Email = ?
               order by DateBlocked desc", array($username));
         return $result;

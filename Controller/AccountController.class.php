@@ -59,6 +59,7 @@ class AccountController extends Controller
         }
         $this->checkActivateToken($_GET["token"]);
         $this->redirect("/Account");
+        exit();
     }
 
     // password recovery
@@ -136,8 +137,6 @@ class AccountController extends Controller
         $username = $userRepo->validateActivateToken($token);
         if ($username === false) {
             $userRepo->logRecovery();
-            $this->apologize("niet geldige token.");
-
         }
         return $username;
     }
